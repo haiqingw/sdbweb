@@ -19,6 +19,7 @@ export default {
     test() {
       fetchList().then( res => {
         console.log(res)
+        console.log(1321)
       })
     }
   },

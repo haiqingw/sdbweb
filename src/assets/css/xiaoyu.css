@@ -1,0 +1,164 @@
+
+
+img {
+    margin: 0 auto;
+}
+.index-list1 {
+    background: #fff;
+    margin-bottom: 0.15rem;
+}
+.index-list1 ul {
+    overflow: hidden;
+}
+.index-list1 ul li {
+    width: 25%;
+    padding: .26rem .4rem;
+    box-sizing: border-box;
+    float: left;
+    border-right: .01rem solid #eaeaea;
+}
+.index-list1 ul li:last-child {
+    border: none;
+}
+.index-list1 ul li div {
+    text-align: center;
+}
+.index-list1 ul li .index-list1-img {
+    margin-bottom: .03rem;
+}
+.index-list1 ul li .index-list1-img img {
+    width: .5rem;
+}
+.index-list1 ul li .index-list1-text {
+    font-size: 0.24rem;
+    color: #000;
+    line-height: .3rem;
+    font-weight: bold;
+}
+.index-list1 ul li .index-list1-explain {
+    font-size: 0.20rem;
+    line-height: .26rem;
+}
+.index-notice {
+    background: #fff;
+    margin-bottom: .15rem;
+    padding: .17rem .56rem .13rem .33rem;
+}
+.index-notice-top {
+    overflow: hidden;
+    margin-bottom: 0.09rem;
+}
+.index-notice-top h3 {
+    float: left;
+    margin-right: 0.14rem;
+}
+.index-notice-top h3 img {
+    width: 1.02rem;
+}
+.index-notice-top .index-notice-top-content {
+    float: left;
+    font-size: 0.22rem;
+}
+.index-notice-top .index-notice-top-content span {
+    font-size: 0.14rem;
+    float: left;
+    margin-right: 0.22rem;
+    color: #ff0000;
+    border: .01rem solid #ff0000;
+    padding: 0.02rem .05rem;
+    border-radius: .05rem;
+}
+.index-notice-top .index-notice-top-content a {
+    color: #000;
+    line-height: 0.3rem;
+    float: left;
+}
+.index-notice-profit {
+    overflow: hidden;
+}
+.index-notice-profit h3 {
+    float: left;
+    margin-right: 0.14rem;
+}
+.index-notice-profit h3 img {
+    width: .95rem;
+}
+.index-notice-profit p {
+    float: left;
+    font-size: .22rem;
+    color: #000000;
+    line-height: 0.4rem;
+    padding-top: 0.18rem;
+    overflow: hidden;
+}
+.index-notice-profit p em {
+    float: right;
+    font-size: .38rem;
+    color: #ff0000;
+    margin-left: 0.23rem;
+    font-weight: bold;
+    margin-top: -0.02rem;
+}
+.index-notice-profit span {
+    float: right;
+    width: 0.11rem;
+    height: .19rem;
+    background: url(../images/index-notice-profit-ico.png) no-repeat;
+    background-size: 100%;
+    margin-top: 0.3rem;
+}
+.index-list2 {
+    background: #fff;
+    /* padding: .35rem .48rem; */
+    padding: .35rem .15rem;
+}
+.index-list2 ul {
+    overflow: hidden;
+}
+.index-list2 ul li {
+    float: left;
+    padding: 0 .4rem;
+    margin-bottom: 0.26rem;
+}
+.index-list2 ul li .img {
+    text-align: center;
+}
+.index-list2 ul li .img img {
+    width: 1rem;
+}
+.index-list2 ul li .text {
+    font-size: 0.24rem;
+    text-align: center;
+    line-height: 0.3rem;
+}
+.index-list2 ul li .text a {
+    color: #000000;
+}
+.login {
+    height: 3rem;
+    background: #577eff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login a {
+    font-size: 0.3rem;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: .15rem .2rem;
+    border-radius: .1rem;
+}
+.logo  {
+    width: 4rem;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+
+
+.return {
+    font-size: .3rem;
+    text-align: center;
+    line-height: .8rem;
+    color: #fff;
+    background: #089cfe; 
+}

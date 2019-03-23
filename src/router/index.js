@@ -85,6 +85,12 @@ export default new Router({
       name: 'myOrder',
       component: () =>
         import('@/views/myOrder/myOrder')
+    },
+    {
+      path: '/bindingMplements',
+      name: 'bindingMplements',
+      component: () =>
+        import('@/views/binding-mplements/index')
     }
   ]
 })

@@ -79,6 +79,12 @@ export default new Router({
       name: 'mallAddAddress',
       component: () =>
         import('@/views/mall/mall_addAddress')
+    }, 
+    {
+      path: '/myOrder/myOrder', //我的订单
+      name: 'myOrder',
+      component: () =>
+        import('@/views/myOrder/myOrder')
     }
   ]
 })

@@ -87,7 +87,7 @@ export default new Router({
         import('@/views/myOrder/myOrder')
     },
     {
-      path: '/bindingMplements',
+      path: '/bindingMplements',  //绑定机具
       name: 'bindingMplements',
       component: () =>
         import('@/views/binding-mplements/index')
@@ -115,6 +115,13 @@ export default new Router({
       name: 'deliverGoods',
       component: () =>
         import('@/views/deliver-goods/index')
+    }, 
+    {
+      path: '/myOrderDetail', //我的订单详情
+      name: 'myOrderDetail',
+      component: () =>
+        import('@/views/myOrder/myOrderDetail')
     }
+
   ]
 })

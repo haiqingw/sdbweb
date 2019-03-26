@@ -1,44 +1,239 @@
 <template>
     <div>
         <!-- nav -->
-        <div class="myOrderNavMain flex line_bottom">
-            <a href="javascript:;" class="active">
-                全部
-            </a>
-            <a href="javascript:;">
-                待发货 
-            </a>
-            <a href="javascript:;">
-                已发货 
-            </a>
-            <a href="javascript:;">
-                待评价 
-            </a>
-            <a href="javascript:;">
-                已完成 
-            </a>
+        <div class="myOrderNavMain">
+            <el-radio-group v-model="values.type" size="medium" @change="test">
+                <el-radio-button label="all">全部</el-radio-button>
+                <el-radio-button label="dfh">待发货</el-radio-button>
+                <el-radio-button label="dsh">待收货</el-radio-button>
+                <el-radio-button label="ywc">已完成</el-radio-button>
+                <el-radio-button label="dpl">待评论</el-radio-button>
+            </el-radio-group>
         </div>
+
         <!-- 列表 -->
         <div class="myOrderListMain">
-             
+            <div class="myOrderItem">
+                <b></b>
+                <b></b>
+                <div class="myOrderTitle">
+                    <h3>
+                        闪POS
+                        <span>等待发货</span>
+                    </h3>
+                    <p>品牌：闪POS</p>
+                </div>
+                <div class="myOrderAddress line_bottom">
+                    <span>费率</span>
+                    <p>0.55%+3</p>
+                </div>
+                <div class="myOrderAntherInfo line_bottom">
+                    <p>
+                        <span>合计：</span>
+                        <em>￥0.00（含运费￥0.00）</em>
+                    </p>
+                    <p>
+                        <span>订单编号：</span>
+                        <em>21231231123</em>
+                    </p>
+                </div>
+                <div class="myOrderOperation">
+                    <a href="javascript:;">删除订单</a>
+                    <a href="javascript:;">取消订单</a>
+                </div>
+            </div>
+            <div class="myOrderItem">
+                <b></b>
+                <b></b>
+                <div class="myOrderTitle">
+                    <h3>
+                        闪POS
+                        <span>等待发货</span>
+                    </h3>
+                    <p>品牌：闪POS</p>
+                </div>
+                <div class="myOrderAddress line_bottom">
+                    <span>费率</span>
+                    <p>0.55%+3</p>
+                </div>
+                <div class="myOrderAntherInfo line_bottom">
+                    <p>
+                        <span>合计：</span>
+                        <em>￥0.00（含运费￥0.00）</em>
+                    </p>
+                    <p>
+                        <span>订单编号：</span>
+                        <em>21231231123</em>
+                    </p>
+                </div>
+                <div class="myOrderOperation">
+                    <a href="javascript:;">删除订单</a>
+                    <a href="javascript:;">取消订单</a>
+                </div>
+            </div>
+            <div class="myOrderItem">
+                <b></b>
+                <b></b>
+                <div class="myOrderTitle">
+                    <h3>
+                        闪POS
+                        <span>等待发货</span>
+                    </h3>
+                    <p>品牌：闪POS</p>
+                </div>
+                <div class="myOrderAddress line_bottom">
+                    <span>费率</span>
+                    <p>0.55%+3</p>
+                </div>
+                <div class="myOrderAntherInfo line_bottom">
+                    <p>
+                        <span>合计：</span>
+                        <em>￥0.00（含运费￥0.00）</em>
+                    </p>
+                    <p>
+                        <span>订单编号：</span>
+                        <em>21231231123</em>
+                    </p>
+                </div>
+                <div class="myOrderOperation">
+                    <a href="javascript:;">删除订单</a>
+                    <a href="javascript:;">取消订单</a>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <script>
 export default {
-    
-}
+    data() {
+        return {
+            values: {
+                type: "all"
+            }
+        };
+    },
+    methods: {
+        test() {
+            console.log(this.values);
+        }
+    }
+};
 </script>
 <style lang="scss">
-   .myOrderNavMain{
-       justify-content:space-around;
-       a{
-           display:block;
-           width:100%;
-           height:40px;
-           line-height:40px;
-           text-align:center;
-           font-size:14px;
-       }
-   } 
+.myOrderNavMain {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+}
+.myOrderNavMain .el-radio-group {
+    display: block;
+}
+.myOrderNavMain .el-radio-button--medium .el-radio-button__inner {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.myOrderNavMain .el-radio-button,
+.el-radio-button__inner {
+    width: 20%;
+}
+.myOrderNavMain .el-radio-button:first-child .el-radio-button__inner {
+    border-radius: 0;
+    border: none;
+}
+.myOrderNavMain .el-radio-button:last-child .el-radio-button__inner {
+    border-radius: 0;
+}
+.myOrderNavMain .el-radio-button__inner {
+    border: none;
+    border-left: 1px solid #f1f1f1;
+}
+.myOrderNavMain .el-radio-group {
+    border-bottom: 1px solid #f1f1f1;
+}
+.myOrderListMain {
+    padding: 50px 15px 15px;
+    background: #f1f1f1;
+}
+.myOrderItem {
+    background: #fff;
+    padding: 0 15px;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.myOrderItem b {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid #f1f1f1;
+    background: #f1f1f1;
+    top: 81px;
+}
+.myOrderItem b:nth-of-type(1) {
+    left: -7px;
+}
+.myOrderItem b:nth-of-type(2) {
+    right: -7px;
+}
+.myOrderTitle {
+    padding: 10px 0 20px;
+    border-bottom: 1px dashed #ccc;
+    box-sizing: border-box;
+}
+.myOrderTitle h3 {
+    padding-right: 80px;
+    line-height: 30px;
+    font-size: 16px;
+    position: relative;
+}
+.myOrderTitle h3 span {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 14px;
+}
+.myOrderTitle p {
+    font-size: 16px;
+    line-height: 30px;
+}
+.myOrderAddress {
+    line-height: 20px;
+    padding: 20px 0 10px;
+    font-size: 16px;
+}
+.myOrderAddress span {
+    float: left;
+}
+.myOrderAddress p {
+    padding-left: 67px;
+}
+.myOrderAntherInfo {
+    line-height: 30px;
+    padding: 10px 0;
+    font-size: 16px;
+}
+.myOrderOperation {
+    overflow: hidden;
+    padding: 10px 0;
+    text-align: right;
+}
+.myOrderOperation a {
+    display: block;
+    width: 100px;
+    line-height: 30px;
+    border: 1px solid #ccc;
+    text-align: center;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #333;
+    margin-left: 10px;
+    float: right;
+}
 </style>

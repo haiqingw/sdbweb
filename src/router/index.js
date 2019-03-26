@@ -97,6 +97,18 @@ export default new Router({
       name: 'myOrderDetail',
       component: () =>
         import('@/views/myOrder/myOrderDetail')
+    },
+    {
+      path: '/mine', //个人中心
+      name: 'mine',
+      component: () =>
+        import('@/views/mine/mine')
+    },
+    {
+      path: '/dataCenter', //数据中心
+      name: 'dataCenter',
+      component: () =>
+        import('@/views/dataCenter/dataCenter')
     }
 
   ]

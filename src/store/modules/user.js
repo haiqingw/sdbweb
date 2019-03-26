@@ -63,6 +63,7 @@ const user = {
                    
                 }).catch( err => {
                     reject(err)
+                    Toast(response[res.data.responseStatus])
                 })
             })
         }

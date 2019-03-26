@@ -70,7 +70,7 @@
                         <img src="@/assets/images/index-list2-img1.png" alt="">
                     </div>
                     <div class="text">
-                        <a href="">绑定机具</a>
+                        <router-link to="/bindingMplements">绑定机具</router-link>
                     </div>
                 </li>
                 <li>
@@ -78,7 +78,7 @@
                         <img src="@/assets/images/index-list2-img2.png" alt="">
                     </div>
                     <div class="text">
-                        <a href="">我的终端</a>
+                        <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
                 <li>
@@ -118,7 +118,7 @@
                         <img src="@/assets/images/index-list2-img7.png" alt="">
                     </div>
                     <div class="text">
-                        <a href="">邀请记录</a>
+                        <router-link to="/invitationRecord">邀请记录</router-link>
                     </div>
                 </li>
                 <li>
@@ -127,6 +127,14 @@
                     </div>
                     <div class="text">
                         <a href="">排行榜</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="img">
+                        <img src="@/assets/images/index-list2-img8.png" alt="">
+                    </div>
+                    <div class="text">
+                        <router-link to="/deliverGoods">发货</router-link>
                     </div>
                 </li>
             </ul>

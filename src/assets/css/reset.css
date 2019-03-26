@@ -6,6 +6,7 @@ body,html {
 	position: relative;
 	max-width:750px;
 	min-width:320px;
+	background: #fff;
 }
 *{
 	margin:0;

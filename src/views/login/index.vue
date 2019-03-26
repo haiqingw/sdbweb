@@ -49,7 +49,7 @@
                         this.loading = true
                         this.$store
                             .dispatch('Login', this.formData)
-                            .then(() => {
+                            .then((res) => {
                                 this.$router.push({ path: '/' })
                                 this.loading = false
                             })

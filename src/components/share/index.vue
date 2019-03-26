@@ -58,7 +58,7 @@
         methods: {
             shareFunc() {
                 share(this.queryData.share).then( res => {
-                    console.log(res)
+                    // console.log(res)
                     this.renderData.share = res.data.qrcode
                 })
             },

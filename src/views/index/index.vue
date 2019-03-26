@@ -53,7 +53,7 @@
     export default {
         data () {
             return {
-                selected: "index",
+                selected: this.$route.params.selected || "index",
                 footer: {
                     index: {
                         title: "首页",
@@ -89,13 +89,12 @@
             Msg
         },
         methods: {
-           routerSelected () {
-               
-           }
+           
         },
         created() {
           
-        }
+        },
+       
     }
 </script>
 

@@ -6,16 +6,26 @@
         <div class="msg-view-list">
             <ul>
                 <router-link to="/notice" tag="li">
-                    <div class="notice-ico ico"></div>
-                    <div class="text"><span>官方公告</span></div>
+                    <el-badge is-dot class="item">
+                        <div class="notice-ico ico"></div>
+                    </el-badge>
+                    <div class="text">
+                        <span>系统公告</span>
+                    </div>
                 </router-link>
                 <router-link to="/news" tag="li">
-                    <div class="news-ico ico"></div>
-                    <span>及时消息</span>
+                    <el-badge :value="1" :max="99" class="item">
+                        <div class="news-ico ico"></div>
+                    </el-badge>
+                    <div class="text">
+                        <span>及时消息</span>
+                    </div>
                 </router-link>
                 <router-link to="/complaint" tag="li">
                     <div class="complaint-ico ico"></div>
-                    <span>投诉建议</span>
+                    <div class="text">
+                        <span>投诉建议</span>
+                    </div>
                 </router-link>
             </ul>
         </div>
@@ -44,9 +54,9 @@
     .msg-view .msg-view-list ul li  {
         font-size: .28rem;
         overflow: hidden;
-        margin-top: .2rem;
+        /* margin-top: .2rem; */
         line-height: 0.8rem;
-        padding: .1rem 0;
+        padding: .2rem 0;
     }
     .msg-view .msg-view-list ul li>div {
         float: left;
@@ -55,7 +65,9 @@
         width: .8rem;
         height: .8rem;
         border-radius: 50%;
-        margin-right: .3rem;
+    }
+    .msg-view-list .text {
+        margin-left: .3rem;
     }
     .msg-view-list .ico.notice-ico {
         background: url(../../assets/images/msg-notice-ico.png) no-repeat center center #3399FF;

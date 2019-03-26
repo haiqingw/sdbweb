@@ -91,6 +91,30 @@ export default new Router({
       name: 'bindingMplements',
       component: () =>
         import('@/views/binding-mplements/index')
+    },
+    {
+      path: '/myTerminal',
+      name: 'myTerminal',
+      component: () =>
+        import('@/views/my-terminal/index')
+    },
+    {
+      path: '/invitationRecord',
+      name: 'invitationRecord',
+      component: () =>
+        import('@/views/invitation-record/index')
+    },
+    {
+      path: '/invitationRecordDetailed',
+      name: 'invitationRecordDetailed',
+      component: () =>
+        import('@/views/invitation-record-detailed/index')
+    },
+    {
+      path: '/deliverGoods',
+      name: 'deliverGoods',
+      component: () =>
+        import('@/views/deliver-goods/index')
     }, 
     {
       path: '/myOrderDetail', //我的订单详情

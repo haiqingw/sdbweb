@@ -122,7 +122,6 @@ export default new Router({
         import('@/views/myOrder/myOrderDetail')
     },
     {
-<<<<<<< HEAD
       path: '/financialDetails', //资金明细
       name: 'financialDetails',
       component: () =>
@@ -139,10 +138,8 @@ export default new Router({
       name: 'withdrawalRecord',
       component: () =>
         import('@/views/withdrawal/withdrawalRecord')
-    }
-
-
-=======
+    },
+    { 
       path: '/clickDeliverGoods', //我的订单详情
       name: 'clickDeliverGoods',
       component: () =>
@@ -160,6 +157,5 @@ export default new Router({
       component: () =>
         import('@/views/msg/details/index')
     }
->>>>>>> 45c57a658cc2bb3dc7338bcb0ea363c877966911
   ]
 })

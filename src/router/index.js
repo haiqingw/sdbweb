@@ -33,7 +33,7 @@ export default new Router({
       }
     },
     {
-      path: '/notice',
+      path: '/notice/:id',
       name: 'notice',
       component: () => 
         import('@/views/msg/notice/index'),
@@ -121,7 +121,24 @@ export default new Router({
       name: 'myOrderDetail',
       component: () =>
         import('@/views/myOrder/myOrderDetail')
+    },
+    {
+      path: '/clickDeliverGoods', //我的订单详情
+      name: 'clickDeliverGoods',
+      component: () =>
+        import('@/views/deliver-goods/click-deliver-goods/index')
+    },
+    {
+      path: '/express', //我的订单详情
+      name: 'express',
+      component: () =>
+        import('@/views/deliver-goods/express/index')
+    },
+    {
+      path: '/msg-details', //我的订单详情
+      name: 'msgDetails',
+      component: () =>
+        import('@/views/msg/details/index')
     }
-
   ]
 })

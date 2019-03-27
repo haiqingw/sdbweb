@@ -1,19 +1,19 @@
 
 
 <template>
-    <div>
+    <div class="bp16">
         <mt-tab-container v-model="selected">
             <mt-tab-container-item id="index">
-                <Index></Index>
+                <Index ref="index"></Index>
             </mt-tab-container-item>
             <mt-tab-container-item id="data">
                 数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据
             </mt-tab-container-item>
             <mt-tab-container-item id="share">
-                <Share></Share>
+                <Share ref="share" ></Share>
             </mt-tab-container-item>
             <mt-tab-container-item id="news">
-                <msg />
+                <msg ref="msg" />
             </mt-tab-container-item>
             <mt-tab-container-item id="my">
                 我的
@@ -94,12 +94,25 @@
         created() {
           
         },
-       
+        watch: {
+            selected (val, oldVal) {
+                // 这里就可以通过 val 的值变更来确定
+                if( val === 'index' ) {
+                    this.$refs.index.parentImplement()
+                } else if( val === 'news' ) {
+                    this.$refs.msg.parentImplement()
+                } else if ( val === 'share' ) {
+                    this.$refs.share.parentImplement()
+                } else if ( val === 'my' ) {
+                    console.log("我的")
+                }
+            }
+        },
     }
 </script>
 
 <style>
-body {
+.bp16 {
     padding-bottom: 1.6rem;
 }
 .index {

@@ -189,12 +189,23 @@
                 test(this.test).then( res => {
                     // console.log(res)
                 })
+            },
+            parentImplement () {
+                this.listOne()
             }
         },
         created() {
             this.listOne()
-            this.test1()
+            // this.test1()
         }
     }
 </script>
+
+
+<style>
+/* body {
+    padding-bottom: 1.6rem;
+} */
+</style>
+
 

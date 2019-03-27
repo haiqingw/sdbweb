@@ -62,19 +62,24 @@
                     this.renderData.share = res.data.qrcode
                 })
             },
+            parentImplement() {
+                this.shareFunc()
+            }
         },
         mounted () {
             // this.$nextTick(function () {// })
         },
        
         created() {
-            this.shareFunc()
             
         }
     }
 </script>
 
 <style>
+/* body {
+    padding-bottom: 1.6rem;
+} */
 .share-view {
     margin-top: .38rem;
 }

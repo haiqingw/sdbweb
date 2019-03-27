@@ -7,34 +7,24 @@
                 src="@/assets/images/return.png" alt="" 
                 @click="backOff"
             />
-            <span>系统公告</span>
+            <span>消息</span>
         </div>
         <div class="notice-content">
             <div class="notice-list">
                 <ul>
-                    <li>
+                    <li v-for="item in renderData.listData" :key="item.id">
                         <div class="img">
-                            <img src="@/assets/images/index_banner.jpg" alt="">
+                            <img :src="item.picUrl" alt="">
                         </div>
                         <div class="content">
-                            <h3>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
-                            <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
-                            <div class="time-more">
-                                <span>2000-00-00 00:00:00</span>
-                                <a href="">查看详情</a>
+                            <div class="title">
+                                <h3>{{item.title}}</h3>
+                                <span :class="{ 'no' : item.readStatus === '未读'}" >{{item.readStatus}}</span>
                             </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="img">
-                            <img src="@/assets/images/index_banner.jpg" alt="">
-                        </div>
-                        <div class="content">
-                            <h3>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
-                            <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
+                            <!-- <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p> -->
                             <div class="time-more">
-                                <span>2000-00-00</span>
-                                <a href="">查看详情</a>
+                                <span>{{item.sendTime}}</span>
+                                <router-link :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}">查看详情</router-link>
                             </div>
                         </div>
                     </li>
@@ -46,14 +36,49 @@
 
 
 <script>
+    import {msgList} from '@/api/msg'
+    import { Indicator, Toast } from 'mint-ui'
+    import response from '@/assets/js/response.js'
     export default {
         data() {
-            return {}
+            return {
+                isData: false,
+                queryData: {
+                    msgNoticeList: {
+                        requestType: 'messagemanage',
+                        requestKeywords: 'lists', 
+                        userID: this.$store.state.user.uid, 
+                        platformID: this.$store.state.user.pid, 
+                        userPhone: this.$store.state.user.uphone, 
+                        cid: this.$route.params.id
+                    }
+                },
+                renderData: {
+                    listData: []
+                }
+            }
         },
         methods: {
             backOff() {
                 this.$router.push({ name: 'index', params: { selected: 'news' }})
+            },
+            msgNoticeListFunc () {
+                Indicator.open()
+                msgList(this.queryData.msgNoticeList).then( res => {
+                    console.log(res)
+                    // Toast(response[res.data.responseStatus])
+                    if( res.data.responseStatus === 1 ) {
+                        Indicator.close();
+                        this.renderData.listData = res.data.data
+                    } else if ( res.data.responseStatus === 300 ) {
+                        Indicator.close();
+                        this.isData = true
+                    }
+                })
             }
+        },
+        created () {
+            this.msgNoticeListFunc()
         }
     }
 </script>
@@ -78,13 +103,35 @@
 .notice-list ul li .img img {
     height: 100%;
 }
-.notice-list ul li h3 {
+.notice-list ul li .title {
+    overflow: hidden;
+}
+.notice-list ul li .title h3 {
     font-size: 0.3rem;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
     line-height: .46rem;
     margin-bottom: .1rem;
+    float: left;
+}
+.notice-list ul li .title span {
+    float: right;
+    font-size: .24rem;
+    background-color: rgba(103,194,58,.1);
+    border-color: rgba(103,194,58,.2);
+    color: #67c23a;
+    padding: 0 .2rem;
+    border-radius: .4rem;
+    line-height: .3rem;
+    box-sizing: border-box;
+    white-space: nowrap;
+    margin-top: .1rem;
+}
+.notice-list ul li .title span.no {
+    background-color: rgba(245,108,108,.1);
+    border-color: rgba(245,108,108,.2);
+    color: #f56c6c;
 }
 .notice-list ul li p {
     font-size: .24rem;

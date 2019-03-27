@@ -32,7 +32,7 @@ export default new Router({
       }
     },
     {
-      path: '/notice',
+      path: '/notice/:id',
       name: 'notice',
       component: () =>
         import('@/views/msg/notice/index'),
@@ -122,6 +122,7 @@ export default new Router({
         import('@/views/myOrder/myOrderDetail')
     },
     {
+<<<<<<< HEAD
       path: '/financialDetails', //资金明细
       name: 'financialDetails',
       component: () =>
@@ -141,5 +142,24 @@ export default new Router({
     }
 
 
+=======
+      path: '/clickDeliverGoods', //我的订单详情
+      name: 'clickDeliverGoods',
+      component: () =>
+        import('@/views/deliver-goods/click-deliver-goods/index')
+    },
+    {
+      path: '/express', //我的订单详情
+      name: 'express',
+      component: () =>
+        import('@/views/deliver-goods/express/index')
+    },
+    {
+      path: '/msg-details', //我的订单详情
+      name: 'msgDetails',
+      component: () =>
+        import('@/views/msg/details/index')
+    }
+>>>>>>> 45c57a658cc2bb3dc7338bcb0ea363c877966911
   ]
 })

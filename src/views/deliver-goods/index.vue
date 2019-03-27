@@ -35,7 +35,7 @@
                                     <span>
                                         订单号:000000000000
                                     </span>
-                                    <a>发货</a>
+                                    <router-link to="/clickDeliverGoods">发货</router-link>
                                 </div>
                             </li>
                             <li>
@@ -59,7 +59,7 @@
                                     <span>
                                         订单号:000000000000
                                     </span>
-                                    <a>发货</a>
+                                    <router-link to="/clickDeliverGoods">发货</router-link>
                                 </div>
                             </li>
                         </ul>
@@ -210,6 +210,7 @@
 }
 .no-deliver-goods-list ul li .btn a {
     float: right;
+    color: #fff;
 }
 .yes-deliver-goods-list ul li .express-name {
     line-height: .4rem;

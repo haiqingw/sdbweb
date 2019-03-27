@@ -4,11 +4,10 @@ Vue.use(Router)
 
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'index',
-      component: () => 
+      component: () =>
         import('@/views/index/index'),
       meta: {
         requireAuth: true
@@ -17,7 +16,7 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: () => 
+      component: () =>
         import('@/views/login/index'),
       meta: {
         requireAuth: true
@@ -26,7 +25,7 @@ export default new Router({
     {
       path: '/complaint',
       name: 'complaint',
-      component: () => 
+      component: () =>
         import('@/views/msg/complaint/index'),
       meta: {
         requireAuth: true
@@ -35,7 +34,7 @@ export default new Router({
     {
       path: '/notice',
       name: 'notice',
-      component: () => 
+      component: () =>
         import('@/views/msg/notice/index'),
       meta: {
         requireAuth: true
@@ -44,20 +43,20 @@ export default new Router({
     {
       path: '/news',
       name: 'news',
-      component: () => 
+      component: () =>
         import('@/views/msg/news/index'),
       meta: {
         requireAuth: true
       }
     },
     {
-      path: '/mall',  //在线领取列表
+      path: '/mall', //在线领取列表
       name: 'mall',
-      component: () => 
+      component: () =>
         import('@/views/mall/mall_list')
     },
     {
-      path: '/mall/mall_detail',  //在线领取详情
+      path: '/mall/mall_detail', //在线领取详情
       name: 'mallDetail',
       component: () =>
         import('@/views/mall/mall_detail')
@@ -67,19 +66,19 @@ export default new Router({
       name: 'mallPay',
       component: () =>
         import('@/views/mall/mall_pay')
-    }, 
+    },
     {
       path: '/mall/mall_address', //收货地址列表
       name: 'mallAddress',
       component: () =>
         import('@/views/mall/mall_address')
-    }, 
+    },
     {
       path: '/mall/mall_addAddress', //添加收货地址
       name: 'mallAddAddress',
       component: () =>
         import('@/views/mall/mall_addAddress')
-    }, 
+    },
     {
       path: '/myOrder', //我的订单
       name: 'myOrder',
@@ -87,7 +86,7 @@ export default new Router({
         import('@/views/myOrder/myOrder')
     },
     {
-      path: '/bindingMplements',  //绑定机具
+      path: '/bindingMplements', //绑定机具
       name: 'bindingMplements',
       component: () =>
         import('@/views/binding-mplements/index')
@@ -115,7 +114,7 @@ export default new Router({
       name: 'deliverGoods',
       component: () =>
         import('@/views/deliver-goods/index')
-    }, 
+    },
     {
       path: '/myOrderDetail', //我的订单详情
       name: 'myOrderDetail',
@@ -123,17 +122,24 @@ export default new Router({
         import('@/views/myOrder/myOrderDetail')
     },
     {
-      path: '/mine', //个人中心
-      name: 'mine',
+      path: '/financialDetails', //资金明细
+      name: 'financialDetails',
       component: () =>
-        import('@/views/mine/mine')
+        import('@/views/financialDetails/financialDetails')
     },
     {
-      path: '/dataCenter', //数据中心
-      name: 'dataCenter',
+      path: '/withdrawal', //提现
+      name: 'withdrawal',
       component: () =>
-        import('@/views/dataCenter/dataCenter')
+        import('@/views/withdrawal/withdrawal')
+    }, 
+    {
+      path: '/withdrawalRecord', //提现记录
+      name: 'withdrawalRecord',
+      component: () =>
+        import('@/views/withdrawal/withdrawalRecord')
     }
+
 
   ]
 })

@@ -5,10 +5,10 @@
             <h3>个人中心</h3>            
             <div class="mineHeaderBox">
                 <a href="javascript:;" class="mineNoticeBtn">
-                    <img src="../../assets/images/mineNoticeIcon.png" alt="消息中心">
-                    <i></i>
+                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
+                    <!-- <i></i> -->
                 </a>
-               <span><img src="../../assets/images/logoSmallImg.jpg" alt="头像"></span>  
+               <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"></span>  
                <p>青城五点半<em>股东</em></p>
                <div class="mineHeaderBody flex">
                   <div>
@@ -38,33 +38,33 @@
             <h3 class="mineTitle">常用菜单</h3>
             <div class="mineCommonMenuList">
                 <a href="javascript:;">
-                    <img src="../../assets/images/myTerminalIcon.png" alt="常用菜单">
+                    <img src="@/assets/images/myTerminalIcon.png" alt="常用菜单">
                     <p>我的终端</p>
                 </a>
-                <a href="javascript:;"> <img src="../../assets/images/AffiliateTransactionsIcon.png" alt="常用菜单"> <p>下属交易</p>
+                <a href="javascript:;"> <img src="@/assets/images/AffiliateTransactionsIcon.png" alt="常用菜单"> <p>下属交易</p>
                 </a>
                 <a href="javascript:;">
-                    <img src="../../assets/images/balanceIcon.png" alt="常用菜单">
+                    <img src="@/assets/images/balanceIcon.png" alt="常用菜单">
                     <p>余额/提现</p>
                 </a>
                 <a href="javascript:;">
-                    <img src="../../assets/images/myMachineIcon.png" alt="常用菜单">
+                    <img src="@/assets/images/myMachineIcon.png" alt="常用菜单">
                     <p>我的机具</p>
                 </a>
                 <a href="javascript:;">
-                    <img src="../../assets/images/CapitalSubsidiaryIcon.png" alt="常用菜单">
+                    <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="常用菜单">
                     <p>资金明细</p>
                 </a>
                 <a href="javascript:;">
-                    <img src="../../assets/images/InvitedRecordIcon.png" alt="常用菜单">
+                    <img src="@/assets/images/InvitedRecordIcon.png" alt="常用菜单">
                     <p>邀请记录</p>
                 </a>
                 <a href="javascript:;">
-                    <img src="../../assets/images/settingCenterIcon.png" alt="常用菜单">
+                    <img src="@/assets/images/settingCenterIcon.png" alt="常用菜单">
                     <p>设置中心</p>
                 </a>
                 <a href="javascript:;">
-                    <img src="../../assets/images/aboutIcon.png" alt="常用菜单">
+                    <img src="@/assets/images/aboutIcon.png" alt="常用菜单">
                     <p>关于我们</p>
                 </a>
             </div>
@@ -77,6 +77,9 @@ export default {
         return {
 
         }
+    },
+    methods:{
+
     }
 }
 </script>
@@ -110,6 +113,7 @@ export default {
            position: absolute;
            right:10px;
            top:8px;
+           z-index:9999999;
            i{
                display: block;
                width:10px;

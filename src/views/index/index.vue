@@ -16,7 +16,7 @@
                 <msg />
             </mt-tab-container-item>
             <mt-tab-container-item id="my">
-                我的
+                <Mine></Mine> 
             </mt-tab-container-item>
         </mt-tab-container>
         <mt-tabbar v-model="selected" fixed class="footer">
@@ -48,6 +48,7 @@
     import Index from '@/components/index'
     import Share from '@/components/share'
     import Msg from '@/components/msg'
+    import Mine from '@/components/mine'
     import { test } from '@/api/test'
     import { mapGetters } from 'vuex'
     export default {
@@ -86,10 +87,11 @@
         components: {
             Index,
             Share,
-            Msg
+            Msg,
+            Mine
         },
         methods: {
-           
+            
         },
         created() {
           

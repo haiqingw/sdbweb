@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 import Swiper from "vue-awesome-swiper"
 import 'swiper/dist/css/swiper.css'
-import wx from 'weixin-js-sdk'
+// import wx from 'weixin-js-sdk'
 
 import '@/permission'
 import '@/icons'
@@ -18,6 +18,8 @@ import '@/assets/css/common.css'
 import '@/assets/css/xiaoyu.css'
 
 
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.use(MintUI)
 Vue.use(ElementUI)

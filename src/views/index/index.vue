@@ -7,7 +7,7 @@
                 <Index ref="index"></Index>
             </mt-tab-container-item>
             <mt-tab-container-item id="data">
-                数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据数据
+                <Data ref="data"></Data>
             </mt-tab-container-item>
             <mt-tab-container-item id="share">
                 <Share ref="share" ></Share>
@@ -46,6 +46,7 @@
 
 <script>
     import Index from '@/components/index'
+    import Data from '@/components/dataCenter'
     import Share from '@/components/share'
     import Msg from '@/components/msg'
     import Mine from '@/components/mine'
@@ -86,6 +87,7 @@
         },
         components: {
             Index,
+            Data,
             Share,
             Msg,
             Mine
@@ -98,6 +100,7 @@
         },
         watch: {
             selected (val, oldVal) {
+                console.log(val)
                 // 这里就可以通过 val 的值变更来确定
                 if( val === 'index' ) {
                     this.$refs.index.parentImplement()
@@ -107,6 +110,8 @@
                     this.$refs.share.parentImplement()
                 } else if ( val === 'my' ) {
                     console.log("我的")
+                } else if( val === "data" ) {
+                    this.$refs.data.parentImplement()
                 }
             }
         },

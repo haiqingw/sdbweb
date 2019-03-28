@@ -10,7 +10,7 @@
             <span>消息</span>
         </div>
         <div class="notice-content">
-            <div class="notice-list">
+            <div class="notice-list" v-if="isData">
                 <ul>
                     <li v-for="item in renderData.listData" :key="item.id">
                         <div class="img">
@@ -30,6 +30,9 @@
                     </li>
                 </ul>
             </div>
+            <div class="no-data" v-else>
+                <img src="@/assets/images/no-data.png" alt="">
+            </div>
         </div>
     </div>
 </template>
@@ -42,7 +45,7 @@
     export default {
         data() {
             return {
-                isData: false,
+                isData: true,
                 queryData: {
                     msgNoticeList: {
                         requestType: 'messagemanage',
@@ -65,14 +68,13 @@
             msgNoticeListFunc () {
                 Indicator.open()
                 msgList(this.queryData.msgNoticeList).then( res => {
-                    console.log(res)
                     // Toast(response[res.data.responseStatus])
                     if( res.data.responseStatus === 1 ) {
                         Indicator.close();
                         this.renderData.listData = res.data.data
                     } else if ( res.data.responseStatus === 300 ) {
                         Indicator.close();
-                        this.isData = true
+                        this.isData = false
                     }
                 })
             }
@@ -105,6 +107,7 @@
 }
 .notice-list ul li .title {
     overflow: hidden;
+    padding: .1rem 0;
 }
 .notice-list ul li .title h3 {
     font-size: 0.3rem;
@@ -112,7 +115,7 @@
     text-overflow:ellipsis;
     white-space:nowrap;
     line-height: .46rem;
-    margin-bottom: .1rem;
+    /* margin-bottom: .1rem; */
     float: left;
 }
 .notice-list ul li .title span {
@@ -123,10 +126,11 @@
     color: #67c23a;
     padding: 0 .2rem;
     border-radius: .4rem;
-    line-height: .3rem;
+    line-height: .4rem;
+    height: .4rem;
     box-sizing: border-box;
     white-space: nowrap;
-    margin-top: .1rem;
+    /* margin-top: .1rem; */
 }
 .notice-list ul li .title span.no {
     background-color: rgba(245,108,108,.1);

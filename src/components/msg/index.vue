@@ -1,5 +1,4 @@
 
-
 <template>
     <div class="msg-view">
         <div class="msg-view-top">消息</div>

@@ -15,6 +15,7 @@
 <script>
     import {share} from '@/api/share'
     import response from '@/assets/js/response.js'
+    import { Indicator } from 'mint-ui'
     export default {
         data() {
             return {
@@ -57,12 +58,17 @@
         // },
         methods: {
             shareFunc() {
+                Indicator.open()
                 share(this.queryData.share).then( res => {
                     // console.log(res)
-                    this.renderData.share = res.data.qrcode
+                    if(res.data.responseStatus === 1) {
+                         Indicator.close()
+                        this.renderData.share = res.data.qrcode
+                    }
                 })
             },
             parentImplement() {
+                this.renderData.share = []
                 this.shareFunc()
             }
         },

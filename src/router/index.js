@@ -152,7 +152,7 @@ export default new Router({
         import('@/views/deliver-goods/express/index')
     },
     {
-      path: '/msg-details', //我的订单详情
+      path: '/msg-details/:id', //我的订单详情
       name: 'msgDetails',
       component: () =>
         import('@/views/msg/details/index')

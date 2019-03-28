@@ -67,7 +67,7 @@
             <ul>
                 <li>
                     <div class="img">
-                        <img src="@/assets/images/index-list2-img1.png" alt="">
+                        <router-link to="/bindingMplements"><img src="@/assets/images/index-list2-img1.png" alt=""></router-link>
                     </div>
                     <div class="text">
                         <router-link to="/bindingMplements">绑定机具</router-link>
@@ -75,7 +75,7 @@
                 </li>
                 <li>
                     <div class="img">
-                        <img src="@/assets/images/index-list2-img2.png" alt="">
+                        <router-link to="/myTerminal"> <img src="@/assets/images/index-list2-img2.png" alt=""></router-link>
                     </div>
                     <div class="text">
                         <router-link to="/myTerminal">我的终端</router-link>
@@ -91,15 +91,18 @@
                 </li>
                 <li>
                     <div class="img">
-                        <img src="@/assets/images/index-list2-img4.png" alt="">
+                        <router-link to="/deliverGoods">
+                            <img src="@/assets/images/index-list2-img4.png" alt="">
+                        </router-link>
+                        
                     </div>
                     <div class="text">
-                        <a href="">订单管理</a>
+                        <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
                 </li>
                 <li>
                     <div class="img">
-                        <img src="@/assets/images/index-list2-img5.png" alt="">
+                        <router-link to="/mall"><img src="@/assets/images/index-list2-img5.png" alt=""></router-link>
                     </div>
                     <div class="text">
                         <router-link to="/mall">机具商场</router-link>
@@ -115,7 +118,7 @@
                 </li>
                 <li>
                     <div class="img">
-                        <img src="@/assets/images/index-list2-img7.png" alt="">
+                        <router-link to="/invitationRecord"> <img src="@/assets/images/index-list2-img7.png" alt=""></router-link>
                     </div>
                     <div class="text">
                         <router-link to="/invitationRecord">邀请记录</router-link>
@@ -129,14 +132,6 @@
                         <a href="">排行榜</a>
                     </div>
                 </li>
-                <li>
-                    <div class="img">
-                        <img src="@/assets/images/index-list2-img8.png" alt="">
-                    </div>
-                    <div class="text">
-                        <router-link to="/deliverGoods">发货</router-link>
-                    </div>
-                </li>
             </ul>
         </div>
     </div>
@@ -146,6 +141,7 @@
 <script>
     import { mapGetters } from 'vuex'
     import {fetchList, test} from '@/api/index'
+    import { Indicator, Toast } from 'mint-ui';
     import response from '@/assets/js/response.js'
     export default {
         data() {
@@ -181,8 +177,12 @@
         },
         methods: {
             listOne() {
+                Indicator.open()
                 fetchList(this.queryData.listOne).then( res => {
-                    this.renderData.listOneData = res.data
+                     if(res.data.responseStatus === 1) {
+                        Indicator.close();
+                        this.renderData.listOneData = res.data
+                    }
                 })
             },
             test1() {

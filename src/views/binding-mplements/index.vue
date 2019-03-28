@@ -34,6 +34,7 @@
 
 
 <script>
+    import {wxSweepCode} from '@/api/binding-mplements'
     export default {
         data() {
             return {

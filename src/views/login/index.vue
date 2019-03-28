@@ -44,19 +44,18 @@
         },
         methods: {
             clickLogin() {
-                this.$router.push({ path: '/' })
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
-                        // this.loading = true
-                        // this.$store
-                        //     .dispatch('Login', this.formData)
-                        //     .then((res) => {
-                        //         this.$router.push({ path: '/' })
-                        //         this.loading = false
-                        //     })
-                        //     .catch((err) => {
-                        //         this.loading = false
-                        //     })
+                        this.loading = true
+                        this.$store
+                            .dispatch('Login', this.formData)
+                            .then((res) => {
+                                this.$router.push({ path: '/' })
+                                this.loading = false
+                            })
+                            .catch((err) => {
+                                this.loading = false
+                            })
                     } else {
                         console.log('error submit!!')
                         return false

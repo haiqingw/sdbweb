@@ -187,8 +187,8 @@ export default {
     box-shadow: 0 0 5px #ccc;
     padding: 10px;
     overflow: hidden;
-    margin-bottom: 15px;
     position: relative;
+    margin:5px 5px 15px;
     em {
         display: block;
         width: 100px;
@@ -213,10 +213,11 @@ export default {
 .withdrawalRecordHeader {
     justify-content: space-around;
     padding-bottom: 15px;
+    padding-top:12px;
     div {
         text-align: center;
         h3 {
-            font-size: 30px;
+            font-size: 40px;
             color: #ef4f4f;
         }
         p {

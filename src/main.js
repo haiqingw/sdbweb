@@ -14,7 +14,8 @@ import '@/permission'
 import axios from 'axios'
 import Swiper from "vue-awesome-swiper"
 import 'swiper/dist/css/swiper.css'
-
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.use(MintUI)
 Vue.use(ElementUI)

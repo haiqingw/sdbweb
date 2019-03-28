@@ -73,7 +73,7 @@
             }
         },
         created () {
-            this.msgClassificationFun()
+            // this.msgClassificationFun()
         }
     }
 </script>

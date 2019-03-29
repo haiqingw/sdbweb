@@ -46,7 +46,7 @@
                         <p>团队商户</p>
                     </div>
                 </div>
-                 <div class="chartMain">
+                <div class="chartMain">
                     <div id='myChart1' style='width:100% !important;height:200px'></div>
                 </div>
             </div>
@@ -117,33 +117,80 @@
             </div>
 
         </div>
+        <Footer></Footer>
     </div>
 </template>
 <script>
+import Footer from "@/components/footerNav/footer";
 export default {
     data() {
         return {
-            monthData:["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
-            moneyData:[1,932,910,932,290,40,320,279,310,220,434,345],
+            monthData: [
+                "1月",
+                "2月",
+                "3月",
+                "4月",
+                "5月",
+                "6月",
+                "7月",
+                "8月",
+                "9月",
+                "10月",
+                "11月",
+                "12月"
+            ],
+            moneyData: [1, 932, 910, 932, 290, 40, 320, 279, 310, 220, 434, 345]
         };
     },
+    components: {
+        Footer
+    },
     mounted() {
-        this.drawLine('myChart0','当年每月收益统计',this.monthData,this.moneyData);
-        this.drawLine('myChart1','当年每月商户统计',this.monthData,this.moneyData);
-        this.drawLine('myChart2','当年每月激活统计',this.monthData,this.moneyData);
-        this.drawLine('myChart3','当年每月交易统计',this.monthData,this.moneyData);
-        this.drawLine('myChart4','当年每月团队统计',this.monthData,this.moneyData);
+        this.drawLine(
+            "myChart0",
+            "当年每月收益统计",
+            this.monthData,
+            this.moneyData
+        );
+        this.drawLine(
+            "myChart1",
+            "当年每月商户统计",
+            this.monthData,
+            this.moneyData
+        );
+        this.drawLine(
+            "myChart2",
+            "当年每月激活统计",
+            this.monthData,
+            this.moneyData
+        );
+        this.drawLine(
+            "myChart3",
+            "当年每月交易统计",
+            this.monthData,
+            this.moneyData
+        );
+        this.drawLine(
+            "myChart4",
+            "当年每月团队统计",
+            this.monthData,
+            this.moneyData
+        );
     },
     methods: {
         // 当年收益数据
-        drawLine(selecter,title,monthData,moneyData) {
+        drawLine(selecter, title, monthData, moneyData) {
             let $selecter = document.getElementById(selecter);
-            $selecter.style.width = "6.3rem";
             // 基于准备好的dom，初始化echarts实例
             let myChart = this.$echarts.init($selecter);
             // 绘制图表
             myChart.setOption({
-                title: {text:title,textStyle:{fontSize:12},x:'center',y:'bottom'},
+                title: {
+                    text: title,
+                    textStyle: { fontSize: 12 },
+                    x: "center",
+                    y: "bottom"
+                },
                 tooltip: {},
                 xAxis: {
                     type: "category",
@@ -162,15 +209,40 @@ export default {
                 ]
             });
         },
-        parentImplement () {
-            this.moneyData = [2,932,910,932,290,640,320,279,310,220,434,345]
-            console.log(this.moneyData)
-            
+        parentImplement() {
+            this.moneyData = [
+                2,
+                932,
+                910,
+                932,
+                290,
+                640,
+                320,
+                279,
+                310,
+                220,
+                434,
+                345
+            ];
+            console.log(this.moneyData);
         }
     },
-    created () {
-        this.moneyData = [1,932,910,932,290,640,320,279,310,220,434,345]
-        console.log(this.moneyData)
+    created() {
+        this.moneyData = [
+            1,
+            932,
+            910,
+            932,
+            290,
+            640,
+            320,
+            279,
+            310,
+            220,
+            434,
+            345
+        ];
+        console.log(this.moneyData);
     }
 };
 </script>
@@ -183,7 +255,7 @@ export default {
     margin-bottom: 20px;
     padding-top: 10px;
     border-radius: 5px;
-    padding-bottom:15px;
+    padding-bottom: 15px;
 }
 .dataCenterBox > h3 {
     height: 40px;
@@ -223,7 +295,7 @@ export default {
 .dataCenterItem {
     padding-top: 10px;
     position: relative;
-    z-index:9999;
+    z-index: 9999;
     div {
         font-size: 14px;
         text-align: center;
@@ -240,8 +312,8 @@ export default {
 }
 .chartMain {
     padding: 0 15px;
-    width:100%;
-    box-sizing:border-box;
-    margin-top:-35px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: -35px;
 }
 </style>

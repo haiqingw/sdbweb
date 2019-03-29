@@ -1,6 +1,11 @@
 <template>
-    <div>
-      
+    <div class="posMallContainer">
+        <!-- header -->
+        <mt-header fixed title="机具商城">
+            <router-link to="/" slot="left">
+                <mt-button icon="back">返回</mt-button>
+            </router-link>
+        </mt-header> 
        <!-- banner -->
        <div class="posMallHeader">
            <mt-swipe :auto="4000">
@@ -80,6 +85,9 @@ export default {
 }
 </script>
 <style scoped>
+.posMallContainer{
+  padding-top:40px;
+}
 .posMallHeader{
    padding:15px 15px 0;
    height:2.93rem;

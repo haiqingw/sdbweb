@@ -8,10 +8,11 @@ export default new Router({
       path: '/',
       name: 'index',
       component: () =>
-        import('@/views/index/index'),
+        import('@/views/home/index'),
       meta: {
         requireAuth: true
-      }
+      },
+      redirect: '/home'
     },
     {
       path: '/login',
@@ -45,6 +46,51 @@ export default new Router({
       name: 'news',
       component: () =>
         import('@/views/msg/news/index'),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/home',  //首页
+      name: 'home',
+      component: () =>
+        import('@/views/home/index'),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/dataCenter', //数据中心
+      name: 'dataCenter',
+      component: () =>
+        import('@/views/dataCenter/index'),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/share',  //分享
+      name: 'share',
+      component: () =>
+        import('@/views/share/index'),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/message', //消息中心
+      name: 'message',
+      component: () =>
+        import('@/views/message/index'),
+      meta: {
+        requireAuth: true
+      }
+    }, 
+    {
+      path: '/mine',  //个人中心
+      name: 'mine',
+      component: () =>
+        import('@/views/mine/index'),
       meta: {
         requireAuth: true
       }

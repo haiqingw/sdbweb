@@ -270,3 +270,6 @@ footer a p {
        url("../font/myWebFont.ttf") format("truetype"),
        url("../font/myWebFont.svg") format("svg");
 } */
+.mint-header{
+  z-index:9999999 !important;
+}

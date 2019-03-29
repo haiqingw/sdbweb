@@ -8,15 +8,26 @@
                 @click='$router.go(-1)'/>
             <span>详细</span>
         </div>
+        <div class="details-content" v-if="isData">
+            <div class="title">
+                <h3>{{renderData.detailsData.title}}</h3>
+                <time>{{renderData.detailsData.sendTime}}</time>
+            </div>
+            <div class="content">{{renderData.detailsData.content}}</div>
+        </div>
+        <div class="no-data" v-else>
+            <img src="@/assets/images/no-data.png" alt="">
+        </div>
     </div>
 </template>
 
 <script>
-    import {getMsgDetails} from '@/api/msg'
+    import { getMsgDetails } from '@/api/msg'
     import { Indicator } from 'mint-ui'
     export default {
         data () {
             return {
+                isData: true,
                 queryData: {
                     msgDetails: {
                         requestType: 'messagemanage',
@@ -28,7 +39,7 @@
                     }
                 },
                 renderData: {
-                    listData: []
+                    detailsData: []
                 }
             }
         },
@@ -39,6 +50,11 @@
                     if(res.data.responseStatus === 1) {
                         Indicator.close()
                         console.log(res)
+                        res.data.data.content = res.data.data.content.replace(/<[^>]+>/g,"");
+                        this.renderData.detailsData = res.data.data
+                    } else if( res.data.responseStatus === 300 ) {
+                        Indicator.close()
+                        this.isData = false
                     }
                 })
             }
@@ -51,6 +67,23 @@
 
 
 <style>
-
+.details-content {
+    padding: 0 .2rem;
+}
+.details-content .title {
+    font-size: 0.28rem;
+    overflow: hidden;
+    margin: .3rem 0;
+}
+.details-content .title h3 {
+    float: left;
+}
+.details-content .title time {
+    float: right;
+}
+.details-content .content {
+    font-size: .26rem;
+    line-height: .4rem;
+}
 </style>
 

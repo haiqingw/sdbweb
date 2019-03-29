@@ -4,8 +4,7 @@
 import {login} from '@/api/login'
 import { resolve } from 'url';
 import response from '@/assets/js/response.js'
-import { Toast } from 'mint-ui';
-
+import { Indicator, Toast } from 'mint-ui';
 
 const user = {
     state: {
@@ -39,6 +38,7 @@ const user = {
     },
     actions: {
         Login({commit}, userInfo) {
+            Indicator.open()
             window.sessionStorage.clear()
             const queryData = {
                 requestType: 'personal', 
@@ -50,6 +50,7 @@ const user = {
                 login(queryData).then( res => {
                     const data = res.data
                     if(data.responseStatus === 1) {
+                        Indicator.close();
                         Toast('登录成功')
                         commit('SET_UID', data.userID)
                         commit('SET_PID', data.platformID)
@@ -57,10 +58,11 @@ const user = {
                         commit('SET_UPHONE', data.userPhone)
                         commit('SET_ISLOGIN', true)
                         resolve()
-                    } else {
+                    } else if(data.responseStatus === 200) {
+                        Indicator.close()
+                        reject(res)
                         Toast(response[res.data.responseStatus])
                     }
-                   
                 }).catch( err => {
                     reject(err)
                     Toast(response[res.data.responseStatus])

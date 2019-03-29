@@ -5,7 +5,9 @@
             <h3>个人中心</h3>
             <div class="mineHeaderBox">
                 <a href="javascript:;" class="mineNoticeBtn">
-                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
+                    <router-link to="/settings">
+                        <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
+                    </router-link>
                     <!-- <i></i> -->
                 </a>
                 <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"></span>
@@ -77,6 +79,7 @@
 </template>
 <script>
 import Footer from "@/components/footerNav/footer";
+import { MessageBox } from 'mint-ui';
 export default {
     data() {
         return {};
@@ -84,7 +87,8 @@ export default {
     components: {
         Footer
     },
-    methods: {}
+    methods: {
+    }   
 };
 </script>
 <style lang="scss">

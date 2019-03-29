@@ -202,6 +202,12 @@ export default new Router({
       name: 'msgDetails',
       component: () =>
         import('@/views/msg/details/index')
+    },
+    {
+      path: '/settings', 
+      name: 'settings',
+      component: () =>
+        import('@/views/settings/index')
     }
   ]
 })

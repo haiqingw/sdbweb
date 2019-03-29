@@ -68,6 +68,12 @@ const user = {
                     Toast(response[res.data.responseStatus])
                 })
             })
+        },
+        LogOut({commit}) {
+            return new Promise( resolve => {
+                window.sessionStorage.clear()
+                resolve()
+            })
         }
     }
 }

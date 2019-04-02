@@ -62,6 +62,78 @@
                                     <router-link to="/clickDeliverGoods">发货</router-link>
                                 </div>
                             </li>
+                             <li>
+                                <div class="title">
+                                    <h3>品 牌:闪POS</h3>
+                                    <div class="right">
+                                        已支付
+                                        |
+                                        押金已退
+                                    </div> 
+                                </div>
+                                <div class="info">
+                                    <span>收货姓名:晓宇</span>
+                                    <em>15888888888</em>
+                                </div>
+                                <div class="receiving-address">
+                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
+                                </div>
+                                <div class="time">下单时间:2000.00.00 00:00:00</div>
+                                <div class="btn">
+                                    <span>
+                                        订单号:000000000000
+                                    </span>
+                                    <router-link to="/clickDeliverGoods">发货</router-link>
+                                </div>
+                            </li>
+                             <li>
+                                <div class="title">
+                                    <h3>品 牌:闪POS</h3>
+                                    <div class="right">
+                                        已支付
+                                        |
+                                        押金已退
+                                    </div> 
+                                </div>
+                                <div class="info">
+                                    <span>收货姓名:晓宇</span>
+                                    <em>15888888888</em>
+                                </div>
+                                <div class="receiving-address">
+                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
+                                </div>
+                                <div class="time">下单时间:2000.00.00 00:00:00</div>
+                                <div class="btn">
+                                    <span>
+                                        订单号:000000000000
+                                    </span>
+                                    <router-link to="/clickDeliverGoods">发货</router-link>
+                                </div>
+                            </li>
+                             <li>
+                                <div class="title">
+                                    <h3>品 牌:闪POS</h3>
+                                    <div class="right">
+                                        已支付
+                                        |
+                                        押金已退
+                                    </div> 
+                                </div>
+                                <div class="info">
+                                    <span>收货姓名:晓宇</span>
+                                    <em>15888888888</em>
+                                </div>
+                                <div class="receiving-address">
+                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
+                                </div>
+                                <div class="time">下单时间:2000.00.00 00:00:00</div>
+                                <div class="btn">
+                                    <span>
+                                        订单号:000000000000
+                                    </span>
+                                    <router-link to="/clickDeliverGoods">发货</router-link>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </el-tab-pane>
@@ -143,6 +215,9 @@
 </script>
 
 <style>
+.deliver-goods .deliver-goods-choice {
+    margin-top: .8rem;
+}
 .deliver-goods .deliver-goods-choice .el-tabs__nav {
     width: 100%;
     text-align: center;

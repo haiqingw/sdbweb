@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="financial-details">
         <!-- header -->
         <mt-header fixed title="资金明细">
             <router-link to="/" slot="left">
@@ -26,142 +26,190 @@
                 </div>
             </div>
             <!-- 切换 筛选 -->
-            <div class="switchScreeningMain flex line_bottom">
-                <a href="javascript:;" class="active">分润</a>
-                <a href="javascript:;">激活</a>
+            <!-- switchSacreeningMain -->
+            <div class="choice">
+                <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
+                    <el-radio-button label="JY">交易</el-radio-button>
+                    <el-radio-button label="JH">激活</el-radio-button>
+                </el-radio-group>
+            </div>
+            <!-- line_bottom -->
+            <div class="flex switchSacreeningMain">
+                <div class="financialDetailsList" v-if="isData">
+                            <van-pull-refresh
+                                v-model="isDownLoading"
+                                @refresh="onDownRefresh"
+                            >
+                                <van-list
+                                    v-model="isUpLoading"                 
+                                    :finished="upFinished"
+                                    finished-text="没有更多了"
+                                    @load="onLoadList"
+                                    :offset= "offset"
+                                >
+                                    <ul class="financialDetailsListUl">
+                                        <li class="line_bottom flex" v-for="(item, index) in renderData.odlListData" :key="index">
+                                            <div>
+                                                <h3>{{item.storageName}}</h3>
+                                                <p>
+                                                    <span v-if="item.product">{{item.product}}</span>
+                                                    {{item.remark}}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <h3>+{{item.changeAmount}}</h3>
+                                                <p>{{item.createTime}}</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </van-list>
+                            </van-pull-refresh>
+                        </div>
+                        <div class="no-data" v-else>
+                            <img src="@/assets/images/no-data.png" alt="">
+                        </div>
             </div>
             <!-- 列表 -->
-            <div class="financialDetailsList">
-                <mt-loadmore :top-method="loadTop" ref="loadmore">
-                    <!-- <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-                        <li v-for="item in list">{{ item }}</li>
-                    </ul> -->
-                    <ul class="financialDetailsListUl" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-                        <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                        <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                        <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                        <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                    </ul>
-                </mt-loadmore>
-                <div v-if="loading" class="loadingMore"><img src="../../assets/images/loadingIcon.gif">数据加载中</div>
-            </div>
+            <!-- :bottom-method="loadBottom" -->
+          
         </div>
+       
     </div>
 </template>
 <script>
+import {getProfitList} from '@/api/profit'
+import { Indicator } from 'mint-ui'
 export default {
     data() {
         return {
-            loading: false,
-            list: []
+            isDownLoading: false,//下拉刷新
+            isUpLoading: false,//上拉加载
+            upFinished: false,//上拉加载完毕
+            offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+            isData: true,
+            isDisabled: true,
+            renderData: {
+                listData: [],
+                odlListData: []
+            },
+            queryData: {
+                list: {
+                    requestType: 'spendinginto',
+                    requestKeywords:'earnings', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    page: 0,
+                    limit: 15,
+                    types: 'Z',
+                    stypes: 'JY' // (JY 交易  JH 激活)
+                }
+            },
         };
     },
     methods: {
-        loadMore() {
-            this.loading = true;
-            setTimeout(() => {
-                // let last = this.list[this.list.length - 1];
-                // for (let i = 1; i <= 10; i++) {
-                //     this.list.push(last + i);
-                // }
-                this.loading = false;
-            }, 2500);
+        handleClick () {
+            this.upFinished = false
+            this.queryData.list.page = 1
+            this.renderData.odlListData = []
+           
+            // this.isDownLoading = true
+            this.profitList()
         },
-        loadTop() {
-            setTimeout(() => {
-                this.$refs.loadmore.onTopLoaded();
-            }, 2000);
-        }
+        onLoadList () {
+            console.log("进来", this.queryData.list.page)
+            this.queryData.list.page++
+            // this.isUpLoading = true
+            console.log(this.queryData.list.page)
+            this.profitList()
+        },
+        activationOnLoadList () {
+            this.queryData.list.page++
+            this.profitList()
+        },
+        onDownRefresh(){
+            console.log("下拉刷新")
+            this.queryData.list.page = 1
+            this.renderData.odlListData = []
+            this.isDownLoading = true
+            this.profitList();
+        },
+        profitList () {
+            this.isDisabled = true
+            getProfitList(this.queryData.list).then( res => {
+                console.log(res)
+                if( res.data.responseStatus === 1 ) {
+                    this.isDisabled = false
+                    this.isData = true
+                    this.isDownLoading = false
+                    this.isUpLoading = false
+                    this.renderData.listData = res.data.data
+                    this.renderData.listData.forEach( item => {
+                        this.renderData.odlListData.push(item)
+                    })
+                } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                    this.isDisabled = false
+                    this.upFinished = true
+                    this.isUpLoading = false
+                } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                    this.isDisabled = false
+                    this.upFinished = false
+                    this.isUpLoading = false
+                    this.isData = false
+                }
+            })
+        },
+
+    },
+    created () {
+        // this.profitList()
+        // this.onLoadList()
     }
 };
 </script>
 <style lang="scss">
+.financial-details {
+    .choice {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: 2rem;
+        background: #fff;
+        z-index: 9999;
+        .el-radio-group {
+            width: 100%;
+        }
+        label {
+            width: 50%;
+            display: block;
+            float: left;
+            text-align: center;
+            border-left: none;
+        }
+        .el-radio-button__inner {
+            border: none;
+            border-bottom: 1px solid transparent;
+            width: 100%;
+            color: #606266;
+        }
+        .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+            border: none;
+            background: none;
+            color: #606266;
+            border-bottom: 1px solid #0096fe;
+            box-shadow: 0 0 0 0 #fff;
+        }
+        .el-radio-button__inner:hover {
+            box-shadow: 0 0 0 0 #fff;
+        }
+        .el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
+            box-shadow: 0 0 0 0 #fff;
+        }
+    }
+}
+.financialDetailsList {
+    width: 100%;
+}
 .loadingMore {
     line-height: 40px;
     text-align: center;
@@ -177,7 +225,15 @@ export default {
     }
 }
 .financialDetailsMain {
-    padding-top: 160px;
+    margin-top: 3.3rem;
+    // position: fixed;
+    // left:0;
+    // top:160px;
+    // right:0;
+    // bottom:0;
+    // overflow-x: hidden;
+    // overflow: auto;
+    // height: 120%;
 }
 .timeScreeningMain {
     position: fixed;
@@ -188,11 +244,12 @@ export default {
     z-index: 99999;
 }
 .switchScreeningMain {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    top: 120px;
-    z-index: 99999;
+    // position: fixed;
+    // width: 100%;
+    // left: 0;
+    // top: 120px;
+    // z-index: 99999;
+    display: block;
 }
 .timeScreeningItem {
     overflow: hidden;
@@ -266,12 +323,29 @@ export default {
         padding:10px 0;
         overflow: hidden;
         justify-content: space-between;
+        // height: 300px;
         div{
             h3{
               font-size:16px;
             }
             p{
                 font-size:14px;
+                margin-top: .1rem;
+                span {
+                    background-color: rgba(64,158,255,.1);
+                    display: inline-block;
+                    height: 14px;
+                    line-height: 14px;
+                    font-size: 12px;
+                    color: #409eff;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                    border: 1px solid rgba(64,158,255,.2);
+                    white-space: nowrap;
+                    margin-right: .1rem;
+                    width: .8rem;
+                    text-align: center;
+                }
             }
             &:last-of-type{
                 text-align:right;

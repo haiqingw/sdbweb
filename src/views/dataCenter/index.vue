@@ -224,7 +224,6 @@ export default {
                 434,
                 345
             ];
-            console.log(this.moneyData);
         }
     },
     created() {
@@ -242,7 +241,6 @@ export default {
             434,
             345
         ];
-        console.log(this.moneyData);
     }
 };
 </script>

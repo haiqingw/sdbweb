@@ -9,6 +9,8 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 import Swiper from "vue-awesome-swiper"
 import 'swiper/dist/css/swiper.css'
+import Vant from 'vant';
+import 'vant/lib/index.css';
 // import wx from 'weixin-js-sdk'
 
 import '@/permission'
@@ -18,12 +20,18 @@ import '@/assets/css/common.css'
 import '@/assets/css/xiaoyu.css'
 
 
+import infiniteScroll from 'vue-infinite-scroll'
+
+
+
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.use(MintUI)
 Vue.use(ElementUI)
 Vue.use(Swiper)
+Vue.use(Vant);
+Vue.use(infiniteScroll);
 // Vue.use(Axios)
 // Vue.prototype.$http = axios
  

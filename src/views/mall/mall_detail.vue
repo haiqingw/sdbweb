@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mall-detail">
         <!-- header -->
         <mt-header fixed title="标题过长会隐藏后面的内容啊哈哈哈哈">
             <router-link to="/" slot="left">
@@ -8,19 +8,19 @@
         </mt-header>
         <!-- banner -->
         <mt-swipe :auto="4000" class="mallDetailBanner">
-            <mt-swipe-item> <img src="@/assets/images/hotPorPic.jpg" /></mt-swipe-item>
-            <mt-swipe-item> <img src="@/assets/images/hotPorPic.jpg" /></mt-swipe-item>
-            <mt-swipe-item> <img src="@/assets/images/hotPorPic.jpg" /></mt-swipe-item>
+            <mt-swipe-item v-for="item in renderData.data.imgPath" :key="item"> 
+              <img :src="item" />
+            </mt-swipe-item>
         </mt-swipe>
         <!-- other -->
-        <mt-cell title="标题" label="描述信息"></mt-cell>
+        <mt-cell :title="renderData.data.commodityName" label="描述信息"></mt-cell>
         <!--市场价-->
         <div class='pDPriceMain flex'>
             <div>
-                <span>￥100.00</span>
+                <span>￥{{renderData.data.nowPrice}}</span>
             </div>
             <div>
-                市场价：199.00
+                市场价：{{renderData.data.originalPrice}}
             </div>
         </div>
         <!--优势-->
@@ -37,8 +37,8 @@
         </div>
         <!--费率、品牌-->
         <div class='rateBrandMain'>
-            <div>费率：0.55+3</div>
-            <div>品牌：快钱</div>
+            <div>费率：{{renderData.data.rate}}</div>
+            <div>品牌：{{renderData.data.commodityName}}</div>
         </div>
         <div class='interval'></div>
         <!-- 产品介绍 -->
@@ -62,15 +62,14 @@
                </div>
                <div class="evaluationBox" style="display:block;">
                   <div class="evaluationTop">
-                     <span>综合评分</span>
-                     <div class="scoreBox">
-                       <em></em>
-                       <em></em>
-                       <em></em>
-                       <em></em>
-                       <em></em>
-                     </div>
-                     <em>5.0</em>
+                     <span class="text">综合评分</span>
+                     <el-rate
+                      v-model="score"
+                      disabled
+                      show-score
+                      text-color="#ff9900"
+                      score-template="{value}">
+                    </el-rate>
                   </div>
 
                </div>
@@ -79,23 +78,6 @@
             <!-- 评价列表 -->
             <div class="evaluationList">
                <div class="evaluationItemBox">
-                 <div class="evaluationItemTop flex">
-                   <span>郝佳</span>
-                   <em>2018.06.01 22:01:22</em>
-                 </div>
-                 <div class="evalutionItemMiddle">
-                    <em></em>
-                    <em></em>
-                    <em></em>
-                    <em></em>
-                    <em></em>
-                    <span>5.0</span>
-                 </div>
-                 <div class="evalutionItemSub">
-                   这个机器确实好用，费率0.5，居然还是24小时秒居然还是24小时秒到居然还是24小时秒到到
-                 </div>
-               </div>
-                <div class="evaluationItemBox">
                  <div class="evaluationItemTop flex">
                    <span>郝佳</span>
                    <em>2018.06.01 22:01:22</em>
@@ -128,18 +110,56 @@
     </div>
 </template>
 <script>
+import {getMall_detailBanner} from '@/api/mall'
 export default {
   name:'mallDetail',
   data(){
     return {
-
+      score: 5,
+      queryData: {
+        banner: {
+          requestType: 'listdetail', 
+          requestKeywords: 'productdetail', 
+          id: this.$route.params.id
+        }
+      },
+      renderData: {
+        data: {}
+      }
     }
   },
-  components: {
-  }
+  methods: {
+    mall_detailBanner () {
+      getMall_detailBanner(this.queryData.banner).then( res => {
+        if( res.data.responseStatus === 1 ) {
+          this.renderData.data = res.data.data
+          if( this.renderData.data.reviewNum.ave == null ) {
+            this.score = 5
+          } else {
+            this.score = this.renderData.data.reviewNum.ave
+          }
+        }
+        console.log(this.renderData.data)
+      })
+    }
+  },
+  created () {
+    this.mall_detailBanner()
+  },
 }
 </script>
 <style lang="scss">
+.mall-detail {
+  .el-rate {
+    float: left;
+    padding: .2rem 0;
+    span {
+      float: left;
+      line-height: 18px;
+    }
+  }
+}
+
 .mint-cell-wrapper {
     padding: 8px 10px 12px;
     background: none;
@@ -240,7 +260,7 @@ export default {
   line-height:40px;
   padding:12px 15px 10px;
   position: relative;
-  span{
+  span.text{
     float: left;
     display:block;
     width:75px;

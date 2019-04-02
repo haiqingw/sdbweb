@@ -156,16 +156,20 @@ img {
 
 
 .return {
+    width: 100%;
     font-size: .3rem;
     text-align: center;
     line-height: .8rem;
     color: #fff;
     background: #089cfe; 
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99999;
 }
-
-.return {
+/* .return {
     position: relative;
-}
+} */
 .return img {
     position: absolute;
     width: .5rem;
@@ -174,13 +178,17 @@ img {
 }
 
 .no-data {
-    height: 13.5rem;
+    /* position: fixed; */
+    width: 100%;
+    /* height: 100%; */
     background: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: -1rem;
+    margin-top: 40%;
 }
 .no-data img {
     width: 6rem;
+    margin-top: -2rem;
 }

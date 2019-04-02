@@ -273,3 +273,6 @@ footer a p {
 .mint-header{
   z-index:9999999 !important;
 }
+.mint-loadmore-top {
+  font-size: 14px;
+}

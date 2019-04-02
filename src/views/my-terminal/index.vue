@@ -155,7 +155,7 @@
     margin-top: 0.1rem;
 }
 .my-terminal-list ul {
-    padding: 0 .1rem;
+    padding: 0 .2rem;
 }
 .my-terminal-list ul li {
     padding: .2rem;

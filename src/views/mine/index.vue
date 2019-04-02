@@ -31,9 +31,9 @@
                 <h3 class="mineTitle">我的订单</h3>
                 <div class="flex">
                     <span>订单详情都在这里呢</span>
-                    <a href="javascript:;" class="arrIcon">
-                        查看所有订单
-                    </a>
+                        <router-link to="myOrder" class="arrIcon">
+                          查看所有订单
+                        </router-link>
                 </div>
             </div>
         </div>
@@ -41,37 +41,33 @@
         <div class="mineCommonMenuBox">
             <h3 class="mineTitle">常用菜单</h3>
             <div class="mineCommonMenuList">
-                <a href="javascript:;">
-                    <img src="@/assets/images/myTerminalIcon.png" alt="常用菜单">
+                <router-link to="/myTerminal">
+                    <img src="@/assets/images/myTerminalIcon.png" alt="我的终端">
                     <p>我的终端</p>
-                </a>
-                <a href="javascript:;"> <img src="@/assets/images/AffiliateTransactionsIcon.png" alt="常用菜单">
+                </router-link> 
+                <a href="javascript:;"> <img src="@/assets/images/AffiliateTransactionsIcon.png" alt="下属交易">
                     <p>下属交易</p>
                 </a>
-                <a href="javascript:;">
-                    <img src="@/assets/images/balanceIcon.png" alt="常用菜单">
+                <router-link to="/withdrawal">
+                    <img src="@/assets/images/balanceIcon.png" alt="余额/提现">
                     <p>余额/提现</p>
-                </a>
-                <a href="javascript:;">
-                    <img src="@/assets/images/myMachineIcon.png" alt="常用菜单">
-                    <p>我的机具</p>
-                </a>
-                <a href="javascript:;">
-                    <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="常用菜单">
+                 </router-link>
+                <router-link to="/financialDetails">
+                    <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细">
                     <p>资金明细</p>
-                </a>
+                </router-link>
+                <router-link to="/myMerchants">
+                    <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构">
+                    <p>组织架构</p>
+                </router-link> 
                 <a href="javascript:;">
-                    <img src="@/assets/images/InvitedRecordIcon.png" alt="常用菜单">
-                    <p>邀请记录</p>
-                </a>
-                <a href="javascript:;">
-                    <img src="@/assets/images/settingCenterIcon.png" alt="常用菜单">
+                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
                     <p>设置中心</p>
                 </a>
-                <a href="javascript:;">
-                    <img src="@/assets/images/aboutIcon.png" alt="常用菜单">
+                <router-link to="/about">
+                    <img src="@/assets/images/aboutIcon.png" alt="关于我们">
                     <p>关于我们</p>
-                </a>
+                </router-link> 
             </div>
         </div>
         <Footer></Footer>
@@ -88,14 +84,14 @@ export default {
         Footer
     },
     methods: {
+       
     }   
 };
 </script>
 <style lang="scss">
 .mineHeaderMain {
     width: 100%;
-    background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center
-        center;
+    background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center center;
     background-size: 100% 100%;
     padding: 0 15px 20px;
     box-sizing: border-box;

@@ -32,16 +32,18 @@
           <div class="index-list1-explain">总赚钱</div>
         </li>
         <li>
+          <router-link to="/freezeprogress">
           <div class="index-list1-img">
             <img src="@/assets/images/index-list1-4.png" alt="">
           </div>
           <div class="index-list1-text">12</div>
           <div class="index-list1-explain">待解冻</div>
+          </router-link>
         </li>
       </ul>
     </div>
     <div class="index-notice">
-      <div class="index-notice-top">
+      <!-- <div class="index-notice-top">
         <h3>
           <img src="@/assets/images/index-notice-title.png" alt="">
         </h3>
@@ -49,7 +51,7 @@
           <span>重要</span>
           <a href="">2月13-15日POS数据分润截止发放</a>
         </div>
-      </div>
+      </div> -->
       <div class="index-notice-profit">
         <router-link to="/financialDetails">
         <h3>
@@ -107,10 +109,10 @@
         </li>
         <li>
           <div class="img">
-            <router-link to="/invitationRecord"><img src="@/assets/images/index-list2-img7.png" alt=""></router-link>
+            <router-link to="/myMerchants"><img src="@/assets/images/index-list2-img7.png" alt=""></router-link>
           </div>
           <div class="text">
-            <router-link to="/invitationRecord">邀请记录</router-link>
+            <router-link to="/myMerchants">组织架构</router-link>
           </div>
         </li>
         <li>

@@ -204,10 +204,28 @@ export default new Router({
         import('@/views/msg/details/index')
     },
     {
-      path: '/settings', 
+      path: '/settings',  //设置中心
       name: 'settings',
       component: () =>
         import('@/views/settings/index')
+    },
+    {
+      path: '/freezeprogress', //待解冻
+      name: 'freezeprogress',
+      component: () =>
+        import('@/views/freezeprogress/index')
+    }, 
+    {
+      path: '/myMerchants', //我的团队
+      name: 'myMerchants',
+      component: () =>
+        import('@/views/myMerchants/index')
+    }, 
+    {
+      path: '/about', //关于我们
+      name: 'about',
+      component: () =>
+        import('@/views/about/index')
     }
   ]
 })

@@ -36,7 +36,7 @@
                     <!-- <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
                         <li v-for="item in list">{{ item }}</li>
                     </ul> -->
-                    <ul class="financialDetailsListUl" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+                    <ul class="financialDetailsListUl" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="20">
                         <li class="line_bottom flex">
                             <div>
                                 <h3>交易返现</h3>

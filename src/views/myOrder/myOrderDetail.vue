@@ -41,6 +41,7 @@
                 </p>
             </div>
         </div>
+        <div class="interval"></div>
         <!-- 订单编号与时间 -->
         <div class="myOrderNumberMain">
             <p>订单编号：1234545646</p>
@@ -62,7 +63,7 @@
                 <em>￥0.00</em>
             </p>
             <p>
-                <b>订单总额：￥128.00</b>
+                <b>订单总额：￥<i>128.00</i></b>
             </p>
         </div>
         <!-- 订单操作 -->
@@ -106,9 +107,14 @@ export default {
 }
 .myOrderdetailAddressMain{
     padding:15px;
+    font-size:14px;
     p{
-        line-height:26px;
+        line-height:18px;
         overflow: hidden;
+        text-align:justify;
+        &:first-of-type{
+           padding-bottom:5px;
+        }
         span{
             float:left;
             font-weight:bold;
@@ -154,6 +160,60 @@ export default {
         border:1px solid #0096fe;
         box-sizing:border-box;
         color:#0096fe;
+    }
+}
+.myOrderProductMain{
+  padding:10px;
+  img{
+      width:60px;
+      height:60px;
+      float: left;
+  }
+  div{
+      padding-left:70px;
+      p{
+          font-size:14px;
+          line-height:20px;
+          &:first-of-type{
+              font-weight:bold;
+          }
+      }
+  }
+}
+.myOrderNumberMain{
+    p{
+        line-height:24px;
+        font-size:14px;
+    }
+}
+.myOrderMoneyMain{
+    p{
+        justify-content:space-between;
+        line-height:30px;
+        font-size:14px;
+        em{
+            font-weight:bold;
+            color:#f33;
+        }
+        b{
+            font-size:16px;
+            padding-top:5px;
+            i{
+                color:#f33;
+                font-size:20px;
+            }
+        }
+    }
+}
+.myOrderOperationMain{
+    a{
+        display: block;
+        width:100%;
+        height:40px;
+        line-height:38px;
+        font-size:14px;
+        border-radius:40px;
+        overflow: hidden;
     }
 }
 </style>

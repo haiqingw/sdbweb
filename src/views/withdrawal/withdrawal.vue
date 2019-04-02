@@ -5,7 +5,7 @@
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-            <mt-button slot="right">提现记录</mt-button>
+            <mt-button slot="right"><router-link to="/withdrawalRecord" style="color:#fff;">提现记录</router-link></mt-button>
         </mt-header>
         <!-- withdrawal -->
         <div class="withdrawalMain">

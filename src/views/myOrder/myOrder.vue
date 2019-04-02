@@ -1,5 +1,11 @@
 <template>
     <div>
+        <!-- header -->
+        <mt-header fixed title="我的订单">
+            <router-link to="/" slot="left">
+                <mt-button icon="back">返回</mt-button>
+            </router-link>
+        </mt-header>
         <!-- nav -->
         <div class="myOrderNavMain">
             <el-radio-group v-model="values.type" size="medium" @change="test">
@@ -13,93 +19,104 @@
 
         <!-- 列表 -->
         <div class="myOrderListMain">
-            <div class="myOrderItem">
-                <b></b>
-                <b></b>
-                <div class="myOrderTitle">
-                    <h3>
-                        闪POS
-                        <span>等待发货</span>
-                    </h3>
-                    <p>品牌：闪POS</p>
+            <mt-loadmore :top-method="loadTop" ref="loadmore">
+                <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+                    <div class="myOrderItem">
+                        <router-link to="/myOrderDetail">
+                        <b></b>
+                        <b></b>
+                        <div class="myOrderTitle">
+                            <h3>
+                                闪POS
+                                <span>等待发货</span>
+                            </h3>
+                            <p>品牌：闪POS</p>
+                        </div>
+                        <div class="myOrderAddress line_bottom">
+                            <span>费率</span>
+                            <p>0.55%+3</p>
+                        </div>
+                        <div class="myOrderAntherInfo line_bottom">
+                            <p>
+                                <span>合计：</span>
+                                <em>￥0.00（含运费￥0.00）</em>
+                            </p>
+                            <p>
+                                <span>订单编号：</span>
+                                <em>21231231123</em>
+                            </p>
+                        </div>
+                        </router-link>
+                        <div class="myOrderOperation">
+                            <a href="javascript:;">删除订单</a>
+                            <a href="javascript:;">取消订单</a>
+                        </div>
+                    </div>
+                    <div class="myOrderItem">
+                        <router-link to="/myOrderDetail">
+                        <b></b>
+                        <b></b>
+                        <div class="myOrderTitle">
+                            <h3>
+                                闪POS
+                                <span>等待发货</span>
+                            </h3>
+                            <p>品牌：闪POS</p>
+                        </div>
+                        <div class="myOrderAddress line_bottom">
+                            <span>费率</span>
+                            <p>0.55%+3</p>
+                        </div>
+                        <div class="myOrderAntherInfo line_bottom">
+                            <p>
+                                <span>合计：</span>
+                                <em>￥0.00（含运费￥0.00）</em>
+                            </p>
+                            <p>
+                                <span>订单编号：</span>
+                                <em>21231231123</em>
+                            </p>
+                        </div>
+                        <div class="myOrderOperation">
+                            <a href="javascript:;">删除订单</a>
+                            <a href="javascript:;">取消订单</a>
+                        </div>
+                        </router-link>
+                    </div>
+                    <div class="myOrderItem">
+                        <router-link to="/myOrderDetail">
+                        <b></b>
+                        <b></b>
+                        <div class="myOrderTitle">
+                            <h3>
+                                闪POS
+                                <span>等待发货</span>
+                            </h3>
+                            <p>品牌：闪POS</p>
+                        </div>
+                        <div class="myOrderAddress line_bottom">
+                            <span>费率</span>
+                            <p>0.55%+3</p>
+                        </div>
+                        <div class="myOrderAntherInfo line_bottom">
+                            <p>
+                                <span>合计：</span>
+                                <em>￥0.00（含运费￥0.00）</em>
+                            </p>
+                            <p>
+                                <span>订单编号：</span>
+                                <em>21231231123</em>
+                            </p>
+                        </div>
+                        <div class="myOrderOperation">
+                            <a href="javascript:;">删除订单</a>
+                            <a href="javascript:;">取消订单</a>
+                        </div> 
+                        </router-link>
+                    </div>
                 </div>
-                <div class="myOrderAddress line_bottom">
-                    <span>费率</span>
-                    <p>0.55%+3</p>
-                </div>
-                <div class="myOrderAntherInfo line_bottom">
-                    <p>
-                        <span>合计：</span>
-                        <em>￥0.00（含运费￥0.00）</em>
-                    </p>
-                    <p>
-                        <span>订单编号：</span>
-                        <em>21231231123</em>
-                    </p>
-                </div>
-                <div class="myOrderOperation">
-                    <a href="javascript:;">删除订单</a>
-                    <a href="javascript:;">取消订单</a>
-                </div>
-            </div>
-            <div class="myOrderItem">
-                <b></b>
-                <b></b>
-                <div class="myOrderTitle">
-                    <h3>
-                        闪POS
-                        <span>等待发货</span>
-                    </h3>
-                    <p>品牌：闪POS</p>
-                </div>
-                <div class="myOrderAddress line_bottom">
-                    <span>费率</span>
-                    <p>0.55%+3</p>
-                </div>
-                <div class="myOrderAntherInfo line_bottom">
-                    <p>
-                        <span>合计：</span>
-                        <em>￥0.00（含运费￥0.00）</em>
-                    </p>
-                    <p>
-                        <span>订单编号：</span>
-                        <em>21231231123</em>
-                    </p>
-                </div>
-                <div class="myOrderOperation">
-                    <a href="javascript:;">删除订单</a>
-                    <a href="javascript:;">取消订单</a>
-                </div>
-            </div>
-            <div class="myOrderItem">
-                <b></b>
-                <b></b>
-                <div class="myOrderTitle">
-                    <h3>
-                        闪POS
-                        <span>等待发货</span>
-                    </h3>
-                    <p>品牌：闪POS</p>
-                </div>
-                <div class="myOrderAddress line_bottom">
-                    <span>费率</span>
-                    <p>0.55%+3</p>
-                </div>
-                <div class="myOrderAntherInfo line_bottom">
-                    <p>
-                        <span>合计：</span>
-                        <em>￥0.00（含运费￥0.00）</em>
-                    </p>
-                    <p>
-                        <span>订单编号：</span>
-                        <em>21231231123</em>
-                    </p>
-                </div>
-                <div class="myOrderOperation">
-                    <a href="javascript:;">删除订单</a>
-                    <a href="javascript:;">取消订单</a>
-                </div>
-            </div>
+            </mt-loadmore>
+            <div v-if="loading" class="loadingMore"><img src="@/assets/images/loadingIcon.gif">数据加载中</div>
         </div>
     </div>
 </template>
@@ -107,6 +124,7 @@
 export default {
     data() {
         return {
+            loading:false,
             values: {
                 type: "all"
             }
@@ -115,16 +133,45 @@ export default {
     methods: {
         test() {
             console.log(this.values);
+        },
+        loadMore() {
+            this.loading = true;
+            setTimeout(() => {
+                // let last = this.list[this.list.length - 1];
+                // for (let i = 1; i <= 10; i++) {
+                //     this.list.push(last + i);
+                // }
+                this.loading = false;
+            }, 2500);
+        },
+        loadTop() {
+            setTimeout(() => {
+                this.$refs.loadmore.onTopLoaded();
+            }, 2000);
         }
     }
 };
 </script>
 <style lang="scss">
+.loadingMore {
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    img {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        top: -2px;
+        margin-right: 5px;
+        display: inline;
+    }
+}
 .myOrderNavMain {
     position: fixed;
     width: 100%;
     left: 0;
-    top: 0;
+    top: 40px;
     z-index: 9999;
 }
 .myOrderNavMain .el-radio-group {
@@ -154,7 +201,7 @@ export default {
     border-bottom: 1px solid #f1f1f1;
 }
 .myOrderListMain {
-    padding: 50px 15px 15px;
+    padding: 90px 15px 15px;
     background: #f1f1f1;
 }
 .myOrderItem {
@@ -164,6 +211,9 @@ export default {
     position: relative;
     overflow: hidden;
     margin-bottom: 15px;
+    a{
+        color:#333;
+    }
 }
 .myOrderItem b {
     display: block;

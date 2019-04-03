@@ -5,19 +5,19 @@
         <div class="return">
             <img
                 src="@/assets/images/return.png" alt="" 
-                @click="backOff"/>
+                @click="$router.go(-1)"/>
             <span>我的终端</span>
         </div>
         <div class="my-terminal-choice">
-            <el-select v-model="byProduct.value" placeholder="请选择" @change="byProductChange">
+            <el-select v-model="byProduct.value" placeholder="按产品" @change="byProductChange">
                 <el-option
                 v-for="item in byProduct.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
                 </el-option>
             </el-select>
-            <el-select v-model="usageState.value" placeholder="请选择" @change="usageStateChange">
+            <el-select v-model="usageState.value" placeholder="使用状态" @change="usageStateChange">
                 <el-option
                 v-for="item in usageState.options"
                 :key="item.value"
@@ -25,77 +25,80 @@
                 :value="item.value">
                 </el-option>
             </el-select>
-            <el-select v-model="byBatch.value" placeholder="请选择" @change="byBatchChange">
+            <el-select v-model="byBatch.value" placeholder="按批次" @change="byBatchChange">
                 <el-option
                 v-for="item in byBatch.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                :key="item.batchNo"
+                :label="item.batchNo"
+                :value="item.batchNo">
                 </el-option>
             </el-select>
         </div>
-        <div class="my-terminal-list">
-            <ul>
-                <li>
-                    <div class="name-state">
-                        <h3>闪POS</h3>
-                        <el-tag type="danger">未使用</el-tag>
-                    </div>
-                    <div class="terminal-number">
-                        000000000000000000000
-                    </div>
-                    <div class="time-batch">
-                        <time>2000-00-00 00:00:00</time>    
-                        <span>PC001</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="name-state">
-                        <h3>闪POS</h3>
-                        <el-tag type="success">已使用</el-tag>
-                    </div>
-                    <div class="terminal-number">
-                        000000000000000000000
-                    </div>
-                    <div class="time-batch">
-                        <time>2000-00-00 00:00:00</time>    
-                        <span>PC001</span>
-                    </div>
-                </li>
-            </ul>
+        <div class="my-terminal-list" v-if="isData">
+             <van-pull-refresh
+                v-model="isDownLoading"
+                @refresh="onDownRefresh"
+            >
+                <van-list
+                    v-model="isUpLoading"                 
+                    :finished="upFinished"
+                    finished-text="没有更多了"
+                    @load="onLoadList"
+                    :offset= "offset"
+                >
+                    <ul>
+                        <li v-for="item in renderData.oldList" :key="item.id">
+                            <div class="name-state">
+                                <h3>{{item.productName}}</h3>
+                                <el-tag type="danger" v-if="item.useStatus === '未使用'">{{item.useStatus}}</el-tag>
+                                <el-tag type="success" v-if="item.useStatus === '已使用' ">{{item.useStatus}}</el-tag>
+                            </div>
+                            <div class="terminal-number">
+                                {{item.terminalNo}}
+                            </div>
+                            <div class="time-batch">
+                                <time>{{item.allotTime}}</time>    
+                                <span>{{item.batchNo}}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </van-list>
+            </van-pull-refresh>
+        </div>
+        <div class="no-data" v-else>
+            <img src="@/assets/images/no-data.png" alt="">
         </div>
     </div>
 </template>
 
 <script>
+    import {getChoiceProduct, getChoiceBatch, getTerminalList} from '@/api/myTerminal'
+    import response from '@/assets/js/response.js'
     export default {
         data () {
             return {
+                isDownLoading: false,//下拉刷新
+                isUpLoading: false,//上拉加载
+                upFinished: false,//上拉加载完毕
+                offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+                isData: true,
                 byProduct: {
                     options: [
                         {   
-                            value: "1",
-                            label: '黄金糕'
-                        }, 
-                        {   
-                            value: "2",
-                            label: '黄金糕'
-                        }, 
-                        {
-                            value: "3",
-                            label: '黄金糕'
-                        }, 
+                            id: "1",
+                            label: '按产品'
+                        },
                     ],
                     value: ''
                 },
                 usageState: {
                     options: [
                         {
-                            value: "1",
+                            value: "2",
                             label: '已使用'
                         }, 
                         {
-                            value: "2",
+                            value: "1",
                             label: '未使用'
                         }, 
                     ],
@@ -104,32 +107,136 @@
                 byBatch: {
                     options: [
                         {
-                            value: "1",
-                            label: '黄金糕'
+                            id: "1",
+                            label: '按批次'
                         }, 
                     ],
                     value: ''
+                },
+                queryData: {
+                    product: {
+                        requestType: 'agent',
+                        requestKeywords: 'product',
+                        platformID: this.$store.state.user.pid
+                    },
+                    batch: {
+                        requestType: 'agent', 
+                        requestKeywords: 'batchnolist', 
+                        platformID: this.$store.state.user.pid, 
+                        userID: this.$store.state.user.uid, 
+                        userPhone: this.$store.state.user.uphone
+                    },
+                    list: {
+                        requestType: 'agent',
+                        requestKeywords: 'terminal',
+                        platformID: this.$store.state.user.pid,
+                        userID: this.$store.state.user.uid,
+                        userPhone: this.$store.state.user.uphone,
+                        // productID: "",  //产品ID
+                        // batchNo: "",      //批次号
+                        // useStatus: "",  //使用状态
+                        page: 0,
+                        limit: 10
+                    }
+                },
+                renderData: {
+                    list: [],
+                    oldList: []
                 }
             }
         },
         methods: {
-            backOff () {
-                this.$router.go(-1)
-            },
             byProductChange () {
-                
+                this.queryData.list.productID = this.byProduct.value
+                this.renderData.oldList = []
+                this.queryData.list.page = 1
+                this.terminalList()
             },
             usageStateChange () {
-
+                this.queryData.list.useStatus = this.usageState.value
+                this.renderData.oldList = []
+                this.queryData.list.page = 1
+                this.terminalList()
             },
             byBatchChange (){
-                
-            }
+                this.queryData.list.batchNo = this.byBatch.value
+                this.renderData.oldList = []
+                this.queryData.list.page = 1
+                this.terminalList()
+            },
+            choiceProduct () {
+                getChoiceProduct(this.queryData.product).then( res => {
+                    if( res.data.responseStatus === 1 ) {
+                        this.byProduct.options = res.data.data
+                    }
+                })
+            },
+            choiceBatch () {
+                getChoiceBatch(this.queryData.batch).then( res => {
+                    // console.log(response[res.data.responseStatus])
+                    if( res.data.responseStatus === 1 ) {
+                        this.byBatch.options = res.data.data
+                    }
+                })
+            },
+            terminalList () {
+                this.upFinished = false
+                getTerminalList(this.queryData.list).then( res => {
+                    // console.log(response[res.data.responseStatus])
+                    if( res.data.responseStatus === 1 ) {
+                        this.isData = true
+                        this.renderData.list = res.data.data
+                        this.renderData.list.forEach( item => {
+                            this.renderData.oldList.push(item)
+                        })
+                        this.isDownLoading = false
+                        this.isUpLoading = false
+                    } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                        this.upFinished = true
+                        this.isUpLoading = false
+                    } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                        this.upFinished = false
+                        this.isUpLoading = false
+                        this.isData = false
+                    }
+                })
+            },
+            // 下拉刷新
+            onLoadList () {
+                // console.log("进来", this.queryData.list.page)
+                this.queryData.list.page++
+                // this.isUpLoading = true
+                // console.log(this.queryData.list.page)
+                this.terminalList()
+            },
+            onDownRefresh(){
+                this.queryData.list.page = 1
+                this.renderData.oldList = []
+                this.isDownLoading = true
+                this.terminalList();
+            },
+        },
+        created () {
+            this.choiceProduct()
+            this.choiceBatch()
+            // this.terminalList()
         }
     }
 </script>
 
 <style>
+.my-terminal .el-input--suffix .el-input__inner {
+    text-align: center;
+}
+.my-terminal .no-data {
+    margin-top: 67%;
+}
+.my-terminal-choice {
+    position: fixed;
+    left: 0;
+    top: .7rem;
+    z-index: 99;
+}
 .my-terminal .my-terminal-choice {
     display: flex;
     font-size: 0.28rem;
@@ -152,7 +259,7 @@
     text-align: center;
 }
 .my-terminal-list {
-    margin-top: 0.1rem;
+    margin-top: 1.9rem;
 }
 .my-terminal-list ul {
     padding: 0 .2rem;

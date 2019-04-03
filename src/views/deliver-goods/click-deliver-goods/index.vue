@@ -55,6 +55,9 @@
 </script>
 
 <style>
+.click-deliver-goods .express-info {
+    margin-top: 1rem;
+}
 .click-deliver-goods .express-info>div {
     overflow: hidden;
     margin-top: .3rem;

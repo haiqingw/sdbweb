@@ -8,7 +8,7 @@
                 @click="backOff"/>
             <span>绑定机具</span>
         </div>
-        <div>
+        <div class="bingding-mplements-c">
             <div class="bingding-mplements-choice">
                 <h5>选择品牌</h5>
                 <span class="brand-name" @click="choiceBrand">{{choiceBrandVal}}</span>
@@ -118,6 +118,9 @@
 
 
 <style>
+.bingding-mplements-c {
+    margin-top: .8rem;
+}
 .bingding-mplements .brand-name {
     font-size: 0.26rem;
 }

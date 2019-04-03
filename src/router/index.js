@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
-
-
 export default new Router({
   routes: [{
       path: '/',
@@ -102,7 +100,7 @@ export default new Router({
         import('@/views/mall/mall_list')
     },
     {
-      path: '/mall/mall_detail', //在线领取详情
+      path: '/mall/mall_detail/:id', //在线领取详情
       name: 'mallDetail',
       component: () =>
         import('@/views/mall/mall_detail')
@@ -150,10 +148,10 @@ export default new Router({
         import('@/views/invitation-record/index')
     },
     {
-      path: '/invitationRecordDetailed',
+      path: '/invitationRecordDetailed/:id',
       name: 'invitationRecordDetailed',
       component: () =>
-        import('@/views/invitation-record-detailed/index')
+        import('@/views/invitation-record/invitation-record-detailed/index')
     },
     {
       path: '/deliverGoods',

@@ -9,21 +9,21 @@
        <!-- banner -->
        <div class="posMallHeader">
            <mt-swipe :auto="4000">
-                 <mt-swipe-item> <img src="@/assets/images/posMallBannerImg.png" /></mt-swipe-item>
-                 <mt-swipe-item> <img src="@/assets/images/posMallBannerImg.png" /></mt-swipe-item>
-                 <mt-swipe-item> <img src="@/assets/images/posMallBannerImg.png" /></mt-swipe-item>
+                  <mt-swipe-item v-for="item in renderData.banner" :key="item.id"> 
+                   <img :src="item.picUrl" />
+                  </mt-swipe-item>
            </mt-swipe>
         </div>
         <!-- 热门产品 -->
         <div class="posMallHotProduct">
             <h3>热门产品</h3>
-            <div class="hotProductView">
-                <img src="@/assets/images/hotPorPic.jpg" alt="POS机">
+            <div class="hotProductView" v-for="item in renderData.popular" :key="item.id">
+                <img :src="imgs" alt="" v-for="imgs in item.imageData" :key="imgs">
                 <div>
-                    <p class="ellipsis">[点佰趣]银惠通</p>
-                    <p>费率：0.55%+3</p>
-                    <p>300人已领取</p>
-                    <router-link to="/mall/mall_detail"><a href="javascript:;">免费领取</a></router-link>
+                    <p class="ellipsis">[{{item.name}}]{{item.commodityName}}</p>
+                    <p>费率：{{item.rate}}</p>
+                    <p>{{item.sold}}人已领取</p>
+                    <router-link  :to="{name: 'mallDetail', params: {id: item.id}}"><a href="javascript:;">免费领取</a></router-link>
                 </div>
             </div>
         </div>
@@ -38,33 +38,12 @@
         <div class="posMallBody">
             <h3>其他优质POS机</h3>
             <div class="posMallListMain" style="display:block;">
-                <div class="posMallListItem">
-                    <img src="@/assets/images/hotPorPic.jpg" alt="POS机">
-                    <p class="ellipsis">[点佰趣]银惠通</p>
-                    <p>费率：0.55%+3</p>
-                    <p>300人已领取</p>
-                    <a href="javascript:;">免费领取</a>
-                </div>
-                <div class="posMallListItem">
-                    <img src="@/assets/images/hotPorPic.jpg" alt="POS机">
-                    <p class="ellipsis">[点佰趣]银惠通</p>
-                    <p>费率：0.55%+3</p>
-                    <p>300人已领取</p>
-                    <a href="javascript:;">免费领取</a>
-                </div>
-                <div class="posMallListItem">
-                    <img src="@/assets/images/hotPorPic.jpg" alt="POS机">
-                    <p class="ellipsis">[点佰趣]银惠通</p>
-                    <p>费率：0.55%+3</p>
-                    <p>300人已领取</p>
-                    <a href="javascript:;">免费领取</a>
-                </div>
-                <div class="posMallListItem">
-                    <img src="@/assets/images/hotPorPic.jpg" alt="POS机">
-                    <p class="ellipsis">[点佰趣]银惠通</p>
-                    <p>费率：0.55%+3</p>
-                    <p>300人已领取</p>
-                    <a href="javascript:;">免费领取</a>
+                <div class="posMallListItem" v-for="item in renderData.productIndexList" :key="item.id">
+                    <img :src="imgs" alt="" v-for="imgs in item.imageData" :key="imgs">
+                    <p class="ellipsis">[{{item.name}}]{{item.commodityName}}</p>
+                    <p>费率：{{item.rate}}</p>
+                    <p>{{item.sold}}人已领取</p>
+                    <router-link :to="{name: 'mallDetail', params: {id: item.id}}" ><a href="javascript:;">免费领取</a></router-link>
                 </div>
             </div>
             <!-- 暂无数据 -->
@@ -78,10 +57,68 @@
     </div>
 </template>
 <script>
+import {getMallBanner, getPopularProduct, getProductIndexList} from '@/api/mall'
 export default {
-  mounted(){
-    //   console.log(this.$refs.bannerImg.offsetHeight);
-  }  
+    data () {
+      return {
+        queryData: {
+          banner: {
+            requestType: 'list', 
+            requestKeywords: 'advertis', 
+            types: 'cpl', 
+            platformID: this.$store.state.user.pid
+          },
+          popular: {
+            requestType: 'list', 
+            requestKeywords: 'productlists', 
+            type:2,
+            platformID: this.$store.state.user.pid, 
+            page: 1, 
+            limit: 10 
+          },
+          productIndexList: {
+             requestType: 'list', 
+             requestKeywords: 'productlists', 
+             platformID: this.$store.state.user.pid,
+             page: 1,
+             limit: 10
+          }
+        },
+        renderData: {
+          banner: [],
+          popular: [],
+          productIndexList: []
+        }
+      }
+    },
+    methods: {
+      mallBanner () {
+        getMallBanner(this.queryData.banner).then( res => {
+          if( res.data.responseStatus === 1 ) {
+            this.renderData.banner = res.data.data
+          }
+        })
+      },
+      popularProduct () {
+        getPopularProduct(this.queryData.popular).then( res => {
+          if( res.data.responseStatus === 1 ) {
+            this.renderData.popular = res.data.data
+          }
+        })
+      },
+      productIndexList () {
+        getProductIndexList(this.queryData.productIndexList).then( res => {
+          if( res.data.responseStatus === 1 ) {
+            this.renderData.productIndexList = res.data.data
+          }
+        })
+      }
+    },
+    created () {
+      this.mallBanner()
+      this.popularProduct()
+      this.productIndexList()
+    }
 }
 </script>
 <style scoped>

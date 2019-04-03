@@ -4,7 +4,7 @@
         <!-- swiper -->
         <swiper :options="swiperOption">
             <swiper-slide v-for="item in renderData.share" :key="item">
-                <img :src="item" alt="">
+                <img :src="renderData.share.qrcode" alt="">
             </swiper-slide>
             <!-- <div class="swiper-pagination" slot="pagination"></div> -->
         </swiper>
@@ -55,27 +55,23 @@ export default {
     components: {
         Footer
     },
-    // computed: {
-    //     swiper() {
-    //         return this.$refs.mySwiper.swiper
-    //     }
-    // },
     methods: {
         shareFunc() {
             share(this.queryData.share).then(res => {
-                // console.log(res)
-                this.renderData.share = res.data.qrcode;
+                console.log(res.data)
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.share = res.data.qrcode;
+                }
             });
         },
-        parentImplement() {
-            this.shareFunc();
-        }
     },
     mounted() {
         // this.$nextTick(function () {// })
     },
 
-    created() {}
+    created() {
+        this.shareFunc()
+    }
 };
 </script>
 
@@ -86,8 +82,8 @@ export default {
 .share-view {
     margin-top: 0.38rem;
 }
-.share-view swiper img {
-    height: 11rem;
+.share-view .swiper-wrapper img {
+    height: 100%;
 }
 .swiper-inner {
     width: 100%;

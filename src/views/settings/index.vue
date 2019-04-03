@@ -21,23 +21,29 @@
 </template>
 
 <script>
+    import response from '@/assets/js/response.js'
     import { MessageBox, Toast } from 'mint-ui';
     import {profitList} from '@/api/profit'
     export default {
         data () {
-            return {}
+            return {
+                test: {
+                    
+                }
+            }
         },
         methods: {
             logout () {
                 MessageBox.confirm('您确定要退出吗?', '退出')
                 .then(action => {
                     this.$store.dispatch('LogOut').then(() => {
-                        location.reload() 
+                        location.reload()
                     })
                 })
                 .catch(() => {
                 });  
-            }
+            },
+            
         },
     }
 </script>
@@ -45,7 +51,7 @@
 
 <style>
     .settings-list {
-        margin-top: .2rem;
+        margin-top: 1rem;
     }
     .settings-list ul  {
         padding: 0 .2rem;

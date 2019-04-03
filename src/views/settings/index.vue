@@ -4,76 +4,114 @@
 <template>
     <div class="settings">
         <div class="return">
-            <img
-                src="@/assets/images/return.png" alt="" 
-                @click="$router.go(-1)"/>
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
             <span>设置中心</span>
         </div>
         <div class="settings-list">
             <ul>
-                <li @click="logout">
+                <li class="line_bottom">
+                    <router-link to="/changePhoneNumber">
+                        <img src="@/assets/images/settingPhoneIcon.png" alt="更换手机号">
+                        <span>更换手机号</span>
+                        <i></i>
+                    </router-link>
+                </li>
+                <li class="line_bottom">
+                    <router-link to="/changeCard">
+                        <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡">
+                        <span>更换结算卡</span>
+                        <i></i>
+                    </router-link>
+                </li>
+                <li class="line_bottom">
+                    <img src="@/assets/images/mineAddressIcon.png" alt="收货地址管理">
+                    <span>收货地址管理</span>
+                    <i></i>
+                </li>
+                <li class="line_bottom">
+                    <router-link to="/changePassword">
+                        <img src="@/assets/images/settingPasswordIcon.png" alt="修改密码">
+                        <span>修改密码</span>
+                        <i></i>
+                    </router-link>
+                </li>
+                <li class="line_bottom">
+                    <router-link to="/feedback">
+                        <img src="@/assets/images/settingFeedbackIcon.png" alt="意见反馈">
+                        <span>意见反馈</span>
+                        <i></i>
+                    </router-link>
+                </li>
+                <li @click="logout" class="line_bottom">
+                    <img src="@/assets/images/exitIcon.png" alt="退出登录">
                     <span>退出登录</span>
                     <i></i>
                 </li>
             </ul>
         </div>
-    </div>    
+    </div>
 </template>
 
 <script>
-    import response from '@/assets/js/response.js'
-    import { MessageBox, Toast } from 'mint-ui';
-    import {profitList} from '@/api/profit'
-    export default {
-        data () {
-            return {
-                test: {
-                    
-                }
-            }
-        },
-        methods: {
-            logout () {
-                MessageBox.confirm('您确定要退出吗?', '退出')
+import response from "@/assets/js/response.js";
+import { MessageBox, Toast } from "mint-ui";
+import { profitList } from "@/api/profit";
+export default {
+    data() {
+        return {
+            test: {}
+        };
+    },
+    methods: {
+        logout() {
+            MessageBox.confirm("您确定要退出吗?", "退出")
                 .then(action => {
-                    this.$store.dispatch('LogOut').then(() => {
-                        location.reload()
-                    })
+                    this.$store.dispatch("LogOut").then(() => {
+                        location.reload();
+                    });
                 })
-                .catch(() => {
-                });  
-            },
-            
-        },
+                .catch(() => {});
+        }
     }
+};
 </script>
 
 
 <style>
-    .settings-list {
-        margin-top: 1rem;
-    }
-    .settings-list ul  {
-        padding: 0 .2rem;
-    }
-    .settings-list ul li {
-        font-size: .26rem;
-        overflow: hidden;
-        line-height: .5rem;
-        padding: .1rem 0;
-        color: #000;
-    }
-    .settings-list ul li span {
-        float: left;
-    }
-    .settings-list ul li i {
-        float: right;
-        width: .2rem;
-        height: .2rem;
-        background: url(../../assets/images/settings-ico.png) no-repeat;
-        background-size: 100%;
-        margin-top: .13rem;
-    }
+.settings-list {
+    margin-top: 1rem;
+}
+.settings-list ul {
+    padding: 0 0.2rem;
+}
+.settings-list ul li {
+    font-size: 0.26rem;
+    overflow: hidden;
+    line-height: 0.7rem;
+    padding: 0.1rem 0;
+    color: #000;
+}
+.settings-list ul li img {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right: 0.15rem;
+    margin-top:0.145rem;
+}
+.settings-list ul li a {
+    color: #333;
+}
+.settings-list ul li span {
+    float: left;
+}
+.settings-list ul li i {
+    float: right;
+    width: 0.2rem;
+    height: 0.2rem;
+    background: url(../../assets/images/settings-ico.png) no-repeat;
+    background-size: 100%;
+    margin-top: 0.22rem;
+}
 </style>
 
 

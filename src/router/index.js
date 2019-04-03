@@ -224,6 +224,36 @@ export default new Router({
       name: 'about',
       component: () =>
         import('@/views/about/index')
+    }, 
+    {
+      path: '/changePhoneNumber', //更换手机号
+      name: 'changePhoneNumber',
+      component: () =>
+        import('@/views/changePhoneNumber/index')
+    },
+     {
+      path: '/changePhoneResult', //更换手机号结果
+      name: 'changePhoneResult',
+      component: () =>
+        import('@/views/changePhoneNumber/changePhoneResult')
+    }, 
+    {
+      path: '/changeCard', //更换结算卡
+      name: 'changeCard',
+      component: () =>
+        import('@/views/changeCard/index')
+    }, 
+    {
+      path: '/changePassword', //修改密码
+      name: 'changePassword',
+      component: () =>
+        import('@/views/changePassword/index')
+    }, 
+    {
+      path: '/feedback', //意见反馈
+      name: 'feedback',
+      component: () =>
+        import('@/views/feedback/index')
     }
   ]
 })

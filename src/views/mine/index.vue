@@ -64,6 +64,10 @@
                     <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
                     <p>设置中心</p>
                 </a>
+                 <a href="javascript:;">
+                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
+                    <p>帮助中心</p>
+                </a>
                 <router-link to="/about">
                     <img src="@/assets/images/aboutIcon.png" alt="关于我们">
                     <p>关于我们</p>

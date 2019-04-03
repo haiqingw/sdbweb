@@ -9,7 +9,7 @@
         <!-- banner -->
         <!-- 收货地址 -->
         <div class="mallPayAddressMain">
-            <router-link to="/mall/mall_address" style="display:none;"><a href="javascript:;">请选择收货地址</a></router-link>
+            <router-link to="/mall/mall_address"><a href="javascript:;">请选择收货地址</a></router-link>
             <div class="mallPayAddressBox rightArrIcon">
                 <div class="flex">
                     <span>任勇强</span>
@@ -23,19 +23,19 @@
         <div class="interval"></div>
         <!-- 产品信息 -->
         <div class="mallPayProMain">
-            <img src="@/assets/images/hotPorPic.jpg" alt="产品">
+            <img :src="item" alt="产品" v-for="item in renderData.listDetail.imgPath" :key="item">
             <div>
-                <h3>闪POS</h3>
-                <p>闪POS-0.5秒到</p>
+                <h3>{{renderData.listDetail.commodityName}}</h3>
+                <p>{{renderData.listDetail.title}}</p>
                 <div>
-                    <em>￥</em>0.00
+                    <em>￥</em>{{renderData.listDetail.nowPrice}}
                 </div>
             </div>
         </div>
         <div class="mallPayDepositMain flex line_top">
             <span>支付押金</span>
             <em>
-                <i>￥</i>128.00</em>
+                <i>￥</i>{{renderData.listDetail.deposit}}</em>
         </div>
         <div class="interval"></div>
         <div class="mallPayTipMain">
@@ -49,7 +49,7 @@
                 <img src="@/assets/images/weChatPayIcon.png" alt="微信支付"> 微信支付
             </div>
             <em>
-                <i>￥</i>128.00</em>
+                <i>￥</i>{{renderData.listDetail.deposit}}</em>
         </div>
         <!-- 确认支付 -->
         <div class="submitPayBtn">
@@ -60,12 +60,47 @@
     </div>
 </template>
 <script>
+import { getMall_payOrder, getMall_payListDetail } from '@/api/mall'
+
 export default {
     name: "mall_pay",
     data() {
-        return {};
+        return {
+            queryData: {
+                order: {
+                    // requestType: 'Order',
+                    // requestKeywords: 'order',
+                    // userID:data.uid, 
+                    // platformID:data.pid, 
+                    // userPhone:data.uphone, 
+                    // sid:that.data.aid, 
+                    // proid:that.data.cid,
+                    // openid:wxInfo.openid
+                },
+                listDetail: {
+                    requestType: 'listdetail',     
+                    requestKeywords: 'productdetail', 
+                    id: this.$route.params.id
+                }
+            },
+            renderData: {
+                listDetail: {}
+            }
+        };
     },
-    methods: {}
+    methods: {
+        mall_payListDetail () {
+            getMall_payListDetail(this.queryData.listDetail).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.listDetail = res.data.data
+                }
+                console.log(this.renderData.listDetail)
+            })
+        }
+    },
+    created () {
+        this.mall_payListDetail()
+    }
 };
 </script>
 <style lang="scss">

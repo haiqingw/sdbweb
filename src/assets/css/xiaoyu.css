@@ -35,6 +35,9 @@ img {
     line-height: .3rem;
     font-weight: bold;
 }
+.index-list1 ul li a {
+    color: #000;
+}
 .index-list1 ul li .index-list1-explain {
     font-size: 0.20rem;
     line-height: .26rem;

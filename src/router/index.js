@@ -106,7 +106,7 @@ export default new Router({
         import('@/views/mall/mall_detail')
     },
     {
-      path: '/mall/mall_pay', //确认支付
+      path: '/mall/mall_pay/:id', //确认支付
       name: 'mallPay',
       component: () =>
         import('@/views/mall/mall_pay')
@@ -118,7 +118,7 @@ export default new Router({
         import('@/views/mall/mall_address')
     },
     {
-      path: '/mall/mall_addAddress', //添加收货地址
+      path: '/mall/mall_addAddress/:id', //添加收货地址
       name: 'mallAddAddress',
       component: () =>
         import('@/views/mall/mall_addAddress')

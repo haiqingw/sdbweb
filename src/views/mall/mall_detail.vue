@@ -43,58 +43,63 @@
         <div class='interval'></div>
         <!-- 产品介绍 -->
         <div class="advantageEvaluationMain">
-            <div class="advantageEvaluationNav flex line_bottom">
+            <!-- <div class="advantageEvaluationNav flex line_bottom">
                 <a href="javascript:;">优势卖点</a>
                 <a href="javascript:;" class="active">评价(0)</a>
-            </div>
-            <div class="advantageEvaluationBox">
-               <div class="advantageBox">
-                 优势买点
-                 优势买点
-                 优势买点
-                 优势买点
-                 优势买点
-                 优势买点
-                 优势买点
-                 优势买点
-                 优势买点
-                 优势买点
-               </div>
-               <div class="evaluationBox" style="display:block;">
-                  <div class="evaluationTop">
-                     <span class="text">综合评分</span>
-                     <el-rate
-                      v-model="score"
-                      disabled
-                      show-score
-                      text-color="#ff9900"
-                      score-template="{value}">
-                    </el-rate>
+            </div> -->
+            <!-- <div class="advantageEvaluationBox"> -->
+              <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="优势买点" name="advantage">
+                  <div class="advantageBox">
+                  优势买点
+                  优势买点
+                  优势买点
+                  优势买点
+                  优势买点
+                  优势买点
+                  优势买点
+                  优势买点
+                  优势买点
+                  优势买点
+                </div> 
+                </el-tab-pane>
+                <el-tab-pane label="综合评分" name="score">
+                  <div class="evaluationBox" style="display:block;">
+                    <div class="evaluationTop">
+                      <span class="text">综合评分</span>
+                      <el-rate
+                        v-model="score"
+                        disabled
+                        show-score
+                        text-color="#ff9900"
+                        score-template="{value}">
+                      </el-rate>
+                    </div>
+                </div>
+                  <div class="evaluationList">
+                    <div class="evaluationItemBox" v-if="isCommentData">
+                      <div class="evaluationItemTop flex">
+                        <span>郝佳</span>
+                        <em>2018.06.01 22:01:22</em>
+                      </div>
+                      <div class="evalutionItemMiddle">
+                          <em></em>
+                          <em></em>
+                          <em></em>
+                          <em></em>
+                          <em></em>
+                          <span>5.0</span>
+                      </div>
+                      <div class="evalutionItemSub">
+                        这个机器确实好用，费率0.5，居然还是24小时秒居然还是24小时秒到居然还是24小时秒到到
+                      </div>
+                    </div>
                   </div>
-
-               </div>
-            </div>
-            <div class="interval"></div>
+                </el-tab-pane>
+              </el-tabs>
+            <!-- </div> -->
+            <!-- <div class="interval"></div> -->
             <!-- 评价列表 -->
-            <div class="evaluationList">
-               <div class="evaluationItemBox">
-                 <div class="evaluationItemTop flex">
-                   <span>郝佳</span>
-                   <em>2018.06.01 22:01:22</em>
-                 </div>
-                 <div class="evalutionItemMiddle">
-                    <em></em>
-                    <em></em>
-                    <em></em>
-                    <em></em>
-                    <em></em>
-                    <span>5.0</span>
-                 </div>
-                 <div class="evalutionItemSub">
-                   这个机器确实好用，费率0.5，居然还是24小时秒居然还是24小时秒到居然还是24小时秒到到
-                 </div>
-               </div>
-            </div>
         </div>
         <!-- 领取按钮 -->
         <div style="height:40px;"></div>
@@ -104,7 +109,7 @@
              <p>客服</p>
            </a>
            <div>
-             <router-link to="/mall/mall_pay"><a href="javascript:;">立即领取</a></router-link>
+             <router-link :to="{name: 'mallPay', params: {id: $route.params.id}}"><a href="javascript:;">立即领取</a></router-link>
            </div>
         </div>
     </div>
@@ -115,6 +120,8 @@ export default {
   name:'mallDetail',
   data(){
     return {
+      activeName: "advantage",
+      isCommentData: false,
       score: 5,
       queryData: {
         banner: {
@@ -138,9 +145,15 @@ export default {
           } else {
             this.score = this.renderData.data.reviewNum.ave
           }
+          if( this.renderData.data.reviewNum.con !== '0' ) {
+            this.isCommentData = true
+          }
         }
-        console.log(this.renderData.data)
+        // console.log(this.renderData.data)
       })
+    },
+    handleClick(tab, event) {
+      console.log(tab, event);
     }
   },
   created () {
@@ -149,6 +162,17 @@ export default {
 }
 </script>
 <style lang="scss">
+.advantageEvaluationMain {
+  padding-bottom: .5rem;
+}
+.mall-detail .el-tabs__nav {
+    width: 100%;
+    text-align: center;
+    margin-top: -.4rem;
+}
+.mall-detail .el-tabs__nav .el-tabs__item {
+    width: 50%;
+}
 .mall-detail {
   .el-rate {
     float: left;

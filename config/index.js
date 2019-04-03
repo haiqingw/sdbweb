@@ -11,11 +11,12 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://192.168.31.243:8081/index.php/App/Getway/route',//后端接口地址
+        // target: 'http://192.168.31.243:8081/index.php/App/Getway/route', //后端接口地址
+        target: 'http://ttsplus.xylrcs.cn/index.php/App/Getway/route',
         changeOrigin: true,//是否允许跨越
-        pathRewrite: {
-            '^/api': '/api',//重写,
-        }
+        // pathRewrite: {
+        //     '^/api': '/api',//重写,
+        // }
       }
     },
 

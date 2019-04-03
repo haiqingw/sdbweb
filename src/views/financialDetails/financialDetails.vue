@@ -35,104 +35,7 @@
             </div>
             <!-- 列表 -->
             <div class="financialDetailsList">
-                <mt-loadmore :top-method="loadTop" ref="loadmore">
-                    <!-- <ul v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-                        <li v-for="item in list">{{ item }}</li>
-                    </ul> -->
-                    <ul class="financialDetailsListUl" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="20">
-                        <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                        <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                        <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                        <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                         <li class="line_bottom flex">
-                            <div>
-                                <h3>交易返现</h3>
-                                <p>史晓宇交易 1000.00</p>
-                            </div>
-                            <div>
-                                <h3>+1.00</h3>
-                                <p>2019-10-10 10:00:00</p>
-                            </div>
-                        </li>
-                    </ul>
-                </mt-loadmore>
-                <div v-if="loading" class="loadingMore"><img src="../../assets/images/loadingIcon.gif">数据加载中</div>
+              
             <!-- line_bottom -->
             <div class="flex switchSacreeningMain">
                 <div class="financialDetailsList" v-if="isData">
@@ -168,10 +71,10 @@
                         <div class="no-data" v-else>
                             <img src="@/assets/images/no-data.png" alt="">
                         </div>
+                </div>
             </div>
             <!-- 列表 -->
             <!-- :bottom-method="loadBottom" -->
-          
         </div>
        
     </div>
@@ -212,7 +115,6 @@ export default {
             this.upFinished = false
             this.queryData.list.page = 1
             this.renderData.odlListData = []
-           
             // this.isDownLoading = true
             this.profitList()
         },
@@ -237,7 +139,7 @@ export default {
         profitList () {
             this.isDisabled = true
             getProfitList(this.queryData.list).then( res => {
-                console.log(res)
+                // console.log(res)
                 if( res.data.responseStatus === 1 ) {
                     this.isDisabled = false
                     this.isData = true

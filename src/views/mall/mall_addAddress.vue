@@ -156,7 +156,7 @@ export default {
             } else {
                 this.addAddressTips = false
                 this.$refs['dataForm'].validate((valid) => {
-                    if( valid && this.province && this.city && this.area ) {
+                    if( valid ) {
                         console.log(123)
                         if( this.value ) {
                             this.queryData.addAddress.defaultState = "1"

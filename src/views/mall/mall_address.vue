@@ -13,6 +13,7 @@
                     <div @click="setDefault(item.id)">
                         <span>{{item.name}}</span>
                         <em>{{item.phone}}</em>
+                        <span>{{item.id}}</span>
                     </div>
                     <p @click="setDefault(item.id)" class="line_bottom">{{item.province}}{{item.city}}{{item.area}}{{item.detailedaddress}}</p>
                     <div class="operationAddress flex">
@@ -87,7 +88,8 @@ export default {
             this.queryData.deleteAddress.id = id
             MessageBox.confirm('您确定要删除该地址吗?', '删除')
                 .then(action => {
-                    getDeleteAddress(this.queryData.deleteAddressser).then( res => {
+                    getDeleteAddress(this.queryData.deleteAddress).then( res => {
+                        console.log(response[res.data.responseStatus])
                         if( res.data.responseStatus === 1 ) {
                             Toast("删除地址成功")
                             this.addressList()

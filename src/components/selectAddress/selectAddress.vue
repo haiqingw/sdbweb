@@ -1,7 +1,8 @@
 <template>
-  <div>
+<div>
+  <div class="location">
     <div class="ysc-header">
-        <p class="header-title">{{headerTxt}}</p>
+        <!-- <p class="header-title">{{headerTxt}}</p> -->
     </div>
     <div class="addAddress" @click="choseAdd()">
         <input type="text" placeholder="请选择所在地区" class="txtmangth" disabled="disabled" v-model="userAddress">
@@ -26,6 +27,8 @@
       </section>
     <!-- 收货地址三级联动选项 end-->
     <div class="layout" :class="{layoutBg:islayout}" @click="closeAdd()"></div>
+  </div>
+   
   </div>
 </template>
 <script>
@@ -65,6 +68,32 @@ export default {
       info: maps.map // 三级联动城市列表
     }
   },
+  props: {
+    provinceProp: {
+      type: String,
+      default: ""
+    },
+    cityProp: {
+      type: String,
+      default: ""
+    },
+    areaProp: {
+      type: String,
+      default: ""
+    }
+  },
+  watch: {
+    provinceProp(newVal, oldVal){
+      this.Province = newVal
+    },
+    cityProp(newVal, oldVal){
+      this.City = newVal
+    },
+    areaProp(newVal, oldVal){
+      this.District = newVal
+      this.userAddress = this.Province + ' ' + this.City + ' ' + this.District
+    },
+  },
   mounted () {
     document.querySelector('body').style.backgroundColor = '#f5f7fa'
   },
@@ -99,7 +128,7 @@ export default {
     //       this.info = res.resData[0].regionalInformation
     //     }
     //   })
-        console.log(111)
+        // console.log(111)
     }
   },
   methods: {
@@ -119,6 +148,9 @@ export default {
       this.islayout = false
       // this.showDeter = false
       this.userAddress = this.Province + ' ' + this.City + ' ' + this.District
+      this.$emit('Province', this.Province);
+      this.$emit('City', this.City);
+      this.$emit('District', this.District);
     },
     _newArr (arr, selectid) {
       for (var i = 0; i < arr.length; i++) {
@@ -255,25 +287,41 @@ export default {
     }
   },
   beforeDestroy () {
+   
     document.querySelector('body').style.backgroundColor = '#fff'
-  }
+  },
+  
 }
 </script>
 <style>
+
+.location {
+  border-bottom: .02rem solid #DCDFE6;
+  margin-bottom: 22px;
+}
 *{margin: 0;padding: 0;}
 .ysc-header{font-size: .28rem;text-align: center;}
 .addAddress{
    background:#fff;
+   height: .6rem;
 }
 .addAddress input {
   width:100%;
-  line-height:1.6;
+  height: .6rem;
+  line-height: .6rem;
   background: none;
   color: #262e31;
   font-size: .3rem;
   border: none;
   padding:0 10px;
   box-sizing:border-box;
+  font-size: .26rem;
+  color: #606266;
+  display: block;
+}
+.addAddress input::-webkit-input-placeholder{
+  font-size: .26rem;
+  color: #c0c4cc;
 }
 /* 地址选择弹层 */
 .ac{color: #000!important;border-bottom: 0.02rem solid #fff!important;}

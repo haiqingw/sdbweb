@@ -9,26 +9,19 @@
         <!-- addressList -->
         <div class="addressContainer">
             <ul class="addressListUl">
-                <li class="isDft">
-                    <div>
-                        <span>任勇强</span>
-                        <em>13296905340</em>
+                <li :class="{isDft : item.defaultState === '1' }" v-for="item in renderData.addressList" :key="item.id">
+                    <div @click="setDefault(item.id)">
+                        <span>{{item.name}}</span>
+                        <em>{{item.phone}}</em>
                     </div>
-                    <p class="line_bottom">内蒙古呼和浩特市新城区兴安北路鼎盛华世纪广场10005</p>
+                    <p @click="setDefault(item.id)" class="line_bottom">{{item.province}}{{item.city}}{{item.area}}{{item.detailedaddress}}</p>
                     <div class="operationAddress flex">
-                        <em class="editorIcon"><img src="@/assets/images/editorIcon.png" alt="编辑">编辑</em>
-                        <em class="deleteIcon"><img src="@/assets/images/shanchu.png" alt="删除">删除</em>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <span>任勇强</span>
-                        <em>13296905340</em>
-                    </div>
-                    <p class="line_bottom">内蒙古呼和浩特市新城区兴安北路鼎盛华世纪广场10005</p>
-                    <div class="operationAddress flex">
-                        <em class="editorIcon"><img src="@/assets/images/editorIcon.png" alt="编辑">编辑</em>
-                        <em class="deleteIcon"><img src="@/assets/images/shanchu.png" alt="删除">删除</em>
+                        <!-- :to="{name: 'msgDetails', params: item}" -->
+                        <router-link class="editorIcon" tag="em" :to="{ name: 'mallAddAddress', params: {id: item.id} }">
+                            编辑
+                            <img src="@/assets/images/editorIcon.png" alt="编辑">
+                        </router-link>
+                        <em @click="deleteAddress(item.id)" class="deleteIcon"><img src="@/assets/images/shanchu.png" alt="删除">删除</em>
                     </div>
                 </li>
             </ul>
@@ -39,17 +32,94 @@
             </div>
         </div>
         <div class="footerBottomBtn line_top">
-            <router-link to="/mall/mall_addAddress"><a href="javascript:;">添加收货地址</a></router-link>
+            <router-link  
+                :to="{ name: 'mallAddAddress', params: {id: 0} }" 
+            >
+                <a href="javascript:;">添加收货地址</a>
+            </router-link>
         </div>
     </div>
 </template>
 <script>
+import { getAddressList, getDeleteAddress, getSetDefault } from '@/api/mall'
+import { MessageBox, Toast } from 'mint-ui'
+import response from '@/assets/js/response.js'
 export default {
     name: "mall_address",
     data() {
-        return {};
+        return {
+             queryData: {
+                addressList: {
+                    requestType: 'list', 
+                    requestKeywords: 'shippingaddress', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid,  
+                    userPhone: this.$store.state.user.uphone
+                },
+                deleteAddress: {
+                    requestType: 'operating', 
+                    requestKeywords: 'delshipping', 
+                    id: ""
+                },
+                setDefault: {
+                    requestType: 'operating', 
+                    requestKeywords: 'addrdefultstatus', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone,
+                    id: ""
+                }
+            },
+            renderData: {
+                addressList: []
+            }
+        };
     },
-    methods: {}
+    methods: {
+        addressList () {
+            getAddressList(this.queryData.addressList).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.addressList = res.data.data
+                }
+            })
+        },
+        deleteAddress (id) {
+            this.queryData.deleteAddress.id = id
+            MessageBox.confirm('您确定要删除该地址吗?', '删除')
+                .then(action => {
+                    getDeleteAddress(this.queryData.deleteAddressser).then( res => {
+                        if( res.data.responseStatus === 1 ) {
+                            Toast("删除地址成功")
+                            this.addressList()
+                        }else {
+                            Toast("删除地址失败")
+                        }
+                    })
+                })
+                .catch(() => {
+                });  
+        },
+        setDefault (id) {
+            this.queryData.setDefault.id = id
+            MessageBox.confirm('您确定要将该地址设为默认吗?', '设为默认')
+                .then(action => {
+                    getSetDefault(this.queryData.setDefault).then( res => {
+                        // console.log(response[res.data.responseStatus])
+                        if( res.data.responseStatus === 1 ) {
+                            Toast("设为默认成功")
+                            this.addressList()
+                        }else {
+                            Toast("设为默认失败")
+                        }
+                    })
+                })
+                .catch(() => {
+                });  
+        }
+    },
+    created () {
+        this.addressList()
+    },
 };
 </script>
 <style lang="scss">
@@ -119,7 +189,7 @@ div.operationAddress {
     display: block;
     width: 100%;
     text-align: center;
-    padding: 8px 0;
+    padding: .2rem 0;
     font-size: 14px;
 }
 
@@ -129,6 +199,7 @@ div.operationAddress {
     margin-right: 8px;
     position: relative;
     top: -2px;
+    float: right;
 }
 
 .footerBottomBtn {

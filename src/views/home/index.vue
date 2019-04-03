@@ -33,11 +33,11 @@
         </li>
         <li>
           <router-link to="/freezeprogress">
-          <div class="index-list1-img">
-            <img src="@/assets/images/index-list1-4.png" alt="">
-          </div>
-          <div class="index-list1-text">12</div>
-          <div class="index-list1-explain">待解冻</div>
+            <div class="index-list1-img">
+              <img src="@/assets/images/index-list1-4.png" alt="">
+            </div>
+            <div class="index-list1-text">12</div>
+            <div class="index-list1-explain">待解冻</div>
           </router-link>
         </li>
       </ul>

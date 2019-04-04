@@ -91,3 +91,20 @@ export function isvalidUsername(str) {
       callback(new Error("请填写小数"));
     }
   }
+  //校验密码：只能输入6-20个字母、数字、下划线 
+  export function checkPassWord(password) { //必须为字母加数字且长度不小于6位
+    var str = password;
+    if (str == null || str.length < 6) {
+      return false;
+    }
+    var reg1 = new RegExp(/^[0-9A-Za-z]+$/);
+    if (!reg1.test(str)) {
+      return false;
+    }
+    var reg = new RegExp(/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/);
+    if (reg.test(str)) {
+      return true;
+    } else {
+      return false;
+    }
+  }

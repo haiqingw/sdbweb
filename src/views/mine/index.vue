@@ -41,6 +41,10 @@
         <div class="mineCommonMenuBox">
             <h3 class="mineTitle">常用菜单</h3>
             <div class="mineCommonMenuList">
+                 <router-link to="/certification">
+                    <img src="@/assets/images/certificationIcon.png" alt="实名认证">
+                    <p>实名认证</p>
+                </router-link> 
                 <router-link to="/myTerminal">
                     <img src="@/assets/images/myTerminalIcon.png" alt="我的终端">
                     <p>我的终端</p>
@@ -60,10 +64,6 @@
                     <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构">
                     <p>组织架构</p>
                 </router-link> 
-                <a href="javascript:;">
-                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
-                    <p>设置中心</p>
-                </a>
                  <a href="javascript:;">
                     <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
                     <p>帮助中心</p>

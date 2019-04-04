@@ -254,6 +254,24 @@ export default new Router({
       name: 'feedback',
       component: () =>
         import('@/views/feedback/index')
+    },
+    {
+      path: '/certification', //实名认证--个人信息认证
+      name: 'certification',
+      component: () =>
+        import('@/views/certification/index')
+    }, 
+    {
+      path: '/certificationNext', //实名认证--银行卡认证
+      name: 'certificationNext',
+      component: () =>
+        import('@/views/certification/certificationNext')
+    },
+    {
+      path: '/organizationChart', //组织架构
+      name: 'organizationChart',
+      component: () =>
+        import('@/views/organizationChart/index')
     }
   ]
 })

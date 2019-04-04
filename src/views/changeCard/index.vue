@@ -45,7 +45,8 @@ export default {
 <style lang="scss">
 .tipMain {
     line-height: 30px;
-    background: #f1f1f1;
+    // background: #f1f1f1;
+    background: #fff;
     font-size: 12px;
     padding:40px 10px 0;
     img {

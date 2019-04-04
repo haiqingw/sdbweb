@@ -11,186 +11,98 @@
         </div>
         <div class="deliver-goods-choice">
             <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="未发货" name="noDeliverGoods">
-                    <div class="no-deliver-goods-list deliver-goods-list">
-                        <ul>
-                            <li>
-                                <div class="title">
-                                    <h3>品 牌:闪POS</h3>
-                                    <div class="right">
-                                        已支付
-                                        |
-                                        押金已退
-                                    </div> 
-                                </div>
-                                <div class="info">
-                                    <span>收货姓名:晓宇</span>
-                                    <em>15888888888</em>
-                                </div>
-                                <div class="receiving-address">
-                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
-                                </div>
-                                <div class="time">下单时间:2000.00.00 00:00:00</div>
-                                <div class="btn">
-                                    <span>
-                                        订单号:000000000000
-                                    </span>
-                                    <router-link to="/clickDeliverGoods">发货</router-link>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="title">
-                                    <h3>品 牌:闪POS</h3>
-                                    <div class="right">
-                                        已支付
-                                        |
-                                        押金已退
-                                    </div> 
-                                </div>
-                                <div class="info">
-                                    <span>收货姓名:晓宇</span>
-                                    <em>15888888888</em>
-                                </div>
-                                <div class="receiving-address">
-                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
-                                </div>
-                                <div class="time">下单时间:2000.00.00 00:00:00</div>
-                                <div class="btn">
-                                    <span>
-                                        订单号:000000000000
-                                    </span>
-                                    <router-link to="/clickDeliverGoods">发货</router-link>
-                                </div>
-                            </li>
-                             <li>
-                                <div class="title">
-                                    <h3>品 牌:闪POS</h3>
-                                    <div class="right">
-                                        已支付
-                                        |
-                                        押金已退
-                                    </div> 
-                                </div>
-                                <div class="info">
-                                    <span>收货姓名:晓宇</span>
-                                    <em>15888888888</em>
-                                </div>
-                                <div class="receiving-address">
-                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
-                                </div>
-                                <div class="time">下单时间:2000.00.00 00:00:00</div>
-                                <div class="btn">
-                                    <span>
-                                        订单号:000000000000
-                                    </span>
-                                    <router-link to="/clickDeliverGoods">发货</router-link>
-                                </div>
-                            </li>
-                             <li>
-                                <div class="title">
-                                    <h3>品 牌:闪POS</h3>
-                                    <div class="right">
-                                        已支付
-                                        |
-                                        押金已退
-                                    </div> 
-                                </div>
-                                <div class="info">
-                                    <span>收货姓名:晓宇</span>
-                                    <em>15888888888</em>
-                                </div>
-                                <div class="receiving-address">
-                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
-                                </div>
-                                <div class="time">下单时间:2000.00.00 00:00:00</div>
-                                <div class="btn">
-                                    <span>
-                                        订单号:000000000000
-                                    </span>
-                                    <router-link to="/clickDeliverGoods">发货</router-link>
-                                </div>
-                            </li>
-                             <li>
-                                <div class="title">
-                                    <h3>品 牌:闪POS</h3>
-                                    <div class="right">
-                                        已支付
-                                        |
-                                        押金已退
-                                    </div> 
-                                </div>
-                                <div class="info">
-                                    <span>收货姓名:晓宇</span>
-                                    <em>15888888888</em>
-                                </div>
-                                <div class="receiving-address">
-                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
-                                </div>
-                                <div class="time">下单时间:2000.00.00 00:00:00</div>
-                                <div class="btn">
-                                    <span>
-                                        订单号:000000000000
-                                    </span>
-                                    <router-link to="/clickDeliverGoods">发货</router-link>
-                                </div>
-                            </li>
-                        </ul>
+                <el-tab-pane label="未发货" name="3">
+                    <div class="no-deliver-goods-list deliver-goods-list" v-if="isData">
+                        <van-pull-refresh
+                            v-model="isDownLoading"
+                            @refresh="onDownRefresh"
+                        >
+                            <van-list
+                                v-model="isUpLoading"                 
+                                :finished="upFinished"
+                                finished-text="没有更多了"
+                                @load="onLoadList"
+                                :offset= "offset"
+                            >
+                                <ul>
+                                    <li v-for="item in renderData.oldList" :key="item.id">
+                                        <div class="title">
+                                            <h3>品 牌:{{item.pname}}</h3>
+                                            <div class="right">
+                                                {{item.pstatus}}
+                                                |
+                                                {{item.returned}}
+                                            </div> 
+                                        </div>
+                                        <div class="info">
+                                            <span>收货姓名:{{item.consignee}}</span>
+                                            <em>{{item.consigneePhone}}</em>
+                                        </div>
+                                        <div class="receiving-address">
+                                            {{item.address}}
+                                        </div>
+                                        <div class="time">下单时间:{{item.orderTime}}</div>
+                                        <div class="btn">
+                                            <span>
+                                                订单号:{{item.ordernum}}
+                                            </span>
+                                            <router-link to="/clickDeliverGoods">发货</router-link>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </van-list>
+                        </van-pull-refresh>
+                    </div>
+                    <div class="no-data" v-else>
+                        <img src="@/assets/images/no-data.png" alt="">
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="已发货" name="yesDeliverGoods">
-                    <div class="yes-deliver-goods-list deliver-goods-list">
-                        <ul>
-                            <li>
-                                <div class="title">
-                                    <h3>品 牌:闪POS</h3>
-                                    <div class="right">
-                                        已支付
-                                        |
-                                        押金已退
-                                    </div> 
-                                </div>
-                                <div class="info">
-                                    <span>收货姓名:晓宇</span>
-                                    <em>15888888888</em>
-                                </div>
-                                <div class="receiving-address">
-                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
-                                </div>
-                                <div class="express-name">
-                                    快递名称:顺丰快递|运单号:0000000000
-                                </div>
-                                <div class="sun">
-                                    <div>终端号:00000000000000000000</div>
-                                    <div>订单号:0000000000</div>
-                                    <div>下单时间:2000.00.00 00:00:00</div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="title">
-                                    <h3>品 牌:闪POS</h3>
-                                    <div class="right">
-                                        已支付
-                                        |
-                                        押金已退
-                                    </div> 
-                                </div>
-                                <div class="info">
-                                    <span>收货姓名:晓宇</span>
-                                    <em>15888888888</em>
-                                </div>
-                                <div class="receiving-address">
-                                    收货地址:内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005
-                                </div>
-                                <div class="express-name">
-                                    快递名称:顺丰快递|运单号:0000000000
-                                </div>
-                                <div class="sun">
-                                    <div>终端号:00000000000000000000</div>
-                                    <div>订单号:0000000000</div>
-                                    <div>下单时间:2000.00.00 00:00:00</div>
-                                </div>
-                            </li>
-                        </ul>
+                <el-tab-pane label="已发货" name="2">
+                    <div class="yes-deliver-goods-list deliver-goods-list" v-if="isData">
+                        <van-pull-refresh
+                            v-model="isDownLoading"
+                            @refresh="onDownRefresh"
+                        >
+                            <van-list
+                                v-model="isUpLoading"                 
+                                :finished="upFinished"
+                                finished-text="没有更多了"
+                                @load="onLoadList"
+                                :offset= "offset"
+                            >
+                                <ul>
+                                    <li v-for="item in renderData.oldList" :key="item.id">
+                                        <div class="title">
+                                            <h3>品 牌:{{item.pname}}</h3>
+                                            <div class="right">
+                                                {{item.pstatus}}
+                                                |
+                                                {{item.returned}}
+                                            </div> 
+                                        </div>
+                                        <div class="info">
+                                            <span>收货姓名:{{item.consignee}}</span>
+                                            <em>{{item.consigneePhone}}</em>
+                                        </div>
+                                        <div class="receiving-address">
+                                            {{item.address}}
+                                        </div>
+                                        <div class="express-name">
+                                            <!-- 快递名称:顺丰快递|运单号:0000000000 -->
+                                            {{item.courier}}
+                                        </div>
+                                        <div class="sun">
+                                            <div>终端号:{{item.terminalNumber}}</div>
+                                            <div>订单号:{{item.ordernum}}</div>
+                                            <div>下单时间:{{item.orderTime}}</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </van-list>
+                        </van-pull-refresh>
+                    </div>
+                    <div class="no-data" v-else>
+                        <img src="@/assets/images/no-data.png" alt="">
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -200,16 +112,81 @@
 
 
 <script>
+    import {getDeliverGoodsList} from '@/api/deliver-goods'
     export default {
         data () {
             return {
-                activeName: 'noDeliverGoods'
+                isDownLoading: false,//下拉刷新
+                isUpLoading: false,//上拉加载
+                upFinished: false,//上拉加载完毕
+                offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+                isData: true,
+                activeName: '3',
+                queryData: {
+                    list: {
+                        requestType: 'agent', 
+                        requestKeywords: 'order', 
+                        platformID: this.$store.state.user.pid, 
+                        userID: this.$store.state.user.uid, 
+                        userPhone: this.$store.state.user.uphone, 
+                        isReceipt: "3", 
+                        page: 0, 
+                        // limit: 10
+                    }
+                },
+                renderData: {
+                    list: [],
+                    oldList: []
+                }
             }
         },
         methods: {
+            onLoadList () {
+                // console.log("进来", this.queryData.list.page)
+                this.queryData.list.page++
+                // this.isUpLoading = true
+                // console.log(this.queryData.list.page)
+                this.deliverGoodsList()
+            },
+            onDownRefresh(){
+                this.queryData.list.page = 1
+                this.renderData.oldList = []
+                this.isDownLoading = true
+                this.deliverGoodsList();
+            },
             handleClick(tab, event) {
-                console.log(tab, event);
+                // console.log(tab, event);
+                this.renderData.oldList = []
+                this.queryData.list.isReceipt = this.activeName
+                this.upFinished = false
+                this.isData = true
+                this.queryData.list.page = 1
+                this.deliverGoodsList()
+            },
+            deliverGoodsList () {
+                getDeliverGoodsList(this.queryData.list).then( res => {
+                    // console.log(res.data.data)
+                    if( res.data.responseStatus === 1 ) {
+                        this.isData = true
+                        this.renderData.list = res.data.data
+                        this.renderData.list.forEach( item => {
+                            this.renderData.oldList.push(item)
+                        })
+                        this.isDownLoading = false
+                        this.isUpLoading = false
+                    } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                        this.upFinished = true
+                        this.isUpLoading = false
+                    } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                        this.upFinished = false
+                        this.isUpLoading = false
+                        this.isData = false
+                    }
+                })
             }
+        },
+        created () {
+            // this.deliverGoodsList()
         }
     }
 </script>

@@ -150,7 +150,8 @@
     text-align: center;
     line-height: 0.4rem;
     padding: 0.2rem 0;
-    background: #f1f1f1;
+    /* background: #f1f1f1; */
+    background: #fff;
     margin-top: .8rem;
 }
 .invitation-record .top-text span {

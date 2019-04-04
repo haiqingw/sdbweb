@@ -119,10 +119,10 @@ export default {
             this.profitList()
         },
         onLoadList () {
-            console.log("进来", this.queryData.list.page)
+            // console.log("进来", this.queryData.list.page)
             this.queryData.list.page++
             // this.isUpLoading = true
-            console.log(this.queryData.list.page)
+            // console.log(this.queryData.list.page)
             this.profitList()
         },
         activationOnLoadList () {

@@ -81,7 +81,8 @@ export default {
 .myMerchantsHeaderSubMain {
     height: 40px;
     line-height: 40px;
-    background: #f1f1f1;
+    // background: #f1f1f1;
+    background: #fff;
     padding: 0 10px;
     font-size: 14px;
     span {

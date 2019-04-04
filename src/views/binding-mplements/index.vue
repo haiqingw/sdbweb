@@ -5,7 +5,7 @@
         <div class="return">
             <img
                 src="@/assets/images/return.png" alt="" 
-                @click="backOff"/>
+                @click="$router.go(-1)"/>
             <span>绑定机具</span>
         </div>
         <div class="bingding-mplements-c">
@@ -67,9 +67,6 @@
             },
             onValuesChange (picker, values) {
                 this.choiceBrandVal = String(values)
-            },
-            backOff () {
-                this.$router.go(-1)
             },
             sys_click () {
                 wxSweepCode().then( res => {
@@ -158,10 +155,9 @@
     padding: 0;
 }
 .bingding-mplements .el-button {
-    float: left;
+    float: right;
     padding: 0;
     line-height: .6rem;
-    margin-left: .5rem;
 }
 .bingding-mplements .determine-binding {
    width: 90%; 

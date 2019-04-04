@@ -3,6 +3,9 @@
 img {
     margin: 0 auto;
 }
+body {
+    background: #fff;
+}
 .index-list1 {
     background: #fff;
     margin-bottom: 0.15rem;

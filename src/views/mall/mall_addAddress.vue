@@ -29,7 +29,7 @@
                         <el-input v-model="queryData.addAddress.address" placeholder="请输入详细地址"></el-input>
                     </el-form-item>
                     <div class="SetToDefault">
-                        <mt-switch v-model="value">设为默认</mt-switch>
+                        <mt-switch v-model="value" v-if="$route.params.id == 0">设为默认</mt-switch>
                     </div>
                 </div>
             </el-form>

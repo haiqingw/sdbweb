@@ -5,7 +5,7 @@
         <div class="return">
             <img
                 src="@/assets/images/return.png" alt="" 
-                @click="backOff"
+                @click="$router.go(-1)"
             />
             <span>消息</span>
         </div>
@@ -62,9 +62,6 @@
             }
         },
         methods: {
-            backOff() {
-                this.$router.push({ name: 'index', params: { selected: 'news' }})
-            },
             msgNoticeListFunc () {
                 Indicator.open()
                 msgList(this.queryData.msgNoticeList).then( res => {
@@ -88,7 +85,8 @@
 
 <style>
 .notice {
-    background: #f1f1f1;
+    /* background: #f1f1f1; */
+    background: #fff;
     min-height: 13.33333333rem;
 }
 .notice-list ul {

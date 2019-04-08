@@ -22,34 +22,101 @@
         </div>
         <div class="terminal-num-list">
             <h3>终端号列表</h3>
-            <ul>
-                <li>
-                    <el-radio v-model="radio" label="1">111111111111111111111111111</el-radio>
-                </li>
-                <li>
-                    <el-radio v-model="radio" label="2">111111111111111111111111111</el-radio>
-                </li>
-            </ul>
+            <van-pull-refresh
+                v-model="isDownLoading"
+                @refresh="onDownRefresh"
+                v-if="isData"
+            >
+                <van-list
+                    v-model="isUpLoading"                 
+                    :finished="upFinished"
+                    finished-text="没有更多了"
+                    @load="onLoadList"
+                    :offset= "offset"
+                >
+                    <ul>
+                        <li>
+                            <el-radio v-model="radio" label="1">111111111111111111111111111</el-radio>
+                        </li>
+                    </ul>
+                </van-list>
+            </van-pull-refresh>
+            <div class="no-data" v-else>
+                <img src="@/assets/images/no-data.png" alt="">
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {getTerminalList} from '@/api/deliver-goods'
     export default {
         data () {
             return {
                 radio: "1",
-                
+                isDownLoading: false,//下拉刷新
+                isUpLoading: false,//上拉加载
+                upFinished: false,//上拉加载完毕
+                offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+                isData: true,
+                queryData: {
+                    list: {
+                        requestType: 'agent', 
+                        requestKeywords: 'terminal', 
+                        platformID: this.$store.state.user.pid, 
+                        userID: this.$store.state.user.uid, 
+                        userPhone: this.$store.state.user.uphone, 
+                        productID: this.$route.params.id, 
+                        useStatus: 1,
+                        limit: 10,
+                        page: 0
+                    }
+                },
                 renderData: {
                     sub: {
-                        name: "",
+                        name:  JSON.parse(sessionStorage.getItem('expressName')) || "",
                         oddNumbers: ""
-                    }
+                    },
+                    list: [],
+                    oldList: []
                 }
             }
         },
         methods: {
-           
+            terminalList() {
+                getTerminalList(this.queryData.list).then( res => {
+                    if( res.data.responseStatus === 1 ) {
+                        this.isData = true
+                        this.renderData.list = res.data.data
+                        this.renderData.list.forEach( item => {
+                            this.renderData.oldList.push(item)
+                        })
+                        console.log(res.data.data)
+                        this.isDownLoading = false
+                        this.isUpLoading = false
+                    } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                        this.upFinished = true
+                        this.isUpLoading = false
+                    } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                        this.upFinished = false
+                        this.isUpLoading = false
+                        this.isData = false
+                    }
+                })
+            },
+            onLoadList () {
+                // console.log("进来", this.queryData.list.page)
+                this.queryData.list.page++
+                // this.isUpLoading = true
+                // console.log(this.queryData.list.page)
+                this.terminalList()
+            },
+            onDownRefresh(){
+                this.queryData.list.page = 1
+                this.renderData.oldList = []
+                this.isDownLoading = true
+                this.terminalList();
+            }
         }
     }
 </script>

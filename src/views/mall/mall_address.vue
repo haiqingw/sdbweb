@@ -13,7 +13,6 @@
                     <div @click="setDefault(item.id)">
                         <span>{{item.name}}</span>
                         <em>{{item.phone}}</em>
-                        <span>{{item.id}}</span>
                     </div>
                     <p @click="setDefault(item.id)" class="line_bottom">{{item.province}}{{item.city}}{{item.area}}{{item.detailedaddress}}</p>
                     <div class="operationAddress flex">

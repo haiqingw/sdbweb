@@ -1,138 +1,129 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="我的订单">
-            <router-link to="/" slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
+         <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"/>
+            <span>我的订单</span>
+        </div>
         <!-- nav -->
         <div class="myOrderNavMain">
-            <el-radio-group v-model="values.type" size="medium" @change="test">
-                <el-radio-button label="all">全部</el-radio-button>
-                <el-radio-button label="dfh">待发货</el-radio-button>
-                <el-radio-button label="dsh">待收货</el-radio-button>
-                <el-radio-button label="ywc">已完成</el-radio-button>
-                <el-radio-button label="dpl">待评论</el-radio-button>
+            <el-radio-group v-model="values.type" size="medium" @change="clickChange">
+                <el-radio-button label="All">全部</el-radio-button>
+                <el-radio-button label="3">待发货</el-radio-button>
+                <el-radio-button label="2">待收货</el-radio-button>
+                <el-radio-button label="1">已完成</el-radio-button>
+                <el-radio-button label="4">待评论</el-radio-button>
             </el-radio-group>
         </div>
 
         <!-- 列表 -->
-        <div class="myOrderListMain">
-            <mt-loadmore :top-method="loadTop" ref="loadmore">
-                <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-                    <div class="myOrderItem">
+        <div class="myOrderListMain" v-if="isData">
+            <van-pull-refresh
+                v-model="isDownLoading"
+                @refresh="onDownRefresh"
+            >
+                <van-list
+                    v-model="isUpLoading"                 
+                    :finished="upFinished"
+                    finished-text="没有更多了"
+                    @load="onLoadList"
+                    :offset= "offset"
+                >
+                    <div class="myOrderItem" v-for="item in renderData.oldList" :key="item.id">
                         <router-link to="/myOrderDetail">
                         <b></b>
                         <b></b>
                         <div class="myOrderTitle">
                             <h3>
-                                闪POS
-                                <span>等待发货</span>
+                                {{item.productname}}
+                                <span>{{item.receipt}}</span>
                             </h3>
-                            <p>品牌：闪POS</p>
+                            <p>品牌：{{item.productname}}</p>
                         </div>
                         <div class="myOrderAddress line_bottom">
                             <span>费率</span>
-                            <p>0.55%+3</p>
+                            <p>{{item.rate}}</p>
                         </div>
                         <div class="myOrderAntherInfo line_bottom">
                             <p>
                                 <span>合计：</span>
-                                <em>￥0.00（含运费￥0.00）</em>
+                                <em>￥{{item.zje}}（含运费￥{{item.yunfei}}）</em>
                             </p>
                             <p>
                                 <span>订单编号：</span>
-                                <em>21231231123</em>
+                                <em>{{item.ordernum}}</em>
                             </p>
                         </div>
                         </router-link>
                         <div class="myOrderOperation">
-                            <a href="javascript:;">删除订单</a>
-                            <a href="javascript:;">取消订单</a>
+                            <a href="javascript:;" v-if=" item.receipt !== '未付款' ">删除订单</a>
+                            <a href="javascript:;" v-if=" item.receipt === '未付款' ">去付款</a>
+                            <a href="javascript:;" v-if=" item.receipt !== '已完成' ">取消订单</a>
                         </div>
                     </div>
-                    <div class="myOrderItem">
-                        <router-link to="/myOrderDetail">
-                        <b></b>
-                        <b></b>
-                        <div class="myOrderTitle">
-                            <h3>
-                                闪POS
-                                <span>等待发货</span>
-                            </h3>
-                            <p>品牌：闪POS</p>
-                        </div>
-                        <div class="myOrderAddress line_bottom">
-                            <span>费率</span>
-                            <p>0.55%+3</p>
-                        </div>
-                        <div class="myOrderAntherInfo line_bottom">
-                            <p>
-                                <span>合计：</span>
-                                <em>￥0.00（含运费￥0.00）</em>
-                            </p>
-                            <p>
-                                <span>订单编号：</span>
-                                <em>21231231123</em>
-                            </p>
-                        </div>
-                        <div class="myOrderOperation">
-                            <a href="javascript:;">删除订单</a>
-                            <a href="javascript:;">取消订单</a>
-                        </div>
-                        </router-link>
-                    </div>
-                    <div class="myOrderItem">
-                        <router-link to="/myOrderDetail">
-                        <b></b>
-                        <b></b>
-                        <div class="myOrderTitle">
-                            <h3>
-                                闪POS
-                                <span>等待发货</span>
-                            </h3>
-                            <p>品牌：闪POS</p>
-                        </div>
-                        <div class="myOrderAddress line_bottom">
-                            <span>费率</span>
-                            <p>0.55%+3</p>
-                        </div>
-                        <div class="myOrderAntherInfo line_bottom">
-                            <p>
-                                <span>合计：</span>
-                                <em>￥0.00（含运费￥0.00）</em>
-                            </p>
-                            <p>
-                                <span>订单编号：</span>
-                                <em>21231231123</em>
-                            </p>
-                        </div>
-                        <div class="myOrderOperation">
-                            <a href="javascript:;">删除订单</a>
-                            <a href="javascript:;">取消订单</a>
-                        </div> 
-                        </router-link>
-                    </div>
-                </div>
-            </mt-loadmore>
-            <div v-if="loading" class="loadingMore"><img src="@/assets/images/loadingIcon.gif">数据加载中</div>
+                </van-list>
+            </van-pull-refresh>
+        </div>
+        <div class="no-data" v-else>
+            <img src="@/assets/images/no-data.png" alt="">
         </div>
     </div>
 </template>
 <script>
+import {getMyOrderList} from "@/api/my-order"
+import response from '@/assets/js/response.js'
 export default {
     data() {
         return {
             loading:false,
+            isDownLoading: false,//下拉刷新
+            isUpLoading: false,//上拉加载
+            upFinished: false,//上拉加载完毕
+            offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+            isData: true,
             values: {
-                type: "all"
+                type: "All"
+            },
+            queryData: {
+                list: {
+                    requestType: 'Order', 
+                    requestKeywords: 'olist', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone, 
+                    page: 0, 
+                    // limit: 10, 
+                    isReceipt: "All",
+                }
+            },
+            renderData: {
+                list: [],
+                oldList: []
             }
         };
     },
     methods: {
-        test() {
-            console.log(this.values);
+        onLoadList () {
+            // console.log("进来", this.queryData.list.page)
+            this.queryData.list.page++
+            // this.isUpLoading = true
+            // console.log(this.queryData.list.page)
+            this.myOrderList()
+        },
+        onDownRefresh(){
+            this.queryData.list.page = 1
+            this.renderData.oldList = []
+            this.upFinished = false
+            this.isData = true
+            this.myOrderList();
+        },
+        clickChange() {
+            this.queryData.list.isReceipt = this.values.type
+            this.queryData.list.page = 1
+            this.renderData.oldList = []
+            this.myOrderList()
         },
         loadMore() {
             this.loading = true;
@@ -148,6 +139,28 @@ export default {
             setTimeout(() => {
                 this.$refs.loadmore.onTopLoaded();
             }, 2000);
+        },
+        myOrderList () {
+            // console.log(this.queryData.list)
+            getMyOrderList(this.queryData.list).then( res => {
+                // console.log(response[res.data.responseStatus])
+                if( res.data.responseStatus === 1 ) {
+                    this.isData = true
+                    this.renderData.list = res.data.data
+                    this.renderData.list.forEach( item => {
+                        this.renderData.oldList.push(item)
+                    })
+                    this.isDownLoading = false
+                    this.isUpLoading = false
+                } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                    this.upFinished = true
+                    this.isUpLoading = false
+                } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                    this.upFinished = false
+                    this.isUpLoading = false
+                    this.isData = false
+                }
+            })
         }
     }
 };
@@ -202,7 +215,8 @@ export default {
 }
 .myOrderListMain {
     padding: 90px 15px 15px;
-    background: #f1f1f1;
+    // background: #f1f1f1;
+    background: #fff;
 }
 .myOrderItem {
     background: #fff;

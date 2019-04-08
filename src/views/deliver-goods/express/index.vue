@@ -79,7 +79,8 @@
         },
         methods: {
             choiceExpress(name) {
-                console.log(name)
+                sessionStorage.setItem('expressName', JSON.stringify(name))
+                this.$router.go(-1)
             }
         }
     }

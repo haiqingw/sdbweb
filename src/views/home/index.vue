@@ -93,13 +93,10 @@
         </li>
         <li>
           <div class="img">
-<<<<<<< HEAD
-            <router-link to="/mall"><img src="@/assets/images/index-list2-img5.png" alt=""></router-link>
-=======
+            <!-- <router-link to="/mall"><img src="@/assets/images/index-list2-img5.png" alt=""></router-link> -->
             <router-link to="/mall">
               <img src="@/assets/images/index-list2-img5.png" alt="">
             </router-link>
->>>>>>> 0c164c04c2b3ceb6149c8779e33721a4688a8e1c
           </div>
           <div class="text">
             <router-link to="/mall">机具商场</router-link>

@@ -1,17 +1,19 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="提现记录">
-            <router-link to="/" slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
+        <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"
+            />
+            <span>待解冻</span>
+        </div>
         <!-- freezeProgress -->
         <div class='freezeProgressMain'>
             <div class='freezeProgressHeader'>
                 <img src='../../assets/images/freezeProgressHeaderImg.jpg'>
                 <div class='freezeProgressHeaderBox'>
-                    0.00
+                    {{$route.params.money}}
                     <span>待解冻金额(元)</span>
                </div>
            </div>

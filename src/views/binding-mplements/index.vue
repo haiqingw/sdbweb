@@ -23,7 +23,7 @@
                 position="bottom"
                 closeOnClickModal="closeOnClickModal"
             >
-                <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
+                <mt-picker valueKey="name" :slots="slots" @change="onValuesChange"></mt-picker>
             </mt-popup>
         </div>
         <div class="determine-binding">
@@ -34,7 +34,7 @@
 
 
 <script>
-    import {wxSweepCode} from '@/api/binding-mplements'
+    import { wxSweepCode, getBrand } from '@/api/binding-mplements'
     export default {
         data() {
             return {
@@ -46,19 +46,26 @@
                 slots: [
                     {
                         flex: 1,
-                        values: 
-                            [
-                                '点击选择品牌', 
-                                '2015-02', 
-                                '2015-03', 
-                                '2015-04', 
-                                '2015-05', 
-                                '2015-06'
-                            ],
+                        values: [
+                            {
+                                name: "请选择品牌",
+                                id: 0
+                            }
+                        ],
                         className: 'slot1',
                         textAlign: 'right'
                     }
-                ]
+                ],
+                queryData: {
+                    brand: {
+                        requestType: 'agent',
+                        requestKeywords: 'product',
+                        platformID: this.$store.state.user.pid
+                    }
+                },
+                renderData: {
+                    brand: []
+                }
             }
         },
         methods: {
@@ -66,11 +73,13 @@
                 this.popupVisible = true
             },
             onValuesChange (picker, values) {
-                this.choiceBrandVal = String(values)
+                // console.log(values)
+                this.choiceBrandVal = String(values[0].name)
             },
             sys_click () {
                 wxSweepCode().then( res => {
-                      wx.config({
+                    console.log(res)
+                    wx.config({
                         // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                         debug: false,
                         // 必填，公众号的唯一标识
@@ -106,9 +115,20 @@
                     }); 
                 })
             },
+            brand () {
+                getBrand(this.queryData.brand).then( res => {
+                    this.slots[0].values = res.data.data
+                    // res.data.data.forEach(item => {
+                    //   .push(item.name)
+                    // })
+                })
+            },
             determineBinding () { // 确定绑定 
                 this.determineBindingLoading = true
             }
+        },
+        created () {
+            this.brand()
         }
     }
 </script>

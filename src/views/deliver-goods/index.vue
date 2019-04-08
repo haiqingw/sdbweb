@@ -46,7 +46,7 @@
                                             <span>
                                                 订单号:{{item.ordernum}}
                                             </span>
-                                            <router-link to="/clickDeliverGoods">发货</router-link>
+                                            <router-link :to="{name: 'clickDeliverGoods', params: {id: item.id}}">发货</router-link>
                                         </div>
                                     </li>
                                 </ul>

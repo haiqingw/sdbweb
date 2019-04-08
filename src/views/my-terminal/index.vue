@@ -35,7 +35,7 @@
             </el-select>
         </div>
         <div class="my-terminal-list" v-if="isData">
-             <van-pull-refresh
+            <van-pull-refresh
                 v-model="isDownLoading"
                 @refresh="onDownRefresh"
             >

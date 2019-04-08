@@ -1,181 +1,151 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="提现记录">
+        <!-- <mt-header fixed title="提现记录">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"
+            />
+            <span>提现记录</span>
+        </div>
         <!-- withdrawalRecord -->
-        <div class="withdrawalRecordMain" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-            <mt-loadmore :top-method="loadTop" ref="loadmore">
-                <div class="withdrawalRecordItem">
-                    <em>审核中</em>
-                    <div class="withdrawalRecordHeader flex line_bottom">
-                        <div>
-                            <h3>100.00</h3>
-                            <p>提现金额</p>
+        <div class="withdrawalRecordMain" v-if="isData">
+            <van-pull-refresh
+                v-model="isDownLoading"
+                @refresh="onDownRefresh"
+            >
+                <van-list
+                    v-model="isUpLoading"                 
+                    :finished="upFinished"
+                    finished-text="没有更多了"
+                    @load="onLoadList"
+                    :offset= "offset"
+                >
+                    <!-- <div class="withdrawalRecordItem">
+                        <em>审核中</em>
+                        <div class="withdrawalRecordHeader flex line_bottom">
+                            <div>
+                                <h3>100.00</h3>
+                                <p>提现金额</p>
+                            </div>
+                        </div>
+                        <div class="withdrawalRecordBody">
+                            <p>
+                                <span>手续费：
+                                    <b>5.00元</b>
+                                </span>
+                                <span>税金：
+                                    <b>5.00元</b>
+                                </span>
+                                <span>实到账：
+                                    <b>5.00元</b>
+                                </span>
+                            </p>
+                            <p>提现时间：2018.10.26 16:00:00</p>
+                        </div>
+                    </div> -->
+                    <div class="withdrawalRecordItem" v-for="item in renderData.oldList" :key="item.id">
+                        <em class="active">已到账</em>
+                        <div class="withdrawalRecordHeader flex line_bottom">
+                            <div>
+                                <h3>100.00</h3>
+                                <p>提现金额</p>
+                            </div>
+                        </div>
+                        <div class="withdrawalRecordBody">
+                            <p>
+                                <span>手续费：
+                                    <b>5.00元</b>
+                                </span>
+                                <span>税金：
+                                    <b>5.00元</b>
+                                </span>
+                                <span>实到账：
+                                    <b>5.00元</b>
+                                </span>
+                            </p>
+                            <p>提现时间：2018.10.26 16:00:00</p>
                         </div>
                     </div>
-                    <div class="withdrawalRecordBody">
-                        <p>
-                            <span>手续费：
-                                <b>5.00元</b>
-                            </span>
-                            <span>税金：
-                                <b>5.00元</b>
-                            </span>
-                            <span>实到账：
-                                <b>5.00元</b>
-                            </span>
-                        </p>
-                        <p>提现时间：2018.10.26 16:00:00</p>
-                    </div>
-                </div>
-                <div class="withdrawalRecordItem">
-                    <em class="active">已到账</em>
-                    <div class="withdrawalRecordHeader flex line_bottom">
-                        <div>
-                            <h3>100.00</h3>
-                            <p>提现金额</p>
-                        </div>
-                    </div>
-                    <div class="withdrawalRecordBody">
-                        <p>
-                            <span>手续费：
-                                <b>5.00元</b>
-                            </span>
-                            <span>税金：
-                                <b>5.00元</b>
-                            </span>
-                            <span>实到账：
-                                <b>5.00元</b>
-                            </span>
-                        </p>
-                        <p>提现时间：2018.10.26 16:00:00</p>
-                    </div>
-                </div>
-                  <div class="withdrawalRecordItem">
-                    <em class="active">已到账</em>
-                    <div class="withdrawalRecordHeader flex line_bottom">
-                        <div>
-                            <h3>100.00</h3>
-                            <p>提现金额</p>
-                        </div>
-                    </div>
-                    <div class="withdrawalRecordBody">
-                        <p>
-                            <span>手续费：
-                                <b>5.00元</b>
-                            </span>
-                            <span>税金：
-                                <b>5.00元</b>
-                            </span>
-                            <span>实到账：
-                                <b>5.00元</b>
-                            </span>
-                        </p>
-                        <p>提现时间：2018.10.26 16:00:00</p>
-                    </div>
-                </div>
-                  <div class="withdrawalRecordItem">
-                    <em class="active">已到账</em>
-                    <div class="withdrawalRecordHeader flex line_bottom">
-                        <div>
-                            <h3>100.00</h3>
-                            <p>提现金额</p>
-                        </div>
-                    </div>
-                    <div class="withdrawalRecordBody">
-                        <p>
-                            <span>手续费：
-                                <b>5.00元</b>
-                            </span>
-                            <span>税金：
-                                <b>5.00元</b>
-                            </span>
-                            <span>实到账：
-                                <b>5.00元</b>
-                            </span>
-                        </p>
-                        <p>提现时间：2018.10.26 16:00:00</p>
-                    </div>
-                </div>
-                  <div class="withdrawalRecordItem">
-                    <em class="active">已到账</em>
-                    <div class="withdrawalRecordHeader flex line_bottom">
-                        <div>
-                            <h3>100.00</h3>
-                            <p>提现金额</p>
-                        </div>
-                    </div>
-                    <div class="withdrawalRecordBody">
-                        <p>
-                            <span>手续费：
-                                <b>5.00元</b>
-                            </span>
-                            <span>税金：
-                                <b>5.00元</b>
-                            </span>
-                            <span>实到账：
-                                <b>5.00元</b>
-                            </span>
-                        </p>
-                        <p>提现时间：2018.10.26 16:00:00</p>
-                    </div>
-                </div>
-                  <div class="withdrawalRecordItem">
-                    <em class="active">已到账</em>
-                    <div class="withdrawalRecordHeader flex line_bottom">
-                        <div>
-                            <h3>100.00</h3>
-                            <p>提现金额</p>
-                        </div>
-                    </div>
-                    <div class="withdrawalRecordBody">
-                        <p>
-                            <span>手续费：
-                                <b>5.00元</b>
-                            </span>
-                            <span>税金：
-                                <b>5.00元</b>
-                            </span>
-                            <span>实到账：
-                                <b>5.00元</b>
-                            </span>
-                        </p>
-                        <p>提现时间：2018.10.26 16:00:00</p>
-                    </div>
-                </div>
-            </mt-loadmore>
-            <div v-if="loading" class="loadingMore"><img src="../../assets/images/loadingIcon.gif">数据加载中</div>
+                </van-list>
+            </van-pull-refresh>
+        </div>
+        <div class="no-data" v-else>
+            <img src="@/assets/images/no-data.png" alt="">
         </div>
     </div>
 </template>
 <script>
+    import { getWithdrawalList } from '@/api/withdrawal'
 export default {
     data() {
         return {
-            loading:false,
-            list:[]
+            isDownLoading: false,//下拉刷新
+            isUpLoading: false,//上拉加载
+            upFinished: false,//上拉加载完毕
+            offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+            isData: true,
+            queryData: {
+                list: {
+                    requestType: 'spendinginto',
+                    requestKeywords:'spending', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    page: 0,
+                    limit: '20',
+                    types: 'T',
+                    stypes: 'T'
+                }
+            },
+            renderData: {
+                list: [],
+                oldList: []
+            }
         };
     },
     methods:{
-        loadMore() {
-            this.loading = true;
-            setTimeout(() => {
-                // let last = this.list[this.list.length - 1];
-                // for (let i = 1; i <= 10; i++) {
-                //     this.list.push(last + i);
-                // }
-                this.loading = false;
-            }, 1500);
+        onLoadList () {
+            // console.log("进来", this.queryData.list.page)
+            this.queryData.list.page++
+            // this.isUpLoading = true
+            // console.log(this.queryData.list.page)
+            this.withdrawalList()
         },
-        loadTop() {
-            setTimeout(() => {
-                this.$refs.loadmore.onTopLoaded();
-            },1000);
+        onDownRefresh(){
+            this.queryData.list.page = 1
+            this.renderData.oldList = []
+            this.isDownLoading = true
+            this.withdrawalList();
+        },
+        withdrawalList () {
+            getWithdrawalList(this.queryData.list).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.isData = true
+                    this.renderData.list = res.data.data
+                    this.renderData.list.forEach( item => {
+                        this.renderData.oldList.push(item)
+                    })
+                    this.isDownLoading = false
+                    this.isUpLoading = false
+                } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                    this.upFinished = true
+                    this.isUpLoading = false
+                } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                    this.upFinished = false
+                    this.isUpLoading = false
+                    this.isData = false
+                }
+            })
         }
+    },
+    created () {
+        this.withdrawalList()
     }
 };
 </script>

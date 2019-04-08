@@ -141,9 +141,9 @@ export default {
             }, 2000);
         },
         myOrderList () {
-            console.log(this.queryData.list)
+            // console.log(this.queryData.list)
             getMyOrderList(this.queryData.list).then( res => {
-                console.log(response[res.data.responseStatus])
+                // console.log(response[res.data.responseStatus])
                 if( res.data.responseStatus === 1 ) {
                     this.isData = true
                     this.renderData.list = res.data.data

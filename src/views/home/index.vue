@@ -32,11 +32,11 @@
           <div class="index-list1-explain">总赚钱</div>
         </li>
         <li>
-          <router-link to="/freezeprogress">
+          <router-link :to="{name: 'freezeprogress', params: {money: renderData.thaw} }">
             <div class="index-list1-img">
               <img src="@/assets/images/index-list1-4.png" alt="">
             </div>
-            <div class="index-list1-text">12</div>
+            <div class="index-list1-text">{{renderData.thaw}}</div>
             <div class="index-list1-explain">待解冻</div>
           </router-link>
         </li>
@@ -141,14 +141,15 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { fetchList,test} from '@/api/index'
+  import { fetchList,getThaw} from '@/api/index'
   import response from '@/assets/js/response.js'
   import Footer from '@/components/footerNav/footer'
   export default {
     data() {
       return {
         renderData: {
-          listOneData: {}
+          listOneData: {},
+          thaw: {}
         },
         queryData: {
           listOne: {
@@ -157,17 +158,14 @@
             platformID: this.$store.state.user.pid,
             userID: this.$store.state.user.uid,
             userPhone: this.$store.state.user.uphone,
+          },
+          thaw: {
+            requestType: 'thaw', 
+            requestKeywords: 'thawmoney', 
+            platformID: this.$store.state.user.pid,
+            userID: this.$store.state.user.uid,
+            userPhone: this.$store.state.user.uphone,
           }
-        },
-        test: {
-          requestType: 'funds',
-          requestKeywords: 'merchandise',
-          platformID: this.$store.state.user.pid,
-          userID: this.$store.state.user.uid,
-          userPhone: this.$store.state.user.uphone,
-          page: 1,
-          limit: 10,
-          types: 'mons'
         }
       }
     },
@@ -185,17 +183,15 @@
           this.renderData.listOneData = res.data
         })
       },
-      test1() {
-        test(this.test).then(res => {
-          // console.log(res)
+      thaw () {
+        getThaw( this.queryData.thaw ).then ( res => {
+          this.renderData.thaw = res.data.thawMoney
         })
-      },
-      parentImplement() {
-        this.listOne()
       }
     },
     created() {
       this.listOne()
+      this.thaw()
       // this.test1()
     }
   }

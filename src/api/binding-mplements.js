@@ -12,3 +12,12 @@ export function wxSweepCode(data) {
       data: qs.stringify(data)
     })
 }
+
+
+export function getBrand (data) {
+  return request({
+    url: process.env.BASE_API,
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

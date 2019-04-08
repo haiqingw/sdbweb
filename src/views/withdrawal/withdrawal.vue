@@ -1,13 +1,21 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="提现">
+        <!-- <mt-header fixed title="提现">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-            <mt-button slot="right"><router-link to="/withdrawalRecord" style="color:#fff;">提现记录</router-link></mt-button>
-        </mt-header>
-        <!-- withdrawal -->
+            <mt-button><router-link to="/withdrawalRecord" style="color:#fff;">提现记录</router-link></mt-button>
+        </mt-header> -->
+        <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"
+            />
+            <span>提现</span>
+            <router-link class="withdrawalRecord" to="/withdrawalRecord" style="color:#fff;">提现记录</router-link>
+        </div>
+        <!-- withdrawal  -->
         <div class="withdrawalMain">
             <div class="withdrawalHeader">
                 <div class="withdrawalTip"><img src="../../assets/images/pointLeftIcon.png">左右滑动切换提现方式<img src="../../assets/images/pointRightIcon.png"></div>

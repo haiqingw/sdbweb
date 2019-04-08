@@ -11,3 +11,12 @@ export function getDeliverGoodsList (data) {
         data: qs.stringify(data)
     })
 }
+
+
+export function getTerminalList(data) {
+    return requerst({
+        url: process.env.BASE_API,
+        method: 'post',
+        data: qs.stringify(data)
+    })
+}

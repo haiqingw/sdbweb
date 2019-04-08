@@ -4,7 +4,7 @@ Vue.use(Router)
 export default new Router({
   routes: [{
       path: '/',
-      name: 'index',
+      name: 'index/:money',
       component: () =>
         import('@/views/home/index'),
       meta: {
@@ -184,7 +184,7 @@ export default new Router({
         import('@/views/withdrawal/withdrawalRecord')
     },
     { 
-      path: '/clickDeliverGoods', //我的订单详情
+      path: '/clickDeliverGoods/:id', //我的订单详情
       name: 'clickDeliverGoods',
       component: () =>
         import('@/views/deliver-goods/click-deliver-goods/index')

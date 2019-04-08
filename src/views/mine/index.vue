@@ -1,228 +1,270 @@
 <template>
-    <div>
-        <!-- 头部 -->
-        <div class="mineHeaderMain">
-            <h3>个人中心</h3>
-            <div class="mineHeaderBox">
-                <a href="javascript:;" class="mineNoticeBtn">
-                    <router-link to="/settings">
-                        <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
-                    </router-link>
-                    <!-- <i></i> -->
-                </a>
-                <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"></span>
-                <p>青城五点半
-                    <em>股东</em>
-                </p>
-                <div class="mineHeaderBody flex">
-                    <div>
-                        <b>0.00</b>
-                        <p>钱包余额</p>
-                    </div>
-                    <div class="left_line">
-                        <b>0.00</b>
-                        <p>待解冻</p>
-                    </div>
-                </div>
-            </div>
+  <div>
+    <!-- 头部 -->
+    <div class="mineHeaderMain">
+      <h3>个人中心</h3>
+      <div class="mineHeaderBox">
+        <a href="javascript:;" class="mineNoticeBtn">
+          <router-link to="/settings">
+            <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
+          </router-link>
+          <!-- <i></i> -->
+        </a>
+        <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"/></span>
+        <p>
+          青城五点半
+          <em>股东</em>
+        </p>
+        <div class="mineHeaderBody flex">
+          <div>
+            <b>0.00</b>
+            <p>钱包余额</p>
+          </div>
+          <div class="left_line">
+            <b>0.00</b>
+            <p>待解冻</p>
+          </div>
         </div>
-        <div class="mineBodyMain">
-            <div class="mineItemBox line_bottom">
-                <h3 class="mineTitle">我的订单</h3>
-                <div class="flex">
-                    <span>订单详情都在这里呢</span>
-                        <router-link to="myOrder" class="arrIcon">
-                          查看所有订单
-                        </router-link>
-                </div>
-            </div>
-        </div>
-        <!-- 常用菜单 -->
-        <div class="mineCommonMenuBox">
-            <h3 class="mineTitle">常用菜单</h3>
-            <div class="mineCommonMenuList">
-                 <router-link to="/certification">
-                    <img src="@/assets/images/certificationIcon.png" alt="实名认证">
-                    <p>实名认证</p>
-                </router-link> 
-                <router-link to="/myTerminal">
-                    <img src="@/assets/images/myTerminalIcon.png" alt="我的终端">
-                    <p>我的终端</p>
-                </router-link> 
-                <a href="javascript:;"> <img src="@/assets/images/AffiliateTransactionsIcon.png" alt="下属交易">
-                    <p>下属交易</p>
-                </a>
-                <router-link to="/withdrawal">
-                    <img src="@/assets/images/balanceIcon.png" alt="余额/提现">
-                    <p>余额/提现</p>
-                 </router-link>
-                <router-link to="/financialDetails">
-                    <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细">
-                    <p>资金明细</p>
-                </router-link>
-                <router-link to="/myMerchants">
-                    <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构">
-                    <p>组织架构</p>
-                </router-link> 
-                 <a href="javascript:;">
-                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
-                    <p>帮助中心</p>
-                </a>
-                <router-link to="/about">
-                    <img src="@/assets/images/aboutIcon.png" alt="关于我们">
-                    <p>关于我们</p>
-                </router-link> 
-            </div>
-        </div>
-        <Footer></Footer>
+      </div>
     </div>
+    <div class="mineBodyMain">
+      <div class="mineItemBox line_bottom">
+        <h3 class="mineTitle">我的订单</h3>
+        <div class="flex">
+          <span>订单详情都在这里呢</span>
+          <router-link to="myOrder" class="arrIcon">
+            查看所有订单
+          </router-link>
+        </div>
+      </div>
+    </div>
+    <!-- 常用菜单 -->
+    <div class="mineCommonMenuBox">
+      <h3 class="mineTitle">常用菜单</h3>
+      <div class="mineCommonMenuList">
+        <a href="javascript:;" @click="judgeRealNameAuth('certification')">
+          <img src="@/assets/images/certificationIcon.png" alt="实名认证" />
+          <p>实名认证</p>
+        </a>
+        <router-link to="/myTerminal">
+          <img src="@/assets/images/myTerminalIcon.png" alt="我的终端" />
+          <p>我的终端</p>
+        </router-link>
+        <router-link to="/affiliateTransactions">
+          <img
+            src="@/assets/images/AffiliateTransactionsIcon.png"
+            alt="下属交易"
+          />
+          <p>下属交易</p>
+        </router-link>
+        <a href="javascript:;" @click="judgeRealNameAuth('withdrawal')">
+          <img src="@/assets/images/balanceIcon.png" alt="余额/提现" />
+          <p>余额/提现</p>
+        </a>
+        <router-link to="/financialDetails">
+          <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细" />
+          <p>资金明细</p>
+        </router-link>
+        <router-link to="/myMerchants">
+          <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构" />
+          <p>组织架构</p>
+        </router-link>
+        <a href="javascript:;">
+          <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
+          <p>帮助中心</p>
+        </a>
+        <router-link to="/about">
+          <img src="@/assets/images/aboutIcon.png" alt="关于我们" />
+          <p>关于我们</p>
+        </router-link>
+      </div>
+    </div>
+    <Footer></Footer>
+  </div>
 </template>
 <script>
 import Footer from "@/components/footerNav/footer";
-import { MessageBox } from 'mint-ui';
+import { MessageBox ,Indicator, Toast } from "mint-ui";
+import { checkcerApi, checkbankcardApi } from "@/api/mine";
+import response from "@/assets/js/response.js";
 export default {
-    data() {
-        return {};
-    },
-    components: {
-        Footer
-    },
-    methods: {
-       
-    }   
+  data() {
+    return {
+      queryData: {
+        checkcerData: {
+          requestType: "personal",
+          requestKeywords: "checkcer",
+          userID: this.$store.state.user.uid,
+          platformID: this.$store.state.user.pid,
+          userPhone: this.$store.state.user.uphone
+        },
+        checkbankcardData: {
+          requestType: "operating",
+          requestKeywords: "checkbankcard",
+          userID: this.$store.state.user.uid,
+          platformID: this.$store.state.user.pid,
+          userPhone: this.$store.state.user.uphone
+        }
+      }
+    };
+  },
+  components: {
+    Footer
+  },
+  methods: {
+    judgeRealNameAuth(url) {
+      Indicator.open();
+      checkcerApi(this.queryData.checkcerData).then(res => {
+        if (res.data.responseStatus === 1) {
+          checkbankcardApi(this.queryData.checkbankcardData).then(res => {
+            if (res.data.responseStatus === 1) {
+              Indicator.close();
+              this.$router.push({ name: "certificationComplete" });
+            } else {
+              Indicator.close();
+              this.$router.push({ name: "certificationNext" });
+            }
+          });
+        } else {
+          Indicator.close();
+          this.$router.push({ name: url });
+        }
+      });
+    }
+  }
 };
 </script>
 <style lang="scss">
 .mineHeaderMain {
-    width: 100%;
-    background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center center;
-    background-size: 100% 100%;
-    padding: 0 15px 20px;
-    box-sizing: border-box;
-    > h3 {
-        line-height: 50px;
-        font-size: 16px;
-        color: #333;
-        text-align: center;
-    }
+  width: 100%;
+  background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center
+    center;
+  background-size: 100% 100%;
+  padding: 0 15px 20px;
+  box-sizing: border-box;
+  > h3 {
+    line-height: 50px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+  }
 }
 .mineHeaderBox {
-    width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  padding: 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #ccc;
+  position: relative;
+  .mineNoticeBtn {
+    display: block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    z-index: 9999999;
+    i {
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: #f33;
+      position: absolute;
+      right: 1px;
+      top: 1px;
+      border-radius: 50%;
+    }
+  }
+  > span {
+    display: block;
+    width: 70px;
+    height: 70px;
     margin: 0 auto;
-    background: #fff;
-    padding: 30px 15px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid #f1f1f1;
     box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 0 0 20px #ccc;
-    position: relative;
-    .mineNoticeBtn {
-        display: block;
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        right: 10px;
-        top: 8px;
-        z-index: 9999999;
-        i {
-            display: block;
-            width: 10px;
-            height: 10px;
-            background: #f33;
-            position: absolute;
-            right: 1px;
-            top: 1px;
-            border-radius: 50%;
-        }
+    img {
+      width: 100%;
+      height: 100%;
     }
-    > span {
-        display: block;
-        width: 70px;
-        height: 70px;
-        margin: 0 auto;
-        overflow: hidden;
-        border-radius: 50%;
-        border: 2px solid #f1f1f1;
-        box-sizing: border-box;
-        img {
-            width: 100%;
-            height: 100%;
-        }
+  }
+  > p {
+    line-height: 40px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+    em {
+      background: #0096fe;
+      color: #fff;
+      font-size: 12px;
+      padding: 0 5px;
+      border-radius: 5px;
+      position: relative;
+      top: -2px;
+      margin-left: 5px;
     }
-    > p {
-        line-height: 40px;
-        font-size: 16px;
-        color: #333;
-        text-align: center;
-        font-weight: bold;
-        em {
-            background: #0096fe;
-            color: #fff;
-            font-size: 12px;
-            padding: 0 5px;
-            border-radius: 5px;
-            position: relative;
-            top: -2px;
-            margin-left: 5px;
-        }
-    }
+  }
 }
 .mineHeaderBody {
-    justify-content: space-around;
-    padding-top: 10px;
-    > div {
-        width: 100%;
-        text-align: center;
-        font-size: 14px;
-        &:first-of-type {
-            border-right: 1px solid #f1f1f1;
-        }
-        b {
-            font-size: 22px;
-        }
-        p {
-            font-size: 12px;
-        }
+  justify-content: space-around;
+  > div {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    &:first-of-type {
+      border-right: 1px solid #f1f1f1;
     }
+    b {
+      font-size: 22px;
+    }
+    p {
+      font-size: 12px;
+    }
+  }
 }
 .mineItemBox {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 .mineTitle {
-    line-height: 30px;
-    padding: 5px 15px 0;
-    font-size: 18px;
-    color: #333;
+  line-height: 30px;
+  padding: 5px 15px 0;
+  font-size: 18px;
+  color: #333;
 }
 .mineItemBox > div {
-    justify-content: space-between;
-    font-size: 14px;
-    padding: 0 15px;
-    a {
-        color: #0096fe;
-    }
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 0 15px;
+  a {
+    color: #0096fe;
+  }
 }
 .mineCommonMenuBox {
-    padding-top: 10px;
+  padding-top: 10px;
 }
 .mineCommonMenuList {
-    padding: 0 15px;
-    a {
-        display: block;
-        width: 25%;
-        text-align: center;
-        float: left;
-        padding-top: 15px;
-        img {
-            width: 30px;
-            height: 30px;
-            display: block;
-            margin: 0 auto;
-        }
-        p {
-            padding-top: 5px;
-            font-size: 12px;
-            color: #333;
-        }
+  padding: 0 15px;
+  a {
+    display: block;
+    width: 25%;
+    text-align: center;
+    float: left;
+    padding-top: 15px;
+    img {
+      width: 30px;
+      height: 30px;
+      display: block;
+      margin: 0 auto;
     }
+    p {
+      padding-top: 5px;
+      font-size: 12px;
+      color: #333;
+    }
+  }
 }
 </style>

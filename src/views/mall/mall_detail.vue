@@ -1,7 +1,7 @@
 <template>
     <div class="mall-detail">
         <!-- header -->
-        <mt-header fixed title="标题过长会隐藏后面的内容啊哈哈哈哈">
+        <mt-header fixed title="机具商城">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
@@ -359,6 +359,7 @@ export default {
   position: fixed;
   left:0;
   bottom:0;
+  z-index:99999;
   >a{
     display:block;
     height:40px;

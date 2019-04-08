@@ -53,7 +53,7 @@
         </div>
       </div> -->
       <div class="index-notice-profit">
-        <router-link to="/financialDetails">
+        <router-link to="/financialDetails" style="display:block;">
         <h3>
           <img src="@/assets/images/index-notice-profit-img.png" alt="">
         </h3>
@@ -69,7 +69,7 @@
       <ul>
         <li>
           <div class="img">
-            <img src="@/assets/images/index-list2-img1.png" alt="">
+             <router-link to="/bindingMplements"><img src="@/assets/images/index-list2-img1.png" alt=""></router-link>
           </div>
           <div class="text">
             <router-link to="/bindingMplements">绑定机具</router-link>
@@ -77,7 +77,7 @@
         </li>
         <li>
           <div class="img">
-            <img src="@/assets/images/index-list2-img2.png" alt="">
+            <router-link to="/myTerminal"><img src="@/assets/images/index-list2-img2.png" alt=""></router-link>
           </div>
           <div class="text">
             <router-link to="/myTerminal">我的终端</router-link>
@@ -93,7 +93,7 @@
         </li>
         <li>
           <div class="img">
-            <img src="@/assets/images/index-list2-img5.png" alt="">
+            <router-link to="/mall"><img src="@/assets/images/index-list2-img5.png" alt=""></router-link>
           </div>
           <div class="text">
             <router-link to="/mall">机具商场</router-link>
@@ -115,14 +115,14 @@
             <router-link to="/myMerchants">组织架构</router-link>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <div class="img">
             <img src="@/assets/images/index-list2-img8.png" alt="">
           </div>
           <div class="text">
             <a href="">排行榜</a>
           </div>
-        </li>
+        </li> -->
         <li>
           <div class="img">
              <router-link to="/deliverGoods"><img src="@/assets/images/index-list2-img4.png" alt=""></router-link>

@@ -2,7 +2,7 @@ import request from '../utils/request';
 import qs from 'qs'
 
 
-export function modifyPassword(data) {  //修改密码
+export function isCerApi(data) { //判断是否实名认证
   return request({
     url: process.env.BASE_API,
     method: 'post',
@@ -10,7 +10,7 @@ export function modifyPassword(data) {  //修改密码
   })
 }
 
-export function realName(data) { //获取真实姓名
+export function personInfoCerApi(data) { //个人信息认证
   return request({
     url: process.env.BASE_API,
     method: 'post',
@@ -18,7 +18,7 @@ export function realName(data) { //获取真实姓名
   })
 }
 
-export function modifyBankCard(data) { //修改银行卡
+export function isBindBankCardApi(data) { //判断是否绑卡
   return request({
     url: process.env.BASE_API,
     method: 'post',
@@ -26,7 +26,7 @@ export function modifyBankCard(data) { //修改银行卡
   })
 }
 
-export function bankName(data) { //获取所属行
+export function realNameApi(data) { //获取真实姓名
   return request({
     url: process.env.BASE_API,
     method: 'post',
@@ -34,7 +34,8 @@ export function bankName(data) { //获取所属行
   })
 }
 
-export function servicePhone(data) { //意见反馈-客服电话
+
+export function bindBankCardApi(data) { //绑定银行卡
   return request({
     url: process.env.BASE_API,
     method: 'post',
@@ -42,10 +43,13 @@ export function servicePhone(data) { //意见反馈-客服电话
   })
 }
 
-export function feedbackFn(data) { //意见反馈
+export function bankName(data) { //获取开户行
   return request({
     url: process.env.BASE_API,
     method: 'post',
     data: qs.stringify(data)
   })
 }
+
+
+

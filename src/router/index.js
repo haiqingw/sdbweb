@@ -272,6 +272,18 @@ export default new Router({
       name: 'organizationChart',
       component: () =>
         import('@/views/organizationChart/index')
+    },
+    {
+      path: '/certificationComplete', //完成实名认证页面
+      name: 'certificationComplete',
+      component: () =>
+        import('@/views/certification/certificationComplete')
+    },
+    {
+      path: '/affiliateTransactions', //下属交易
+      name: 'affiliateTransactions',
+      component: () =>
+        import('@/views/affiliateTransactions')
     }
   ]
 })

@@ -11,7 +11,7 @@
                 </el-form-item>
                 <el-form-item prop="password">
                     <!-- type="password" -->
-                    <el-input  v-model="formData.password" placeholder="请输入密码"></el-input>
+                    <el-input  v-model="formData.password" placeholder="请输入密码" show-password></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button :loading="loading" type="primary" @click="clickLogin">登录</el-button>

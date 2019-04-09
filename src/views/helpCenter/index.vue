@@ -1,0 +1,155 @@
+<template>
+  <div>
+    <!-- header -->
+    <mt-header fixed title="帮助中心">
+      <router-link to="/" slot="left">
+        <mt-button icon="back">返回</mt-button>
+      </router-link>
+    </mt-header>
+    <!-- body -->
+    <div class="helpCenterHeaderMain">
+      <img src="@/assets/images/helpCenterHeaderImg.jpg" alt="在线客服" />
+      <div>
+        <h3>在线客服</h3>
+        <p>人工服务时间：工作日9:30 - 17:30</p>
+        <a href="javascript:;">立即咨询</a>
+      </div>
+    </div>
+    <div class="helpCenterBodyMain">
+      <div class="oneLevelTitle">
+        <span>提现问题</span>
+      </div>
+      <div class="listViewMain">
+        <div class="listViewItem line_bottom">
+          <img src="@/assets/images/logoSmallImg.jpg" />
+          <span>放假看电视剧发了绝对是辣椒粉</span>
+        </div>
+        <div class="listViewItem line_bottom">
+          <img src="@/assets/images/logoSmallImg.jpg" />
+          <span>放假看电视剧发了绝对是辣椒粉</span>
+        </div>
+        <div class="listViewItem line_bottom">
+          <img src="@/assets/images/logoSmallImg.jpg" />
+          <span>放假看电视剧发了绝对是辣椒粉</span>
+        </div>
+      </div>
+      <div class="oneLevelTitle">
+        <span>提现问题</span>
+      </div>
+      <div class="listViewMain">
+        <div class="listViewItem line_bottom">
+          <img src="@/assets/images/logoSmallImg.jpg" />
+          <span>放假看电视剧发了绝对是辣椒粉</span>
+        </div>
+        <div class="listViewItem line_bottom">
+          <img src="@/assets/images/logoSmallImg.jpg" />
+          <span>放假看电视剧发了绝对是辣椒粉</span>
+        </div>
+        <div class="listViewItem line_bottom">
+          <img src="@/assets/images/logoSmallImg.jpg" />
+          <span>放假看电视剧发了绝对是辣椒粉</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {}
+};
+</script>
+<style lang="scss">
+.helpCenterHeaderMain {
+  margin-top: 40px;
+  height: 150px;
+  position: relative;
+  img {
+    height: 100%;
+  }
+  div {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-align: center;
+    h3 {
+      font-size: 18px;
+      color: #fff;
+      padding-top: 25px;
+    }
+    p {
+      font-size: 14px;
+      padding-top: 10px;
+      color: #fff;
+    }
+    a {
+      display: block;
+      width: 100px;
+      height: 30px;
+      line-height: 29px;
+      text-align: center;
+      color: #fff;
+      border: 1px solid #fff;
+      box-sizing: border-box;
+      font-size: 14px;
+      margin: 15px auto 0;
+      border-radius: 5px;
+    }
+  }
+}
+.oneLevelTitle {
+  background: #f1f1f1;
+}
+.oneLevelTitle > span {
+  padding: 0 10px;
+  display: block;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.listViewMain {
+  background: #fff;
+}
+.listViewMain > div:last-of-type {
+  background: #fff;
+}
+.listViewItem {
+  height: 60px;
+  line-height: 60px;
+  padding: 0 20px 0 10px;
+  position: relative;
+}
+.listViewItem > img {
+  width: 26px;
+  height: 26px;
+  float: left;
+  margin-right: 10px;
+  margin-top: 17px;
+}
+.listViewItem > span {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.listViewItem::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -5px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+</style>

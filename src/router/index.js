@@ -284,6 +284,18 @@ export default new Router({
       name: 'affiliateTransactions',
       component: () =>
         import('@/views/affiliateTransactions')
+    },
+    {
+      path: '/helpCenter', //帮助中心
+      name: 'helpCenter',
+      component: () =>
+        import('@/views/helpCenter')
+    },
+    {
+      path: '/helpDetail', //帮助中心详情
+      name: 'helpDetail',
+      component: () =>
+        import('@/views/helpCenter/helpDetail')
     }
   ]
 })

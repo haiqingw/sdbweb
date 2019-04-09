@@ -10,11 +10,14 @@
           </router-link>
           <!-- <i></i> -->
         </a>
-        <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"/></span>
-        <p>
-          青城五点半
-          <em>股东</em>
-        </p>
+        <div class="mineHeaderHeader">
+          <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"/></span>
+          <p>
+            青城五点半
+            <em>股东</em>
+          </p>
+          <p>13296905340</p>
+        </div>
         <div class="mineHeaderBody flex">
           <div>
             <b>0.00</b>
@@ -69,10 +72,10 @@
           <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构" />
           <p>组织架构</p>
         </router-link>
-        <a href="javascript:;">
+        <router-link to="/helpCenter">
           <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
           <p>帮助中心</p>
-        </a>
+        </router-link>
         <router-link to="/about">
           <img src="@/assets/images/aboutIcon.png" alt="关于我们" />
           <p>关于我们</p>
@@ -84,7 +87,7 @@
 </template>
 <script>
 import Footer from "@/components/footerNav/footer";
-import { MessageBox ,Indicator, Toast } from "mint-ui";
+import { MessageBox, Indicator, Toast } from "mint-ui";
 import { checkcerApi, checkbankcardApi } from "@/api/mine";
 import response from "@/assets/js/response.js";
 export default {
@@ -177,26 +180,32 @@ export default {
       border-radius: 50%;
     }
   }
-  > span {
-    display: block;
-    width: 70px;
-    height: 70px;
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 50%;
-    border: 2px solid #f1f1f1;
-    box-sizing: border-box;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
+  // > span {
+  //   display: block;
+  //   width: 70px;
+  //   height: 70px;
+  //   margin: 0 auto;
+  //   overflow: hidden;
+  //   border-radius: 50%;
+  //   border: 2px solid #f1f1f1;
+  //   box-sizing: border-box;
+  //   img {
+  //     width: 100%;
+  //     height: 100%;
+  //   }
+  // }
   > p {
-    line-height: 40px;
     font-size: 16px;
     color: #333;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
+    line-height: 20px;
+    &:first-of-type {
+      padding-top: 10px;
+    }
+    &:last-of-type {
+      padding-bottom: 15px;
+    }
     em {
       background: #0096fe;
       color: #fff;
@@ -264,6 +273,46 @@ export default {
       padding-top: 5px;
       font-size: 12px;
       color: #333;
+    }
+  }
+}
+.mineHeaderHeader{
+  overflow: hidden;
+  padding:0 0 10px;
+  span{
+    float: left;
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid #f1f1f1;
+    box-sizing: border-box;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  >p {
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+    font-weight: bold;
+    line-height: 22px;
+    padding-left:75px;
+    &:first-of-type {
+      padding-top:8px;
+    }
+    em {
+      background: #0096fe;
+      color: #fff;
+      font-size: 12px;
+      padding: 0 5px;
+      border-radius: 5px;
+      position: relative;
+      top: -2px;
+      margin-left: 5px;
     }
   }
 }

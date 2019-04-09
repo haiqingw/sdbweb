@@ -3,9 +3,7 @@
 <template>
     <div class="my-terminal">
         <div class="return">
-            <img
-                src="@/assets/images/return.png" alt="" 
-                @click="$router.go(-1)"/>
+            <img src="@/assets/images/return.png" alt=""  @click="$router.go(-1)"/>
             <span>我的终端</span>
         </div>
         <div class="my-terminal-choice">

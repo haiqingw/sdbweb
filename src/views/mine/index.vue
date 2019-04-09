@@ -13,18 +13,18 @@
         <div class="mineHeaderHeader">
           <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"/></span>
           <p>
-            青城五点半
+            {{$store.state.user.uname}}
             <em>股东</em>
           </p>
           <p>13296905340</p>
         </div>
         <div class="mineHeaderBody flex">
           <div>
-            <b>0.00</b>
+            <b>{{renderData.listOneData.balance}}</b>
             <p>钱包余额</p>
           </div>
           <div class="left_line">
-            <b>0.00</b>
+            <b>{{renderData.thaw}}</b>
             <p>待解冻</p>
           </div>
         </div>
@@ -90,9 +90,14 @@ import Footer from "@/components/footerNav/footer";
 import { MessageBox, Indicator, Toast } from "mint-ui";
 import { checkcerApi, checkbankcardApi } from "@/api/mine";
 import response from "@/assets/js/response.js";
+import { fetchList,getThaw} from '@/api/index'
 export default {
   data() {
     return {
+      renderData: {
+        thaw: {},
+        listOneData: {},
+      },
       queryData: {
         checkcerData: {
           requestType: "personal",
@@ -107,7 +112,21 @@ export default {
           userID: this.$store.state.user.uid,
           platformID: this.$store.state.user.pid,
           userPhone: this.$store.state.user.uphone
-        }
+        },
+        thaw: {
+          requestType: 'thaw', 
+          requestKeywords: 'thawmoney', 
+          platformID: this.$store.state.user.pid,
+          userID: this.$store.state.user.uid,
+          userPhone: this.$store.state.user.uphone,
+        },
+        listOne: {
+          requestType: 'personal',
+          requestKeywords: 'busincome',
+          platformID: this.$store.state.user.pid,
+          userID: this.$store.state.user.uid,
+          userPhone: this.$store.state.user.uphone,
+        },
       }
     };
   },
@@ -133,7 +152,21 @@ export default {
           this.$router.push({ name: url });
         }
       });
+    },
+    listOne() {
+      fetchList(this.queryData.listOne).then(res => {
+        this.renderData.listOneData = res.data
+      })
+    },
+    thaw () {
+      getThaw( this.queryData.thaw ).then ( res => {
+        this.renderData.thaw = res.data.thawMoney
+      })
     }
+  },
+  created () {
+    this.listOne()
+    this.thaw()
   }
 };
 </script>

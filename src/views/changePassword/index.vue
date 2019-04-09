@@ -1,11 +1,17 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="修改密码">
+        <!-- <mt-header fixed title="修改密码">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"/>
+            <span>修改密码</span>
+        </div>
         <!-- body -->
         <div class="changePasswordMain">
             <div class="iconInputItem line_bottom">

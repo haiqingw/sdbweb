@@ -1,11 +1,17 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="意见反馈">
+        <!-- <mt-header fixed title="意见反馈">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+         <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"/>
+            <span>意见反馈</span>
+        </div>
         <!-- body -->
         <div class="feedbackMain">
             <div class="feedbackTopMain">

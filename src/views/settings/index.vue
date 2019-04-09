@@ -9,39 +9,31 @@
         </div>
         <div class="settings-list">
             <ul>
-                <li class="line_bottom">
-                    <router-link to="/changePhoneNumber">
-                        <img src="@/assets/images/settingPhoneIcon.png" alt="更换手机号">
-                        <span>更换手机号</span>
-                        <i></i>
-                    </router-link>
-                </li>
-                <li class="line_bottom">
-                    <router-link to="/changeCard">
-                        <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡">
-                        <span>更换结算卡</span>
-                        <i></i>
-                    </router-link>
-                </li>
+                <router-link to="/changePhoneNumber" tag="li" class="line_bottom">
+                    <img src="@/assets/images/settingPhoneIcon.png" alt="更换手机号">
+                    <span>更换手机号</span>
+                    <i></i>
+                </router-link>
+                <router-link to="/changeCard" tag="li" class="line_bottom">
+                    <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡">
+                    <span>更换结算卡</span>
+                    <i></i>
+                </router-link>
                 <li class="line_bottom">
                     <img src="@/assets/images/mineAddressIcon.png" alt="收货地址管理">
                     <span>收货地址管理</span>
                     <i></i>
                 </li>
-                <li class="line_bottom">
-                    <router-link to="/changePassword">
-                        <img src="@/assets/images/settingPasswordIcon.png" alt="修改密码">
-                        <span>修改密码</span>
-                        <i></i>
-                    </router-link>
-                </li>
-                <li class="line_bottom">
-                    <router-link to="/feedback">
+                <router-link to="/changePassword" tag="li" class="line_bottom">
+                    <img src="@/assets/images/settingPasswordIcon.png" alt="修改密码">
+                    <span>修改密码</span>
+                    <i></i>
+                </router-link>
+                <router-link to="/feedback" tag="li" class="line_bottom">
                         <img src="@/assets/images/settingFeedbackIcon.png" alt="意见反馈">
                         <span>意见反馈</span>
                         <i></i>
-                    </router-link>
-                </li>
+                </router-link>
                 <li @click="logout" class="line_bottom">
                     <img src="@/assets/images/exitIcon.png" alt="退出登录">
                     <span>退出登录</span>

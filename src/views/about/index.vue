@@ -1,11 +1,17 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="关于我们">
+        <!-- <mt-header fixed title="关于我们">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+         <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"/>
+            <span>关于我们</span>
+        </div>
         <!-- body -->
         <div class="aboutMain">
             关于我关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们们

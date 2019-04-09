@@ -1,11 +1,17 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="更换手机号">
+        <!-- <mt-header fixed title="更换手机号">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"/>
+            <span>跟换手机号</span>
+        </div>
         <!-- body -->
         <div class="changePhoneMain">
             <img src="@/assets/images/phoneImg.jpg" alt="phoneImg">

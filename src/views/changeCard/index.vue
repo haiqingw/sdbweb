@@ -1,11 +1,17 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="更换结算卡">
+        <!-- <mt-header fixed title="更换结算卡">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img
+                src="@/assets/images/return.png" alt="" 
+                @click="$router.go(-1)"/>
+            <span>跟换结算卡</span>
+        </div>
         <!-- body -->
         <div class="tipMain">
             <img src="@/assets/images/tipIcon.png" alt="提示"> 请添加本人储蓄卡信息，认真填写核对

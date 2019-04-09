@@ -33,34 +33,34 @@
                 >
                     <div class="myOrderItem" v-for="item in renderData.oldList" :key="item.id">
                         <router-link to="/myOrderDetail">
-                        <b></b>
-                        <b></b>
-                        <div class="myOrderTitle">
-                            <h3>
-                                {{item.productname}}
-                                <span>{{item.receipt}}</span>
-                            </h3>
-                            <p>品牌：{{item.productname}}</p>
-                        </div>
-                        <div class="myOrderAddress line_bottom">
-                            <span>费率</span>
-                            <p>{{item.rate}}</p>
-                        </div>
-                        <div class="myOrderAntherInfo line_bottom">
-                            <p>
-                                <span>合计：</span>
-                                <em>￥{{item.zje}}（含运费￥{{item.yunfei}}）</em>
-                            </p>
-                            <p>
-                                <span>订单编号：</span>
-                                <em>{{item.ordernum}}</em>
-                            </p>
-                        </div>
+                            <b></b>
+                            <b></b>
+                            <div class="myOrderTitle">
+                                <h3>
+                                    {{item.productname}}
+                                    <span>{{item.receipt}}</span>
+                                </h3>
+                                <p>品牌：{{item.productname}}</p>
+                            </div>
+                            <div class="myOrderAddress line_bottom">
+                                <span>费率</span>
+                                <p>{{item.rate}}</p>
+                            </div>
+                            <div class="myOrderAntherInfo line_bottom">
+                                <p>
+                                    <span>合计：</span>
+                                    <em>￥{{item.zje}}（含运费￥{{item.yunfei}}）</em>
+                                </p>
+                                <p>
+                                    <span>订单编号：</span>
+                                    <em>{{item.ordernum}}</em>
+                                </p>
+                            </div>
                         </router-link>
                         <div class="myOrderOperation">
-                            <a href="javascript:;" v-if=" item.receipt !== '未付款' ">删除订单</a>
-                            <a href="javascript:;" v-if=" item.receipt === '未付款' ">去付款</a>
-                            <a href="javascript:;" v-if=" item.receipt !== '已完成' ">取消订单</a>
+                            <a href="javascript:;" v-if=" item.receipt != '未付款' ">删除订单</a>
+                            <a href="javascript:;" v-if=" item.receipt == '未付款' ">去付款</a>
+                            <a href="javascript:;" v-if=" item.receipt != '已完成' ">取消订单</a>
                         </div>
                     </div>
                 </van-list>

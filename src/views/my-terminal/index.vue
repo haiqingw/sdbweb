@@ -149,20 +149,20 @@
             byProductChange () {
                 this.queryData.list.productID = this.byProduct.value
                 this.renderData.oldList = []
-                this.queryData.list.page = 1
-                this.terminalList()
+                this.queryData.list.page = 0
+                this.onLoadList()
             },
             usageStateChange () {
                 this.queryData.list.useStatus = this.usageState.value
                 this.renderData.oldList = []
-                this.queryData.list.page = 1
-                this.terminalList()
+                this.queryData.list.page = 0
+                this.onLoadList()
             },
             byBatchChange (){
                 this.queryData.list.batchNo = this.byBatch.value
                 this.renderData.oldList = []
-                this.queryData.list.page = 1
-                this.terminalList()
+                this.queryData.list.page = 0
+                this.onLoadList()
             },
             choiceProduct () {
                 getChoiceProduct(this.queryData.product).then( res => {
@@ -205,7 +205,7 @@
             onLoadList () {
                 // console.log("进来", this.queryData.list.page)
                 this.queryData.list.page++
-                // this.isUpLoading = true
+                this.isUpLoading = true
                 // console.log(this.queryData.list.page)
                 this.terminalList()
             },

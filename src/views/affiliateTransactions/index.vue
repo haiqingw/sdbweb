@@ -2,17 +2,17 @@
   <div>
     <!-- header -->
     <div class="return">
-      <img src="@/assets/images/return.png" alt="" @click="$route.go(-1)" />
+      <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
       <span>下属交易</span>
     </div>
     <!-- body -->
     <div class="affiliateTransactionsMain">
       <!-- 按时间筛选 -->
       <div class="selector selectYear" @click="selectYear">
-        <div class="show_year">
+        <!-- <div class="show_year">
           <p v-if="!isClicked">请选择日期筛选</p>
           <p v-if="isClicked">{{ year }}年{{ month }}月{{ date }}日</p>
-        </div>
+        </div> -->
       </div>
       <mt-datetime-picker
         v-model="dateValue"
@@ -23,27 +23,39 @@
         date-format="{value} 日"
         :endDate="new Date()"
         @confirm="handleConfirm"
+        @cancel="handleCancel"
       >
       </mt-datetime-picker>
       <!-- 快捷筛选 -->
-      <div class="quickScreeningNav flex">
-        <a class="active" href="javascript:;">昨日</a>
+      <div class="quickScreeningNav">
+        <!-- <a class="active" href="javascript:;">昨日</a>
         <a href="javascript:;">当日</a>
         <a href="javascript:;">当月</a>
-        <a href="javascript:;">累计</a>
+        <a href="javascript:;">累计</a> -->
+        <el-radio-group v-model="type" size="medium" @change="clickChange">
+            <el-radio-button :disabled="isUpLoading" label="yesterday">昨日</el-radio-button>
+            <el-radio-button :disabled="isUpLoading" label="days">当日</el-radio-button>
+            <el-radio-button :disabled="isUpLoading" label="mons">当月</el-radio-button>
+            <el-radio-button :disabled="isUpLoading" label="all">累计</el-radio-button>
+            <el-radio-button :disabled="isUpLoading" label="selectionDate" >按时间筛选</el-radio-button>
+        </el-radio-group>
       </div>
       <!-- 交易总金额 -->
       <div class="tradingTotalMoneyMain">
-        <h3>总交易额(元)</h3>
+        <h3 v-if="type === 'yesterday' ">昨日交易额(元)</h3>
+        <h3 v-if="type === 'days' ">当日交易额(元)</h3>
+        <h3 v-if="type === 'selectionDate' ">{{ year }}年{{ month }}月{{ date }}交易额(元)</h3>
+        <h3 v-if="type === 'mons' ">当月交易额(元)</h3>
+        <h3 v-if="type === 'all' ">总交易额(元)</h3>
         <div>
-          10000.00
+          {{ATurnover}}
         </div>
       </div>
       <div class="interval"></div>
       <!-- 下属交易列表 -->
 
       <div class="tradingListMain">
-        <van-pull-refresh v-model="isDownLoading" @refresh="onDownRefresh">
+        <van-pull-refresh v-model="isDownLoading" @refresh="onDownRefresh" v-if="isData">
           <van-list
             v-model="isUpLoading"
             :finished="upFinished"
@@ -51,80 +63,157 @@
             @load="onLoadList"
             :offset="offset"
           >
-            <div class="bodyItem">
-              <p>任勇强(13296905340)</p>
-              <p>交易笔数：1</p>
-              <p>交易金额：39990.00</p>
-              <p>产品终端号：231234564568744</p>
-            </div>
-            <div class="bodyItem">
-              <p>任勇强(13296905340)</p>
-              <p>交易笔数：1</p>
-              <p>交易金额：39990.00</p>
-              <p>产品终端号：231234564568744</p>
-            </div>
-            <div class="bodyItem">
-              <p>任勇强(13296905340)</p>
-              <p>交易笔数：1</p>
-              <p>交易金额：39990.00</p>
-              <p>产品终端号：231234564568744</p>
-            </div>
-            <div class="bodyItem">
-              <p>任勇强(13296905340)</p>
-              <p>交易笔数：1</p>
-              <p>交易金额：39990.00</p>
-              <p>产品终端号：231234564568744</p>
-            </div>
-            <div class="bodyItem">
-              <p>任勇强(13296905340)</p>
-              <p>交易笔数：1</p>
-              <p>交易金额：39990.00</p>
-              <p>产品终端号：231234564568744</p>
-            </div>
-            <div class="bodyItem">
-              <p>任勇强(13296905340)</p>
-              <p>交易笔数：1</p>
-              <p>交易金额：39990.00</p>
-              <p>产品终端号：231234564568744</p>
+            <div class="bodyItem" v-for="item in renderData.oldList" :key="item.id">
+              <p>{{item.busname}}({{item.phone}})</p>
+              <p>交易笔数：{{item.con}}</p>
+              <p>交易金额：{{item.money}}</p>
+              <p>产品终端号：{{item.terminal}}</p>
             </div>
           </van-list>
         </van-pull-refresh>
+        <div class="no-data" v-else>
+            <img src="@/assets/images/no-data.png" alt="">
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import {getList} from '@/api/affiliateTransactions'
 export default {
   data() {
     return {
+      type: 'yesterday',
+      isDownLoading: false,//下拉刷新
+      isUpLoading: false,//上拉加载
+      upFinished: false,//上拉加载完毕
+      offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+      isData: true,
       pickerValue: "按时间筛选",
       year: "",
+      month: "",
+      date: "",
       dateValue: "",
       isClicked: false,
-      isDownLoading: false, //下拉刷新
-      isUpLoading: false, //上拉加载
-      upFinished: false, //上拉加载完毕
-      offset: 10, //滚动条与底部距离小于 offset 时触发load事件
-      isData: true
+      ATurnover: '',
+      queryData: {
+        list: {
+          requestType: 'funds',
+          requestKeywords: 'merchandise',
+          platformID: this.$store.state.user.pid,
+          userID: this.$store.state.user.uid,
+          userPhone: this.$store.state.user.uphone,
+          page: 0,
+          types: 'yesterday',
+          // dates: ''
+          // limit: 10
+        }
+      },
+      renderData: {
+        list: [],
+        oldList: []
+      }
     };
   },
   methods: {
+    clickChange () {
+      if( this.type === 'selectionDate' ) {
+        this.selectYear()
+      } else {
+        delete this.queryData.list.dates
+        this.isClicked = false
+        this.queryData.list.types = this.type
+        this.upFinished = false
+        this.isData = true
+        this.queryData.list.page = 0
+        this.renderData.oldList = []
+        this.onLoadList()
+      }
+    },
+    onLoadList () {
+        this.queryData.list.page++
+        this.isUpLoading = true
+        // console.log(this.queryData.list.page)
+        this.list()
+    },
+    onDownRefresh(){
+        this.queryData.list.page = 1
+        this.renderData.oldList = []
+        this.isDownLoading = true
+        this.list();
+    },
     selectYear() {
       this.$refs.datePicker.open();
     },
+    handleCancel () {
+      this.type = this.queryData.list.types
+    },
     handleConfirm(value) {
-      console.log(value);
       this.year = value.getFullYear();
       this.month = value.getMonth() + 1;
       this.date = value.getDate();
       this.isClicked = true;
+      this.queryData.list.dates = this.year + '-' + this.month + '-' + this.date
+      this.queryData.list.types = 'days'
+      this.upFinished = false
+      this.isData = true
+      this.queryData.list.page = 0
+      this.renderData.oldList = []
+      this.onLoadList()
+    },
+    list() {
+      getList(this.queryData.list).then( res => {
+        if( res.data.responseStatus === 1 ) {
+            this.ATurnover = res.data.sum
+            this.isData = true
+            this.renderData.list = res.data.data
+            this.renderData.list.forEach( item => {
+                this.renderData.oldList.push(item)
+            })
+            this.isDownLoading = false
+            this.isUpLoading = false
+        } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+            this.upFinished = true
+            this.isUpLoading = false
+            
+        } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+            this.upFinished = false
+            this.isUpLoading = false
+            this.isData = false
+            this.ATurnover = '0'
+        }
+      })
     }
   }
 };
 </script>
 <style lang="scss">
+.quickScreeningNav {
+  width: 100%;
+}
+.quickScreeningNav .el-radio-group {
+  overflow: hidden;
+  display: block;
+  text-align: center;
+}
+
+.quickScreeningNav .el-radio-group .el-radio-button span {
+  padding: .1rem .2rem;
+  margin: 0 .1rem;
+  border-radius: 0;
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  line-height: .2rem;
+  display: block;
+}
+.quickScreeningNav .el-radio-group .el-radio-button.is-active span {
+  background: #fff;
+  color: #089cfe;
+}
 .affiliateTransactionsMain {
-  padding-top: 40px;
+  // padding-top: 40px;
+  margin-top: .8rem;
 }
 .selector {
   font-size: 14px;
@@ -162,11 +251,11 @@ export default {
   }
 }
 .quickScreeningNav {
-  justify-content: space-around;
+  // justify-content: space-around;
   height: 40px;
   position: fixed;
   right: 0;
-  top: 40px;
+  top: 48px;
   line-height: 40px;
   z-index: 9999;
   a {

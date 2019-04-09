@@ -10,11 +10,11 @@
         <!-- nav -->
         <div class="myOrderNavMain">
             <el-radio-group v-model="values.type" size="medium" @change="clickChange">
-                <el-radio-button label="All">全部</el-radio-button>
-                <el-radio-button label="3">待发货</el-radio-button>
-                <el-radio-button label="2">待收货</el-radio-button>
-                <el-radio-button label="1">已完成</el-radio-button>
-                <el-radio-button label="4">待评论</el-radio-button>
+                <el-radio-button :disabled="isUpLoading" label="All">全部</el-radio-button>
+                <el-radio-button :disabled="isUpLoading" label="3">待发货</el-radio-button>
+                <el-radio-button :disabled="isUpLoading" label="2">待收货</el-radio-button>
+                <el-radio-button :disabled="isUpLoading" label="1">已完成</el-radio-button>
+                <el-radio-button :disabled="isUpLoading" label="4">待评论</el-radio-button>
             </el-radio-group>
         </div>
 

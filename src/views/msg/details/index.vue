@@ -49,7 +49,7 @@
                 getMsgDetails(this.queryData.msgDetails).then( res => {
                     if(res.data.responseStatus === 1) {
                         Indicator.close()
-                        console.log(res)
+                        // console.log(res)
                         res.data.data.content = res.data.data.content.replace(/<[^>]+>/g,"");
                         this.renderData.detailsData = res.data.data
                     } else if( res.data.responseStatus === 300 ) {

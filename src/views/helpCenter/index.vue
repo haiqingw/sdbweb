@@ -1,11 +1,15 @@
 <template>
   <div>
     <!-- header -->
-    <mt-header fixed title="帮助中心">
+    <!-- <mt-header fixed title="帮助中心">
       <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
-    </mt-header>
+    </mt-header> -->
+    <div class="return">
+      <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+      <span>帮助中心</span>
+    </div>
     <!-- body -->
     <div class="helpCenterHeaderMain">
       <img src="@/assets/images/helpCenterHeaderImg.jpg" alt="在线客服" />
@@ -15,50 +19,81 @@
         <a href="javascript:;">立即咨询</a>
       </div>
     </div>
-    <div class="helpCenterBodyMain">
-      <div class="oneLevelTitle">
-        <span>提现问题</span>
-      </div>
-      <div class="listViewMain">
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
+    <div class="helpCenterBodyMain" v-if="isData">
+      <div v-for="item in renderData.list" :key="item.classUrl">
+        <div class="oneLevelTitle">
+          <span>{{item.class}}</span>
         </div>
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
-        </div>
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
-        </div>
-      </div>
-      <div class="oneLevelTitle">
-        <span>提现问题</span>
-      </div>
-      <div class="listViewMain">
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
-        </div>
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
-        </div>
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
+        <div class="listViewMain">
+          <router-link 
+            tag="div" 
+            class="listViewItem line_bottom" 
+            v-for="i in item.list" :key="i.id"
+            :to="{name: 'helpDetail', params: { id: i.id } }"
+          >
+            <img :src="i.helpUrl" />
+            <span>{{i.title}}</span>
+          </router-link>
         </div>
       </div>
+    </div>
+    <div class="no-data" v-else>
+        <img src="@/assets/images/no-data.png" alt="">
     </div>
   </div>
 </template>
 <script>
+import { getTop, getList } from '@/api/helpCenter'
 export default {
   data() {
-    return {};
+    return {
+      isDownLoading: false,//下拉刷新
+      isUpLoading: false,//上拉加载
+      upFinished: false,//上拉加载完毕
+      offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+      isData: true,
+      queryData: {
+        top: {
+          requestType: 'system', 
+          requestKeywords: 'getsystem', 
+          platformID: this.$store.state.user.pid, 
+          type: 'customerservicetelephone'
+        },
+        list: {
+          requestType: 'list', 
+          requestKeywords: 'apphelp', 
+          platformID: this.$store.state.user.pid
+        }
+      },
+      renderData: {
+        top: "",
+        list: []
+      }
+    }
   },
-  methods: {}
+  methods: {
+    top () {
+      getTop(this.queryData.top).then( res => {
+        if( res.data.responseStatus === 1 ) {
+          this.renderData.top = res.data.content
+        }
+      })
+    },
+    list () {
+      getList(this.queryData.list).then( res => {
+        if( res.data.responseStatus === 1 ) {
+            this.isData = true
+            this.renderData.list = res.data.data
+        } else if( res.data.responseStatus === 300 ) {
+            this.isData = false
+        }
+      })
+    }
+  },
+  created () {
+    this.top()
+    this.list()
+  }
 };
 </script>
 <style lang="scss">

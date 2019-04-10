@@ -1,11 +1,15 @@
 <template>
     <div class="financial-details">
         <!-- header -->
-        <mt-header fixed title="资金明细">
+        <!-- <mt-header fixed title="资金明细">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>资金明细</span>
+        </div>
         <!-- 列表 -->
         <div class="financialDetailsMain">
             <!-- 筛选 -->

@@ -1,40 +1,84 @@
 <template>
   <div>
     <!-- header -->
-    <mt-header fixed title="帮助中心">
+    <!-- <mt-header fixed title="帮助中心">
       <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
-    </mt-header>
+    </mt-header> -->
+    <div class="return">
+      <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+      <span>帮助中心</span>
+    </div>
     <!-- body -->
     <div class="helpCenterDetailMain">
-      <h3 class="line_bottom">
-        标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题
-      </h3>
+      <div class="top line_bottom">
+        <h3>
+          {{renderData.detail.title}}
+        </h3>
+        <time>{{renderData.detail.createTime}}</time>
+      </div>
       <div class="helpCenterDetailBox">
-        正正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文正文文
+        {{renderData.detail.content}}
       </div>
     </div>
   </div>
 </template>
 <script>
+import { getDetail } from '@/api/helpCenter'
 export default {
   data() {
-    return {};
+    return {
+      queryData: {
+        detail: {
+          requestType: 'listdetail', 
+          requestKeywords: 'helpcenter', 
+          platformID: this.$store.state.user.pid, 
+          id: this.$route.params.id
+        }
+      },
+      renderData: {
+        detail: ""
+      }
+    };
   },
-  methods: {}
+  methods: {
+    detail() {
+      getDetail(this.queryData.detail).then( res => {
+        if( res.data.responseStatus === 1 ) {
+          res.data.data.content = res.data.data.content.replace(/<[^>]+>/g,"");
+          this.renderData.detail = res.data.data
+        }
+      })
+    }
+  },
+  created () {
+    this.detail()
+  }
 };
 </script>
 <style lang="scss">
 .helpCenterDetailMain {
     padding-top:40px;
     text-align:justify;
-  h3 {
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 24px;
-  }
+    overflow: hidden;
+    .top {
+      overflow: hidden;
+      h3 {
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 24px;
+        float: left;
+      }
+      time {
+        float: right;
+        color: #ccc;
+        font-size: .2rem;
+        line-height: .78rem;
+        margin-right: 10px;
+      }
+    }
 }
 .helpCenterDetailBox{
     padding:10px;

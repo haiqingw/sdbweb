@@ -19,6 +19,7 @@ import '@/assets/css/reset.css'
 import '@/assets/css/common.css'
 import '@/assets/css/xiaoyu.css'
 
+import Vue2OrgTree from 'vue2-org-tree'
 
 import infiniteScroll from 'vue-infinite-scroll'
 
@@ -32,6 +33,7 @@ Vue.use(ElementUI)
 Vue.use(Swiper)
 Vue.use(Vant);
 Vue.use(infiniteScroll);
+Vue.use(Vue2OrgTree)
 // Vue.use(Axios)
 // Vue.prototype.$http = axios
  

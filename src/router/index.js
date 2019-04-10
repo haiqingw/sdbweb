@@ -302,6 +302,12 @@ export default new Router({
       name: 'ApplyAgent',
       component: () =>
         import('@/views/ApplyAgent/index')
+    }, 
+    {
+      path: '/organization', //组织架构
+      name: 'organization',
+      component: () =>
+        import('@/views/organizationChart/organization')
     }
   ]
 })

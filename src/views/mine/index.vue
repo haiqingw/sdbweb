@@ -13,20 +13,27 @@
         <div class="mineHeaderHeader">
           <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"/></span>
           <p>
-            {{renderData.info.busname}}
+            {{ renderData.info.busname }}
             <em>股东</em>
           </p>
-          <p>{{renderData.info.phone}}</p>
+          <p>{{ renderData.info.phone }}</p>
         </div>
         <div class="mineHeaderBody flex">
-          <div>
-            <b>{{renderData.listOneData.balance}}</b>
+          <div @click="judgeRealNameAuth('withdrawal')">
+            <b>{{ renderData.listOneData.balance }}</b>
             <p>钱包余额</p>
           </div>
-          <div class="left_line">
-            <b>{{renderData.thaw}}</b>
-            <p>待解冻</p>
-          </div>
+            <router-link
+              :to="{
+                name: 'freezeprogress',
+                params: { money: renderData.thaw }
+              }"
+              class="left_line"
+              tag="div"
+            >
+              <b>{{ renderData.thaw }}</b>
+              <p>待解冻</p>
+            </router-link>
         </div>
       </div>
     </div>
@@ -45,7 +52,10 @@
     <div class="mineCommonMenuBox">
       <h3 class="mineTitle">常用菜单</h3>
       <div class="mineCommonMenuList">
-        <a href="javascript:;" @click="judgeRealNameAuth('certificationComplete')">
+        <a
+          href="javascript:;"
+          @click="judgeRealNameAuth('certificationComplete')"
+        >
           <img src="@/assets/images/certificationIcon.png" alt="实名认证" />
           <p>实名认证</p>
         </a>
@@ -90,7 +100,7 @@ import Footer from "@/components/footerNav/footer";
 import { MessageBox, Indicator, Toast } from "mint-ui";
 import { checkcerApi, checkbankcardApi, getInfo } from "@/api/mine";
 import response from "@/assets/js/response.js";
-import { fetchList,getThaw} from '@/api/index'
+import { fetchList, getThaw } from "@/api/index";
 export default {
   data() {
     return {
@@ -108,10 +118,10 @@ export default {
           userPhone: this.$store.state.user.uphone
         },
         info: {
-          requestType: 'personal', 
-          requestKeywords: 'getbusinfo', 
-          platformID: this.$store.state.user.pid, 
-          userID: this.$store.state.user.uid, 
+          requestType: "personal",
+          requestKeywords: "getbusinfo",
+          platformID: this.$store.state.user.pid,
+          userID: this.$store.state.user.uid,
           userPhone: this.$store.state.user.uphone
         },
         checkbankcardData: {
@@ -122,19 +132,19 @@ export default {
           userPhone: this.$store.state.user.uphone
         },
         thaw: {
-          requestType: 'thaw', 
-          requestKeywords: 'thawmoney', 
+          requestType: "thaw",
+          requestKeywords: "thawmoney",
           platformID: this.$store.state.user.pid,
           userID: this.$store.state.user.uid,
-          userPhone: this.$store.state.user.uphone,
+          userPhone: this.$store.state.user.uphone
         },
         listOne: {
-          requestType: 'personal',
-          requestKeywords: 'busincome',
+          requestType: "personal",
+          requestKeywords: "busincome",
           platformID: this.$store.state.user.pid,
           userID: this.$store.state.user.uid,
-          userPhone: this.$store.state.user.uphone,
-        },
+          userPhone: this.$store.state.user.uphone
+        }
       }
     };
   },
@@ -149,37 +159,37 @@ export default {
           checkbankcardApi(this.queryData.checkbankcardData).then(res => {
             if (res.data.responseStatus === 1) {
               Indicator.close();
-              this.$router.push({ name:url});
+              this.$router.push({ name: url });
             } else {
               Indicator.close();
               this.$router.push({ name: "certificationNext" });
             }
           });
-        } 
+        }
       });
     },
     listOne() {
       fetchList(this.queryData.listOne).then(res => {
-        this.renderData.listOneData = res.data
-      })
+        this.renderData.listOneData = res.data;
+      });
     },
-    thaw () {
-      getThaw( this.queryData.thaw ).then ( res => {
-        this.renderData.thaw = res.data.thawMoney
-      })
+    thaw() {
+      getThaw(this.queryData.thaw).then(res => {
+        this.renderData.thaw = res.data.thawMoney;
+      });
     },
-    info () {
-      getInfo(this.queryData.info).then( res => {
-        if( res.data.responseStatus === 1 ) {
-          this.renderData.info = res.data.data
+    info() {
+      getInfo(this.queryData.info).then(res => {
+        if (res.data.responseStatus === 1) {
+          this.renderData.info = res.data.data;
         }
-      })
+      });
     }
   },
-  created () {
-    this.listOne()
-    this.thaw()
-    this.info()
+  created() {
+    this.listOne();
+    this.thaw();
+    this.info();
   }
 };
 </script>
@@ -323,10 +333,10 @@ export default {
     }
   }
 }
-.mineHeaderHeader{
+.mineHeaderHeader {
   overflow: hidden;
-  padding:0 0 10px;
-  span{
+  padding: 0 0 10px;
+  span {
     float: left;
     display: block;
     width: 60px;
@@ -341,15 +351,15 @@ export default {
       height: 100%;
     }
   }
-  >p {
+  > p {
     font-size: 16px;
     color: #333;
     text-align: left;
     font-weight: bold;
     line-height: 22px;
-    padding-left:75px;
+    padding-left: 75px;
     &:first-of-type {
-      padding-top:8px;
+      padding-top: 8px;
     }
     em {
       background: #0096fe;

@@ -99,7 +99,7 @@ export default {
         font-size: 26px;
         line-height: 60px;
         color: #333;
-        padding-top: 35px;
+        padding-top: 20px;
     }
     > p {
         font-size: 14px;
@@ -112,15 +112,15 @@ export default {
     }
 }
 .itemTopTextMain {
-    padding-top: 30px;
+    padding-top: 20px;
     > p {
         font-size: 14px;
         line-height: 20px;
         font-weight: bold;
     }
     > div {
-        height: 60px;
-        line-height: 60px;
+        height:50px;
+        line-height:50px;
         input {
             border: none;
             background: none;

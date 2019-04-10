@@ -296,6 +296,12 @@ export default new Router({
       name: 'helpDetail',
       component: () =>
         import('@/views/helpCenter/helpDetail')
+    },
+    {
+      path: '/ApplyAgent', //申请代理
+      name: 'ApplyAgent',
+      component: () =>
+        import('@/views/ApplyAgent/index')
     }
   ]
 })

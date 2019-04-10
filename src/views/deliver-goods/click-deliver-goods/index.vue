@@ -9,17 +9,18 @@
             <span>发货</span>
         </div>
         <div class="express-info">
-            <div class="name">
+            <div class="name line_bottom">
                 <img src="@/assets/images/click-deliver-goods-name.png" alt="">
-                <el-input v-model="renderData.sub.name"></el-input>
+                <el-input v-model="renderData.sub.name" placeholder="请输入或选择快递名称"></el-input>
                 <router-link to="/express">常用快递</router-link>
             </div>
             <div class="odd-numbers">
                 <img src="@/assets/images/click-deliver-goods-odd-numbers.png" alt="">
-                <el-input v-model="renderData.sub.oddNumbers"></el-input>
+                <el-input v-model="renderData.sub.oddNumbers" placeholder="请输入或扫码终端码"></el-input>
                 <a href="">扫码录入</a>
             </div>
         </div>
+        <div class="interval"></div>
         <div class="terminal-num-list">
             <h3>终端号列表</h3>
             <van-pull-refresh
@@ -123,25 +124,28 @@
 
 <style>
 .click-deliver-goods .express-info {
-    margin-top: 1rem;
+    margin-top:40px;
 }
 .click-deliver-goods .express-info>div {
     overflow: hidden;
-    margin-top: .3rem;
-    padding: 0 .2rem;
+    /* margin-top: .3rem; */
+    padding: 0 .2rem; 
 }
-.click-deliver-goods .express-info div:first-child {
+/* .click-deliver-goods .express-info div:first-child {
     border-bottom: .01rem solid #ccc;
     padding-bottom: .2rem;
+} */
+.click-deliver-goods .express-info>div{
+    padding:10px 15px;
 }
 .click-deliver-goods .express-info img {
-    width: .5rem;
-    height: .5rem;
+    width:20px;
+    height:20px;
     padding: .1rem;
     border-radius: 50%;
     float: left;
     background-color: #409EFF;
-    margin-right: .3rem;
+    margin-top:5px;
 }
 .click-deliver-goods .express-info .el-input {
     width: 60%;

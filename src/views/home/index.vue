@@ -2,41 +2,64 @@
   <div class="index">
     <div class="isLogin">
       <div class="index-banner" v-if="islogin">
-        <img src="@/assets/images/index_banner.jpg" alt="">
+        <van-swipe @change="onChange">
+          <van-swipe-item
+            v-for="(item, index) in bannerListData"
+            v-bind:item="item"
+            v-bind:index="index"
+            v-bind:key="item.id"
+          >
+            <img
+              :src="item.picUrl"
+              @click="bannerDetailTap(item.id)"
+              alt="banner"
+            />
+          </van-swipe-item>
+          <div class="custom-indicator" slot="indicator">
+            {{ current + 1 }}/{{ bannerLength }}
+          </div>
+        </van-swipe>
       </div>
       <div class="login" v-else>
         <router-link to="/login">立即登录</router-link>
       </div>
     </div>
+    <div class="interval"></div>
     <div class="index-list1">
       <ul>
         <li>
           <div class="index-list1-img">
-            <img src="@/assets/images/index-list1-1.png" alt="">
+            <img src="@/assets/images/index-list1-1.png" alt="" />
           </div>
-          <div class="index-list1-text">{{renderData.listOneData.balance}}</div>
+          <div class="index-list1-text">
+            {{ renderData.listOneData.balance }}
+          </div>
           <div class="index-list1-explain">钱包余额</div>
         </li>
         <li>
           <div class="index-list1-img">
-            <img src="@/assets/images/index-list1-2.png" alt="">
+            <img src="@/assets/images/index-list1-2.png" alt="" />
           </div>
-          <div class="index-list1-text">{{renderData.listOneData.curentmonth}}</div>
+          <div class="index-list1-text">
+            {{ renderData.listOneData.curentmonth }}
+          </div>
           <div class="index-list1-explain">当月赚钱</div>
         </li>
         <li>
           <div class="index-list1-img">
-            <img src="@/assets/images/index-list1-3.png" alt="">
+            <img src="@/assets/images/index-list1-3.png" alt="" />
           </div>
-          <div class="index-list1-text">{{renderData.listOneData.total}}</div>
+          <div class="index-list1-text">{{ renderData.listOneData.total }}</div>
           <div class="index-list1-explain">总赚钱</div>
         </li>
         <li>
-          <router-link :to="{name: 'freezeprogress', params: {money: renderData.thaw} }">
+          <router-link
+            :to="{ name: 'freezeprogress', params: { money: renderData.thaw } }"
+          >
             <div class="index-list1-img">
-              <img src="@/assets/images/index-list1-4.png" alt="">
+              <img src="@/assets/images/index-list1-4.png" alt="" />
             </div>
-            <div class="index-list1-text">{{renderData.thaw}}</div>
+            <div class="index-list1-text">{{ renderData.thaw }}</div>
             <div class="index-list1-explain">待解冻</div>
           </router-link>
         </li>
@@ -54,14 +77,14 @@
       </div> -->
       <div class="index-notice-profit">
         <router-link to="/financialDetails" style="display:block;">
-        <h3>
-          <img src="@/assets/images/index-notice-profit-img.png" alt="">
-        </h3>
-        <p>
-          今日收益
-          <em>+1000.00</em>
-        </p>
-        <span></span>
+          <h3>
+            <img src="@/assets/images/index-notice-profit-img.png" alt="" />
+          </h3>
+          <p>
+            今日收益
+            <em>+1000.00</em>
+          </p>
+          <span></span>
         </router-link>
       </div>
     </div>
@@ -69,7 +92,9 @@
       <ul>
         <li>
           <div class="img">
-             <router-link to="/bindingMplements"><img src="@/assets/images/index-list2-img1.png" alt=""></router-link>
+            <router-link to="/bindingMplements"
+              ><img src="@/assets/images/index-list2-img1.png" alt=""
+            /></router-link>
           </div>
           <div class="text">
             <router-link to="/bindingMplements">绑定机具</router-link>
@@ -77,7 +102,9 @@
         </li>
         <li>
           <div class="img">
-            <router-link to="/myTerminal"><img src="@/assets/images/index-list2-img2.png" alt=""></router-link>
+            <router-link to="/myTerminal"
+              ><img src="@/assets/images/index-list2-img2.png" alt=""
+            /></router-link>
           </div>
           <div class="text">
             <router-link to="/myTerminal">我的终端</router-link>
@@ -85,7 +112,7 @@
         </li>
         <li>
           <div class="img">
-            <img src="@/assets/images/index-list2-img3.png" alt="">
+            <img src="@/assets/images/index-list2-img3.png" alt="" />
           </div>
           <div class="text">
             <a href="">申请代理</a>
@@ -95,7 +122,7 @@
           <div class="img">
             <!-- <router-link to="/mall"><img src="@/assets/images/index-list2-img5.png" alt=""></router-link> -->
             <router-link to="/mall">
-              <img src="@/assets/images/index-list2-img5.png" alt="">
+              <img src="@/assets/images/index-list2-img5.png" alt="" />
             </router-link>
           </div>
           <div class="text">
@@ -104,7 +131,9 @@
         </li>
         <li>
           <div class="img">
-            <router-link to="/financialDetails"><img src="@/assets/images/index-list2-img6.png" alt=""></router-link>
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
           </div>
           <div class="text">
             <router-link to="/financialDetails">收益明细</router-link>
@@ -112,7 +141,9 @@
         </li>
         <li>
           <div class="img">
-            <router-link to="/myMerchants"><img src="@/assets/images/index-list2-img7.png" alt=""></router-link>
+            <router-link to="/myMerchants"
+              ><img src="@/assets/images/index-list2-img7.png" alt=""
+            /></router-link>
           </div>
           <div class="text">
             <router-link to="/myMerchants">组织架构</router-link>
@@ -128,7 +159,9 @@
         </li> -->
         <li>
           <div class="img">
-             <router-link to="/deliverGoods"><img src="@/assets/images/index-list2-img4.png" alt=""></router-link>
+            <router-link to="/deliverGoods"
+              ><img src="@/assets/images/index-list2-img4.png" alt=""
+            /></router-link>
           </div>
           <div class="text">
             <router-link to="/deliverGoods">订单管理</router-link>
@@ -141,66 +174,96 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { fetchList,getThaw} from '@/api/index'
-  import response from '@/assets/js/response.js'
-  import Footer from '@/components/footerNav/footer'
-  export default {
-    data() {
-      return {
-        renderData: {
-          listOneData: {},
-          thaw: ""
+import { mapGetters } from "vuex";
+import { fetchList, getThaw, getBanner } from "@/api/index";
+import response from "@/assets/js/response.js";
+import Footer from "@/components/footerNav/footer";
+export default {
+  data() {
+    return {
+      current: 0,
+      bannerLength: 0,
+      bannerListData: {},
+      renderData: {
+        listOneData: {},
+        thaw: ""
+      },
+      queryData: {
+        listOne: {
+          requestType: "personal",
+          requestKeywords: "busincome",
+          platformID: this.$store.state.user.pid,
+          userID: this.$store.state.user.uid,
+          userPhone: this.$store.state.user.uphone
         },
-        queryData: {
-          listOne: {
-            requestType: 'personal',
-            requestKeywords: 'busincome',
-            platformID: this.$store.state.user.pid,
-            userID: this.$store.state.user.uid,
-            userPhone: this.$store.state.user.uphone,
-          },
-          thaw: {
-            requestType: 'thaw', 
-            requestKeywords: 'thawmoney', 
-            platformID: this.$store.state.user.pid,
-            userID: this.$store.state.user.uid,
-            userPhone: this.$store.state.user.uphone,
-          }
+        thaw: {
+          requestType: "thaw",
+          requestKeywords: "thawmoney",
+          platformID: this.$store.state.user.pid,
+          userID: this.$store.state.user.uid,
+          userPhone: this.$store.state.user.uphone
+        },
+        bannerData: {
+          requestType: "list",
+          requestKeywords: "advertis",
+          types: "syl",
+          platformID: this.$store.state.user.pid
         }
       }
+    };
+  },
+  components: {
+    Footer
+  },
+  computed: {
+    ...mapGetters(["islogin"])
+  },
+  methods: {
+    listOne() {
+      fetchList(this.queryData.listOne).then(res => {
+        this.renderData.listOneData = res.data;
+      });
     },
-     components:{
-       Footer  
+    thaw() {
+      getThaw(this.queryData.thaw).then(res => {
+        this.renderData.thaw = res.data.thawMoney;
+      });
     },
-    computed: {
-      ...mapGetters([
-        'islogin'
-      ])
+    bannerList() {
+      getBanner(this.queryData.bannerData).then(res => {
+        // console.log(res);
+        this.bannerLength = res.data.data.length;
+        this.bannerListData = res.data.data; 
+      });
     },
-    methods: {
-      listOne() {
-        fetchList(this.queryData.listOne).then(res => {
-          this.renderData.listOneData = res.data
-        })
-      },
-      thaw () {
-        getThaw( this.queryData.thaw ).then ( res => {
-          this.renderData.thaw = res.data.thawMoney
-        })
-      }
-    },
-    created() {
-      this.listOne()
-      this.thaw()
-      // this.test1()
+    //banner图详情页
+    bannerDetailTap(id){
+      //console.log(id);
+      alert('banner图详情正在建设中');
     }
+  },
+  created() {
+    this.listOne();
+    this.thaw();
+    // this.test1()
+    this.bannerList();
   }
+};
 </script>
 
 
 <style>
-  html {
-    background:#fff;
+html {
+  background: #fff;
+}
+.custom-indicator {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 </style>

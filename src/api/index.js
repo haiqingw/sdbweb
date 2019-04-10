@@ -24,6 +24,14 @@ export function getThaw(data) {
   })
 }
 
+export function getBanner(data) {
+  return request({
+    url: process.env.BASE_API,
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+
 
 
 

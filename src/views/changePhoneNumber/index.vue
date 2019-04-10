@@ -10,7 +10,7 @@
             <img
                 src="@/assets/images/return.png" alt="" 
                 @click="$router.go(-1)"/>
-            <span>跟换手机号</span>
+            <span>更换手机号</span>
         </div>
         <!-- body -->
         <div class="changePhoneMain">

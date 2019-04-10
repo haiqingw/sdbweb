@@ -100,14 +100,16 @@
     border: .01rem solid #f1f1f1;
     box-sizing: border-box;
     text-align: center;
+    padding-top:0.2rem;
 }
 .express .express-list ul li span {
     font-size: .3rem;
-    padding: .3rem 0 .5rem 0;
+    padding: .1rem 0 .3rem 0;
     display: block;
+    font-size:.3rem;
 }
 .express .express-list img {
-    width: 2rem;
+    width: 1rem;
 }
 </style>
 

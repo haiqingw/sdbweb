@@ -215,16 +215,17 @@ export default {
 }
 .myOrderListMain {
     padding: 90px 15px 15px;
-    // background: #f1f1f1;
-    background: #fff;
+    background: #f1f1f1;
+    // background: #fff;
 }
 .myOrderItem {
-    background: #fff;
+    background: rgb(31, 23, 23);
     padding: 0 15px;
     border-radius: 6px;
     position: relative;
     overflow: hidden;
     margin-bottom: 15px;
+    background:#fff;
     a{
         color:#333;
     }

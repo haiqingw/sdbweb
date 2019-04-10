@@ -179,7 +179,10 @@ export default {
     padding: .2rem 0;
     span {
       float: left;
-      line-height: 18px;
+      line-height: 34px;
+      font-size:34px;
+      position: relative;
+      top: -13px;
     }
   }
 }

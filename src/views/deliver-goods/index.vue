@@ -192,13 +192,23 @@
 </script>
 
 <style>
-.deliver-goods .deliver-goods-choice {
-    margin-top: .8rem;
+.el-tabs__header{
+    position: fixed;
+    width:100%;
+    left:0;
+    top:13px;
+    z-index:9;
+    background:#fff;
+}
+.el-tabs__content{
+    padding-top:70px;
+}
+.deliver-goods-choice{
+    margin-top:12px;
 }
 .deliver-goods .deliver-goods-choice .el-tabs__nav {
     width: 100%;
     text-align: center;
-    margin-top: -.4rem;
 }
 .deliver-goods .deliver-goods-choice .el-tabs__nav .el-tabs__item {
     width: 50%;
@@ -252,7 +262,7 @@
 }
 .no-deliver-goods-list ul li .btn {
     overflow: hidden;
-    padding: 0 .1rem;
+    padding-left:.2rem;
     line-height: 0.7rem;
     color: #fff;
     background-color: #089cfe;
@@ -263,6 +273,8 @@
 .no-deliver-goods-list ul li .btn a {
     float: right;
     color: #fff;
+    padding:0 .2rem;
+    background:#4cb5fb;
 }
 .yes-deliver-goods-list ul li .express-name {
     line-height: .4rem;

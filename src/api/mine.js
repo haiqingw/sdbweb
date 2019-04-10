@@ -25,3 +25,11 @@ export function getInfo (data) {
     data: qs.stringify(data)
   })
 }
+
+export function getAbout(data) {
+  return request({
+    url: process.env.BASE_API,
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

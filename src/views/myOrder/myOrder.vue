@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="myOrder">
         <!-- header -->
          <div class="return">
             <img
@@ -187,30 +187,30 @@ export default {
     top: 40px;
     z-index: 9999;
 }
-.myOrderNavMain .el-radio-group {
+.myOrder .myOrderNavMain .el-radio-group {
     display: block;
 }
-.myOrderNavMain .el-radio-button--medium .el-radio-button__inner {
+.myOrder .myOrderNavMain .el-radio-button--medium .el-radio-button__inner {
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
 }
-.myOrderNavMain .el-radio-button,
+.myOrder .myOrderNavMain .el-radio-button,
 .el-radio-button__inner {
     width: 20%;
 }
-.myOrderNavMain .el-radio-button:first-child .el-radio-button__inner {
+.myOrder .myOrderNavMain .el-radio-button:first-child .el-radio-button__inner {
     border-radius: 0;
     border: none;
 }
-.myOrderNavMain .el-radio-button:last-child .el-radio-button__inner {
+.myOrder .myOrderNavMain .el-radio-button:last-child .el-radio-button__inner {
     border-radius: 0;
 }
-.myOrderNavMain .el-radio-button__inner {
+.myOrder.myOrderNavMain .el-radio-button__inner {
     border: none;
     border-left: 1px solid #f1f1f1;
 }
-.myOrderNavMain .el-radio-group {
+.myOrder .myOrderNavMain .el-radio-group {
     border-bottom: 1px solid #f1f1f1;
 }
 .myOrderListMain {

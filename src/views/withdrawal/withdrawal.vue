@@ -20,55 +20,21 @@
             <div class="withdrawalHeader">
                 <div class="withdrawalTip"><img src="../../assets/images/pointLeftIcon.png">左右滑动切换提现方式<img src="../../assets/images/pointRightIcon.png"></div>
                 <mt-swipe @change="handleChange" :auto="0">
-                    <mt-swipe-item>
+                    <mt-swipe-item v-for="(item,index) in renderData.balanceList" :key="index">
                         <div class="mtSwipeItem">
-                            <h3>交易分润</h3>
+                            <h3>{{item.types}}</h3>
                             <p>
-                                <i>￥</i>10.00</p>
+                                <i>￥</i>{{item.money}}</p>
                             <div class="flex">
                                 <span>
                                     可提现：
-                                    <b>9.00</b>
+                                    <b>{{item.ktx}}</b>
                                 </span>
                                 <em>
-                                    结算方式：秒结
+                                    结算方式：{{item.method}}
                                 </em>
                             </div>
-                            <a href="javascript:;">全部提现</a>
-                        </div>
-                    </mt-swipe-item>
-                    <mt-swipe-item>
-                        <div class="mtSwipeItem">
-                            <h3>激活返现</h3>
-                            <p>
-                                <i>￥</i>88.00</p>
-                            <div class="flex">
-                                <span>
-                                    可提现：
-                                    <b>9.00</b>
-                                </span>
-                                <em>
-                                    结算方式：秒结
-                                </em>
-                            </div>
-                            <a href="javascript:;">全部提现</a>
-                        </div>
-                    </mt-swipe-item>
-                    <mt-swipe-item>
-                        <div class="mtSwipeItem">
-                            <h3>招商奖励</h3>
-                            <p>
-                                <i>￥</i>99.00</p>
-                            <div class="flex">
-                                <span>
-                                    可提现：
-                                    <b>9.00</b>
-                                </span>
-                                <em>
-                                    结算方式：秒结
-                                </em>
-                            </div>
-                            <a href="javascript:;">全部提现</a>
+                            <a href="javascript:;" @click="allWithdrawal">全部提现</a>
                         </div>
                     </mt-swipe-item>
                 </mt-swipe>
@@ -79,7 +45,7 @@
                 <div class="withdrawalMoney">
                     <h3 class="withdrawalTitle">提现金额</h3>
                     <div class="line_bottom">
-                        <input type="tel" placeholder="请输入提现金额">
+                        <input v-model="queryData.cashWithdrawal.money" type="tel" placeholder="请输入提现金额">
                     </div>
                 </div>
                 <!-- 提现账户信息 -->
@@ -99,19 +65,66 @@
         </div>
         <!-- 确认提现 -->
         <div class="footerBtnMain">
-            <mt-button type="primary">确认提现</mt-button>
+            <mt-button type="primary" @click="confirmCashWithdrawal">确认提现</mt-button>
         </div>
     </div>
 </template>
 <script>
+import {getBalanceList, getCashWithdrawal} from '@/api/withdrawal'
+import { Toast } from 'mint-ui'
 export default {
     data() {
-        return {};
+        return {
+            renderData: {
+                balanceList: []
+            },
+            queryData: {
+                balanceList: {
+                    requestType: 'spendinginto',
+                    requestKeywords: 'cashbalance', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                cashWithdrawal: {
+                    requestType: 'spendinginto',
+                    requestKeywords:'drawcash', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    money: "",
+                    payType: ""
+                }
+            }
+        };
     },
     methods: {
         handleChange(index) {
-            console.log(index);
+            // console.log(index);
+        },
+        balanceList () {
+            getBalanceList(this.queryData.balanceList).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.balanceList = res.data.data
+                }
+            })
+        },
+        allWithdrawal() {
+            console.log("全部提现")
+        },
+        confirmCashWithdrawal() {
+            const reg =  /^[0-9]+\.?[0-9]*$/;
+            if( this.queryData.cashWithdrawal.money.trim() == "" ) {
+                Toast('请输入提现金额')
+            } else if( reg.test( this.queryData.cashWithdrawal.money ) ) {
+                Toast('成功')
+            } else {
+                Toast('请输入正确的提现金额')
+            }
         }
+    },
+    created () {
+        this.balanceList()
     }
 };
 </script>

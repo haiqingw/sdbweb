@@ -95,7 +95,7 @@ export default {
   data() {
     return {
       renderData: {
-        thaw: {},
+        thaw: "",
         listOneData: {},
         info: {}
       },
@@ -172,7 +172,6 @@ export default {
       getInfo(this.queryData.info).then( res => {
         if( res.data.responseStatus === 1 ) {
           this.renderData.info = res.data.data
-          console.log(this.renderData.info)
         }
       })
     }
@@ -304,6 +303,7 @@ export default {
 }
 .mineCommonMenuList {
   padding: 0 15px;
+  overflow: hidden;
   a {
     display: block;
     width: 25%;

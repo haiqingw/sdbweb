@@ -150,7 +150,7 @@
       return {
         renderData: {
           listOneData: {},
-          thaw: {}
+          thaw: ""
         },
         queryData: {
           listOne: {

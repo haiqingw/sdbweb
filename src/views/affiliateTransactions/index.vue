@@ -191,23 +191,26 @@ export default {
 .quickScreeningNav {
   width: 100%;
 }
-.quickScreeningNav .el-radio-group {
+.affiliateTransactionsMain .quickScreeningNav .el-radio-group {
   overflow: hidden;
   display: block;
   text-align: center;
 }
-
-.quickScreeningNav .el-radio-group .el-radio-button span {
-  padding: .1rem .2rem;
+.affiliateTransactionsMain .quickScreeningNav .el-radio-group .el-radio-button {
   margin: 0 .1rem;
+}
+.affiliateTransactionsMain .quickScreeningNav .el-radio-group .el-radio-button span {
+  padding: .1rem .2rem;
   border-radius: 0;
   background-color: transparent;
   border: 1px solid #fff;
   color: #fff;
   line-height: .2rem;
+  width: 100%;
+  height: 100%;
   display: block;
 }
-.quickScreeningNav .el-radio-group .el-radio-button.is-active span {
+.affiliateTransactionsMain .quickScreeningNav .el-radio-group .el-radio-button.is-active span {
   background: #fff;
   color: #089cfe;
 }

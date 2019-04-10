@@ -82,6 +82,7 @@
 </template>
 <script>
     import { getWithdrawalList } from '@/api/withdrawal'
+    import response from '@/assets/js/response.js'
 export default {
     data() {
         return {
@@ -98,9 +99,9 @@ export default {
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 0,
-                    limit: '20',
+                    // limit: '20',
                     types: 'T',
-                    stypes: 'T'
+                    stypes: 'TX'
                 }
             },
             renderData: {
@@ -113,7 +114,7 @@ export default {
         onLoadList () {
             // console.log("进来", this.queryData.list.page)
             this.queryData.list.page++
-            // this.isUpLoading = true
+            this.isUpLoading = true
             // console.log(this.queryData.list.page)
             this.withdrawalList()
         },

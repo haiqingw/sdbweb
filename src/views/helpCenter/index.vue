@@ -20,38 +20,20 @@
       </div>
     </div>
     <div class="helpCenterBodyMain" v-if="isData">
-      <div class="oneLevelTitle">
-        <span>提现问题</span>
-      </div>
-      <div class="listViewMain">
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
+      <div v-for="item in renderData.list" :key="item.classUrl">
+        <div class="oneLevelTitle">
+          <span>{{item.class}}</span>
         </div>
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
-        </div>
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
-        </div>
-      </div>
-      <div class="oneLevelTitle">
-        <span>提现问题</span>
-      </div>
-      <div class="listViewMain">
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
-        </div>
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
-        </div>
-        <div class="listViewItem line_bottom">
-          <img src="@/assets/images/logoSmallImg.jpg" />
-          <span>放假看电视剧发了绝对是辣椒粉</span>
+        <div class="listViewMain">
+          <router-link 
+            tag="div" 
+            class="listViewItem line_bottom" 
+            v-for="i in item.list" :key="i.id"
+            :to="{name: 'helpDetail', params: { id: i.id } }"
+          >
+            <img :src="i.helpUrl" />
+            <span>{{i.title}}</span>
+          </router-link>
         </div>
       </div>
     </div>

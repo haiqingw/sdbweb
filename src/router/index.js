@@ -292,7 +292,7 @@ export default new Router({
         import('@/views/helpCenter')
     },
     {
-      path: '/helpDetail', //帮助中心详情
+      path: '/helpDetail/:id', //帮助中心详情
       name: 'helpDetail',
       component: () =>
         import('@/views/helpCenter/helpDetail')

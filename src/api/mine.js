@@ -17,3 +17,11 @@ export function checkbankcardApi(data) { //判断是否绑定银行卡
     data: qs.stringify(data)
   })
 }
+
+export function getInfo (data) {
+  return request({
+    url: process.env.BASE_API,
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

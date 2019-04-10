@@ -13,10 +13,10 @@
         <div class="mineHeaderHeader">
           <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"/></span>
           <p>
-            {{$store.state.user.uname}}
+            {{renderData.info.busname}}
             <em>股东</em>
           </p>
-          <p>13296905340</p>
+          <p>{{renderData.info.phone}}</p>
         </div>
         <div class="mineHeaderBody flex">
           <div>
@@ -88,7 +88,7 @@
 <script>
 import Footer from "@/components/footerNav/footer";
 import { MessageBox, Indicator, Toast } from "mint-ui";
-import { checkcerApi, checkbankcardApi } from "@/api/mine";
+import { checkcerApi, checkbankcardApi, getInfo } from "@/api/mine";
 import response from "@/assets/js/response.js";
 import { fetchList,getThaw} from '@/api/index'
 export default {
@@ -97,6 +97,7 @@ export default {
       renderData: {
         thaw: {},
         listOneData: {},
+        info: {}
       },
       queryData: {
         checkcerData: {
@@ -104,6 +105,13 @@ export default {
           requestKeywords: "checkcer",
           userID: this.$store.state.user.uid,
           platformID: this.$store.state.user.pid,
+          userPhone: this.$store.state.user.uphone
+        },
+        info: {
+          requestType: 'personal', 
+          requestKeywords: 'getbusinfo', 
+          platformID: this.$store.state.user.pid, 
+          userID: this.$store.state.user.uid, 
           userPhone: this.$store.state.user.uphone
         },
         checkbankcardData: {
@@ -162,11 +170,20 @@ export default {
       getThaw( this.queryData.thaw ).then ( res => {
         this.renderData.thaw = res.data.thawMoney
       })
+    },
+    info () {
+      getInfo(this.queryData.info).then( res => {
+        if( res.data.responseStatus === 1 ) {
+          this.renderData.info = res.data.data
+          console.log(this.renderData.info)
+        }
+      })
     }
   },
   created () {
     this.listOne()
     this.thaw()
+    this.info()
   }
 };
 </script>

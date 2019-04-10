@@ -45,7 +45,7 @@
     <div class="mineCommonMenuBox">
       <h3 class="mineTitle">常用菜单</h3>
       <div class="mineCommonMenuList">
-        <a href="javascript:;" @click="judgeRealNameAuth('certification')">
+        <a href="javascript:;" @click="judgeRealNameAuth('certificationComplete')">
           <img src="@/assets/images/certificationIcon.png" alt="实名认证" />
           <p>实名认证</p>
         </a>
@@ -149,16 +149,13 @@ export default {
           checkbankcardApi(this.queryData.checkbankcardData).then(res => {
             if (res.data.responseStatus === 1) {
               Indicator.close();
-              this.$router.push({ name: "certificationComplete" });
+              this.$router.push({ name:url});
             } else {
               Indicator.close();
               this.$router.push({ name: "certificationNext" });
             }
           });
-        } else {
-          Indicator.close();
-          this.$router.push({ name: url });
-        }
+        } 
       });
     },
     listOne() {

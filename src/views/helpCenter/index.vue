@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import { getTop, getList } from '@/api/helpCenter'
+import { getServer } from '@/api/index'
 export default {
   data() {
     return {
@@ -73,14 +73,14 @@ export default {
   },
   methods: {
     top () {
-      getTop(this.queryData.top).then( res => {
+      getServer(this.queryData.top).then( res => {
         if( res.data.responseStatus === 1 ) {
           this.renderData.top = res.data.content
         }
       })
     },
     list () {
-      getList(this.queryData.list).then( res => {
+      getServer(this.queryData.list).then( res => {
         if( res.data.responseStatus === 1 ) {
             this.isData = true
             this.renderData.list = res.data.data

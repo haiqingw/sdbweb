@@ -48,7 +48,7 @@
 
 
 <script>
-    import {getListDetails} from '@/api/invitationRecord'
+    import {getServer} from '@/api/index'
     import response from '@/assets/js/response.js'
     export default {
         data () {
@@ -95,7 +95,7 @@
                 this.listDetails();
             },
             listDetails () {
-                getListDetails(this.queryData.list).then( res => {
+                getServer(this.queryData.list).then( res => {
                     console.log(response[res.data.responseStatus])
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true

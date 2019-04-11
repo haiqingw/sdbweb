@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import { getAbout } from "@/api/mine";
+import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 export default {
   data() {
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     aboutFn() {
-      getAbout(this.queryData).then(res => {
+      getServer(this.queryData).then(res => {
          console.log(res);
         if (res.data.responseStatus === 1) {
           this.contentData = res.data.content;

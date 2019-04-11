@@ -72,7 +72,7 @@
     </div>
 </template>
 <script>
-import {getMyOrderList} from "@/api/my-order"
+import {getServer} from "@/api/index"
 import response from '@/assets/js/response.js'
 export default {
     data() {
@@ -142,7 +142,7 @@ export default {
         },
         myOrderList () {
             // console.log(this.queryData.list)
-            getMyOrderList(this.queryData.list).then( res => {
+            getServer(this.queryData.list).then( res => {
                 // console.log(response[res.data.responseStatus])
                 if( res.data.responseStatus === 1 ) {
                     this.isData = true

@@ -169,7 +169,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { fetchList, getThaw, getBanner } from "@/api/index";
+import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
 export default {
@@ -214,17 +214,17 @@ export default {
   },
   methods: {
     listOne() {
-      fetchList(this.queryData.listOne).then(res => {
+      getServer(this.queryData.listOne).then(res => {
         this.renderData.listOneData = res.data;
       });
     },
     thaw() {
-      getThaw(this.queryData.thaw).then(res => {
+      getServer(this.queryData.thaw).then(res => {
         this.renderData.thaw = res.data.thawMoney;
       });
     },
     bannerList() {
-      getBanner(this.queryData.bannerData).then(res => {
+      getServer(this.queryData.bannerData).then(res => {
         // console.log(res);
         this.bannerLength = res.data.data.length;
         this.bannerListData = res.data.data; 

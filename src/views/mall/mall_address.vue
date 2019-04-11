@@ -41,7 +41,7 @@
     </div>
 </template>
 <script>
-import { getAddressList, getDeleteAddress, getSetDefault } from '@/api/mall'
+import { getServer} from '@/api/index'
 import { MessageBox, Toast } from 'mint-ui'
 import response from '@/assets/js/response.js'
 export default {
@@ -77,7 +77,7 @@ export default {
     },
     methods: {
         addressList () {
-            getAddressList(this.queryData.addressList).then( res => {
+            getServer(this.queryData.addressList).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.addressList = res.data.data
                 }
@@ -87,7 +87,7 @@ export default {
             this.queryData.deleteAddress.id = id
             MessageBox.confirm('您确定要删除该地址吗?', '删除')
                 .then(action => {
-                    getDeleteAddress(this.queryData.deleteAddress).then( res => {
+                    getServer(this.queryData.deleteAddress).then( res => {
                         console.log(response[res.data.responseStatus])
                         if( res.data.responseStatus === 1 ) {
                             Toast("删除地址成功")
@@ -104,7 +104,7 @@ export default {
             this.queryData.setDefault.id = id
             MessageBox.confirm('您确定要将该地址设为默认吗?', '设为默认')
                 .then(action => {
-                    getSetDefault(this.queryData.setDefault).then( res => {
+                    getServer(this.queryData.setDefault).then( res => {
                         // console.log(response[res.data.responseStatus])
                         if( res.data.responseStatus === 1 ) {
                             Toast("设为默认成功")

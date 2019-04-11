@@ -60,7 +60,7 @@
     </div>
 </template>
 <script>
-import { getMall_payOrder, getMall_payListDetail } from '@/api/mall'
+import { getServer } from '@/api/index'
 
 export default {
     name: "mall_pay",
@@ -90,7 +90,7 @@ export default {
     },
     methods: {
         mall_payListDetail () {
-            getMall_payListDetail(this.queryData.listDetail).then( res => {
+            getServer(this.queryData.listDetail).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.listDetail = res.data.data
                 }

@@ -112,7 +112,7 @@
 
 
 <script>
-    import {getDeliverGoodsList} from '@/api/deliver-goods'
+    import {getServer} from '@/api/index'
     export default {
         data () {
             return {
@@ -164,7 +164,7 @@
                 this.deliverGoodsList()
             },
             deliverGoodsList () {
-                getDeliverGoodsList(this.queryData.list).then( res => {
+                getServer(this.queryData.list).then( res => {
                     // console.log(res.data.data)
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true

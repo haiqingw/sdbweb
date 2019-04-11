@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import { getMsgDetails } from '@/api/msg'
+    import { getServer } from '@/api/index'
     import { Indicator } from 'mint-ui'
     export default {
         data () {
@@ -46,7 +46,7 @@
         methods: {
             mgDetails () {
                 Indicator.open()
-                getMsgDetails(this.queryData.msgDetails).then( res => {
+                getServer(this.queryData.msgDetails).then( res => {
                     if(res.data.responseStatus === 1) {
                         Indicator.close()
                         // console.log(res)

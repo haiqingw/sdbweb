@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-import { getDetail } from '@/api/helpCenter'
+import { getServer } from '@/api/index'
 export default {
   data() {
     return {
@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     detail() {
-      getDetail(this.queryData.detail).then( res => {
+      getServer(this.queryData.detail).then( res => {
         if( res.data.responseStatus === 1 ) {
           res.data.data.content = res.data.data.content.replace(/<[^>]+>/g,"");
           this.renderData.detail = res.data.data

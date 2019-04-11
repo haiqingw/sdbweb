@@ -47,7 +47,7 @@
 <script>
 import response from "@/assets/js/response.js";
 import { MessageBox, Toast } from "mint-ui";
-import { profitList } from "@/api/profit";
+import { getServer } from "@/api/index";
 export default {
     data() {
         return {

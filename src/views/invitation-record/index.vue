@@ -56,7 +56,7 @@
 </template>
 
 <script>
-    import {getInvitationRecordList, getInvitationRecordListTop} from '@/api/invitationRecord'
+    import {getServer} from '@/api/index'
     import response from '@/assets/js/response.js'
     export default {
         data () {
@@ -107,7 +107,7 @@
                 this.invitationRecordList();
             },
             invitationRecordList () {
-                getInvitationRecordList (this.queryData.list).then( res => {
+                getServer (this.queryData.list).then( res => {
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true
                         this.renderData.list = res.data.data
@@ -127,7 +127,7 @@
                 })
             },
             invitationRecordListTop () {
-                getInvitationRecordListTop (this.queryData.top).then( res => {
+                getServer (this.queryData.top).then( res => {
                     if( res.data.responseStatus === 1 ) {
                         this.renderData.top = res.data
                     }

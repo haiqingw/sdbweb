@@ -1,7 +1,7 @@
 
 
 
-import {login} from '@/api/login'
+import {getServer} from '@/api/index'
 import { resolve } from 'url';
 import response from '@/assets/js/response.js'
 import { Indicator, Toast } from 'mint-ui';
@@ -47,7 +47,7 @@ const user = {
                 password: userInfo.password
             }
             return new Promise( (resolve, reject) => {
-                login(queryData).then( res => {
+                getServer(queryData).then( res => {
                     // console.log(response[res.data.responseStatus])
                     const data = res.data
                     if(data.responseStatus === 1) {

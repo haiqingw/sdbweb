@@ -81,11 +81,7 @@
   </div>
 </template>
 <script>
-import {
-  getMallBanner,
-  getPopularProduct,
-  getProductIndexList
-} from "@/api/mall";
+import { getServer } from "@/api/index";
 export default {
   data() {
     return {
@@ -124,7 +120,7 @@ export default {
   },
   methods: {
     mallBanner() {
-      getMallBanner(this.queryData.banner).then(res => {
+      getServer(this.queryData.banner).then(res => {
         if (res.data.responseStatus === 1) {
           this.renderData.banner = res.data.data;
           this.bannerLength = res.data.data.length;
@@ -132,14 +128,14 @@ export default {
       });
     },
     popularProduct() {
-      getPopularProduct(this.queryData.popular).then(res => {
+      getServer(this.queryData.popular).then(res => {
         if (res.data.responseStatus === 1) {
           this.renderData.popular = res.data.data;
         }
       });
     },
     productIndexList() {
-      getProductIndexList(this.queryData.productIndexList).then(res => {
+      getServer(this.queryData.productIndexList).then(res => {
         if (res.data.responseStatus === 1) {
           this.renderData.productIndexList = res.data.data;
         }

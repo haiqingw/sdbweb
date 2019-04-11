@@ -42,7 +42,7 @@
 </template>
 <script>
 import { Toast } from "mint-ui";
-import { realName, bankName, modifyBankCard } from "@/api/modify";
+import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 export default {
     data() {
@@ -74,7 +74,7 @@ export default {
     methods: {
         // 获取真实姓名
         getRealName() {
-            realName(this.queryData.realnameData).then(res => {
+            getServer(this.queryData.realnameData).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.realName = res.data.data.name;
                 }
@@ -82,7 +82,7 @@ export default {
         },
         // 获取所属行
         getBankName() {
-            bankName(this.queryData.bankNameData).then(res => {
+            getServer(this.queryData.bankNameData).then(res => {
                 if (res.data.responseStatus === 1) {
                     if (res.data.bankName == "未知") {
                         Toast({
@@ -115,7 +115,7 @@ export default {
             }
             this.queryData.modifyData.bankName = this.$refs.refBankName.value; 
             console.log(this.queryData.modifyData);
-            modifyBankCard(this.queryData.modifyData).then(res => {
+            getServer(this.queryData.modifyData).then(res => {
                 if (res.data.responseStatus === 1) {
                     Toast({
                         message: "修改成功",

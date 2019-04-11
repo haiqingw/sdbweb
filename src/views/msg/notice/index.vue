@@ -39,7 +39,7 @@
 
 
 <script>
-    import {msgList} from '@/api/msg'
+    import {getServer} from '@/api/index'
     import { Indicator, Toast } from 'mint-ui'
     import response from '@/assets/js/response.js'
     export default {
@@ -64,7 +64,7 @@
         methods: {
             msgNoticeListFunc () {
                 Indicator.open()
-                msgList(this.queryData.msgNoticeList).then( res => {
+                getServer(this.queryData.msgNoticeList).then( res => {
                     // Toast(response[res.data.responseStatus])
                     if( res.data.responseStatus === 1 ) {
                         Indicator.close();

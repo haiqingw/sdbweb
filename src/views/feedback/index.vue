@@ -36,7 +36,7 @@
 </template>
 <script>
 import { Toast } from "mint-ui";
-import { servicePhone, feedbackFn } from "@/api/modify";
+import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 export default {
     data() {
@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         customerPhone() {
-            servicePhone(this.queryData.phone).then(res => {
+            getServer(this.queryData.phone).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.customerservicetelephone = res.data.content;
                 }
@@ -75,7 +75,7 @@ export default {
                 Toast("请填写反馈内容后提交");
                 return;
             }
-            feedbackFn(this.queryData.feedback).then(res => {
+            getServer(this.queryData.feedback).then(res => {
                 if (res.data.responseStatus === 1) {
                     Toast({message:"提交成功,感谢您的反馈！",duration:1000});
                     setTimeout(() => {

@@ -39,7 +39,7 @@
 
 
 <script>
-import { messagemanage } from "@/api/msg";
+import { getServer } from "@/api/index";
 import { Indicator, Toast } from "mint-ui";
 import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
@@ -66,7 +66,7 @@ export default {
     methods: {
         msgClassificationFun() {
             Indicator.open();
-            messagemanage(this.queryData.msgClassification).then(res => {
+            getServer(this.queryData.msgClassification).then(res => {
                 if (res.data.responseStatus === 1) {
                     Indicator.close();
                     this.renderData.msgClassification = res.data.data;

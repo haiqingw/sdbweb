@@ -41,12 +41,7 @@
 </template>
 <script>
 import { Toast } from "mint-ui";
-import {
-    isBindBankCardApi,
-    realNameApi,
-    bankName,
-    bindBankCardApi
-} from "@/api/certification";
+import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 export default {
     data() {
@@ -85,7 +80,7 @@ export default {
     methods: {
         //判断是否绑卡
         isBindCard() {
-            isBindBankCardApi(this.queryData.isBindBankCard).then(res => {
+            getServer(this.queryData.isBindBankCard).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.$router.push({ name: "certificationComplete" });
                 }
@@ -102,7 +97,7 @@ export default {
         //获取开户行
         getBankName() {
             this.queryData.bankNameData.cardNum = this.queryData.bindCardCer.cardNum;
-            bankName(this.queryData.bankNameData).then(res => {
+            getServer(this.queryData.bankNameData).then(res => {
                 if (res.data.responseStatus === 1) {
                     if (res.data.bankName == "未知") {
                         Toast({
@@ -147,7 +142,7 @@ export default {
                 this.queryData.bindCardCer.bankName = this.$refs.bankName.value;
             }
             // 提交数据
-            bindBankCardApi(this.queryData.bindCardCer).then(res => {
+            getServer(this.queryData.bindCardCer).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.$router.push({ name: "certificationComplete" });
                 } else {

@@ -34,7 +34,7 @@
 </template>
 <script>
 import { Toast } from "mint-ui";
-import { modifyPassword } from "@/api/modify";
+import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import { checkPassWord } from '@/utils/verification'
 export default {
@@ -89,7 +89,7 @@ export default {
                 return;  
             }
             //确认提交
-            modifyPassword(this.queryData.modifyData).then(res => {
+            getServer(this.queryData.modifyData).then(res => {
                 //console.log(response[res.data.responseStatus]);
                 if (res.data.responseStatus === 1) {
                     Toast("密码修改成功,请重新登录");

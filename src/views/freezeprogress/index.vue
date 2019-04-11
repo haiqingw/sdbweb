@@ -95,8 +95,8 @@
   </div>
 </template>
 <script>
-getfreezeList;
-import { getfreezeList } from "@/api/freezeprogress";
+
+import { getServer } from "@/api/index";
 import { Indicator } from "mint-ui";
 import response from "@/assets/js/response.js";
 export default {
@@ -116,7 +116,7 @@ export default {
   methods: {
     getfreezeListFn() {
       Indicator.open();
-      getfreezeList(this.queryData).then(res => {
+      getServer(this.queryData).then(res => {
         if (res.data.responseStatus === 1) {
           Indicator.close();
           this.noPosDataStatus = false;

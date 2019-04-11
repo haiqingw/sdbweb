@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import {getTerminalList} from '@/api/deliver-goods'
+    import {getServer} from '@/api/index'
     export default {
         data () {
             return {
@@ -85,7 +85,7 @@
         },
         methods: {
             terminalList() {
-                getTerminalList(this.queryData.list).then( res => {
+                getServer(this.queryData.list).then( res => {
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true
                         this.renderData.list = res.data.data

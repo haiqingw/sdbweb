@@ -70,7 +70,7 @@
     </div>
 </template>
 <script>
-import {getBalanceList, getCashWithdrawal} from '@/api/withdrawal'
+import {getServer} from '@/api/index'
 import { Toast } from 'mint-ui'
 export default {
     data() {
@@ -103,7 +103,7 @@ export default {
             // console.log(index);
         },
         balanceList () {
-            getBalanceList(this.queryData.balanceList).then( res => {
+            getServer(this.queryData.balanceList).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.balanceList = res.data.data
                 }

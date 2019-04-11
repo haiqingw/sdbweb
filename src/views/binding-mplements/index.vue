@@ -39,7 +39,7 @@
     </div>
     <!-- 支付押金 -->
     <div class="payDepositMain">
-       您需要支付：<em>100.00</em>元押金
+       您需要支付：<em>{{deposit}}</em>元押金
     </div>
     <!-- 押金说明 -->
     <div class="depositExplainMain">
@@ -52,7 +52,7 @@
       <el-button
         type="primary"
         :loading="determineBindingLoading"
-        @click="determineBinding"
+        @click="confirmBinding"
         style="line-height:0.8rem"
         >确定绑定</el-button
       >
@@ -63,9 +63,12 @@
 
 <script>
     import { getBindingMplements } from '@/api/binding-mplements'
+    import { getWexinPay, getBackEndWexinPay } from '@/api/wexinPay'
+    import wx from 'weixin-js-sdk'
     export default {
         data() {
             return {
+                deposit: "0.00",
                 choiceBrandVal: "",
                 popupVisible: false,
                 closeOnClickModal: false,
@@ -90,7 +93,7 @@
                         requestKeywords: 'product',
                         platformID: this.$store.state.user.pid
                     },
-                    confirmBindingMplements: {
+                    confirmBinding: {
                         requestType: 'agent', 
                         requestKeywords: 'oneclick', 
                         platformID: this.$store.state.user.pid, 
@@ -161,8 +164,34 @@
                     // })
                 })
             },
-            determineBinding () { // 确定绑定 
+            confirmBinding () { // 确定绑定 
                 this.determineBindingLoading = true
+                getBackEndWexinPay().then( res => {
+                    //成功状态下  
+                    if (res.data.status) {
+                    // 存储微信支付数据data
+                    let data = res.data.data;
+                    console.log("即将跳转微信支付");
+                    //函数为分装过得  (就是调用微信支付)
+                    getWexinPay(
+                        {
+                            appId: data.appId,
+                            nonceStr: data.nonceStr,
+                            package: data.package,
+                            paySign: data.paySign,
+                            signType: data.signType,
+                            timeStamp: data.timeStamp
+                        },
+                        //成功回调函数
+                        res => {
+                            that.$router.push({ path: "/vip" });
+                        }
+                    );
+                    } 
+                    else {
+                        console.log("失败")
+                    }
+                })
             }
         },
         created () {

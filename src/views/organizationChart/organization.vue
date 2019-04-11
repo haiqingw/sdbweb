@@ -17,7 +17,6 @@
             :label-class-name="labelClassName"
             :render-content="renderContent"
             @on-expand="onExpand"
-            @on-node-click="onNodeClick"
           />
         </div>
       </div>
@@ -85,6 +84,40 @@ export default {
           {
             id: 9,
             label: "HR人事"
+          },
+          {
+            id: 4,
+            label: "财务部"
+          },
+          {
+            id: 9,
+            label: "HR人事"
+          },
+          {
+            id: 4,
+            label: "财务部"
+          },
+          {
+            id: 9,
+            label: "HR人事",
+            children: [
+              {
+                id: 5,
+                label: "研发-前端"
+              },
+              {
+                id: 6,
+                label: "研发-后端"
+              },
+              {
+                id: 9,
+                label: "UI设计"
+              },
+              {
+                id: 10,
+                label: "产品经理"
+              }
+            ]
           }
         ]
       },
@@ -107,9 +140,6 @@ export default {
       } else {
         this.$set(data, "expand", true);
       }
-    },
-    onNodeClick(e, data) {
-      alert(data.label);
     },
     collapse(list) {
       var _this = this;

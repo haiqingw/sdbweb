@@ -39,13 +39,21 @@
     </div>
     <!-- 支付押金 -->
     <div class="payDepositMain">
-        
+       您需要支付：<em>100.00</em>元押金
+    </div>
+    <!-- 押金说明 -->
+    <div class="depositExplainMain">
+      <h3>问：为什么要支付押金?</h3>
+      <div>
+        答：防止恶意领取。激活后押金自动解冻，提现即可！
+      </div>
     </div>
     <div class="determine-binding">
       <el-button
         type="primary"
         :loading="determineBindingLoading"
         @click="determineBinding"
+        style="line-height:0.8rem"
         >确定绑定</el-button
       >
     </div>
@@ -158,7 +166,7 @@ export default {
   margin-top: 0.8rem;
 }
 .bingding-mplements .brand-name {
-  font-size: 0.26rem;
+  font-size: 0.3rem;
 }
 .bingding-mplements .mint-popup {
   width: 100%;
@@ -168,7 +176,7 @@ export default {
 }
 .bingding-mplements .bingding-mplements-choice {
   border-bottom: 0.01rem solid #ccc;
-  line-height: 0.5rem;
+  line-height:30px;
   padding: 0.24rem;
   overflow: hidden;
 }
@@ -181,6 +189,7 @@ export default {
 .bingding-mplements .bingding-mplements-choice span {
   float: left;
   display: block;
+  font-size:0.3rem;
 }
 .bingding-mplements .bingding-mplements-choice h5.sn {
   line-height: 0.6rem;
@@ -192,6 +201,7 @@ export default {
   height: 0.6rem;
   border: none;
   padding: 0;
+  font-size:0.3rem;
 }
 .bingding-mplements .el-button {
   float: right;
@@ -218,8 +228,28 @@ export default {
     border-top: 6px solid #ccc;
     position: absolute;
     right:10px;
-    top:0.43rem;
+    top:0.5rem;
   }
+}
+.payDepositMain{
+    padding:20px 15px 15px;
+    font-size:16px;
+    em{
+        font-weight:bold;
+        color:#f33;
+        padding-right:5px;
+        font-size:22px;
+    }
+}
+.depositExplainMain{
+   background:#f9f9f9;
+   padding:15px;
+   font-size:14px;
+   line-height:24px;
+   >h3{
+     font-size:16px;
+     padding-bottom:8px;
+   }
 }
 </style>
 

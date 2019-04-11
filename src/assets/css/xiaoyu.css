@@ -8,7 +8,7 @@ body {
 }
 .index-list1 {
     background: #fff;
-    margin-bottom: 0.15rem;
+    border-bottom:5px solid #f9f9f9;
 }
 .index-list1 ul {
     overflow: hidden;
@@ -47,8 +47,8 @@ body {
 }
 .index-notice {
     background: #fff;
-    margin-bottom: .15rem;
     padding: .17rem .56rem .13rem .33rem;
+    border-bottom:5px solid #f9f9f9;
 }
 .index-notice-top {
     overflow: hidden;

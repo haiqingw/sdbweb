@@ -78,12 +78,12 @@
           <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细" />
           <p>资金明细</p>
         </router-link>
-        <router-link to="/myMerchants">
+        <router-link to="/organization">
           <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构" />
           <p>组织架构</p>
         </router-link>
         <router-link to="/helpCenter">
-          <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
+          <img src="@/assets/images/helpCenterIcon.png" alt="帮助中心" />
           <p>帮助中心</p>
         </router-link>
         <router-link to="/about">

@@ -131,9 +131,7 @@
         </li>
         <li>
           <div class="img">
-            <router-link to="/financialDetails"
-              ><img src="@/assets/images/index-list2-img6.png" alt=""
-            /></router-link>
+            <router-link to="/financialDetails"><img src="@/assets/images/index-list2-img6.png" alt=""/></router-link>
           </div>
           <div class="text">
             <router-link to="/financialDetails">收益明细</router-link>
@@ -141,12 +139,10 @@
         </li>
         <li>
           <div class="img">
-            <router-link to="/myMerchants"
-              ><img src="@/assets/images/index-list2-img7.png" alt=""
-            /></router-link>
+            <router-link to="/organization"><img src="@/assets/images/index-list2-img7.png" alt=""/></router-link>
           </div>
           <div class="text">
-            <router-link to="/myMerchants">组织架构</router-link>
+            <router-link to="/organization">组织架构</router-link>
           </div>
         </li>
         <!-- <li>
@@ -159,9 +155,7 @@
         </li> -->
         <li>
           <div class="img">
-            <router-link to="/deliverGoods"
-              ><img src="@/assets/images/index-list2-img4.png" alt=""
-            /></router-link>
+            <router-link to="/deliverGoods"><img src="@/assets/images/index-list2-img4.png" alt=""/></router-link>
           </div>
           <div class="text">
             <router-link to="/deliverGoods">订单管理</router-link>

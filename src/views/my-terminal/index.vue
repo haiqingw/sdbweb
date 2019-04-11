@@ -6,7 +6,7 @@
             <img src="@/assets/images/return.png" alt=""  @click="$router.go(-1)"/>
             <span>我的终端</span>
         </div>
-        <div class="my-terminal-choice">
+        <div class="my-terminal-choice line_bottom">
             <el-select v-model="byProduct.value" placeholder="按产品" @change="byProductChange">
                 <el-option
                 v-for="item in byProduct.options"

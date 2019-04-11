@@ -1,35 +1,63 @@
 
 
 <template>
-    <div class="bingding-mplements">
-        <div class="return">
-            <img
-                src="@/assets/images/return.png" alt="" 
-                @click="$router.go(-1)"/>
-            <span>绑定机具</span>
-        </div>
-        <div class="bingding-mplements-c">
-            <div class="bingding-mplements-choice">
-                <h5>选择品牌</h5>
-                <span class="brand-name" @click="choiceBrand">{{choiceBrandVal}}</span>
-            </div>
-            <div class="bingding-mplements-choice">
-                <h5 class="sn">SN号</h5>
-                <el-input style="width: 60%;" v-model="SN" placeholder="请填写机具序列号"></el-input>
-                <el-button type="text" @click="sys_click">自动识别</el-button>
-            </div>
-            <mt-popup
-                v-model="popupVisible"
-                position="bottom"
-                closeOnClickModal="closeOnClickModal"
-            >
-                <mt-picker valueKey="name" :slots="slots" @change="onValuesChange"></mt-picker>
-            </mt-popup>
-        </div>
-        <div class="determine-binding">
-            <el-button type="primary" :loading="determineBindingLoading" @click="determineBinding">确定绑定</el-button>
-        </div>
+  <div class="bingding-mplements">
+    <!-- header -->
+    <div class="return">
+      <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+      <span>绑定机具</span>
     </div>
+    <!-- body -->
+    <div class="bingding-mplements-c">
+      <div
+        class="bingding-mplements-choice selectBindMain"
+        @click="choiceBrand"
+      >
+        <h5>选择品牌</h5>
+        <span class="brand-name">{{ choiceBrandVal }}</span>
+      </div>
+      <div class="bingding-mplements-choice">
+        <h5 class="sn">SN号</h5>
+        <el-input
+          style="width: 60%;"
+          v-model="SN"
+          placeholder="请填写机具序列号"
+        ></el-input>
+        <el-button type="text" @click="sys_click">自动识别</el-button>
+      </div>
+      <mt-popup
+        v-model="popupVisible"
+        position="bottom"
+        closeOnClickModal="closeOnClickModal"
+      >
+        <mt-picker
+          valueKey="name"
+          :slots="slots"
+          @change="onValuesChange"
+        ></mt-picker>
+      </mt-popup>
+    </div>
+    <!-- 支付押金 -->
+    <div class="payDepositMain">
+       您需要支付：<em>100.00</em>元押金
+    </div>
+    <!-- 押金说明 -->
+    <div class="depositExplainMain">
+      <h3>问：为什么要支付押金?</h3>
+      <div>
+        答：防止恶意领取。激活后押金自动解冻，提现即可！
+      </div>
+    </div>
+    <div class="determine-binding">
+      <el-button
+        type="primary"
+        :loading="determineBindingLoading"
+        @click="determineBinding"
+        style="line-height:0.8rem"
+        >确定绑定</el-button
+      >
+    </div>
+  </div>
 </template>
 
 
@@ -144,58 +172,95 @@
 </script>
 
 
-<style>
+<style lang="scss">
 .bingding-mplements-c {
-    margin-top: .8rem;
+  margin-top: 0.8rem;
 }
 .bingding-mplements .brand-name {
-    font-size: 0.26rem;
+  font-size: 0.3rem;
 }
 .bingding-mplements .mint-popup {
-    width: 100%;
+  width: 100%;
 }
 .bingding-mplements .mint-popup .picker-slot.picker-slot-right {
-    text-align: center;
+  text-align: center;
 }
 .bingding-mplements .bingding-mplements-choice {
-    border-bottom: .01rem solid #ccc;
-    line-height: 0.5rem;
-    padding: .24rem;
-    overflow: hidden;
+  border-bottom: 0.01rem solid #ccc;
+  line-height:30px;
+  padding: 0.24rem;
+  overflow: hidden;
 }
 .bingding-mplements .bingding-mplements-choice h5 {
-    float: left;
-    font-size: 0.3rem;
-    font-weight: normal;
-    margin-right: .4rem;
+  float: left;
+  font-size: 0.3rem;
+  font-weight: normal;
+  margin-right: 0.4rem;
 }
 .bingding-mplements .bingding-mplements-choice span {
-    float: left;
-    display: block;
+  float: left;
+  display: block;
+  font-size:0.3rem;
 }
 .bingding-mplements .bingding-mplements-choice h5.sn {
-    line-height: .6rem;
+  line-height: 0.6rem;
 }
 .bingding-mplements .el-input {
-    float: left;
+  float: left;
 }
 .bingding-mplements .el-input input {
-    height: .6rem;
-    border: none;
-    padding: 0;
+  height: 0.6rem;
+  border: none;
+  padding: 0;
+  font-size:0.3rem;
 }
 .bingding-mplements .el-button {
-    float: right;
-    padding: 0;
-    line-height: .6rem;
+  float: right;
+  padding: 0;
+  line-height: 0.6rem;
 }
 .bingding-mplements .determine-binding {
-   width: 90%; 
-   margin: .3rem auto;
+  width: 90%;
+  margin: 0.3rem auto;
 }
 .bingding-mplements .determine-binding .el-button {
-    width: 100%;
-    margin: 0;
+  width: 100%;
+  margin: 0;
+}
+.selectBindMain {
+  position: relative;
+  &:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #ccc;
+    position: absolute;
+    right:10px;
+    top:0.5rem;
+  }
+}
+.payDepositMain{
+    padding:20px 15px 15px;
+    font-size:16px;
+    em{
+        font-weight:bold;
+        color:#f33;
+        padding-right:5px;
+        font-size:22px;
+    }
+}
+.depositExplainMain{
+   background:#f9f9f9;
+   padding:15px;
+   font-size:14px;
+   line-height:24px;
+   >h3{
+     font-size:16px;
+     padding-bottom:8px;
+   }
 }
 </style>
 

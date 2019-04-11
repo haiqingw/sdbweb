@@ -48,7 +48,7 @@
     </div>
     <div class="interval"></div>
     <!-- 批量进货 入口 开始 -->
-    <a class="stockChannelImg" href="javascript:;">
+    <a class="stockChannelImg" :href="creditCard">
       <img src="@/assets/images/stockChannelImg.png" alt="批量进货通道" />
     </a>
     <!-- 批量进货 入口 结束 -->
@@ -89,6 +89,7 @@ import {
 export default {
   data() {
     return {
+      creditCard:"https://m.hhrcard.com/credit/miniprogram/copartner/bankList?invitecode=52832966&oas=1",
       current: 0,
       bannerLength: 0,
       queryData: {

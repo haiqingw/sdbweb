@@ -40,10 +40,10 @@ export default {
   methods: {
     aboutFn() {
       getAbout(this.queryData).then(res => {
-        //  console.log(res);
+         console.log(res);
         if (res.data.responseStatus === 1) {
           this.contentData = res.data.content;
-          if (res.data.content == "<p>暂无数据</p>") {
+          if (res.data.content == "<p>暂无数据</p>" || res.data.content == "") {
             this.contentData = "";  
             this.isData = true;
           }

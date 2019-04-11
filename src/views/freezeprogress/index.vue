@@ -29,49 +29,62 @@
         </div>
         <!-- 列表  -->
         <div class="freezeProgressListView">
-          <div class="freezeProgressListItem completed" v-for="item in freezeData"  v-bind:key="item.surplus" style="display:block;">
-            <!-- completed -->
-            <!-- 盒子  -->
-            <div class="freezeProgressBox">
-              <!-- expired -->
-              <!-- 三角 -->
-              <div class="leftArrIcon"></div>
-              <!--  解冻状态  -->
-              <img v-if='item.isThaw == "已解冻"' src="../../assets/images/completedIcon.png" />
-              <img v-if='item.isThaw == "已过期"' src="../../assets/images/expiredIcon.png" />
-              <!--  解冻金额与剩余时间  -->
-              <div class="moneyAndTime">
-                <div class="line_right">
-                  <div>
-                    {{item.thawMoney}} 
-                    <span>元</span>
+            <div  
+              v-for="item in freezeData" v-bind:key="item.surplus"
+              :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']"
+            >
+              <!-- completed -->
+              <!-- 盒子  -->
+              <div :class="[item.isThaw=='已过期' ? 'expired' : '' , 'freezeProgressBox']">
+                <!-- expired -->
+                <!-- 三角 -->
+                <div class="leftArrIcon"></div>
+                <!--  解冻状态  -->
+                <img
+                  v-if="item.isThaw == '已解冻'"
+                  src="../../assets/images/completedIcon.png"
+                />
+                <img
+                  v-if="item.isThaw == '已过期'"
+                  src="../../assets/images/expiredIcon.png"
+                />
+                <!--  解冻金额与剩余时间  -->
+                <div class="moneyAndTime">
+                  <div class="line_right">
+                    <div>
+                      {{ item.thawMoney }}
+                      <span>元</span>
+                    </div>
+                    <span>解冻金额</span>
                   </div>
-                  <span>解冻金额</span>
-                </div>
-                <div>
-                  <div>
-                    {{item.surplus}}
-                    <span>天</span>
+                  <div v-if = "item.isThaw == '待解冻'">
+                    <div>
+                      {{ item.surplus }}
+                      <span>天</span>
+                    </div>
+                    <span>剩余天数</span>
                   </div>
-                  <span>剩余天数</span>
+                  <div v-if="item.isThaw != '待解冻'">
+                    <span style="padding-top:14px; font-weight:bold;">{{
+                      item.isThaw
+                    }}</span>
+                  </div>
                 </div>
-                <div v-if='item.isThaw != "待解冻"'>
-                  <span style="padding-top:14px; font-weight:bold;">{{item.isThaw}}</span>
+                <!-- 条件与当前刷卡金额  -->
+                <div class="conditionsAndSum">
+                  <span class="line_top">满足条件：{{ item.conditions }}</span>
+                  <span>当前刷卡：{{ item.nowTotalMoney }}</span>
+                  <span class="completedItemTipInfo"
+                    >{{ item.thawMoney }}元已转入余额!</span
+                  >
+                  <span class="expiredItemTipInfo"
+                    >{{ item.thawMoney }}元已从待解冻金额中扣除！</span
+                  >
                 </div>
-              </div>
-              <!-- 条件与当前刷卡金额  -->
-              <div class="conditionsAndSum">
-                <span class="line_top">满足条件：{{item.conditions}}</span>
-                <span>当前刷卡：{{item.nowTotalMoney}}</span>
-                <span class="completedItemTipInfo">{{item.thawMoney}}元已转入余额!</span>
-                <span class="expiredItemTipInfo"
-                  >{{item.thawMoney}}元已从待解冻金额中扣除！</span
-                >
               </div>
             </div>
-          </div>
           <!-- 未激活机器状态  -->
-          <div class="noPosDataStatus" style="display:none;">
+          <div class="noPosDataStatus" v-if = "noPosDataStatus">
             <img src="../../assets/images/noPosDataIcon.png" />
             <span>您还没有领取机器，立即去领取</span>
             <router-link to="/mall">机具商城</router-link>
@@ -82,13 +95,14 @@
   </div>
 </template>
 <script>
-getfreezeList
-import { getfreezeList } from "@/api/freezeprogress"
-import response from '@/assets/js/response.js'
+getfreezeList;
+import { getfreezeList } from "@/api/freezeprogress";
+import response from "@/assets/js/response.js";
 export default {
   data() {
     return {
-      freezeData:{},
+      noPosDataStatus:false,
+      freezeData: {},
       queryData: {
         requestType: "thaw",
         requestKeywords: "thawlist",
@@ -99,16 +113,19 @@ export default {
     };
   },
   methods: {
-      getfreezeListFn(){
-       getfreezeList(this.queryData).then(res => {
-         console.log(res)
-         if(res.data.responseStatus === 1){
-            this.freezeData = res.data.data;
-         }
-       })   
-      }
+    getfreezeListFn() {
+      getfreezeList(this.queryData).then(res => {
+        console.log(res);
+        if (res.data.responseStatus === 1) {
+          this.noPosDataStatus = false;
+          this.freezeData = res.data.data;
+        }else{
+          this.noPosDataStatus = true;
+        }
+      });
+    }
   },
-  created(){
+  created() {
     this.getfreezeListFn();
   }
 };

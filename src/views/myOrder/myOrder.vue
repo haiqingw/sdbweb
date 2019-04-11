@@ -32,7 +32,7 @@
                     :offset= "offset"
                 >
                     <div class="myOrderItem" v-for="item in renderData.oldList" :key="item.id">
-                        <router-link to="/myOrderDetail">
+                        <router-link :to=" {name: 'myOrderDetail', params: { id: item.id, } } ">
                             <b></b>
                             <b></b>
                             <div class="myOrderTitle">

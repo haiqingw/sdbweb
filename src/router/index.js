@@ -160,7 +160,7 @@ export default new Router({
         import('@/views/deliver-goods/index')
     },
     {
-      path: '/myOrderDetail', //我的订单详情
+      path: '/myOrderDetail/:id', //我的订单详情
       name: 'myOrderDetail',
       component: () =>
         import('@/views/myOrder/myOrderDetail')

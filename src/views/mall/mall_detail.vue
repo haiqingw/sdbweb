@@ -162,6 +162,9 @@ export default {
 }
 </script>
 <style lang="scss">
+.mall-detail {
+  // margin-top: .8rem;
+}
 .advantageEvaluationMain {
   padding-bottom: .5rem;
 }

@@ -192,7 +192,7 @@
 </script>
 
 <style>
-.el-tabs__header{
+.deliver-goods-choice .el-tabs__header{
     position: fixed;
     width:100%;
     left:0;
@@ -200,7 +200,7 @@
     z-index:9;
     background:#fff;
 }
-.el-tabs__content{
+.deliver-goods-choice .el-tabs__content{
     padding-top:70px;
 }
 .deliver-goods-choice{

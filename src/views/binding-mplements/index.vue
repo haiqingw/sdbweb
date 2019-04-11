@@ -34,7 +34,7 @@
 
 
 <script>
-    import { wxSweepCode, getBrand } from '@/api/binding-mplements'
+    import { getBindingMplements } from '@/api/binding-mplements'
     export default {
         data() {
             return {
@@ -61,6 +61,16 @@
                         requestType: 'agent',
                         requestKeywords: 'product',
                         platformID: this.$store.state.user.pid
+                    },
+                    confirmBindingMplements: {
+                        requestType: 'agent', 
+                        requestKeywords: 'oneclick', 
+                        platformID: this.$store.state.user.pid, 
+                        userID: this.$store.state.user.uid, 
+                        userPhone: this.$store.state.user.uphone, 
+                        childID: "", 
+                        machineID: "", 
+                        terminal: ""
                     }
                 },
                 renderData: {
@@ -77,7 +87,7 @@
                 this.choiceBrandVal = String(values[0].name)
             },
             sys_click () {
-                wxSweepCode().then( res => {
+                getBindingMplements().then( res => {
                     console.log(res)
                     wx.config({
                         // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -116,7 +126,7 @@
                 })
             },
             brand () {
-                getBrand(this.queryData.brand).then( res => {
+                getBindingMplements(this.queryData.brand).then( res => {
                     this.slots[0].values = res.data.data
                     // res.data.data.forEach(item => {
                     //   .push(item.name)

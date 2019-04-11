@@ -11,7 +11,7 @@ import Swiper from "vue-awesome-swiper"
 import 'swiper/dist/css/swiper.css'
 import Vant from 'vant';
 import 'vant/lib/index.css';
-// import wx from 'weixin-js-sdk'
+import wx from 'weixin-js-sdk'
 
 import '@/permission'
 import '@/icons'

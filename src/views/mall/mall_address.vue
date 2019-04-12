@@ -92,7 +92,7 @@ export default {
             MessageBox.confirm('您确定要删除该地址吗?', '删除')
                 .then(action => {
                     getServer(this.queryData.deleteAddress).then( res => {
-                        console.log(response[res.data.responseStatus])
+                        // console.log(response[res.data.responseStatus])
                         if( res.data.responseStatus === 1 ) {
                             Toast("删除地址成功")
                             this.addressList()

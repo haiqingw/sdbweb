@@ -90,16 +90,13 @@
         },
         methods: {
             terminalList() {
-                console.log(this.queryData.list)
                 getServer(this.queryData.list).then( res => {
-                    console.log(res)
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true
                         this.renderData.list = res.data.data
                         this.renderData.list.forEach( item => {
                             this.renderData.oldList.push(item)
                         })
-                        console.log(res.data.data)
                         this.isDownLoading = false
                         this.isUpLoading = false
                     } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {

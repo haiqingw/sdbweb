@@ -57,14 +57,12 @@
         >确定绑定</el-button
       >
     </div>
-    <a :href="testUrl">链接</a>
   </div>
 </template>
 
 
 <script>
     import { getServer } from '@/api/index'
-    import { getWexinPay } from '@/api/wexinPay'
     import response from '@/assets/js/response.js'
     import wx from 'weixin-js-sdk'
     export default {
@@ -75,7 +73,6 @@
                 popupVisible: false,
                 closeOnClickModal: false,
                 determineBindingLoading: false,
-                testUrl: "",
                 slots: [
                     {
                         flex: 1,
@@ -102,7 +99,7 @@
                         userID: this.$store.state.user.uid,
                         userPhone: this.$store.state.user.uphone,
                         // machineID: "38809",
-                        terminal: "K1020A71474"
+                        terminal: "K1020A71473"
                     },
                     searchChild: {
                         requestType: 'agent', 
@@ -176,35 +173,18 @@
             },
             confirmBinding () { // 确定绑定 
                 this.determineBindingLoading = true
-                console.log(this.queryData.confirmBinding)
                 getServer(this.queryData.confirmBinding).then( res => {
+                    this.determineBindingLoading = false
                     console.log(res)
-                    this.testUrl = res.data.url
-                    return
-                    //成功状态下  
-                    if (res.data.status) {
-                    // 存储微信支付数据data
-                    let data = res.data.data;
-                    console.log("即将跳转微信支付");
-                    //函数为分装过得  (就是调用微信支付)
-                    getWexinPay(
-                        {
-                            appId: data.appId,
-                            nonceStr: data.nonceStr,
-                            package: data.package,
-                            paySign: data.paySign,
-                            signType: data.signType,
-                            timeStamp: data.timeStamp
-                        },
-                        //成功回调函数
-                        res => {
-                            that.$router.push({ path: "/vip" });
+                    if( res.data.responseStatus === 1 ) {
+                        if( res.data.isPay == 1 ) {
+                            window.location.href = res.data.url
+                        } else if( res.data.isPay == 2 ) {
+                            // console.log("直接帮")
                         }
-                    );
-                    } 
-                    else {
-                        console.log("失败")
                     }
+                   
+                    console.log(res)
                 })
             },
             searchChild () {

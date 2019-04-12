@@ -54,3 +54,30 @@ export function getBackEndWexinPay () {
     })
 }
 
+
+
+ //成功状态下  
+//  if (res.data.status) {
+//     // 存储微信支付数据data
+//     let data = res.data.data;
+//     console.log("即将跳转微信支付");
+//     //函数为分装过得  (就是调用微信支付)
+//     getWexinPay(
+//         {
+//             appId: data.appId,
+//             nonceStr: data.nonceStr,
+//             package: data.package,
+//             paySign: data.paySign,
+//             signType: data.signType,
+//             timeStamp: data.timeStamp
+//         },
+//         //成功回调函数
+//         res => {
+//             that.$router.push({ path: "/vip" });
+//         }
+//     );
+// } 
+// else {
+//     console.log("失败")
+// }
+

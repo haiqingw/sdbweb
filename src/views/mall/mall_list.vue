@@ -1,11 +1,15 @@
 <template>
   <div class="posMallContainer">
     <!-- header -->
-    <mt-header fixed title="机具商城">
+    <!-- <mt-header fixed title="机具商城">
       <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
-    </mt-header>
+    </mt-header> -->
+    <div class="return">
+        <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+        <span>机具商城</span>
+    </div>
     <!-- banner -->
     <div class="posMallHeader">
       <van-swipe @change="onChange">

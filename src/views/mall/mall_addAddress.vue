@@ -1,11 +1,15 @@
 <template>
     <div class="add-address">
         <!-- header -->
-        <mt-header fixed title="添加收货地址">
+        <!-- <mt-header fixed title="添加收货地址">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>添加收货地址</span>
+        </div>
         <!-- addAddress -->
         <section class="addAddressSection">
             <el-form :model="queryData.addAddress" :rules="rules" ref="dataForm" class="demo-ruleForm">

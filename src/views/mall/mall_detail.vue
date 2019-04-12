@@ -1,11 +1,15 @@
 <template>
     <div class="mall-detail">
         <!-- header -->
-        <mt-header fixed title="机具商城">
+        <!-- <mt-header fixed title="机具商城">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>机具商城</span>
+        </div>
         <!-- banner -->
         <mt-swipe :auto="4000" class="mallDetailBanner">
             <mt-swipe-item v-for="item in renderData.data.imgPath" :key="item"> 

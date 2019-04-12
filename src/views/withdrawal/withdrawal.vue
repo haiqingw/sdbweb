@@ -171,7 +171,7 @@ export default {
                 Toast('请输入提现金额')
                 return
             } 
-            if ( reg.test( this.queryData.cashWithdrawal.money ) > this.renderData.mattersNeedingAttention.ktx )  {
+            if( reg.test( this.queryData.cashWithdrawal.money ) > this.renderData.mattersNeedingAttention.ktx )  {
                 Toast('可提现金额不足')
                 return
             } 
@@ -183,7 +183,7 @@ export default {
                 Toast("单笔最高提现" + this.renderData.drawInfo.maxm + "元")
                 return
             }
-            if ( reg.test( this.queryData.cashWithdrawal.money ) ) {
+            if( reg.test( this.queryData.cashWithdrawal.money ) ) {
                 Toast('成功')
             }
         },

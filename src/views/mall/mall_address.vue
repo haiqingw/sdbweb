@@ -1,11 +1,15 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="收货地址">
+        <!-- <mt-header fixed title="收货地址">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>收货地址</span>
+        </div>
         <!-- addressList -->
         <div class="addressContainer">
             <ul class="addressListUl">

@@ -6,27 +6,60 @@
       <span>评价</span>
     </div>
     <!-- 产品标题 -->
-    <h3 class="line_bottom">产品标题产品标题产品标题产品标题产品标题</h3>
+    <!-- <h3 class="line_bottom">产品标题产品标题产品标题产品标题产品标题</h3> -->
     <h4>综合评分</h4>
-    <el-rate v-model="value3" show-text> </el-rate>
+    <el-rate v-model="queryData.evaluation.score" show-text> </el-rate>
     <div class="evalutionTextMain">
       <div>
         <textarea
-          placeholder="产品满足你的期待吗？说说你的使用心得！"
+            placeholder="产品满足你的期待吗？说说你的使用心得！"
+            v-model="queryData.evaluation.content"
         ></textarea>
       </div>
     </div>
-    <el-button type="primary" class="submitButton">确认提交</el-button>
+    <el-button type="primary" class="submitButton" @click="submit">确认提交</el-button>
   </div>
 </template>
 <script>
+import {getServer} from '@/api/index'
+import { Toast } from 'mint-ui';
 export default {
-  data() {
-    return {
-      value3: null
-    };
-  },
-  methods: {}
+    data() {
+        return {
+            queryData: {
+                evaluation: {
+                    requestType: 'Order', 
+                    requestKeywords: 'comment', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone, 
+                    score: 0, 
+                    content: "", 
+                    orderid: this.$route.params.id
+                }
+            }
+        };
+    },
+    methods: {
+        submit() {
+            if( this.queryData.evaluation.score === 0 ) {
+                Toast("请选择评分")
+                return
+            } else if( this.queryData.evaluation.content === "" ) {
+                Toast("请输入评论内容")
+                return
+            } else {
+                getServer(this.queryData.evaluation).then( res => {
+                    if( res.data.responseStatus === 1 ) {
+                        Toast("评论成功")
+                        setTimeout( () => {
+                            this.$router.go(-1)
+                        }, 500)
+                    }
+                })
+            }
+        }
+    }
 };
 </script>
 <style lang="scss">

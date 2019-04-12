@@ -310,7 +310,7 @@ export default new Router({
         import('@/views/organizationChart/organization')
     }, 
     {
-      path: '/evaluation', //用户评价
+      path: '/evaluation/:id', //用户评价
       name: 'evaluation',
       component: () =>
         import('@/views/evaluation')

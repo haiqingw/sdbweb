@@ -72,9 +72,9 @@
         </div>
         <!-- 订单操作 -->
         <div class="myOrderOperationMain">
-            <a href="javascript:;" v-if=" renderData.details.isReceipt == '4'  ">去评价</a>
-            <a href="javascript:;" v-if=" renderData.details.isReceipt == '2' ">确认收货</a>
-            <a href="javascript:;" v-if=" renderData.details.isReceipt == null ">删除订单</a>
+            <a href="javascript:;" v-if=" renderData.details.isReceipt == '4' " @click="comment(renderData.details.id)">去评价</a>
+            <a href="javascript:;" v-if=" renderData.details.isReceipt == '2' " @click="confirmReceipt(renderData.details.id)">确认收货</a>
+            <a href="javascript:;" v-if=" renderData.details.isReceipt == null " @click="deleteOrder(renderData.details.id)">删除订单</a>
         </div>
     </div>
 </template>
@@ -103,6 +103,47 @@ export default {
                     // console.log(this.renderData.details)
                 }
             })
+        },
+        comment (id) {
+            this.$router.push({ 
+                name: "evaluation",
+                params: {id: id}
+            })
+        },
+        deleteOrder (id) {
+            this.queryData.deleteOrder.id = id
+            MessageBox.confirm("您确定要删除该订单吗?", "删除订单")
+                .then( action => {
+                    getServer(this.queryData.deleteOrder).then( res => {
+                        if( res.data.responseStatus === 1 ) {
+                            Toast("删除订单成功")
+                            this.$router.go(-1)
+                        } else {
+                            Toast("删除订单失败")
+                        }
+                    })
+                })
+                .catch(() => {});
+        },
+        confirmReceipt (id) {
+            this.queryData.confirmReceipt.id = id
+            MessageBox.confirm("是否确认订单?", "确认订单")
+                .then( action => {
+                    getServer(this.queryData.confirmReceipt).then( res => {
+                        if( res.data.responseStatus === 1 ) {
+                            Toast("确认收货成功")
+                            setTimeout( () => {
+                                this.$router.push({ 
+                                    name: "evaluation",
+                                    params: {id: id}
+                                })
+                            }, 500)
+                        } else {
+                            Toast("确认收货失败")
+                        }
+                    })
+                })
+                .catch(() => {});
         }
     },
     created () {

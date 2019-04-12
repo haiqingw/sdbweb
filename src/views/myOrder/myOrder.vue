@@ -174,11 +174,10 @@ export default {
             })
         },
         comment (id) {
-            console.log("去评论")
-            // this.$router.push({ 
-            //     name: "",
-            //     params: {id: id}
-            // })
+            this.$router.push({ 
+                name: "evaluation",
+                params: {id: id}
+            })
         },
         deleteOrder (id) {
             this.queryData.deleteOrder.id = id
@@ -206,13 +205,11 @@ export default {
                     getServer(this.queryData.confirmReceipt).then( res => {
                         if( res.data.responseStatus === 1 ) {
                             Toast("确认收货成功")
-                            // this.queryData.list.page = 0
-                            // this.renderData.oldList = []
-                            // this.upFinished = false
-                            // this.isData = true
-                            // this.onLoadList()
                             setTimeout( () => {
-                                this.$router.push( { path:'/'} )
+                                this.$router.push({ 
+                                    name: "evaluation",
+                                    params: {id: id}
+                                })
                             }, 500)
                         } else {
                             Toast("确认收货失败")

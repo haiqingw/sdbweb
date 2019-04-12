@@ -1,76 +1,80 @@
 <template>
     <div>
       <!-- header -->
-        <mt-header fixed title="订单详情">
+        <!-- <mt-header fixed title="订单详情">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>订单详情</span>
+        </div>
         <!-- 订单状态 -->
         <div class="myOrderDetailStatusMain">
             <img src="../../assets/images/orderStatusPosIcon.png" alt="订单状态">
             <div>
-                <h3>等待发货</h3>
-                <p>未激活，押金已退</p>
+                <h3>{{renderData.details.rstatus}}</h3>
+                <p>{{renderData.details.jhzt}}，{{renderData.details.returned}}</p>
             </div>
         </div>
         <!-- 订单收货地址 -->
         <div class="myOrderdetailAddressMain">
             <p>
-                <span>任勇强</span>
-                <em>13296905340</em>
+                <span>{{renderData.details.consignee}}</span>
+                <em>{{renderData.details.consigneePhone}}</em>
             </p>
-            <p>内蒙古自治区呼和浩特市新城区兴安北路鼎盛华世纪广场10005</p>
+            <p>{{renderData.details.address}}</p>
         </div>
         <div class="interval"></div>
         <!-- 订单产品信息 -->
         <div class="myOrderProductMain">
-            <img src="../../assets/images/hotPorPic.jpg" alt="产品">
+            <img v-for="item in renderData.details.imgPath" :key="item" :src="item" alt="产品">
             <div>
                 <p>
-                    <span>闪POS</span>
-                    <em>￥0.00</em>
+                    <span>{{renderData.details.productname}}</span>
+                    <em>￥{{renderData.details.orderMoney}}</em>
                 </p>
                 <p>
                     <span>费率</span>
-                    <em>0.5%</em>
+                    <em>{{renderData.details.rate}}</em>
                 </p>
                 <p>
                     <span>押金</span>
-                    <em>￥120.00</em>
+                    <em>￥{{renderData.details.depositMoney}}</em>
                 </p>
             </div>
         </div>
         <div class="interval"></div>
         <!-- 订单编号与时间 -->
         <div class="myOrderNumberMain">
-            <p>订单编号：1234545646</p>
-            <p>下单时间：2019-03-20 11:02:51</p>
+            <p>订单编号：{{renderData.details.ordernum}}</p>
+            <p>下单时间：{{renderData.details.orderTime}}</p>
         </div>
         <div class="interval"></div>
         <!-- 商品金额 -->
         <div class="myOrderMoneyMain">
             <p>
                 <span>商品金额</span>
-                <em>￥0.00</em>
+                <em>￥{{renderData.details.orderMoney}}</em>
             </p>
             <p>
                 <span>商品押金</span>
-                <em>￥120.00</em>
+                <em>￥{{renderData.details.depositMoney}}</em>
             </p>
             <p>
                 <span>运费</span>
-                <em>￥0.00</em>
+                <em>￥{{renderData.details.freight}}</em>
             </p>
             <p>
-                <b>订单总额：￥<i>128.00</i></b>
+                <b>订单总额：￥<i>{{renderData.details.wxpayMoney}}</i></b>
             </p>
         </div>
         <!-- 订单操作 -->
         <div class="myOrderOperationMain">
-            <a href="javascript:;">
-                删除订单
-            </a>
+            <a href="javascript:;" v-if=" renderData.details.isReceipt == '4'  ">去评价</a>
+            <a href="javascript:;" v-if=" renderData.details.isReceipt == '2' ">确认收货</a>
+            <a href="javascript:;" v-if=" renderData.details.isReceipt == null ">删除订单</a>
         </div>
     </div>
 </template>
@@ -96,7 +100,7 @@ export default {
             getServer(this.queryData.details).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.details = res.data.data
-                    console.log(this.renderData.details)
+                    // console.log(this.renderData.details)
                 }
             })
         }

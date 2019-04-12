@@ -58,9 +58,9 @@
                             </div>
                         </router-link>
                         <div class="myOrderOperation">
-                            <a href="javascript:;" v-if=" item.receipt != '未付款' ">删除订单</a>
-                            <a href="javascript:;" v-if=" item.receipt == '未付款' ">去付款</a>
-                            <a href="javascript:;" v-if=" item.receipt != '已完成' ">取消订单</a>
+                            <a href="javascript:;" v-if=" item.isReceipt == '4' " @click="comment(item.id)">去评价</a>
+                            <a href="javascript:;" v-if=" item.isReceipt == '2' " @click="confirmReceipt(item.id)">确认收货</a>
+                            <a href="javascript:;" v-if=" item.isReceipt == null " @click="deleteOrder(item.id)">删除订单</a>
                         </div>
                     </div>
                 </van-list>
@@ -74,6 +74,7 @@
 <script>
 import {getServer} from "@/api/index"
 import response from '@/assets/js/response.js'
+import { MessageBox, Toast } from "mint-ui";
 export default {
     data() {
         return {
@@ -96,6 +97,16 @@ export default {
                     page: 0, 
                     // limit: 10, 
                     isReceipt: "All",
+                },
+                confirmReceipt: {
+                    requestType: 'Order', 
+                    requestKeywords: 'confirmstatus', 
+                    id: ""
+                },
+                deleteOrder: {
+                    requestType: 'Order', 
+                    requestKeywords: 'deleteorder', 
+                    id: ""
                 }
             },
             renderData: {
@@ -161,6 +172,54 @@ export default {
                     this.isData = false
                 }
             })
+        },
+        comment (id) {
+            console.log("去评论")
+            // this.$router.push({ 
+            //     name: "",
+            //     params: {id: id}
+            // })
+        },
+        deleteOrder (id) {
+            this.queryData.deleteOrder.id = id
+            MessageBox.confirm("您确定要删除该订单吗?", "删除订单")
+                .then( action => {
+                    getServer(this.queryData.deleteOrder).then( res => {
+                        if( res.data.responseStatus === 1 ) {
+                            Toast("删除订单成功")
+                            this.queryData.list.page = 0
+                            this.renderData.oldList = []
+                            this.upFinished = false
+                            this.isData = true
+                            this.onLoadList()
+                        } else {
+                            Toast("删除订单失败")
+                        }
+                    })
+                })
+                .catch(() => {});
+        },
+        confirmReceipt (id) {
+            this.queryData.confirmReceipt.id = id
+            MessageBox.confirm("是否确认订单?", "确认订单")
+                .then( action => {
+                    getServer(this.queryData.confirmReceipt).then( res => {
+                        if( res.data.responseStatus === 1 ) {
+                            Toast("确认收货成功")
+                            // this.queryData.list.page = 0
+                            // this.renderData.oldList = []
+                            // this.upFinished = false
+                            // this.isData = true
+                            // this.onLoadList()
+                            setTimeout( () => {
+                                this.$router.push( { path:'/'} )
+                            }, 500)
+                        } else {
+                            Toast("确认收货失败")
+                        }
+                    })
+                })
+                .catch(() => {});
         }
     }
 };

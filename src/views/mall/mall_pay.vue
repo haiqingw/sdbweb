@@ -115,7 +115,14 @@ export default {
             })
         },
         addressInfo () {
+            this.queryData.addressInfo.id = 0
+            if ( this.queryData.addressInfo.id ) {
+                this.queryData.addressInfo.id = 0;
+            }else{
+                this.queryData.addressInfo.types = 1;
+            }
             getServer(this.queryData.addressInfo).then( res => {
+                console.log(res.data.data)
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.addressInfo = res.data.data
                     this.isAddressInfo = true

@@ -20,10 +20,19 @@
         <h5 class="sn">SN号</h5>
         <el-input
           style="width: 60%;"
-          v-model="SN"
+          v-model="queryData.confirmBinding.terminal"
           placeholder="请填写机具序列号"
         ></el-input>
         <el-button type="text" @click="sys_click">自动识别</el-button>
+      </div>
+        <div class="bingding-mplements-choice">
+            <h5 class="sn"></h5>
+            <el-input
+                style="width: 60%;"
+                v-model="queryData.searchChild.keywords"
+                placeholder="请填写机具序列号"
+            ></el-input>
+            <el-button type="text" @click="searchChild">搜索下级商户</el-button>
       </div>
       <mt-popup
         v-model="popupVisible"
@@ -57,6 +66,7 @@
         >确定绑定</el-button
       >
     </div>
+    <a :href="testUrl">链接</a>
   </div>
 </template>
 
@@ -64,16 +74,17 @@
 <script>
     import { getServer } from '@/api/index'
     import { getWexinPay } from '@/api/wexinPay'
+    import response from '@/assets/js/response.js'
     import wx from 'weixin-js-sdk'
     export default {
         data() {
             return {
-                deposit: "0.00",
+                deposit: "0",
                 choiceBrandVal: "",
                 popupVisible: false,
                 closeOnClickModal: false,
                 determineBindingLoading: false,
-                SN: "",
+                testUrl: "",
                 slots: [
                     {
                         flex: 1,
@@ -94,14 +105,22 @@
                         platformID: this.$store.state.user.pid
                     },
                     confirmBinding: {
+                        requestType: 'terminalmanage',
+                        requestKeywords: 'bindextreme', 
+                        platformID: this.$store.state.user.pid,
+                        userID: this.$store.state.user.uid,
+                        userPhone: this.$store.state.user.uphone,
+                        childID: "",
+                        machineID: "38809",
+                        terminal: "K1020A71474"
+                    },
+                    searchChild: {
                         requestType: 'agent', 
-                        requestKeywords: 'oneclick', 
+                        requestKeywords: 'getbuslist', 
                         platformID: this.$store.state.user.pid, 
                         userID: this.$store.state.user.uid, 
                         userPhone: this.$store.state.user.uphone, 
-                        childID: "", 
-                        machineID: "", 
-                        terminal: ""
+                        keywords: ""
                     }
                 },
                 renderData: {
@@ -114,8 +133,9 @@
                 this.popupVisible = true
             },
             onValuesChange (picker, values) {
-                // console.log(values)
+                this.deposit = values[0].frozen
                 this.choiceBrandVal = String(values[0].name)
+
             },
             sys_click () {
                 getServer().then( res => {
@@ -158,6 +178,7 @@
             },
             brand () {
                 getServer(this.queryData.brand).then( res => {
+                    // console.log(res.data)
                     this.slots[0].values = res.data.data
                     // res.data.data.forEach(item => {
                     //   .push(item.name)
@@ -165,8 +186,12 @@
                 })
             },
             confirmBinding () { // 确定绑定 
-                this.determineBindingLoading = truea
-                getServer().then( res => {
+                this.determineBindingLoading = true
+                console.log(this.queryData.confirmBinding)
+                getServer(this.queryData.confirmBinding).then( res => {
+                    alert(res)
+                    this.testUrl = res.data.url
+                    return
                     //成功状态下  
                     if (res.data.status) {
                     // 存储微信支付数据data
@@ -191,6 +216,16 @@
                     else {
                         console.log("失败")
                     }
+                })
+            },
+            searchChild () {
+                getServer(this.queryData.searchChild).then( res => {
+                    // console.log(response[res.data.responseStatus])
+                    if( res.data.responseStatus === 1 ) {
+                        this.queryData.confirmBinding.childID = res.data.data[0].id
+                        console.log(this.queryData.confirmBinding.childID)
+                    }
+                    
                 })
             }
         },

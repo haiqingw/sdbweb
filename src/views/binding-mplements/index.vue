@@ -180,7 +180,8 @@
                         if( res.data.isPay == 1 ) {
                             window.location.href = res.data.url
                         } else if( res.data.isPay == 2 ) {
-                            // console.log("直接帮")
+                            console.log("直接帮")
+                            alert("直接帮")
                         }
                     }
                    

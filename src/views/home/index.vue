@@ -233,7 +233,7 @@ export default {
     //banner图详情页
     bannerDetailTap(id){
       //console.log(id);
-      alert('banner图详情正在建设中');
+      // alert('banner图详情正在建设中');
     },
     onChange(index) {
       this.current = index;

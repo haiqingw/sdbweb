@@ -229,7 +229,7 @@ export default {
         position: fixed;
         left:0;
         bottom:0;
-        // padding-top: .8rem;
+        padding-top:15px;
         // margin-top: .8rem;
         top: .8rem;
         // background: #fff;

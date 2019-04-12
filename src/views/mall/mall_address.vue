@@ -194,7 +194,7 @@ div.operationAddress {
 
 .operationAddress > em {
     display: block;
-    width: 100%;
+    width:22%;
     text-align: center;
     padding: .2rem 0;
     font-size: 14px;
@@ -205,7 +205,7 @@ div.operationAddress {
     height: 20px;
     margin-right: 8px;
     position: relative;
-    top: -2px;
+    top: -1px;
     float: right;
 }
 

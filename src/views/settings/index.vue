@@ -9,11 +9,11 @@
         </div>
         <div class="settings-list">
             <ul>
-                <router-link to="/changePhoneNumber" tag="li" class="line_bottom">
+                <!-- <router-link to="/changePhoneNumber" tag="li" class="line_bottom">
                     <img src="@/assets/images/settingPhoneIcon.png" alt="更换手机号">
                     <span>更换手机号</span>
                     <i></i>
-                </router-link>
+                </router-link> -->
                 <router-link to="/changeCard" tag="li" class="line_bottom">
                     <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡">
                     <span>更换结算卡</span>

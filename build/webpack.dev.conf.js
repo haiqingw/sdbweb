@@ -38,7 +38,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       ? { warnings: false, errors: true }
       : false,
     publicPath: config.dev.assetsPublicPath,
-    proxy: config.dev.proxyTable,
+    // proxy: config.dev.proxyTable,
+    proxy: {
+        '/api/*': {
+            target: 'http://ttsplus.xylrcs.cn/index.php/App/Getway/route',
+            secure: false,
+            changeOrigin:true
+        }
+    },
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,

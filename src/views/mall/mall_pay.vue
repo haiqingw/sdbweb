@@ -13,7 +13,7 @@
         <!-- banner -->
         <!-- 收货地址 -->
         <div class="mallPayAddressMain">
-            <router-link to="/mall/mall_address" v-if="!isAddressInfo"><a href="javascript:;">请选择收货地址</a></router-link>
+            <router-link :to="{ name: 'mallAddAddress', params: {id: 0} }"  v-if="!isAddressInfo"><a href="javascript:;">请添加收货地址</a></router-link>
             <router-link to="/mall/mall_address" tag="div" v-else>
                 <div class="mallPayAddressBox rightArrIcon">
                     <div class="flex">
@@ -67,6 +67,7 @@
 </template>
 <script>
 import { getServer } from '@/api/index'
+import response from '@/assets/js/response.js'
 
 export default {
     name: "mall_pay",
@@ -106,6 +107,7 @@ export default {
     methods: {
         mall_payListDetail () {
             getServer(this.queryData.listDetail).then( res => {
+                // console.log(response[res.data.responseStatus])
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.listDetail = res.data.data
                 }
@@ -117,7 +119,7 @@ export default {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.addressInfo = res.data.data
                     this.isAddressInfo = true
-                } else if( res.data.responseStatus === 300 ) {
+                } else if( res.data.responseStatus === 302 ) {
                     this.isAddressInfo = false
                 }
             })

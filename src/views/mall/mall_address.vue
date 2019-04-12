@@ -84,6 +84,8 @@ export default {
             getServer(this.queryData.addressList).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.addressList = res.data.data
+                } else if ( res.data.responseStatus === 300 ) {
+                    this.renderData.addressList = res.data.data
                 }
             })
         },

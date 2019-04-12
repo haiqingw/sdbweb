@@ -1,11 +1,15 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="收货地址">
+        <!-- <mt-header fixed title="收货地址">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>收货地址</span>
+        </div>
         <!-- addressList -->
         <div class="addressContainer">
             <ul class="addressListUl">
@@ -41,7 +45,7 @@
     </div>
 </template>
 <script>
-import { getAddressList, getDeleteAddress, getSetDefault } from '@/api/mall'
+import { getServer} from '@/api/index'
 import { MessageBox, Toast } from 'mint-ui'
 import response from '@/assets/js/response.js'
 export default {
@@ -77,7 +81,7 @@ export default {
     },
     methods: {
         addressList () {
-            getAddressList(this.queryData.addressList).then( res => {
+            getServer(this.queryData.addressList).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.addressList = res.data.data
                 }
@@ -87,7 +91,7 @@ export default {
             this.queryData.deleteAddress.id = id
             MessageBox.confirm('您确定要删除该地址吗?', '删除')
                 .then(action => {
-                    getDeleteAddress(this.queryData.deleteAddress).then( res => {
+                    getServer(this.queryData.deleteAddress).then( res => {
                         console.log(response[res.data.responseStatus])
                         if( res.data.responseStatus === 1 ) {
                             Toast("删除地址成功")
@@ -104,7 +108,7 @@ export default {
             this.queryData.setDefault.id = id
             MessageBox.confirm('您确定要将该地址设为默认吗?', '设为默认')
                 .then(action => {
-                    getSetDefault(this.queryData.setDefault).then( res => {
+                    getServer(this.queryData.setDefault).then( res => {
                         // console.log(response[res.data.responseStatus])
                         if( res.data.responseStatus === 1 ) {
                             Toast("设为默认成功")

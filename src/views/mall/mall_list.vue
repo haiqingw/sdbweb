@@ -1,11 +1,15 @@
 <template>
   <div class="posMallContainer">
     <!-- header -->
-    <mt-header fixed title="机具商城">
+    <!-- <mt-header fixed title="机具商城">
       <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
-    </mt-header>
+    </mt-header> -->
+    <div class="return">
+        <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+        <span>机具商城</span>
+    </div>
     <!-- banner -->
     <div class="posMallHeader">
       <van-swipe @change="onChange">
@@ -81,11 +85,7 @@
   </div>
 </template>
 <script>
-import {
-  getMallBanner,
-  getPopularProduct,
-  getProductIndexList
-} from "@/api/mall";
+import { getServer } from "@/api/index";
 export default {
   data() {
     return {
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     mallBanner() {
-      getMallBanner(this.queryData.banner).then(res => {
+      getServer(this.queryData.banner).then(res => {
         if (res.data.responseStatus === 1) {
           this.renderData.banner = res.data.data;
           this.bannerLength = res.data.data.length;
@@ -132,14 +132,14 @@ export default {
       });
     },
     popularProduct() {
-      getPopularProduct(this.queryData.popular).then(res => {
+      getServer(this.queryData.popular).then(res => {
         if (res.data.responseStatus === 1) {
           this.renderData.popular = res.data.data;
         }
       });
     },
     productIndexList() {
-      getProductIndexList(this.queryData.productIndexList).then(res => {
+      getServer(this.queryData.productIndexList).then(res => {
         if (res.data.responseStatus === 1) {
           this.renderData.productIndexList = res.data.data;
         }

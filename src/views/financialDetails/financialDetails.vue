@@ -84,7 +84,7 @@
     </div>
 </template>
 <script>
-import {getProfitList} from '@/api/profit'
+import {getServer} from '@/api/index'
 import { Indicator } from 'mint-ui'
 export default {
     data() {
@@ -142,8 +142,7 @@ export default {
         },
         profitList () {
             this.isDisabled = true
-            console.log(this.queryData.list)
-            getProfitList(this.queryData.list).then( res => {
+            getServer(this.queryData.list).then( res => {
                 // console.log(res)
                 if( res.data.responseStatus === 1 ) {
                     this.isDisabled = false

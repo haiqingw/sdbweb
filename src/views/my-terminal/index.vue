@@ -70,7 +70,7 @@
 </template>
 
 <script>
-    import {getChoiceProduct, getChoiceBatch, getTerminalList} from '@/api/myTerminal'
+    import { getServer } from '@/api/index'
     import response from '@/assets/js/response.js'
     export default {
         data () {
@@ -163,14 +163,14 @@
                 this.onLoadList()
             },
             choiceProduct () {
-                getChoiceProduct(this.queryData.product).then( res => {
+                getServer(this.queryData.product).then( res => {
                     if( res.data.responseStatus === 1 ) {
                         this.byProduct.options = res.data.data
                     }
                 })
             },
             choiceBatch () {
-                getChoiceBatch(this.queryData.batch).then( res => {
+                getServer(this.queryData.batch).then( res => {
                     // console.log(response[res.data.responseStatus])
                     if( res.data.responseStatus === 1 ) {
                         this.byBatch.options = res.data.data
@@ -179,7 +179,7 @@
             },
             terminalList () {
                 this.upFinished = false
-                getTerminalList(this.queryData.list).then( res => {
+                getServer(this.queryData.list).then( res => {
                     // console.log(response[res.data.responseStatus])
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true

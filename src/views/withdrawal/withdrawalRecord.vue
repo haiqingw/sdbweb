@@ -81,7 +81,7 @@
     </div>
 </template>
 <script>
-    import { getWithdrawalList } from '@/api/withdrawal'
+    import { getServer } from '@/api/index'
     import response from '@/assets/js/response.js'
 export default {
     data() {
@@ -125,7 +125,7 @@ export default {
             this.withdrawalList();
         },
         withdrawalList () {
-            getWithdrawalList(this.queryData.list).then( res => {
+            getServer(this.queryData.list).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.isData = true
                     this.renderData.list = res.data.data

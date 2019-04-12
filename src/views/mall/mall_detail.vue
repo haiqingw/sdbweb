@@ -1,11 +1,15 @@
 <template>
     <div class="mall-detail">
         <!-- header -->
-        <mt-header fixed title="机具商城">
+        <!-- <mt-header fixed title="机具商城">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>机具商城</span>
+        </div>
         <!-- banner -->
         <mt-swipe :auto="4000" class="mallDetailBanner">
             <mt-swipe-item v-for="item in renderData.data.imgPath" :key="item"> 
@@ -115,7 +119,7 @@
     </div>
 </template>
 <script>
-import {getMall_detailBanner} from '@/api/mall'
+import {getServer} from '@/api/index'
 export default {
   name:'mallDetail',
   data(){
@@ -137,7 +141,7 @@ export default {
   },
   methods: {
     mall_detailBanner () {
-      getMall_detailBanner(this.queryData.banner).then( res => {
+      getServer(this.queryData.banner).then( res => {
         if( res.data.responseStatus === 1 ) {
           this.renderData.data = res.data.data
           if( this.renderData.data.reviewNum.ave == null ) {

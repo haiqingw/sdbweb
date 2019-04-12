@@ -17,40 +17,45 @@
             <div class="odd-numbers">
                 <img src="@/assets/images/click-deliver-goods-odd-numbers.png" alt="">
                 <el-input v-model="renderData.sub.oddNumbers" placeholder="请输入或扫码终端码"></el-input>
-                <a href="">扫码录入</a>
+                <a href="javascript:;">扫码录入</a>
             </div>
         </div>
         <div class="interval"></div>
-        <div class="terminal-num-list">
-            <h3>终端号列表</h3>
-            <van-pull-refresh
-                v-model="isDownLoading"
-                @refresh="onDownRefresh"
-                v-if="isData"
-            >
-                <van-list
-                    v-model="isUpLoading"                 
-                    :finished="upFinished"
-                    finished-text="没有更多了"
-                    @load="onLoadList"
-                    :offset= "offset"
+        <div>
+            <div class="terminal-num-list">
+                <h3>终端号列表</h3>
+                <van-pull-refresh
+                    v-model="isDownLoading"
+                    @refresh="onDownRefresh"
+                    v-if="isData"
                 >
-                    <ul>
-                        <li>
-                            <el-radio v-model="radio" label="1">111111111111111111111111111</el-radio>
-                        </li>
-                    </ul>
-                </van-list>
-            </van-pull-refresh>
-            <div class="no-data" v-else>
-                <img src="@/assets/images/no-data.png" alt="">
+                    <van-list
+                        v-model="isUpLoading"                 
+                        :finished="upFinished"
+                        finished-text="没有更多了"
+                        @load="onLoadList"
+                        :offset= "offset"
+                    >
+                        <ul>
+                            <li>
+                                <el-radio v-model="radio" label="1" v-for="item in renderData.oldList" :key="item.id" >{{item}}</el-radio>
+                            </li>
+                        </ul>
+                    </van-list>
+                </van-pull-refresh>
+                <div class="no-data" v-else>
+                    <img src="@/assets/images/no-data.png" alt="">
+                </div>
             </div>
+        </div>
+        <div class="">
+
         </div>
     </div>
 </template>
 
 <script>
-    import {getTerminalList} from '@/api/deliver-goods'
+    import {getServer} from '@/api/index'
     export default {
         data () {
             return {
@@ -85,7 +90,9 @@
         },
         methods: {
             terminalList() {
-                getTerminalList(this.queryData.list).then( res => {
+                console.log(this.queryData.list)
+                getServer(this.queryData.list).then( res => {
+                    console.log(res)
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true
                         this.renderData.list = res.data.data

@@ -79,7 +79,7 @@
   </div>
 </template>
 <script>
-import {getList} from '@/api/affiliateTransactions'
+import {getServer} from '@/api/index'
 export default {
   data() {
     return {
@@ -162,7 +162,7 @@ export default {
       this.onLoadList()
     },
     list() {
-      getList(this.queryData.list).then( res => {
+      getServer(this.queryData.list).then( res => {
         if( res.data.responseStatus === 1 ) {
             this.ATurnover = res.data.sum
             this.isData = true

@@ -1,11 +1,15 @@
 <template>
     <div class="add-address">
         <!-- header -->
-        <mt-header fixed title="添加收货地址">
+        <!-- <mt-header fixed title="添加收货地址">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>添加收货地址</span>
+        </div>
         <!-- addAddress -->
         <section class="addAddressSection">
             <el-form :model="queryData.addAddress" :rules="rules" ref="dataForm" class="demo-ruleForm">
@@ -48,7 +52,7 @@
 </template>
 <script>
 import SelectAddress from '@/components/selectAddress/selectAddress'
-import { getAddAddress, getEditInfo, getEditAddress } from '@/api/mall'
+import { getServer} from '@/api/index'
 import { Toast } from 'mint-ui';
 import {checkPhone} from '@/utils/verification'
 import response from '@/assets/js/response.js'
@@ -123,7 +127,7 @@ export default {
                         } else {
                             this.queryData.addAddress.defaultState = "2"
                         }
-                        getAddAddress(this.queryData.addAddress).then( res => {
+                        getServer(this.queryData.addAddress).then( res => {
                             // console.log(response[res.data.responseStatus])
                             if( res.data.responseStatus === 1 ) {
                                 Toast('添加地址成功')
@@ -137,7 +141,7 @@ export default {
             }
         },
         editInfo () {
-            getEditInfo(this.queryData.editInfo).then( res => {
+            getServer(this.queryData.editInfo).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.queryData.addAddress.name = res.data.data.name
                     this.queryData.addAddress.consigeephone = res.data.data.phone
@@ -166,7 +170,7 @@ export default {
                         this.queryData.addAddress.id = this.$route.params.id
                         this.queryData.addAddress.requestKeywords = "editshippingaddress"
                         console.log(this.queryData.addAddress)
-                        getEditAddress(this.queryData.addAddress).then( res => {
+                        getServer(this.queryData.addAddress).then( res => {
                             console.log(response[res.data.responseStatus])
                             if( res.data.responseStatus === 1 ) {
                                 Toast('编辑地址成功')

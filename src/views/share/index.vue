@@ -14,7 +14,7 @@
 
 
 <script>
-import { share } from "@/api/share";
+import {getServer} from "@/api/index";
 import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
 export default {
@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         shareFunc() {
-            share(this.queryData.share).then(res => {
+            getServer(this.queryData.share).then(res => {
                 console.log(res.data)
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.share = res.data.qrcode;

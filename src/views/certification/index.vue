@@ -29,7 +29,7 @@
 </template>
 <script>
 import { Toast } from "mint-ui";
-import { isCerApi , personInfoCerApi } from "@/api/certification";
+import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 export default {
     data() {
@@ -55,7 +55,7 @@ export default {
     methods: {
         // 判断是否实名认证
         isCerFn() {
-            isCerApi(this.queryData.isCer).then(res => {
+            getServer(this.queryData.isCer).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.$router.push({name: 'certificationNext'});
                 } else {
@@ -78,7 +78,7 @@ export default {
                Toast('身份证号格式不规范');
                return;
             }
-            personInfoCerApi(this.queryData.realNameCer).then(res => {
+            getServer(this.queryData.realNameCer).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.$router.push({ name: "certificationNext" });
                 } else {

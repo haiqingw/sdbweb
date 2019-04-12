@@ -75,12 +75,38 @@
     </div>
 </template>
 <script>
+import {getServer} from '@/api/index'
 export default {
     data() {
-        return {};
+        return {
+            queryData: {
+                details: {
+                    requestType: 'Order', 
+                    requestKeywords: 'detail', 
+                    id: this.$route.params.id
+                }
+            },
+            renderData: {
+                details: {}
+            }
+        };
+    },
+    methods: {
+        details () {
+            getServer(this.queryData.details).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.details = res.data.data
+                    console.log(this.renderData.details)
+                }
+            })
+        }
+    },
+    created () {
+        this.details()
     }
 };
 </script>
+
 <style lang="scss">
 .myOrderDetailStatusMain {
     overflow: hidden;

@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import { getTeamApi } from "@/api/organization"
+import { getServer } from "@/api/index"
 import response from '@/assets/js/response.js'
 export default {
   data() {
@@ -151,7 +151,7 @@ export default {
       });
     },
     getOrganizationFn(){
-      getTeamApi().then(res => {
+      getServer().then(res => {
         console.log(res);
         console.log(response[res.data.responseStatus])
       }) 

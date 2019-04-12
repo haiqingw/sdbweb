@@ -98,9 +98,8 @@
 <script>
 import Footer from "@/components/footerNav/footer";
 import { MessageBox, Indicator, Toast } from "mint-ui";
-import { checkcerApi, checkbankcardApi, getInfo } from "@/api/mine";
 import response from "@/assets/js/response.js";
-import { fetchList, getThaw } from "@/api/index";
+import { getServer } from "@/api/index";
 export default {
   data() {
     return {
@@ -154,9 +153,9 @@ export default {
   methods: {
     judgeRealNameAuth(url) {
       Indicator.open();
-      checkcerApi(this.queryData.checkcerData).then(res => {
+      getServer(this.queryData.checkcerData).then(res => {
         if (res.data.responseStatus === 1) {
-          checkbankcardApi(this.queryData.checkbankcardData).then(res => {
+          getServer(this.queryData.checkbankcardData).then(res => {
             if (res.data.responseStatus === 1) {
               Indicator.close();
               this.$router.push({ name: url });
@@ -169,17 +168,17 @@ export default {
       });
     },
     listOne() {
-      fetchList(this.queryData.listOne).then(res => {
+      getServer(this.queryData.listOne).then(res => {
         this.renderData.listOneData = res.data;
       });
     },
     thaw() {
-      getThaw(this.queryData.thaw).then(res => {
+      getServer(this.queryData.thaw).then(res => {
         this.renderData.thaw = res.data.thawMoney;
       });
     },
     info() {
-      getInfo(this.queryData.info).then(res => {
+      getServer(this.queryData.info).then(res => {
         if (res.data.responseStatus === 1) {
           this.renderData.info = res.data.data;
         }

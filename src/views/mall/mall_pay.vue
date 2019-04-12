@@ -1,24 +1,30 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="确认支付">
+        <!-- <mt-header fixed title="确认支付">
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header>
+        </mt-header> -->
+        <div class="return">
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <span>确认支付</span>
+        </div>
         <!-- banner -->
         <!-- 收货地址 -->
         <div class="mallPayAddressMain">
-            <router-link to="/mall/mall_address"><a href="javascript:;">请选择收货地址</a></router-link>
-            <div class="mallPayAddressBox rightArrIcon">
-                <div class="flex">
-                    <span>任勇强</span>
-                    <em>13296905340</em>
+            <router-link to="/mall/mall_address" v-if="!isAddressInfo"><a href="javascript:;">请选择收货地址</a></router-link>
+            <router-link to="/mall/mall_address" tag="div" v-else>
+                <div class="mallPayAddressBox rightArrIcon">
+                    <div class="flex">
+                        <span>{{renderData.addressInfo.name}}</span>
+                        <em>{{renderData.addressInfo.phone}}</em>
+                    </div>
+                    <div>
+                        {{renderData.addressInfo.province}}{{renderData.addressInfo.city}}{{renderData.addressInfo.area}}{{renderData.addressInfo.address}}
+                    </div>
                 </div>
-                <div>
-                    内蒙古呼和浩特市新城区兴安北路鼎盛华世纪广场10005懒人科技
-                </div>
-            </div>
+            </router-link>
         </div>
         <div class="interval"></div>
         <!-- 产品信息 -->
@@ -60,12 +66,13 @@
     </div>
 </template>
 <script>
-import { getMall_payOrder, getMall_payListDetail } from '@/api/mall'
+import { getServer } from '@/api/index'
 
 export default {
     name: "mall_pay",
     data() {
         return {
+            isAddressInfo: true,
             queryData: {
                 order: {
                     // requestType: 'Order',
@@ -81,25 +88,44 @@ export default {
                     requestType: 'listdetail',     
                     requestKeywords: 'productdetail', 
                     id: this.$route.params.id
+                },
+                addressInfo: {
+                    requestType: 'personal', 
+                    requestKeywords: 'getshipping', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone
                 }
             },
             renderData: {
-                listDetail: {}
+                listDetail: {},
+                addressInfo: {}
             }
         };
     },
     methods: {
         mall_payListDetail () {
-            getMall_payListDetail(this.queryData.listDetail).then( res => {
+            getServer(this.queryData.listDetail).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.listDetail = res.data.data
                 }
-                console.log(this.renderData.listDetail)
+                // console.log(this.renderData.listDetail)
+            })
+        },
+        addressInfo () {
+            getServer(this.queryData.addressInfo).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.addressInfo = res.data.data
+                    this.isAddressInfo = true
+                } else if( res.data.responseStatus === 300 ) {
+                    this.isAddressInfo = false
+                }
             })
         }
     },
     created () {
         this.mall_payListDetail()
+        this.addressInfo()
     }
 };
 </script>

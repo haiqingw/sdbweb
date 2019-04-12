@@ -45,20 +45,24 @@
                 <div class="withdrawalMoney">
                     <h3 class="withdrawalTitle">提现金额</h3>
                     <div class="line_bottom">
-                        <input v-model="queryData.cashWithdrawal.money" type="tel" placeholder="请输入提现金额">
+                        <input @blur="inpVerification" v-model="queryData.cashWithdrawal.money" type="tel" placeholder="请输入提现金额">
                     </div>
                 </div>
                 <!-- 提现账户信息 -->
                 <div class="withdrawalAccount">
                     <h3 class="withdrawalTitle">账户信息</h3>
-                    <p class="line_bottom">收款姓名：任勇强</p>
-                    <p>收款银行卡：中国建设银行(尾号7057)</p>
+                    <p class="line_bottom">收款姓名：{{$store.state.user.uname}}</p>
+                    <p>收款银行卡：{{renderData.bankInfo.bankName}}(尾号{{renderData.bankInfo.cardNum}})</p>
                 </div>
                 <!-- 提现提示信息 -->
                 <div class="withdrawalTipInfo">
                     <h3 class="withdrawalTitle">注意事项</h3>
                     <div>
-                        <p>提示信息</p>
+                        <p>1.单笔提现最高{{renderData.drawInfo.maxm}}，最低{{renderData.drawInfo.mixm}}元，每笔手续费{{renderData.drawInfo.pou}}元；</p>
+                        <p>2.到账时间：{{renderData.drawInfo.start}}-{{renderData.drawInfo.endt}}(工作日)；</p>
+                        <p>3.提现银行卡可以在'我的'中更换;</p>
+                        <p>4.结算方式为{{renderData.mattersNeedingAttention.methed}}。</p>
+                        <p>5.提现税收为{{renderData.drawInfo.tax}}。</p>
                     </div>
                 </div>
             </div>
@@ -70,13 +74,16 @@
     </div>
 </template>
 <script>
-import {getBalanceList, getCashWithdrawal} from '@/api/withdrawal'
+import {getServer} from '@/api/index'
 import { Toast } from 'mint-ui'
 export default {
     data() {
         return {
             renderData: {
-                balanceList: []
+                balanceList: [],
+                drawInfo: {},
+                bankInfo: {},
+                mattersNeedingAttention: {}
             },
             queryData: {
                 balanceList: {
@@ -94,6 +101,27 @@ export default {
                     userPhone: this.$store.state.user.uphone,
                     money: "",
                     payType: ""
+                },
+                drawInfo: {
+                    requestType: 'personal', 
+                    requestKeywords: 'getdrawpou', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone
+                },
+                bankInfo: {
+                    requestType: 'personal', 
+                    requestKeywords: 'getbankcard', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone
+                },
+                mattersNeedingAttention: {
+                    requestType: 'personal', 
+                    requestKeywords: 'getassets', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone
                 }
             }
         };
@@ -103,9 +131,34 @@ export default {
             // console.log(index);
         },
         balanceList () {
-            getBalanceList(this.queryData.balanceList).then( res => {
+            getServer(this.queryData.balanceList).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.balanceList = res.data.data
+                }
+            })
+        },
+        drawInfo () {
+            getServer(this.queryData.drawInfo).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.drawInfo = res.data
+                    // console.log(this.renderData.drawInfo)
+                }
+            })
+        },
+        bankInfo() {
+            getServer(this.queryData.bankInfo).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.bankInfo = res.data.bankcard
+                    this.renderData.bankInfo.cardNum = this.renderData.bankInfo.cardNum.substring(this.renderData.bankInfo.cardNum.length-4)
+                    // console.log(this.renderData.bankInfo)
+                }
+            })
+        },
+        mattersNeedingAttention () {
+            getServer(this.queryData.mattersNeedingAttention).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.mattersNeedingAttention = res.data.data
+                    // console.log(this.renderData.mattersNeedingAttention)
                 }
             })
         },
@@ -116,15 +169,41 @@ export default {
             const reg =  /^[0-9]+\.?[0-9]*$/;
             if( this.queryData.cashWithdrawal.money.trim() == "" ) {
                 Toast('请输入提现金额')
-            } else if( reg.test( this.queryData.cashWithdrawal.money ) ) {
-                Toast('成功')
-            } else {
-                Toast('请输入正确的提现金额')
+                return
+            } 
+            if( reg.test( this.queryData.cashWithdrawal.money ) > this.renderData.mattersNeedingAttention.ktx )  {
+                Toast('可提现金额不足')
+                return
+            } 
+            if(  parseFloat(this.queryData.cashWithdrawal.money)  < parseFloat(this.renderData.drawInfo.mixm) ) {
+                Toast("单笔最低提现" + this.renderData.drawInfo.mixm + "元")
+                return
             }
+            if( parseFloat(this.queryData.cashWithdrawal.money) > parseFloat(this.renderData.drawInfo.maxm) ) {
+                Toast("单笔最高提现" + this.renderData.drawInfo.maxm + "元")
+                return
+            }
+            if( reg.test( this.queryData.cashWithdrawal.money ) ) {
+                Toast('成功')
+            }
+        },
+        inpVerification () {
+            this.queryData.cashWithdrawal.money = this.queryData.cashWithdrawal.money.replace(/[^\d.]/g, "");
+            //必须保证第一个为数字而不是.
+            this.queryData.cashWithdrawal.money = this.queryData.cashWithdrawal.money.replace(/^\./g, "");
+            //保证只有出现一个.而没有多个.
+            this.queryData.cashWithdrawal.money = this.queryData.cashWithdrawal.money.replace(/\.{2,}/g, ".");
+            //保证.只出现一次，而不能出现两次以上
+            this.queryData.cashWithdrawal.money = this.queryData.cashWithdrawal.money.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+            //只保留2位小数
+            this.queryData.cashWithdrawal.money = this.queryData.cashWithdrawal.money.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');
         }
     },
     created () {
         this.balanceList()
+        this.drawInfo()
+        this.bankInfo()
+        this.mattersNeedingAttention()
     }
 };
 </script>

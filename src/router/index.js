@@ -314,6 +314,12 @@ export default new Router({
       name: 'evaluation',
       component: () =>
         import('@/views/evaluation')
+    },
+    {
+      path: '/bindSuccess', //机具绑定成功
+      name: 'bindSuccess',
+      component: () =>
+        import('@/views/binding-mplements/bindSuccess')
     }
   ]
 })

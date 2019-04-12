@@ -114,7 +114,8 @@ export default {
                         // console.log(response[res.data.responseStatus])
                         if( res.data.responseStatus === 1 ) {
                             Toast("设为默认成功")
-                            this.addressList()
+                            this.$router.go(-1)
+                            sessionStorage.setItem('isDefault', true)
                         }else {
                             Toast("设为默认失败")
                         }
@@ -194,7 +195,7 @@ div.operationAddress {
 
 .operationAddress > em {
     display: block;
-    width: 100%;
+    width:22%;
     text-align: center;
     padding: .2rem 0;
     font-size: 14px;
@@ -205,7 +206,7 @@ div.operationAddress {
     height: 20px;
     margin-right: 8px;
     position: relative;
-    top: -2px;
+    top: -1px;
     float: right;
 }
 

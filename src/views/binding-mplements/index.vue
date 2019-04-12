@@ -25,15 +25,6 @@
         ></el-input>
         <el-button type="text" @click="sys_click">自动识别</el-button>
       </div>
-        <div class="bingding-mplements-choice">
-            <h5 class="sn"></h5>
-            <el-input
-                style="width: 60%;"
-                v-model="queryData.searchChild.keywords"
-                placeholder="请填写机具序列号"
-            ></el-input>
-            <el-button type="text" @click="searchChild">搜索下级商户</el-button>
-      </div>
       <mt-popup
         v-model="popupVisible"
         position="bottom"
@@ -110,8 +101,7 @@
                         platformID: this.$store.state.user.pid,
                         userID: this.$store.state.user.uid,
                         userPhone: this.$store.state.user.uphone,
-                        childID: "",
-                        machineID: "38809",
+                        // machineID: "38809",
                         terminal: "K1020A71474"
                     },
                     searchChild: {
@@ -135,7 +125,6 @@
             onValuesChange (picker, values) {
                 this.deposit = values[0].frozen
                 this.choiceBrandVal = String(values[0].name)
-
             },
             sys_click () {
                 getServer().then( res => {
@@ -189,7 +178,7 @@
                 this.determineBindingLoading = true
                 console.log(this.queryData.confirmBinding)
                 getServer(this.queryData.confirmBinding).then( res => {
-                    alert(res)
+                    console.log(res)
                     this.testUrl = res.data.url
                     return
                     //成功状态下  

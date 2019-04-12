@@ -14,7 +14,7 @@
           <span><img src="@/assets/images/logoSmallImg.jpg" alt="头像"/></span>
           <p>
             {{ renderData.info.busname }}
-            <em>股东</em>
+            <em v-if="renderData.info.level == 2 ">股东</em>
           </p>
           <p>{{ renderData.info.phone }}</p>
         </div>
@@ -180,7 +180,7 @@ export default {
     info() {
       getServer(this.queryData.info).then(res => {
         if (res.data.responseStatus === 1) {
-          this.renderData.info = res.data.data;
+            this.renderData.info = res.data.data;
         }
       });
     }

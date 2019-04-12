@@ -142,6 +142,7 @@ export default {
         },
         profitList () {
             this.isDisabled = true
+            console.log(this.queryData.list)
             getProfitList(this.queryData.list).then( res => {
                 // console.log(res)
                 if( res.data.responseStatus === 1 ) {

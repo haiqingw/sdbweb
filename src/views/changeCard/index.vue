@@ -10,7 +10,7 @@
             <img
                 src="@/assets/images/return.png" alt="" 
                 @click="$router.go(-1)"/>
-            <span>跟换结算卡</span>
+            <span>更换结算卡</span>
         </div>
         <!-- body -->
         <div class="tipMain">

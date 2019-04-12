@@ -63,7 +63,7 @@
 
 <script>
     import { getServer } from '@/api/index'
-    import { getWexinPay, getBackEndWexinPay } from '@/api/wexinPay'
+    import { getWexinPay } from '@/api/wexinPay'
     import wx from 'weixin-js-sdk'
     export default {
         data() {
@@ -165,8 +165,8 @@
                 })
             },
             confirmBinding () { // 确定绑定 
-                this.determineBindingLoading = true
-                getBackEndWexinPay().then( res => {
+                this.determineBindingLoading = truea
+                getServer().then( res => {
                     //成功状态下  
                     if (res.data.status) {
                     // 存储微信支付数据data

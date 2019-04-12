@@ -19,11 +19,11 @@
                     <span>更换结算卡</span>
                     <i></i>
                 </router-link>
-                <li class="line_bottom">
+                <router-link tag="li" to="/mall/mall_address" class="line_bottom">
                     <img src="@/assets/images/mineAddressIcon.png" alt="收货地址管理">
                     <span>收货地址管理</span>
                     <i></i>
-                </li>
+                </router-link>
                 <router-link to="/changePassword" tag="li" class="line_bottom">
                     <img src="@/assets/images/settingPasswordIcon.png" alt="修改密码">
                     <span>修改密码</span>

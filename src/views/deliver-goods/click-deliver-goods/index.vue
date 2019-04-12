@@ -37,7 +37,7 @@
                 >
                     <ul>
                         <li>
-                            <el-radio v-model="radio" label="1">111111111111111111111111111</el-radio>
+                            <el-radio v-model="radio" label="1" v-for="item in renderData.oldList" :key="item.id" >{{item}}</el-radio>
                         </li>
                     </ul>
                 </van-list>
@@ -85,7 +85,9 @@
         },
         methods: {
             terminalList() {
+                console.log(this.queryData.list)
                 getServer(this.queryData.list).then( res => {
+                    console.log(res)
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true
                         this.renderData.list = res.data.data

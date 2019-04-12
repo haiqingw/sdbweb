@@ -88,7 +88,7 @@ export default {
         },
         //获取真实姓名
         getRealName() {
-            realNameApi(this.queryData.realName).then(res => {
+            getServer(this.queryData.realName).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.realName = res.data.data.name;
                 }

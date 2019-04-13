@@ -135,7 +135,6 @@
                 this.queryData.sweepCode.code = location.href
                 // alert(this.queryData.sweepCode.code)
                 getServer(this.queryData.sweepCode).then( res => {
-                    console.log(res)
                     if( res.data.responseStatus === 1 ) {
                         wx.config({
                             // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -152,9 +151,11 @@
                             jsApiList: ['checkJsApi', 'scanQRCode']
                         });
                         wx.error(function (res) {
-                            alert("出错了：" + res.errMsg);//这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
+                            // alert("出错了：" + res.errMsg);//这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
                         });
+                        var $this = this;
                         wx.ready(function () {
+                            $this.queryData.confirmBinding.terminal = 1
                             // wx.checkJsApi({
                             //     jsApiList: ['scanQRCode', 'checkJsApi'],
                             //     success: function (res) {
@@ -163,17 +164,21 @@
                             // });
                             wx.scanQRCode({
                                 needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                                scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                                scanType: ["barCode"], // 可以指定扫二维码还是一维码，默认二者都有
                                 success: function (res) {
-                                    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                                    if( result.indexOf(",") >= 0 ){
-                                        var tempArray = result.split(',');
-                                        var tempNum = tempArray[1];
-                                        this.queryData.confirmBinding.terminal == tempNum
-                                    } else{
-                                        this.queryData.confirmBinding.terminal = result
-                                    }
-                                    // window.location.href = result;//因为我这边是扫描后有个链接，然后跳转到该页面
+                                    $this.queryData.confirmBinding.terminal = 2
+                                    setTimeout( () => {
+                                        $this.queryData.confirmBinding.terminal = 3
+                                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                                        if( result.indexOf(",") >= 0 ){
+                                            var tempArray = result.split(',');
+                                            var tempNum = tempArray[1];
+                                            $this.queryData.confirmBinding.terminal = tempNum
+                                        } else{
+                                            Toast("获取失败")
+                                        }
+                                        // $this.queryData.confirmBinding.terminal = result
+                                    }, 300)
                                 }
                             })
                         }); 
@@ -217,7 +222,6 @@
                         this.queryData.confirmBinding.childID = res.data.data[0].id
                         console.log(this.queryData.confirmBinding.childID)
                     }
-                    
                 })
             }
         },

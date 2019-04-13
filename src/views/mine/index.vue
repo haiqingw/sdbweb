@@ -63,7 +63,7 @@
           <img src="@/assets/images/myTerminalIcon.png" alt="我的终端" />
           <p>我的终端</p>
         </router-link>
-        <router-link to="/affiliateTransactions">
+        <router-link to="/affiliateTransactions" v-if="renderData.info.level == 2">
           <img
             src="@/assets/images/AffiliateTransactionsIcon.png"
             alt="下属交易"
@@ -78,7 +78,7 @@
           <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细" />
           <p>资金明细</p>
         </router-link>
-        <router-link to="/organization">
+        <router-link to="/organization" v-if="renderData.info.level == 2">
           <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构" />
           <p>组织架构</p>
         </router-link>

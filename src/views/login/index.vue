@@ -31,8 +31,8 @@
             return {
                 loading: false,
                 formData: {
-                    phone: "13704751958",
-                    password: "123456a"
+                    phone: "",
+                    password: ""
                 },
                 loginRules: {
                     phone: [

@@ -19,7 +19,7 @@
         <div class="withdrawalMain">
             <div class="withdrawalHeader">
                 <div class="withdrawalTip"><img src="../../assets/images/pointLeftIcon.png">左右滑动切换提现方式<img src="../../assets/images/pointRightIcon.png"></div>
-                <mt-swipe @change="handleChange" :auto="0">
+                <mt-swipe :auto="0" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in renderData.balanceList" :key="index">
                         <div class="mtSwipeItem">
                             <h3>{{item.types}}</h3>
@@ -34,7 +34,7 @@
                                     结算方式：{{item.method}}
                                 </em>
                             </div>
-                            <a href="javascript:;" @click="allWithdrawal">全部提现</a>
+                            <!-- <a href="javascript:;" @click="allWithdrawal">全部提现</a> -->
                         </div>
                     </mt-swipe-item>
                 </mt-swipe>
@@ -75,7 +75,8 @@
 </template>
 <script>
 import {getServer} from '@/api/index'
-import { Toast } from 'mint-ui'
+import { Toast, MessageBox } from 'mint-ui'
+import response from '@/assets/js/response.js'
 export default {
     data() {
         return {
@@ -128,12 +129,17 @@ export default {
     },
     methods: {
         handleChange(index) {
-            // console.log(index);
+            this.renderData.balanceList.forEach ( (item,i) => {
+                if( index == i ) {
+                    this.queryData.cashWithdrawal.payType = item.t
+                }   
+            })
         },
         balanceList () {
             getServer(this.queryData.balanceList).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.balanceList = res.data.data
+                    this.queryData.cashWithdrawal.payType = res.data.data[0].t
                 }
             })
         },
@@ -184,7 +190,18 @@ export default {
                 return
             }
             if( reg.test( this.queryData.cashWithdrawal.money ) ) {
-                Toast('成功')
+                MessageBox.confirm("你确定要提现吗?", "提现")
+                .then(action => {
+                    getServer(this.queryData.cashWithdrawal).then( res => {
+                        console.log(res)
+                        if( res.data.responseStatus === 1 ) {
+                            Toast('提现成功')
+                        } else {
+                           Toast( response[res.data.responseStatus] )
+                        }
+                    })
+                })
+                .catch(() => {});
             }
         },
         inpVerification () {
@@ -229,8 +246,12 @@ export default {
     padding: 0 15px 15px;
     height: 168px;
 }
+.mint-swipe-item.is-active .mtSwipeItem{
+  background: #0096fe;  
+} 
 .mtSwipeItem {
-    background: #0096fe;
+    // background: #0096fe;
+    background:#ccc;
     padding: 12px 15px 15px;
     position: relative;
     border-radius: 5px;

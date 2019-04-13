@@ -13,7 +13,7 @@
         <!-- 列表 -->
         <div class="financialDetailsMain">
             <!-- 筛选 -->
-            <div class="timeScreeningMain">
+            <!-- <div class="timeScreeningMain">
                 <div class="timeScreeningItem line_bottom">
                     <em>开始时间</em>
                     <div>
@@ -21,6 +21,24 @@
                         <input type="data">
                     </div>
                 </div>
+                <div class="selector selectYear" @click="selectYear">
+                    <div class="show_year">
+                    <p v-if="!isClicked">请选择日期筛选</p>
+                    <p v-if="isClicked">{{ year }}年{{ month }}月{{ date }}日</p>
+                    </div>
+                </div>
+                <mt-datetime-picker
+                    v-model="dateValue"
+                    type="date"
+                    ref="datePicker"
+                    year-format="{value} 年"
+                    month-format="{value} 月"
+                    date-format="{value} 日"
+                    :endDate="new Date()"
+                    @confirm="handleConfirm"
+                    @cancel="handleCancel"
+                >
+                </mt-datetime-picker>
                 <div class="timeScreeningItem line_bottom">
                     <em>结束时间</em>
                     <div>
@@ -28,7 +46,7 @@
                         <input type="data">
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- 切换 筛选 -->
             <!-- switchSacreeningMain -->
             <div class="choice">
@@ -95,6 +113,12 @@ export default {
             offset: 10, //滚动条与底部距离小于 offset 时触发load事件
             isData: true,
             isDisabled: true,
+            pickerValue: "按时间筛选",
+            year: "",
+            month: "",
+            date: "",
+            dateValue: "",
+            isClicked: false,
             renderData: {
                 listData: [],
                 odlListData: []
@@ -115,6 +139,20 @@ export default {
         };
     },
     methods: {
+        clickChange () {
+            if( this.type === 'selectionDate' ) {
+                this.selectYear()
+            } else {
+                delete this.queryData.list.dates
+                this.isClicked = false
+                this.queryData.list.types = this.type
+                this.upFinished = false
+                this.isData = true
+                this.queryData.list.page = 0
+                this.renderData.oldList = []
+                this.onLoadList()
+            }
+        },
         handleClick () {
             this.upFinished = false
             this.queryData.list.page = 1
@@ -179,7 +217,8 @@ export default {
         position: fixed;
         width: 100%;
         left: 0;
-        top: 2rem;
+        // top: 2rem;
+        top: .6rem;
         background: #fff;
         z-index: 9999;
         .el-radio-group {
@@ -231,7 +270,8 @@ export default {
     }
 }
 .financialDetailsMain {
-    margin-top: 3.3rem;
+    // margin-top: 3.3rem;
+    margin-top: 2rem;
     // position: fixed;
     // left:0;
     // top:160px;

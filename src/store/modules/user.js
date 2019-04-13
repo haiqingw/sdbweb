@@ -48,6 +48,7 @@ const user = {
             }
             return new Promise( (resolve, reject) => {
                 getServer(queryData).then( res => {
+                    // console.log(res)
                     // console.log(response[res.data.responseStatus])
                     const data = res.data
                     if(data.responseStatus === 1) {

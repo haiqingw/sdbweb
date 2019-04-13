@@ -118,9 +118,8 @@
             <a href="">申请代理</a>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <div class="img">
-            <!-- <router-link to="/mall"><img src="@/assets/images/index-list2-img5.png" alt=""></router-link> -->
             <router-link to="/mall">
               <img src="@/assets/images/index-list2-img5.png" alt="" />
             </router-link>
@@ -128,7 +127,7 @@
           <div class="text">
             <router-link to="/mall">机具商场</router-link>
           </div>
-        </li>
+        </li> -->
         <li v-if="renderData.info.level == 2">
           <div class="img">
             <router-link to="/financialDetails"

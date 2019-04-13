@@ -65,7 +65,7 @@
     import { getServer } from '@/api/index'
     import response from '@/assets/js/response.js'
     import wx from 'weixin-js-sdk'
-    import {getwxs} from '@/api/wxs'
+    import { getWxs, getWx } from '@/api/wxs'
     export default {
         data() {
             return {
@@ -111,11 +111,11 @@
                         userPhone: this.$store.state.user.uphone, 
                         keywords: ""
                     },
-                    // sweepCode: {
-                    //     requestType: 'sharecode',
-                    //     requestKeywords: 'jssdks',
-                    //     code: "code"
-                    // }
+                    sweepCode: {
+                        requestType: 'sharecode',
+                        requestKeywords: 'jssdks',
+                        code: "code"
+                    }
                 },
                 renderData: {
                     brand: []
@@ -131,7 +131,13 @@
                 this.choiceBrandVal = String(values[0].name)
             },
             sys_click () {
-                getwxs().then( res => {
+                let url = "获取微信认证参数的地址?url=" + location.href
+                console.log(url)
+                return
+                getWx().then( res => {
+                    console.log(res)
+                })
+                getWxs(url).then( res => {
                     if( res.data.responseStatus === 1 ) {
                         console.log(res)
                         wx.config({

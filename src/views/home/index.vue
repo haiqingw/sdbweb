@@ -82,7 +82,7 @@
           </h3>
           <p>
             今日收益
-            <em>+1000.00</em>
+            <em>+ {{renderData.todayProfit}}</em>
           </p>
           <span></span>
         </router-link>
@@ -180,7 +180,8 @@ export default {
       bannerListData: {},
       renderData: {
         listOneData: {},
-        thaw: ""
+        thaw: "",
+        todayProfit: ""
       },
       queryData: {
         listOne: {
@@ -202,6 +203,13 @@ export default {
           requestKeywords: "advertis",
           types: "syl",
           platformID: this.$store.state.user.pid
+        },
+        todayProfit: {
+            requestType: 'spendinginto',
+            requestKeywords: 'daysearnings', 
+            platformID: this.$store.state.user.pid,
+            userID: this.$store.state.user.uid,
+            userPhone: this.$store.state.user.uphone
         }
       }
     };
@@ -213,6 +221,17 @@ export default {
     ...mapGetters(["islogin"])
   },
   methods: {
+      todayProfit () {
+        getServer(this.queryData.todayProfit).then( res => {
+            if( res.data.responseStatus === 1 ) {
+                this.renderData.todayProfit = res.data.total
+                if( this.renderData.todayProfit === null ) {
+                    this.renderData.todayProfit = 0
+                }
+            }
+            
+        })
+      },
     listOne() {
       getServer(this.queryData.listOne).then(res => {
         this.renderData.listOneData = res.data;
@@ -244,6 +263,7 @@ export default {
     this.thaw();
     // this.test1()
     this.bannerList();
+    this.todayProfit()
   }
 };
 </script>

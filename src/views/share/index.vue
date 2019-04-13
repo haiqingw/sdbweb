@@ -4,7 +4,7 @@
         <!-- swiper -->
         <swiper :options="swiperOption">
             <swiper-slide v-for="item in renderData.share" :key="item">
-                <img :src="renderData.share.qrcode" alt="">
+                <img :src="item" alt="">
             </swiper-slide>
             <!-- <div class="swiper-pagination" slot="pagination"></div> -->
         </swiper>
@@ -22,8 +22,8 @@ export default {
         return {
             queryData: {
                 share: {
-                    requestType: "personal",
-                    requestKeywords: "getqrcode",
+                    requestType: "sharecode",
+                    requestKeywords: "qrcode",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -57,8 +57,9 @@ export default {
     },
     methods: {
         shareFunc() {
+            // console.log(this.queryData.share)
             getServer(this.queryData.share).then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.share = res.data.qrcode;
                 }

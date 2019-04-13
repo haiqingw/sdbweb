@@ -66,6 +66,7 @@
     import response from '@/assets/js/response.js'
     import wx from 'weixin-js-sdk'
     import { getWxs } from '@/api/wxs'
+    import { Toast } from 'mint-ui';
     export default {
         data() {
             return {
@@ -186,19 +187,27 @@
             },
             confirmBinding () { // 确定绑定 
                 this.determineBindingLoading = true
+                if( this.queryData.confirmBinding.terminal === "" ) {
+                    Toast("请填写机具序列号")
+                    this.determineBindingLoading = false
+                    return
+                }
                 getServer(this.queryData.confirmBinding).then( res => {
                     this.determineBindingLoading = false
-                    console.log(res)
                     if( res.data.responseStatus === 1 ) {
                         if( res.data.isPay == 1 ) {
                             window.location.href = res.data.url
                         } else if( res.data.isPay == 2 ) {
-                            console.log("直接帮")
-                            alert("直接帮")
+                            // console.log("直接帮")
+                            // alert("直接帮")
+                            Toast("绑定成功")
+                            setTimeout( () => {
+                                this.$router.go(-1)
+                            }, 800)
                         }
+                    } else {
+                        Toast(response[res.data.responseStatus])
                     }
-                   
-                    console.log(res)
                 })
             },
             searchChild () {

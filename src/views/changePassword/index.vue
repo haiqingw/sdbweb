@@ -56,35 +56,35 @@ export default {
             if (this.queryData.modifyData.oldpass == "" || this.queryData.modifyData.oldpass == undefined) {
                 Toast({
                     message: "请输入旧密码",
-                    duration: 2000
+                    duration: 1000
                 });
                 return;
             }
             if (this.queryData.modifyData.newpass == "" || this.queryData.modifyData.newpass == undefined) {
                 Toast({
                     message: "请输入新密码",
-                    duration: 2000
+                    duration: 1000
                 });
                 return;
             }
             if (this.queryData.checknewpass == "" || this.queryData.checknewpass == undefined) {
                 Toast({
                     message: "请再次输入新密码",
-                    duration: 2000
+                    duration: 1000
                 });
                 return;
             }
             if (this.queryData.checknewpass != this.queryData.modifyData.newpass) {
                 Toast({
                     message: "两次输入的密码不一致",
-                    duration: 2000
+                    duration: 1000
                 });
                 return;
             }
             if(!checkPassWord(this.queryData.checknewpass)){
               Toast({
                     message: "必须为字母加数字且长度不小于6位",
-                    duration: 2000
+                    duration: 1000
                 });
                 return;  
             }

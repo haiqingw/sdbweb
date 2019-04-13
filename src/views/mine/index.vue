@@ -59,11 +59,11 @@
           <img src="@/assets/images/certificationIcon.png" alt="实名认证" />
           <p>实名认证</p>
         </a>
-        <router-link to="/myTerminal">
+        <router-link to="/myTerminal" v-if="renderData.info.level == 2 ">
           <img src="@/assets/images/myTerminalIcon.png" alt="我的终端" />
           <p>我的终端</p>
         </router-link>
-        <router-link to="/affiliateTransactions">
+        <router-link to="/affiliateTransactions" v-if="renderData.info.level == 2 ">
           <img
             src="@/assets/images/AffiliateTransactionsIcon.png"
             alt="下属交易"
@@ -74,14 +74,14 @@
           <img src="@/assets/images/balanceIcon.png" alt="余额/提现" />
           <p>余额/提现</p>
         </a>
-        <router-link to="/financialDetails">
+        <router-link to="/financialDetails" v-if="renderData.info.level == 2 ">
           <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细" />
           <p>资金明细</p>
         </router-link>
-        <router-link to="/organization">
+        <!-- <router-link to="/organization">
           <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构" />
           <p>组织架构</p>
-        </router-link>
+        </router-link> -->
         <router-link to="/helpCenter">
           <img src="@/assets/images/helpCenterIcon.png" alt="帮助中心" />
           <p>帮助中心</p>

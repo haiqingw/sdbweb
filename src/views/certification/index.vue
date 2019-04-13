@@ -80,7 +80,7 @@ export default {
             }
             getServer(this.queryData.realNameCer).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.$router.push({ name: "certificationNext" });
+                    this.$router.push({name: "certificationNext"});
                 } else {
                     Toast(response[res.data.responseStatus]);
                 }

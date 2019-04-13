@@ -117,9 +117,9 @@ export default {
     getfreezeListFn() {
       Indicator.open();
       getServer(this.queryData).then(res => {
+          Indicator.close();
           console.log(res)
         if (res.data.responseStatus === 1) {
-          Indicator.close();
           this.noPosDataStatus = false;
           this.freezeData = res.data.data;
         }else{

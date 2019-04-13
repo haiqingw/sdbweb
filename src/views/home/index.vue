@@ -100,7 +100,7 @@
             <router-link to="/bindingMplements">绑定机具</router-link>
           </div>
         </li>
-        <li>
+        <li v-if="renderData.info.level == 2">
           <div class="img">
             <router-link to="/myTerminal"
               ><img src="@/assets/images/index-list2-img2.png" alt=""
@@ -110,7 +110,7 @@
             <router-link to="/myTerminal">我的终端</router-link>
           </div>
         </li>
-        <li>
+        <li @click="applyAgent">
           <div class="img">
             <img src="@/assets/images/index-list2-img3.png" alt="" />
           </div>
@@ -129,22 +129,24 @@
             <router-link to="/mall">机具商场</router-link>
           </div>
         </li>
-        <li>
+        <li v-if="renderData.info.level == 2">
           <div class="img">
-            <router-link to="/financialDetails"><img src="@/assets/images/index-list2-img6.png" alt=""/></router-link>
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
           </div>
           <div class="text">
             <router-link to="/financialDetails">收益明细</router-link>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <div class="img">
             <router-link to="/organization"><img src="@/assets/images/index-list2-img7.png" alt=""/></router-link>
           </div>
           <div class="text">
             <router-link to="/organization">组织架构</router-link>
           </div>
-        </li>
+        </li> -->
         <!-- <li>
           <div class="img">
             <img src="@/assets/images/index-list2-img8.png" alt="">
@@ -153,9 +155,11 @@
             <a href="">排行榜</a>
           </div>
         </li> -->
-        <li>
+        <li v-if="renderData.info.level == 2">
           <div class="img">
-            <router-link to="/deliverGoods"><img src="@/assets/images/index-list2-img4.png" alt=""/></router-link>
+            <router-link to="/deliverGoods"
+              ><img src="@/assets/images/index-list2-img4.png" alt=""
+            /></router-link>
           </div>
           <div class="text">
             <router-link to="/deliverGoods">订单管理</router-link>
@@ -172,6 +176,7 @@ import { mapGetters } from "vuex";
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
+import { Toast } from "mint-ui";
 export default {
   data() {
     return {
@@ -180,7 +185,8 @@ export default {
       bannerListData: {},
       renderData: {
         listOneData: {},
-        thaw: ""
+        thaw: "",
+        info: {}
       },
       queryData: {
         listOne: {
@@ -202,6 +208,13 @@ export default {
           requestKeywords: "advertis",
           types: "syl",
           platformID: this.$store.state.user.pid
+        },
+        info: {
+          requestType: "personal",
+          requestKeywords: "getbusinfo",
+          platformID: this.$store.state.user.pid,
+          userID: this.$store.state.user.uid,
+          userPhone: this.$store.state.user.uphone
         }
       }
     };
@@ -227,16 +240,30 @@ export default {
       getServer(this.queryData.bannerData).then(res => {
         // console.log(res);
         this.bannerLength = res.data.data.length;
-        this.bannerListData = res.data.data; 
+        this.bannerListData = res.data.data;
       });
     },
     //banner图详情页
-    bannerDetailTap(id){
+    bannerDetailTap(id) {
       //console.log(id);
       // alert('banner图详情正在建设中');
     },
     onChange(index) {
       this.current = index;
+    },
+    info() {
+      getServer(this.queryData.info).then(res => {
+        if (res.data.responseStatus === 1) {
+          this.renderData.info = res.data.data;
+        }
+      });
+    },
+    //申请代理商
+    applyAgent() {
+      Toast({
+        message: "请联系您的上级代理",
+        duration: 1000
+      });
     }
   },
   created() {
@@ -244,6 +271,7 @@ export default {
     this.thaw();
     // this.test1()
     this.bannerList();
+    this.info();
   }
 };
 </script>

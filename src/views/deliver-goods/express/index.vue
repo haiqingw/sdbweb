@@ -10,9 +10,9 @@
         </div>
         <div class="express-list">
             <ul>
-                <li @click="choiceExpress('顺风快递')">
+                <li @click="choiceExpress('顺丰快递')">
                     <img src="@/assets/images/expreeIcon/1.jpg" alt="">
-                    <span>顺风快递</span>
+                    <span>顺丰快递</span>
                 </li>
                 <li @click="choiceExpress('韵达快递')">
                     <img src="@/assets/images/expreeIcon/2.jpg" alt="">

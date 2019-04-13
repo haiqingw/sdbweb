@@ -9,10 +9,13 @@
                 <el-form-item prop="phone">
                     <el-input v-model="formData.phone" placeholder="请输入手机号"></el-input>
                 </el-form-item>
-                <el-form-item prop="password">
+                <el-form-item prop="password" style="margin-bottom:0;">
                     <!-- type="password" -->
                     <el-input  v-model="formData.password" placeholder="请输入密码" show-password></el-input>
                 </el-form-item>
+                <div class="forgetPasswordMain">
+                   <router-link to="/forgetPassword">忘记密码</router-link>
+                </div>
                 <el-form-item>
                     <el-button :loading="loading" type="primary" @click="clickLogin">登录</el-button>
                 </el-form-item>
@@ -70,7 +73,8 @@
 </script>
 
 
-<style>
+<style lang = "scss">
+    
     .login-from {
         width: 80%;
         margin: 0 auto;
@@ -80,6 +84,15 @@
     }
     .login-from .el-button--primary {
         width: 100%;
+    }
+    .forgetPasswordMain{
+        text-align:right;
+        line-height:30px;
+        padding-bottom:8px;
+        a{
+            font-size:14px;
+            color:#333;
+        }
     }
 </style>
 

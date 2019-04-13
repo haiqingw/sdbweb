@@ -3,7 +3,12 @@
         <!-- header -->
         <mt-header fixed title="数据中心"></mt-header>
         <!-- dataCenter -->
-        <div class="dataCenterMain">
+        <div class="dataCenterStopMain">
+            <img src="@/assets/images/stopImg.png" alt="建设中">
+            <h3>数据中心正在建设中</h3>
+            <p>敬请期待</p>
+        </div>
+        <div class="dataCenterMain" v-if = "dataCenterStatus">
             <!-- 收益数据 -->
             <div class="dataCenterBox">
                 <h3>
@@ -125,6 +130,7 @@ import Footer from "@/components/footerNav/footer";
 export default {
     data() {
         return {
+            dataCenterStatus:false,
             monthData: [
                 "1月",
                 "2月",
@@ -313,5 +319,23 @@ export default {
     width: 100%;
     box-sizing: border-box;
     margin-top: -35px;
+}
+.dataCenterStopMain{
+    padding-top:45%;
+    text-align:center;
+    img{
+        width:120px;
+        display: block;
+        margin:0 auto;
+    }
+    h3{
+        font-size:16px;
+        line-height:40px;
+        padding:20px 0 0;
+        font-weight:400;
+    }
+    p{
+        font-size:14px;
+    }
 }
 </style>

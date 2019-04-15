@@ -2,20 +2,16 @@
 
 <template>
     <div>
-        loginoid
+        
     </div>
 </template>
 
 <script>
-    import {getServer} from '@/api/index'
+    import { Indicator } from 'mint-ui';
     export default {
         data () {
            return {
-                getUrl: {
-                    requestType: 'wchat',
-                    requestKeywords: 'getopenid',
-                    code: "code"
-                }
+               
            }
         },
         methods: {

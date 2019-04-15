@@ -31,6 +31,7 @@
         data() {
             getOpenid: 'http://ttsplus.xylrcs.cn/index.php/App/Wchat/getOpenid'
             return {
+                code: "",
                 loading: false,
                 formData: {
                     phone: "",
@@ -49,6 +50,11 @@
                     requestType: 'wchat',
                     requestKeywords: 'getopenid',
                     code: "code"
+                },
+                crodeUser: {
+                    requestType: 'personal',
+                    requestKeywords:'crodeuser', 
+                    openid: ''
                 }
             }
         },
@@ -74,7 +80,14 @@
             }
         },
         created() {
-            let code = this.$route.query.code
+            this.code = this.$route.query.code
+            this.crodeUser.openid = this.code
+            getServer(this.crodeUser).then(res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.formData.phone = res.data.info.phone
+                    // this.formData.password = res.data.info.pwd
+                }
+            })
         }
     }
 </script>

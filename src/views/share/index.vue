@@ -84,6 +84,7 @@ export default {
     margin-top: 0.38rem;
     height: 11rem;
     padding-bottom: 1.4rem;
+    background: #fff;
 }
 .share-view .swiper-wrapper img {
     height: 100%;

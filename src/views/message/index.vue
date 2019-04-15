@@ -87,6 +87,7 @@ export default {
     } */
     .msg-view {
         padding-bottom: 1.4rem;
+        background: #fff;
     }
 .msg-view .msg-view-top {
     font-size: 0.3rem;

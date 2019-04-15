@@ -195,7 +195,8 @@ export default {
 </script>
 <style lang="scss">
 .mineHeaderMain {
-    padding-bottom: 1.4rem;
+    padding-bottom: 1.4rem; 
+    background: #fff;
   width: 100%;
   background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center
     center;

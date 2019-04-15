@@ -81,8 +81,14 @@ export default {
 
 <style>
 .footerNavbar{
-    padding-bottom:54px;
-    background:#fff;
+  
+    margin-top: 0.5rem;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding-bottom: 5px;
+    z-index:999999;
 }
 .active {
     color:#089cfe;
@@ -131,12 +137,7 @@ export default {
 }
 .footerNavMain {
     justify-content: space-around;
-    position: fixed;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    padding-bottom: 5px;
-    z-index:999999;
+  
 }
 .footerNavItem {
     font-size: 12px;

@@ -132,11 +132,10 @@
                 this.choiceBrandVal = String(values[0].name)
             },
             sys_click () {
-                // this.queryData.sweepCode.code = location.href
+                // this.queryData.sweepCode.code = window.location.href
                 this.queryData.sweepCode.code = window.location.href.split('#')[0]
                 // this.queryData.sweepCode.code = this.queryData.sweepCode.code.replace(/#[/]/g,'');
-                console.log(this.queryData.sweepCode.code)
-                return
+                // console.log(this.queryData.sweepCode.code)
                 // alert(this.queryData.sweepCode.code)
                 getServer(this.queryData.sweepCode).then( res => {
                     console.log(res)

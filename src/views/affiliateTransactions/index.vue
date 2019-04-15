@@ -37,7 +37,9 @@
             <el-radio-button :disabled="isUpLoading" label="days">当日</el-radio-button>
             <el-radio-button :disabled="isUpLoading" label="mons">当月</el-radio-button>
             <el-radio-button :disabled="isUpLoading" label="all">累计</el-radio-button>
-            <el-radio-button :disabled="isUpLoading" label="selectionDate" >按时间筛选</el-radio-button>
+            <el-radio-button label="selectionDate" >
+                <em @click="screeningTime">按时间筛选</em>
+            </el-radio-button>
         </el-radio-group>
       </div>
       <!-- 交易总金额 -->
@@ -51,7 +53,7 @@
           {{ATurnover}}
         </div>
       </div>
-      <div class="interval"></div>
+      <!-- <div class="interval"></div> -->
       <!-- 下属交易列表 -->
 
       <div class="tradingListMain">
@@ -116,6 +118,9 @@ export default {
     };
   },
   methods: {
+    screeningTime () {
+        this.clickChange()
+    },
     clickChange () {
       if( this.type === 'selectionDate' ) {
         this.selectYear()
@@ -146,7 +151,8 @@ export default {
       this.$refs.datePicker.open();
     },
     handleCancel () {
-      this.type = this.queryData.list.types
+        this.queryData.list.types = 'selectionDate'
+        // this.type = this.queryData.list.types
     },
     handleConfirm(value) {
       this.year = value.getFullYear();
@@ -216,7 +222,7 @@ export default {
 }
 .affiliateTransactionsMain {
   // padding-top: 40px;
-  margin-top: .8rem;
+//   margin-top: .8rem;
 }
 .selector {
   font-size: 14px;
@@ -231,17 +237,18 @@ export default {
   width: 100%;
   box-sizing: border-box;
   left: 0;
-  top: 40px;
+  top: .8rem;
   z-index: 999;
 }
 .tradingTotalMoneyMain {
   background: #089cfe;
-  padding: 10px;
+//   padding: 10px;
+    padding: .1rem .5rem;
   color: #fff;
   position: fixed;
   width: 100%;
   left: 0;
-  top: 80px;
+  top: 1.5rem;
   box-sizing: border-box;
   z-index: 9999;
   h3 {
@@ -258,7 +265,7 @@ export default {
   height: 40px;
   position: fixed;
   right: 0;
-  top: 48px;
+  top: 1rem;
   line-height: 40px;
   z-index: 9999;
   a {
@@ -297,6 +304,7 @@ export default {
   color: #f33;
 }
 .tradingListMain {
-  padding-top: 155px;
+//   padding-top: 155px;
+    padding-top: 3.2rem;
 }
 </style>

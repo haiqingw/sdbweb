@@ -98,7 +98,8 @@ export default {
 </script>
 <style lang="scss">
 .helpCenterHeaderMain {
-  margin-top: 40px;
+//   margin-top: 40px;
+    margin-top: 0.8rem;
   height: 150px;
   position: relative;
   img {

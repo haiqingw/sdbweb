@@ -50,26 +50,27 @@
                         </div>
                     </div> -->
                     <div class="withdrawalRecordItem" v-for="item in renderData.oldList" :key="item.id">
-                        <em class="active">已到账</em>
+                        <em class="active" v-if="item.reviewStatus == 1">{{item.reStatus}}</em>
+                        <em class="active" v-if="item.reviewStatus == 2">{{item.reStatus}}</em>
+                        <em class="active" v-if="item.reviewStatus == 3">{{item.reStatus}}</em>
+                        <em v-if="item.reviewStatus == 4">{{item.reStatus}}</em>
                         <div class="withdrawalRecordHeader flex line_bottom">
                             <div>
-                                <h3>100.00</h3>
+                                <h3>{{item.drawMoney}}</h3>
                                 <p>提现金额</p>
                             </div>
                         </div>
                         <div class="withdrawalRecordBody">
-                            <p>
-                                <span>手续费：
-                                    <b>5.00元</b>
-                                </span>
-                                <span>税金：
-                                    <b>5.00元</b>
-                                </span>
-                                <span>实到账：
-                                    <b>5.00元</b>
-                                </span>
+                            <p>手续费:
+                                <b>{{item.pou}}元</b>
                             </p>
-                            <p>提现时间：2018.10.26 16:00:00</p>
+                            <p>税金:
+                                <b>{{item.tax}}元</b>
+                            </p>
+                            <p>实到账:
+                                <b>{{item.arviAmount}}元</b>
+                            </p>
+                            <p>提现时间:{{item.drawTime}}</p>
                         </div>
                     </div>
                 </van-list>
@@ -126,6 +127,7 @@ export default {
         },
         withdrawalList () {
             getServer(this.queryData.list).then( res => {
+                console.log(res)
                 if( res.data.responseStatus === 1 ) {
                     this.isData = true
                     this.renderData.list = res.data.data
@@ -217,18 +219,16 @@ export default {
         line-height: 24px;
         font-size: 12px;
         color: #333;
-        span {
-            border-right: 1px solid #f1f1f1;
-            padding: 0 10px;
-            b {
-                color: #ef4f4f;
-            }
-            &:first-of-type {
-                padding-left: 0;
-            }
-            &:last-of-type {
-                border: none;
-            }
+        border-right: 1px solid #f1f1f1;
+        // padding: 0 10px;
+        b {
+            color: #ef4f4f;
+        }
+        &:first-of-type {
+            padding-left: 0;
+        }
+        &:last-of-type {
+            border: none;
         }
     }
 }

@@ -152,36 +152,36 @@ export default {
         Footer
     },
     mounted() {
-        this.drawLine(
-            "myChart0",
-            "当年每月收益统计",
-            this.monthData,
-            this.moneyData
-        );
-        this.drawLine(
-            "myChart1",
-            "当年每月商户统计",
-            this.monthData,
-            this.moneyData
-        );
-        this.drawLine(
-            "myChart2",
-            "当年每月激活统计",
-            this.monthData,
-            this.moneyData
-        );
-        this.drawLine(
-            "myChart3",
-            "当年每月交易统计",
-            this.monthData,
-            this.moneyData
-        );
-        this.drawLine(
-            "myChart4",
-            "当年每月团队统计",
-            this.monthData,
-            this.moneyData
-        );
+        // this.drawLine(
+        //     "myChart0",
+        //     "当年每月收益统计",
+        //     this.monthData,
+        //     this.moneyData
+        // );
+        // this.drawLine(
+        //     "myChart1",
+        //     "当年每月商户统计",
+        //     this.monthData,
+        //     this.moneyData
+        // );
+        // this.drawLine(
+        //     "myChart2",
+        //     "当年每月激活统计",
+        //     this.monthData,
+        //     this.moneyData
+        // );
+        // this.drawLine(
+        //     "myChart3",
+        //     "当年每月交易统计",
+        //     this.monthData,
+        //     this.moneyData
+        // );
+        // this.drawLine(
+        //     "myChart4",
+        //     "当年每月团队统计",
+        //     this.monthData,
+        //     this.moneyData
+        // );
     },
     methods: {
         // 当年收益数据
@@ -324,14 +324,14 @@ export default {
     padding-top:45%;
     text-align:center;
     img{
-        width:120px;
+        width: 3.5rem;
         display: block;
         margin:0 auto;
     }
     h3{
         font-size:16px;
         line-height:40px;
-        padding:20px 0 0;
+        padding:.5rem 0 0;
         font-weight:400;
     }
     p{

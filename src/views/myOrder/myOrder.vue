@@ -240,20 +240,22 @@ export default {
     position: fixed;
     width: 100%;
     left: 0;
-    top: 40px;
+    top: .8rem;
     z-index: 9999;
 }
 .myOrder .myOrderNavMain .el-radio-group {
     display: block;
 }
 .myOrder .myOrderNavMain .el-radio-button--medium .el-radio-button__inner {
-    padding: 10px;
+    padding: .2rem;
     width: 100%;
     box-sizing: border-box;
 }
 .myOrder .myOrderNavMain .el-radio-button,
 .el-radio-button__inner {
     width: 20%;
+    display: block;
+    float: left;
 }
 .myOrder .myOrderNavMain .el-radio-button:first-child .el-radio-button__inner {
     border-radius: 0;
@@ -268,6 +270,7 @@ export default {
 }
 .myOrder .myOrderNavMain .el-radio-group {
     border-bottom: 1px solid #f1f1f1;
+    overflow: hidden;
 }
 .myOrderListMain {
     padding: 90px 15px 15px;

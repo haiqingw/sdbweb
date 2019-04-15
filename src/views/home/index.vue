@@ -164,6 +164,206 @@
             <router-link to="/deliverGoods">订单管理</router-link>
           </div>
         </li> -->
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
+         <li v-if="renderData.info.level == 2">
+          <div class="img">
+            <router-link to="/financialDetails"
+              ><img src="@/assets/images/index-list2-img6.png" alt=""
+            /></router-link>
+          </div>
+          <div class="text">
+            <router-link to="/financialDetails">收益明细</router-link>
+          </div>
+        </li>
       </ul>
     </div>
     <Footer></Footer>
@@ -299,6 +499,9 @@ export default {
 <style>
 html {
   background: #fff;
+}
+.index {
+    padding-bottom: 1.4rem;
 }
 .custom-indicator {
   position: absolute;

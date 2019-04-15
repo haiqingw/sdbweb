@@ -85,6 +85,9 @@ export default {
 /* body {
         padding-bottom: 1.6rem;
     } */
+    .msg-view {
+        padding-bottom: 1.4rem;
+    }
 .msg-view .msg-view-top {
     font-size: 0.3rem;
     text-align: center;

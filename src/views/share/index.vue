@@ -82,13 +82,14 @@ export default {
 } */
 .share-view {
     margin-top: 0.38rem;
+    height: 11rem;
+    padding-bottom: 1.4rem;
 }
 .share-view .swiper-wrapper img {
     height: 100%;
 }
 .swiper-inner {
     width: 100%;
-    height: 11rem;
     padding-top: 50px;
     padding-bottom: 50px;
 }

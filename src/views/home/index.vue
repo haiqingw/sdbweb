@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div class="index-home">
     <div class="isLogin">
       <div class="index-banner" v-if="islogin">
         <van-swipe @change="onChange">
@@ -300,7 +300,7 @@ export default {
 html {
   background: #fff;
 }
-.index {
+.index-home {
     padding-bottom: 1.4rem;
     background: #fff;
 }

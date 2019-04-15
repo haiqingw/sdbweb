@@ -80,6 +80,7 @@
 </template>
 <script>
 import {getServer} from '@/api/index'
+import { MessageBox, Toast } from "mint-ui";
 export default {
     data() {
         return {
@@ -88,6 +89,16 @@ export default {
                     requestType: 'Order', 
                     requestKeywords: 'detail', 
                     id: this.$route.params.id
+                },
+                confirmReceipt: {
+                    requestType: 'Order', 
+                    requestKeywords: 'confirmstatus', 
+                    id: ""
+                },
+                deleteOrder: {
+                    requestType: 'Order', 
+                    requestKeywords: 'deleteorder', 
+                    id: ""
                 }
             },
             renderData: {

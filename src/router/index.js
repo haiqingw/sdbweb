@@ -12,6 +12,14 @@ export default new Router({
       redirect: '/home'
     },
     {
+        path: '/loginoid',
+        name: 'loginoid',
+        component: resolve => require(['@/views/login/loginoid.vue'], resolve),
+        meta: {
+            requireAuth: true
+        }
+    },
+    {
       path: '/login',
       name: 'login',
       component: resolve => require(['@/views/login/index'], resolve),

@@ -26,8 +26,10 @@
 
 <script>
     import {checkPhone} from '@/utils/verification.js'
+    import {getServer} from '@/api/index'
     export default {
         data() {
+            getOpenid: 'http://ttsplus.xylrcs.cn/index.php/App/Wchat/getOpenid'
             return {
                 loading: false,
                 formData: {
@@ -42,6 +44,11 @@
                     password: [
                         { required: true, trigger: 'blur', message: "密码不能为空" }
                     ],
+                },
+                getOpenid: {
+                    requestType: 'wchat',
+                    requestKeywords: 'getopenid',
+                    code: "code"
                 }
             }
         },
@@ -61,13 +68,13 @@
                             })
                     } else {
                         console.log('error submit!!')
-                        return false
+                        return false 
                     }
                 })
             }
         },
         created() {
-           
+            let code = this.$route.query.code
         }
     }
 </script>

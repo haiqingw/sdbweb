@@ -1,21 +1,21 @@
 import router from './router'
 import store from './store'
-const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext']
+const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid']
 router.beforeEach((to, from, next) => {
-  let islogin = store.state.user.islogin
-  if (islogin) {
-    if (to.path === '/login') {
-      next({
-        path: '/'
-      })
+    let islogin = store.state.user.islogin
+    if (islogin) {
+        if (to.path === '/loginoid') {
+            next({
+                path: '/'
+            })
+        } else {
+            next()
+        }
     } else {
-      next()
-    }
-  } else {
-    if (whiteList.indexOf(to.path) !== -1) {
-      next()
-    } else {
-      next(`/login?redirect = $ {to.path}`) // 否则全部重定向到登录页
-    }
+        if (whiteList.indexOf(to.path) !== -1) {
+            next()
+        } else {
+            next(`/loginoid?redirect = $ {to.path}`) // 否则全部重定向到登录页
+        }
   }
 })

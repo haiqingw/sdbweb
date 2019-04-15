@@ -253,11 +253,12 @@ export default {
   z-index: 9999;
   h3 {
     font-size: 14px;
-    padding-top: 10px;
+    padding-top: .1rem;
   }
   div {
-    font-size: 50px;
+    font-size: 1rem;
     font-weight: bold;
+    padding: .1rem 0;
   }
 }
 .quickScreeningNav {
@@ -305,6 +306,6 @@ export default {
 }
 .tradingListMain {
 //   padding-top: 155px;
-    padding-top: 3.2rem;
+    padding-top: 3.8rem;
 }
 </style>

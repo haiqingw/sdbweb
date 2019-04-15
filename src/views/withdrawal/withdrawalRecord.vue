@@ -219,7 +219,7 @@ export default {
         line-height: 24px;
         font-size: 12px;
         color: #333;
-        border-right: 1px solid #f1f1f1;
+        // border-right: 1px solid #f1f1f1;
         // padding: 0 10px;
         b {
             color: #ef4f4f;

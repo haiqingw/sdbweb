@@ -6,6 +6,9 @@
             <swiper-slide v-for="item in renderData.share" :key="item">
                 <img :src="item" alt="">
             </swiper-slide>
+            <!-- <swiper-slide v-for="item in renderData.share" :key="item">
+                <img src="@/assets/images/bg.jpg" alt="">
+            </swiper-slide> -->
             <!-- <div class="swiper-pagination" slot="pagination"></div> -->
         </swiper>
         <Footer></Footer>

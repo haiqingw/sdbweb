@@ -135,7 +135,8 @@ export default {
 </script>
 <style lang="scss">
 .freezeProgressMain {
-  padding-top: 40px;
+//   padding-top: 40px;
+    margin-top: .8rem;
 }
 .freezeProgressHeader {
   position: relative;

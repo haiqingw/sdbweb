@@ -58,8 +58,8 @@
                 <div class="withdrawalTipInfo">
                     <h3 class="withdrawalTitle">注意事项</h3>
                     <div>
-                        <!-- <p>1.单笔提现最高{{renderData.drawInfo.maxm}}，最低{{renderData.drawInfo.mixm}}元，每笔手续费{{renderData.drawInfo.pou}}元；</p> -->
-                        <p>1.达标金额0.00元</p>
+                        <p>1.单笔提现最高{{renderData.drawInfo.maxm}}，最低{{renderData.drawInfo.mixm}}元，每笔手续费{{renderData.drawInfo.pou}}元；</p>
+                        <!-- <p>1.达标金额0.00元</p> -->
                         <p>2.到账时间：{{renderData.drawInfo.start}}-{{renderData.drawInfo.endt}}(工作日)；</p>
                         <p>3.提现银行卡可以在'我的'中更换;</p>
                         <p>4.结算方式为{{renderData.mattersNeedingAttention.methed}}。</p>

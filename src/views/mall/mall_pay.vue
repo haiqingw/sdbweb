@@ -68,7 +68,7 @@
     </div>
     <!-- 确认支付 -->
     <div class="submitPayBtn">
-      <a href="javascript:;">
+      <a href="javascript:;" @click="confirmPayment">
         确认支付
       </a>
     </div>
@@ -96,7 +96,9 @@ export default {
                 platformID: this.$store.state.user.pid,
                 userID: this.$store.state.user.uid,
                 userPhone: this.$store.state.user.uphone,
-                // 
+            },
+            confirmPayment: {
+
             }
         },
         renderData: {
@@ -128,6 +130,9 @@ export default {
                 this.isAddressInfo = false;
             }
         });
+    },
+    confirmPayment () {
+        
     }
   },
   created() {

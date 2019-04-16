@@ -69,6 +69,7 @@
 <style>
 .details-content {
     padding: 0 .2rem;
+    margin-top: .8rem;
 }
 .details-content .title {
     font-size: 0.28rem;

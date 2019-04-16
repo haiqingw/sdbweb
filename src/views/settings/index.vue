@@ -74,7 +74,8 @@ export default {
       MessageBox.confirm("您确定要退出吗?", "退出")
         .then(action => {
           this.$store.dispatch("LogOut").then(() => {
-            location.reload();
+            // location.reload();
+            this.$router.push({ path: "/login" });
           });
         })
         .catch(() => {});

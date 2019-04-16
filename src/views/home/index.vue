@@ -223,6 +223,15 @@ export default {
             userID: this.$store.state.user.uid,
             userPhone: this.$store.state.user.uphone
         },
+        loginSuccess: {
+            requestType: 'personal',
+            requestKeywords: 'cordeopenid',
+            platformID: this.$store.state.user.pid,
+            userID: this.$store.state.user.uid,
+            userID: this.$store.state.user.uid,
+            userPhone: this.$store.state.user.uphone,
+            openid: this.$route.query.opid
+        }
       }
     };
   },
@@ -282,7 +291,8 @@ export default {
         message: "请联系您的上级代理",
         duration: 1000
       });
-    }
+    },
+  
   },
   created() {
     this.listOne();
@@ -291,7 +301,11 @@ export default {
     this.bannerList();
     this.info();
     this.todayProfit()
-  }
+    // this.loginSuccess.openid = this.$route.query.opid
+    getServer(this.queryData.loginSuccess).then( res => {
+    })
+  },
+  
 };
 </script>
 

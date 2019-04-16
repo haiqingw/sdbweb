@@ -51,11 +51,6 @@
                     requestKeywords: 'getopenid',
                     code: "code"
                 },
-                crodeUser: {
-                    requestType: 'personal',
-                    requestKeywords:'crodeuser', 
-                    openid: ''
-                }
             }
         },
         methods: {
@@ -66,7 +61,7 @@
                         this.$store
                             .dispatch('Login', this.formData)
                             .then((res) => {
-                                this.$router.push({ path: '/' })
+                                this.$router.push({ path: '/', query: { opid: this.code }})
                                 this.loading = false
                             })
                             .catch((err) => {
@@ -77,17 +72,27 @@
                         return false 
                     }
                 })
+            },
+            autoLogin () {
+                this.$store
+                .dispatch('autoLogin', this.code)
+                .then((res) => {
+                    this.$router.push( 
+                            {path: '/' , query: { opid: this.code }
+                        })
+                    this.loading = false
+                    this.loginSuccess.openid = this.code
+                })
+                .catch((err) => {
+                    this.loading = false
+                })
             }
         },
         created() {
             this.code = this.$route.query.code
-            this.crodeUser.openid = this.code
-            getServer(this.crodeUser).then(res => {
-                if( res.data.responseStatus === 1 ) {
-                    this.formData.phone = res.data.info.phone
-                    // this.formData.password = res.data.info.pwd
-                }
-            })
+            if( this.code ) {
+                this.autoLogin()
+            } 
         }
     }
 </script>

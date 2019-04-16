@@ -84,6 +84,9 @@
 
 
 <style>
+.notice-content {
+    margin-top: .8rem;
+}
 .notice {
     /* background: #f1f1f1; */
     background: #fff;

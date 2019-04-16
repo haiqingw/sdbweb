@@ -71,6 +71,37 @@ const user = {
                 })
             })
         },
+        autoLogin({commit}, openid) {
+            Indicator.open()
+            window.sessionStorage.clear()
+            const crodeUser = {
+                requestType: 'personal',
+                requestKeywords:'crodeuser', 
+                openid: openid
+            }
+            return new Promise( (resolve, reject) => {
+                getServer(crodeUser).then( res => {
+                    Indicator.close();
+                    if( res.data.responseStatus === 1 ) {
+                        Indicator.close();
+                        Toast('登录成功')
+                        commit('SET_UID', res.data.userID)
+                        commit('SET_PID', res.data.platformID)
+                        commit('SET_UNAME', res.data.userName)
+                        commit('SET_UPHONE', res.data.userPhone)
+                        commit('SET_ISLOGIN', true)
+                        resolve()
+                    } else if( res.data.responseStatus === 201 ) {
+                        Indicator.close()
+                        reject(res)
+                    }
+                })
+                .catch( err => {
+                    reject(err)
+                    Toast(response[res.data.responseStatus])
+                })
+            })
+        },
         LogOut({commit}) {
             return new Promise( resolve => {
                 window.sessionStorage.clear()

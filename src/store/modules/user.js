@@ -64,6 +64,10 @@ const user = {
                         Indicator.close()
                         reject(res)
                         Toast(response[res.data.responseStatus])
+                    } else {
+                        Indicator.close()
+                        reject(res)
+                        Toast(response[res.data.responseStatus])
                     }
                 }).catch( err => {
                     reject(err)

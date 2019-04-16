@@ -235,7 +235,7 @@
 
 <style lang="scss">
 .bingding-mplements-c {
-  margin-top: 0.8rem;
+  margin-top: 0.9rem;
 }
 .bingding-mplements .brand-name {
   font-size: 0.3rem;
@@ -249,7 +249,7 @@
 .bingding-mplements .bingding-mplements-choice {
   border-bottom: 0.01rem solid #ccc;
   line-height:30px;
-  padding: 0.24rem;
+  padding:0.27rem 0.24rem 0.24rem;
   overflow: hidden;
 }
 .bingding-mplements .bingding-mplements-choice h5 {
@@ -299,8 +299,8 @@
     border-right: 5px solid transparent;
     border-top: 6px solid #ccc;
     position: absolute;
-    right:10px;
-    top:0.5rem;
+    right:0.4rem;
+    top:0.46rem;
   }
 }
 .payDepositMain{

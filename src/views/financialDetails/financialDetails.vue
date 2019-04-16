@@ -57,7 +57,6 @@
             </div>
             <!-- 列表 -->
             <div class="financialDetailsList">
-              
             <!-- line_bottom -->
             <div class="flex switchSacreeningMain">
                 <div class="financialDetailsList" v-if="isData">
@@ -271,7 +270,7 @@ export default {
 }
 .financialDetailsMain {
     // margin-top: 3.3rem;
-    margin-top: 2rem;
+    margin-top:1.8rem;
     // position: fixed;
     // left:0;
     // top:160px;
@@ -401,5 +400,8 @@ export default {
             }
         }
     }
+}
+.financial-details .choice .el-radio-group{
+    border-bottom:1px solid #f1f1f1;
 }
 </style>

@@ -26,23 +26,23 @@ body {
 .index-list1 ul li div {
     text-align: center;
 }
-.index-list1 ul li .index-list1-img {
+/* .index-list1 ul li .index-list1-img {
     margin-bottom: .03rem;
-}
+} */
 .index-list1 ul li .index-list1-img img {
     width: .5rem;
 }
 .index-list1 ul li .index-list1-text {
-    font-size: 0.24rem;
+    font-size: 0.3rem;
     color: #000;
-    line-height: .3rem;
+    line-height:0.5rem;
     font-weight: bold;
 }
 .index-list1 ul li a {
     color: #000;
 }
 .index-list1 ul li .index-list1-explain {
-    font-size: 0.20rem;
+    font-size: 0.22rem;
     line-height: .26rem;
 }
 .index-notice {
@@ -82,6 +82,10 @@ body {
 .index-notice-profit {
     overflow: hidden;
 }
+.index-notice-profit a{
+    display:block;
+    overflow: hidden;
+}
 .index-notice-profit h3 {
     float: left;
     margin-right: 0.14rem;
@@ -91,7 +95,7 @@ body {
 }
 .index-notice-profit p {
     float: left;
-    font-size: .22rem;
+    font-size: .3rem;
     color: #000000;
     line-height: 0.4rem;
     padding-top: 0.18rem;
@@ -103,7 +107,7 @@ body {
     color: #ff0000;
     margin-left: 0.23rem;
     font-weight: bold;
-    margin-top: -0.02rem;
+    margin-top: -0.01rem;
 }
 .index-notice-profit span {
     float: right;

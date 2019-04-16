@@ -105,6 +105,10 @@ export default {
     /* margin-top: .2rem; */
     line-height: 0.8rem;
     padding: 0.2rem 0;
+    border-bottom:1px solid #f1f1f1;
+}
+.msg-view .msg-view-list ul li:last-of-type{
+    border:none;
 }
 .msg-view .msg-view-list ul li > div {
     float: left;

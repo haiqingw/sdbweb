@@ -54,6 +54,7 @@
                     <p class="line_bottom">收款姓名：{{$store.state.user.uname}}</p>
                     <p>收款银行卡：{{renderData.bankInfo.bankName}}(尾号{{renderData.bankInfo.cardNum}})</p>
                 </div>
+                <div class="interval"></div>
                 <!-- 提现提示信息 -->
                 <div class="withdrawalTipInfo">
                     <h3 class="withdrawalTitle">注意事项</h3>
@@ -234,6 +235,7 @@ export default {
     font-size: 14px;
     line-height: 40px;
     color: #f33;
+    padding-top:0.12rem;
     img {
         width: 20px;
         height: 20px;
@@ -253,7 +255,7 @@ export default {
 .mtSwipeItem {
     // background: #0096fe;
     background:#ccc;
-    padding: 12px 15px 15px;
+    padding:0.3rem 0.3rem 0.33rem;
     position: relative;
     border-radius: 5px;
     h3 {
@@ -324,6 +326,9 @@ export default {
     font-size: 14px;
     line-height: 40px;
     padding: 0 15px;
+}
+.withdrawalTipInfo{
+    padding-top:10px;
 }
 .withdrawalTipInfo div {
     font-size: 14px;

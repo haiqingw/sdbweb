@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="myOrderDetailContainer">
       <!-- header -->
         <!-- <mt-header fixed title="订单详情">
             <router-link to="/" slot="left">
@@ -164,11 +164,12 @@ export default {
 </script>
 
 <style lang="scss">
+
 .myOrderDetailStatusMain {
     overflow: hidden;
-    background: #0096fe;
-    padding: 15px;
-    margin-top:40px;
+    background: #089cfe;
+    padding:17px 15px 15px;
+    margin-top:0.8rem;
     img {
         width: 40px;
         height: 40px;

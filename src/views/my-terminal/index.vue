@@ -240,7 +240,7 @@
     font-size: 0.28rem;
     text-align: center;
     line-height: .4rem;
-    padding: .1rem 0;
+    padding:.2rem 0 0.1rem;
 }
 .my-terminal .my-terminal-choice .el-select {
     flex: 1;

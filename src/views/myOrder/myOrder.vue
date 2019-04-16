@@ -222,6 +222,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.myOrder .myOrderNavMain .el-radio-button--medium .el-radio-button__inner{
+    border:none;
+}
 .loadingMore {
     line-height: 40px;
     text-align: center;

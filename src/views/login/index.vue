@@ -45,12 +45,8 @@
                     password: [
                         { required: true, trigger: 'blur', message: "密码不能为空" }
                     ],
-                },
-                getOpenid: {
-                    requestType: 'wchat',
-                    requestKeywords: 'getopenid',
-                    code: "code"
-                },
+                }
+               
             }
         },
         methods: {
@@ -61,7 +57,11 @@
                         this.$store
                             .dispatch('Login', this.formData)
                             .then((res) => {
-                                this.$router.push({ path: '/', query: { opid: this.code }})
+                                if( this.$route.query.code ) {
+                                    this.$router.push({ path: '/', query: { opid: this.code }})
+                                } else {
+                                    this.$router.push({ path: '/' })
+                                }
                                 this.loading = false
                             })
                             .catch((err) => {

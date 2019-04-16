@@ -39,13 +39,13 @@
     </div>
     <!-- 支付押金 -->
     <div class="payDepositMain">
-       您需要支付：<em>{{deposit}}</em>元押金
+       您需要支付：<em>{{deposit}}</em>元绑定押金
     </div>
     <!-- 押金说明 -->
     <div class="depositExplainMain">
-      <h3>问：为什么要支付押金?</h3>
+      <h3>问：为什么要支付绑定押金?</h3>
       <div>
-        答：防止恶意领取。激活后押金自动解冻，提现即可！
+        答：防止恶意领取。激活后刷卡金额达标解冻相应金额，提现即可！
       </div>
     </div>
     <div class="determine-binding">

@@ -74,9 +74,11 @@
                                     <ul class="financialDetailsListUl">
                                         <li class="line_bottom flex" v-for="(item, index) in renderData.odlListData" :key="index">
                                             <div>
-                                                <h3>{{item.storageName}}</h3>
+                                                <div class="top">
+                                                    <span class="s" v-if="item.product">{{item.product}}</span>
+                                                    <h3 class="title">{{item.storageName}}</h3> 
+                                                </div>
                                                 <p>
-                                                    <span v-if="item.product">{{item.product}}</span>
                                                     {{item.remark}}
                                                 </p>
                                             </div>
@@ -370,27 +372,36 @@ export default {
         justify-content: space-between;
         // height: 300px;
         div{
-            h3{
-              font-size:16px;
+             h3{
+                font-size:16px;
             }
-            p{
-                font-size:14px;
-                margin-top: .1rem;
-                span {
+            .top {
+                overflow: hidden;
+                h3.title{
+                    float: left;
+                    font-size:16px;
+                    color: #333;
+                    margin-top: .05rem;
+                }
+                span.s {
                     background-color: rgba(64,158,255,.1);
                     display: inline-block;
-                    height: 14px;
-                    line-height: 14px;
-                    font-size: 12px;
+                    font-size: .2rem;
                     color: #409eff;
                     border-radius: 4px;
                     box-sizing: border-box;
                     border: 1px solid rgba(64,158,255,.2);
                     white-space: nowrap;
-                    margin-right: .1rem;
+                    margin-right: .2rem;
                     width: .8rem;
                     text-align: center;
+                    float: left;
+                    line-height: .38rem;
                 }
+            }
+            p{
+                font-size:14px;
+                margin-top: .1rem;
             }
             &:last-of-type{
                 text-align:right;

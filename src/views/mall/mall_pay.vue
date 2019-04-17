@@ -44,19 +44,23 @@
       <div>
         <h3>{{ renderData.listDetail.commodityName }}</h3>
         <p>{{ renderData.listDetail.title }}</p>
-        <div><em>￥</em>{{ renderData.listDetail.nowPrice }}</div>
+        <div><span style="font-size: .2rem; color: #333; margin-right: .1rem;">商品金额</span><em>￥</em>{{ renderData.listDetail.nowPrice }}</div>
       </div>
     </div>
     <div class="mallPayDepositMain flex line_top">
       <span>支付押金</span>
       <em> <i>￥</i>{{ renderData.listDetail.deposit }}</em>
     </div>
+    <div class="mallPayDepositMain flex line_top">
+      <span>冻结金额</span>
+      <em> <i>￥</i>{{ renderData.listDetail.frozen }}</em>
+    </div>
     <div class="interval"></div>
     <div class="mallPayTipMain">
       <img src="@/assets/images/confirmPressImg.png" alt="押金备注" />
-      <h3>为什么收押金?</h3>
+      <h3>为什么收冻结金额?</h3>
       <p>
-        防止恶意领取。收货后联系客服注册、激活。激活后押金自动解冻，提现即可。
+        防止恶意领取。收货后联系客服注册、激活。激活后冻结金额按规则解冻，提现即可。
       </p>
     </div>
     <div class="interval"></div>
@@ -64,7 +68,7 @@
       <div>
         <img src="@/assets/images/weChatPayIcon.png" alt="微信支付" /> 微信支付
       </div>
-      <em> <i>￥</i>{{ renderData.listDetail.deposit }}</em>
+      <em> <i>￥</i>{{ parseFloat(renderData.listDetail.deposit) + parseFloat(renderData.listDetail.frozen) + parseFloat(renderData.listDetail.nowPrice)}}</em>
     </div>
     <!-- 确认支付 -->
     <div class="submitPayBtn">
@@ -77,7 +81,7 @@
 <script>
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
-
+import { Indicator, Toast } from 'mint-ui';
 export default {
   name: "mall_pay",
   data() {
@@ -98,7 +102,13 @@ export default {
                 userPhone: this.$store.state.user.uphone,
             },
             confirmPayment: {
-
+                requestType: 'orderpub',
+                requestKeywords: 'orders',
+                platformID: this.$store.state.user.pid,
+                userID: this.$store.state.user.uid,
+                userPhone: this.$store.state.user.uphone,
+                sid: "",
+                proid: ""
             }
         },
         renderData: {
@@ -132,7 +142,33 @@ export default {
         });
     },
     confirmPayment () {
-        
+        this.queryData.confirmPayment.sid = this.renderData.addressInfo.id 
+        this.queryData.confirmPayment.proid = this.renderData.listDetail.id
+        if( this.renderData.listDetail.deposit != 0.00 ) {
+            this.queryData.confirmPayment.deposit = this.renderData.listDetail.deposit
+        } 
+        if( this.renderData.listDetail.nowPrice != 0.00 ) {
+            this.queryData.confirmPayment.orderMoney = this.renderData.listDetail.nowPrice
+        }
+        if( this.renderData.listDetail.frozen != 0.00 ) {
+            this.queryData.confirmPayment.frozen = this.renderData.listDetail.frozen
+        }
+        getServer(this.queryData.confirmPayment).then( res => {
+            if( res.data.responseStatus === 1 ) {
+                if( res.data.isPay == 1 ) {
+                    window.location.href = res.data.url
+                } else if( res.data.isPay == 2 ) {
+                    // console.log("直接帮")
+                    // alert("直接帮")
+                    Toast("绑定成功")
+                    setTimeout( () => {
+                        this.$router.go(-1)
+                    }, 800)
+                }
+            } else {
+                Toast(response[res.data.responseStatus])
+            }
+        }) 
     }
   },
   created() {

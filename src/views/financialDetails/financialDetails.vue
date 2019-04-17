@@ -364,7 +364,7 @@ export default {
 .mint-loadmore-top {
     font-size: 14px;
 }
-.financialDetailsListUl{
+.financial-details .financialDetailsListUl{
     padding:0 15px;
     li{
         padding:10px 0;

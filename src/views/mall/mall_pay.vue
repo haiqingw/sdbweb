@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mall_pay">
     <!-- header -->
     <!-- <mt-header fixed title="确认支付">
             <router-link to="/" slot="left">

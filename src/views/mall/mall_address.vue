@@ -14,7 +14,7 @@
         <div class="addressContainer">
             <ul class="addressListUl">
                 <li :class="{isDft : item.defaultState === '1' }" v-for="item in renderData.addressList" :key="item.id">
-                    <div @click="setDefault(item.id)">
+                    <div @click="setDefault(item.id, item.defaultState)">
                         <span>{{item.name}}</span>
                         <em>{{item.phone}}</em>
                     </div>
@@ -98,6 +98,7 @@ export default {
                         if( res.data.responseStatus === 1 ) {
                             Toast("删除地址成功")
                             this.addressList()
+                            // this.$router.go(-1)
                         }else {
                             Toast("删除地址失败")
                         }
@@ -106,23 +107,25 @@ export default {
                 .catch(() => {
                 });  
         },
-        setDefault (id) {
-            this.queryData.setDefault.id = id
-            MessageBox.confirm('您确定要将该地址设为默认吗?', '设为默认')
-                .then(action => {
-                    getServer(this.queryData.setDefault).then( res => {
-                        // console.log(response[res.data.responseStatus])
-                        if( res.data.responseStatus === 1 ) {
-                            Toast("设为默认成功")
-                            this.$router.go(-1)
-                            sessionStorage.setItem('isDefault', true)
-                        }else {
-                            Toast("设为默认失败")
-                        }
+        setDefault (id, defaultState) {
+            if( defaultState != 1 && defaultState != undefined ) {
+                this.queryData.setDefault.id = id
+                MessageBox.confirm('您确定要将该地址设为默认吗?', '设为默认')
+                    .then(action => {
+                        getServer(this.queryData.setDefault).then( res => {
+                            // console.log(response[res.data.responseStatus])
+                            if( res.data.responseStatus === 1 ) {
+                                Toast("设为默认成功")
+                                this.$router.go(-1)
+                                sessionStorage.setItem('isDefault', true)
+                            }else {
+                                Toast("设为默认失败")
+                            }
+                        })
                     })
-                })
-                .catch(() => {
-                });  
+                    .catch(() => {
+                    });  
+            }
         }
     },
     created () {

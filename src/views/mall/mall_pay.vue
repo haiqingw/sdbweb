@@ -153,14 +153,16 @@ export default {
         if( this.renderData.listDetail.frozen != 0.00 ) {
             this.queryData.confirmPayment.frozen = this.renderData.listDetail.frozen
         }
+        if ( this.queryData.confirmPayment.sid === undefined ) {
+            Toast("请选择收货地址")
+            return
+        }
         getServer(this.queryData.confirmPayment).then( res => {
             if( res.data.responseStatus === 1 ) {
                 if( res.data.isPay == 1 ) {
                     window.location.href = res.data.url
                 } else if( res.data.isPay == 2 ) {
-                    // console.log("直接帮")
-                    // alert("直接帮")
-                    Toast("绑定成功")
+                    Toast("领取成功")
                     setTimeout( () => {
                         this.$router.go(-1)
                     }, 800)

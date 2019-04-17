@@ -403,7 +403,7 @@ export default {
                 font-size:14px;
                 margin-top: .1rem;
             }
-            &:last-of-type{
+            &:last-of-type {
                 text-align:right;
                 h3{
                     color:#f33;

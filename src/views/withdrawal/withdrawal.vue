@@ -59,12 +59,12 @@
                 <div class="withdrawalTipInfo">
                     <h3 class="withdrawalTitle">注意事项</h3>
                     <div>
-                        <p>1.单笔提现最高{{renderData.drawInfo.maxm}}，最低{{renderData.drawInfo.mixm}}元，每笔手续费{{renderData.drawInfo.pou}}元；</p>
-                        <!-- <p>1.达标金额0.00元</p> -->
+                        <!-- <p>1.单笔提现最高{{renderData.drawInfo.maxm}}，最低{{renderData.drawInfo.mixm}}元，每笔手续费{{renderData.drawInfo.pou}}元；</p> -->
+                        <p>1.达标金额{{renderData.drawInfo.drawMoney}}元</p>
                         <p>2.到账时间：{{renderData.drawInfo.start}}-{{renderData.drawInfo.endt}}(工作日)；</p>
                         <p>3.提现银行卡可以在'我的'中更换;</p>
-                        <p>4.结算方式为{{renderData.mattersNeedingAttention.methed}}。</p>
-                        <p>5.提现税收为{{renderData.drawInfo.tax}}。</p>
+                        <!-- <p>4.结算方式为{{renderData.mattersNeedingAttention.methed}}。</p> -->
+                        <p>4.提现税收为{{renderData.drawInfo.tax}}。</p>
                     </div>
                 </div>
             </div>
@@ -106,11 +106,12 @@ export default {
                     payType: ""
                 },
                 drawInfo: {
-                    requestType: 'personal', 
-                    requestKeywords: 'getdrawpou', 
-                    platformID: this.$store.state.user.pid, 
-                    userID: this.$store.state.user.uid, 
-                    userPhone: this.$store.state.user.uphone
+                    requestType: 'personal',
+                    requestKeywords: 'drawinfo', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    payType: ""
                 },
                 bankInfo: {
                     requestType: 'personal', 
@@ -131,17 +132,20 @@ export default {
     },
     methods: {
         handleChange(index) {
-            this.renderData.balanceList.forEach ( (item,i) => {
+            this.renderData.balanceList.forEach ( (item, i) => {
                 if( index == i ) {
                     this.queryData.cashWithdrawal.payType = item.t
+                    this.queryData.drawInfo.payType = item.t
                 }   
             })
+            this.drawInfo()
         },
         balanceList () {
             getServer(this.queryData.balanceList).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.balanceList = res.data.data
                     this.queryData.cashWithdrawal.payType = res.data.data[0].t
+                    this.queryData.drawInfo.payType = res.data.data[0].t
                 }
             })
         },
@@ -220,10 +224,13 @@ export default {
     },
     created () {
         this.balanceList()
-        this.drawInfo()
         this.bankInfo()
         this.mattersNeedingAttention()
+    },
+    beforeUpdate() {
+        this.drawInfo()
     }
+    
 };
 </script>
 <style lang="scss">

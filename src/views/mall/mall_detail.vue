@@ -54,18 +54,7 @@
             <!-- <div class="advantageEvaluationBox"> -->
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="优势买点" name="advantage">
-                  <div class="advantageBox">
-                  优势买点
-                  优势买点
-                  优势买点
-                  优势买点
-                  优势买点
-                  优势买点
-                  优势买点
-                  优势买点
-                  优势买点
-                  优势买点
-                </div> 
+                <div class="advantageBox" v-html="renderData.data.detail"></div> 
                 </el-tab-pane>
                 <el-tab-pane label="综合评分" name="score">
                   <div class="evaluationBox" style="display:block;">
@@ -108,18 +97,24 @@
         <!-- 领取按钮 -->
         <div style="height:40px;"></div>
         <div class="mallDetailFooterMain line_top">
-           <a href="tel:13296905340">
+            <a :href=" isPhoneCall ? 'tel:' + phoneCall : 'javascript:;' " @click="getSystem('click')">
              <img src="@/assets/images/phoneIconImg.png" alt="一键拨号">
              <p>客服</p>
            </a>
-           <div>
-             <router-link :to="{name: 'mallPay', params: {id: $route.params.id}}"><a href="javascript:;">立即领取</a></router-link>
-           </div>
+            <!-- <a v-else href="javascript:;" @click="getSystem">
+             <img src="@/assets/images/phoneIconImg.png" alt="一键拨号">
+             <p>客服</p>
+           </a> -->
+            <div>
+                <a href="javascript:;" @click="collectImmediately">立即领取</a>
+            </div>
         </div>
     </div>
 </template>
 <script>
 import {getServer} from '@/api/index'
+import response from '@/assets/js/response.js'
+import { Indicator, Toast } from 'mint-ui';
 export default {
   name:'mallDetail',
   data(){
@@ -127,12 +122,28 @@ export default {
       activeName: "advantage",
       isCommentData: false,
       score: 5,
+      phoneCall: "",
+      isPhoneCall: false,
       queryData: {
         banner: {
           requestType: 'listdetail', 
           requestKeywords: 'productdetail', 
           id: this.$route.params.id
+        },
+        commentList: {
+             requestType: 'list', 
+             requestKeywords: 'proBusComment', 
+             id: this.$route.params.id, 
+             page: 1, 
+            //  limit: 10
+        },
+        getSystem: {
+            requestType: 'system', 
+            requestKeywords: 'getsystem', 
+            platformID: this.$store.state.user.pid, 
+            type: 'customerservicetelephone' 
         }
+       
       },
       renderData: {
         data: {}
@@ -156,19 +167,50 @@ export default {
         // console.log(this.renderData.data)
       })
     },
+    commentList () {
+        getServer(this.queryData.commentList).then( res => {
+            // console.log(res)
+            // console.log(response[res.data.responseStatus])
+        })
+    },  
     handleClick(tab, event) {
-      console.log(tab, event);
+    //   console.log(tab, event);
+    },
+    getSystem(isClick) {
+        getServer(this.queryData.getSystem).then( res => {
+            if (res.data.content != "") {
+                this.phoneCall = res.data.content
+                this.isPhoneCall = true
+            } else {
+                this.phoneCall = ''
+                this.isPhoneCall = false
+                if(isClick == "click") {
+                    Toast("客服电话暂未开通")
+                }
+            }
+        })
+    },
+    collectImmediately() {
+        this.$router.push(
+            {
+                name: 'mallPay', 
+                params: {
+                    id: this.$route.params.id
+                }
+            }
+        )
+        // sessionStorage.setItem('aid', 0)
     }
   },
   created () {
     this.mall_detailBanner()
+    this.commentList()
+    this.getSystem()
   },
 }
 </script>
 <style lang="scss">
-.mall-detail {
-  // margin-top: .8rem;
-}
+
 .advantageEvaluationMain {
   padding-bottom: .5rem;
 }
@@ -203,7 +245,8 @@ export default {
 }
 .mallDetailBanner {
     height: 7.5rem;
-    padding-top: 40px;
+    // padding-top: 40px;
+    margin-top: .8rem;
 }
 .pDPriceMain{
   padding:0 10px;

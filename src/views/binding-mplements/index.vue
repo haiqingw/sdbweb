@@ -23,7 +23,7 @@
           v-model="queryData.confirmBinding.terminal"
           placeholder="请填写机具序列号"
         ></el-input>
-        <el-button type="text" @click="sys_click">自动识别</el-button>
+        <el-button type="text" @click="sys_click">扫码识别</el-button>
       </div>
       <mt-popup
         v-model="popupVisible"

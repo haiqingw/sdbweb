@@ -13,8 +13,9 @@
     <!-- banner -->
     <!-- 收货地址 -->
     <div class="mallPayAddressMain">
+         <!-- params: { id: 0 } -->
       <router-link
-        :to="{ name: 'mallAddAddress', params: { id: 0 } }"
+        :to="{ name: 'mallAddress' }"
         v-if="!isAddressInfo"
         ><a href="javascript:;">请添加收货地址</a></router-link
       >
@@ -128,6 +129,7 @@ export default {
       });
     },
     addressInfo() {
+        // sessionStorage.getItem('aid')
         if( this.isDefault ) {
             this.queryData.addressInfo.types = 1
         }

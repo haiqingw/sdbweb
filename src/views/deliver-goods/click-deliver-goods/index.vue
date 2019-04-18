@@ -75,7 +75,7 @@
                         productID: this.$route.params.id, 
                         useStatus: 1,
                         limit: 10,
-                        page: 0
+                        page: 0,
                     }
                 },
                 renderData: {
@@ -91,6 +91,7 @@
         methods: {
             terminalList() {
                 getServer(this.queryData.list).then( res => {
+                    console.log(res)
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true
                         this.renderData.list = res.data.data
@@ -120,7 +121,7 @@
                 this.queryData.list.page = 1
                 this.renderData.oldList = []
                 this.isDownLoading = true
-                this.terminalList();
+                this.terminalList()
             }
         }
     }

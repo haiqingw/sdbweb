@@ -72,7 +72,8 @@ export default {
                 this.isDownLoading = false
             }, 1000)
         }
-    }
+    },
+  
 }
 </script>
 

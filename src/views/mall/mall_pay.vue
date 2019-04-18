@@ -17,7 +17,7 @@
       <router-link
         :to="{ name: 'mallAddress' }"
         v-if="!isAddressInfo"
-        ><a href="javascript:;">请添加收货地址</a></router-link
+        ><a href="javascript:;">请选择收货地址</a></router-link
       >
       <router-link to="/mall/mall_address" tag="div" v-else>
         <div class="mallPayAddressBox rightArrIcon">
@@ -26,9 +26,7 @@
             <em>{{ renderData.addressInfo.phone }}</em>
           </div>
           <div>
-            {{ renderData.addressInfo.province }}{{ renderData.addressInfo.city
-            }}{{ renderData.addressInfo.area
-            }}{{ renderData.addressInfo.address }}
+            {{renderData.addressInfo.province}}{{renderData.addressInfo.city}}{{renderData.addressInfo.area}}{{renderData.addressInfo.address}}
           </div>
         </div>
       </router-link>

@@ -291,6 +291,6 @@ export default new Router({
       path: '/forgetPasswordNext', //忘记密码第二部
       name: 'forgetPasswordNext',
       component: resolve => require(['@/views/forgetPassword/forgetPasswordNext'], resolve),
-    }
+    },
   ]
 })

@@ -46,7 +46,7 @@
                                             <span>
                                                 订单号:{{item.ordernum}}
                                             </span>
-                                            <router-link :to="{name: 'clickDeliverGoods', params: {id: item.id}}">发货</router-link>
+                                            <router-link :to="{name: 'clickDeliverGoods', params: {proid: item.proid, id: item.id}}">发货</router-link>
                                         </div>
                                     </li>
                                 </ul>
@@ -165,8 +165,8 @@
             },
             deliverGoodsList () {
                 getServer(this.queryData.list).then( res => {
-                    // console.log(res.data.data)
                     if( res.data.responseStatus === 1 ) {
+                        console.log(res.data.data)
                         this.isData = true
                         this.renderData.list = res.data.data
                         this.renderData.list.forEach( item => {

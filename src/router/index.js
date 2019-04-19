@@ -168,7 +168,7 @@ export default new Router({
       component: resolve => require(['@/views/withdrawal/withdrawalRecord'], resolve), 
     },
     { 
-      path: '/clickDeliverGoods/:id', //我的订单详情
+      path: '/clickDeliverGoods/:proid/:id', //我的订单详情
       name: 'clickDeliverGoods',
       component: resolve => require(['@/views/deliver-goods/click-deliver-goods/index'], resolve), 
     },

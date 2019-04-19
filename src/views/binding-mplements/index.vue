@@ -65,7 +65,6 @@
     import { getServer } from '@/api/index'
     import response from '@/assets/js/response.js'
     import wx from 'weixin-js-sdk'
-    import { getWxs } from '@/api/wxs'
     import { Toast } from 'mint-ui';
     export default {
         data() {

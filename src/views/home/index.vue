@@ -115,7 +115,7 @@
             <img src="@/assets/images/index-list2-img3.png" alt="" />
           </div>
           <div class="text">
-            <a href="">申请代理</a>
+            <a href="javascript:;">申请代理</a>
           </div>
         </li>
         <li>

@@ -127,7 +127,6 @@ export default {
         },
         withdrawalList () {
             getServer(this.queryData.list).then( res => {
-                console.log(res)
                 if( res.data.responseStatus === 1 ) {
                     this.isData = true
                     this.renderData.list = res.data.data

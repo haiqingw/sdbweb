@@ -166,7 +166,6 @@
             deliverGoodsList () {
                 getServer(this.queryData.list).then( res => {
                     if( res.data.responseStatus === 1 ) {
-                        console.log(res.data.data)
                         this.isData = true
                         this.renderData.list = res.data.data
                         this.renderData.list.forEach( item => {

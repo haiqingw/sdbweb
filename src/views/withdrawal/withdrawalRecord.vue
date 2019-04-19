@@ -70,7 +70,15 @@
                             <p>实到账:
                                 <b>{{item.arviAmount}}元</b>
                             </p>
+                            <!-- <p>审核状态:
+                                <b>{{item.reviewStatus}}</b>
+                            </p> -->
+                            <p>订单状态:
+                                <b v-if="item.status == 1" style="color: #67c23a;">{{item.drawStatus}}</b>
+                                <b v-if="item.status == 2">{{item.drawStatus}}</b>
+                            </p>
                             <p>提现时间:{{item.drawTime}}</p>
+                            <p>备注:{{item.remark}}</p>
                         </div>
                     </div>
                 </van-list>

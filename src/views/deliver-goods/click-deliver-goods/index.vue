@@ -182,7 +182,7 @@
                                         if( result.indexOf(",") >= 0 ){
                                             var tempArray = result.split(',');
                                             var tempNum = tempArray[1];
-                                            $this.renderData.sub.oddNumbers = tempNum
+                                            $this.queryData.sub.waybillNumber = tempNum
                                         } else{
                                             Toast("获取失败")
                                         }
@@ -295,7 +295,8 @@
     padding: .1rem .2rem;
 }
 .terminal-num-list ul li .el-radio {
-    margin: .15rem 0;
+    margin: .2rem 0;
+    display: block;
 }
 </style>
 

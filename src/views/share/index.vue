@@ -67,11 +67,47 @@ export default {
                 // console.log(res.data)
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.share = res.data.qrcode;
+                    this.swiperOption = {
+                        observer: true, //修改swiper自己或子元素时，自动初始化swiper
+                        observeParents: true, //修改swiper的父元素时，自动初始化swiper
+                        effect: "coverflow",
+                        grabCursor: true,
+                        centeredSlides: true,
+                        slidesPerView: "auto",
+                        coverflowEffect: {
+                            rotate: 50,
+                            stretch: 0,
+                            depth: 100,
+                            modifier: 1,
+                            slideShadows: true
+                        },
+                        pagination: {
+                            el: ".swiper-pagination"
+                        }
+                    }
                 }
             });
         },
     },
     mounted() {
+        this.swiperOption = {
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true, //修改swiper的父元素时，自动初始化swiper
+            effect: "coverflow",
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true
+            },
+            pagination: {
+                el: ".swiper-pagination"
+            }
+        }
         var that = this
 　　    that.$nextTick(function(){  
     　　　　var mySwiper = new Swiper(".swiper-container",{ 

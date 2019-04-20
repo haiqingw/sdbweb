@@ -83,14 +83,12 @@ export default {
     judgeRealNameAuth(url) {
       Indicator.open();
       getServer(this.queryData.checkcerData).then(res => {
-        console.log(res);
+        Indicator.close();
         if (res.data.responseStatus === 1) {
           getServer(this.queryData.checkbankcardData).then(res => {
             if (res.data.responseStatus === 1) {
-              Indicator.close();
               this.$router.push({ name: url });
             } else {
-              Indicator.close();
               this.$router.push({ name: "certificationNext" });
             }
           });

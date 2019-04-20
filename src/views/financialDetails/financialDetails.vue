@@ -51,8 +51,11 @@
             <!-- switchSacreeningMain -->
             <div class="choice">
                 <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
-                    <el-radio-button label="JY">交易</el-radio-button>
-                    <el-radio-button label="JH">激活</el-radio-button>
+                    <swiper :options="swiperOption">
+                        <swiper-slide v-for="item in renderData.screen" :key="item.types">
+                            <el-radio-button :label="item.types">{{item.name}}</el-radio-button>
+                        </swiper-slide>
+                    </swiper>
                 </el-radio-group>
             </div>
             <!-- 列表 -->
@@ -75,7 +78,7 @@
                                         <li class="line_bottom flex" v-for="(item, index) in renderData.odlListData" :key="index">
                                             <div>
                                                 <div class="top">
-                                                    <span class="s" v-if="item.product !== null">{{item.product}}</span>
+                                                    <span class="s" v-if="item.product">{{item.product}}</span>
                                                     <h3 class="title">{{item.storageName}}</h3> 
                                                 </div>
                                                 <p>
@@ -105,6 +108,8 @@
 <script>
 import {getServer} from '@/api/index'
 import { Indicator } from 'mint-ui'
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
 export default {
     data() {
         return {
@@ -122,7 +127,8 @@ export default {
             isClicked: false,
             renderData: {
                 listData: [],
-                odlListData: []
+                odlListData: [],
+                screen: []
             },
             queryData: {
                 list: {
@@ -135,8 +141,23 @@ export default {
                     limit: 15,
                     types: 'Z',
                     stypes: 'JY' // (JY 交易  JH 激活)
+                },
+                screen: {
+                    requestType: 'spendinginto',
+                    requestKeywords:'earingsclass',
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             },
+            swiperOption: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            }
         };
     },
     methods: {
@@ -204,11 +225,19 @@ export default {
                 }
             })
         },
-
+        screen() {
+            getServer(this.queryData.screen).then( res => {
+                console.log(res)
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.screen = res.data.data
+                }
+            })
+        }
     },
     created () {
         // this.profitList()
         // this.onLoadList()
+        this.screen()
     }
 };
 </script>
@@ -222,11 +251,13 @@ export default {
         top: .6rem;
         background: #fff;
         z-index: 9999;
+        // overflow-x: auto;
+        overflow: auto;
         .el-radio-group {
             width: 100%;
         }
         label {
-            width: 50%;
+            // width: 50%;
             display: block;
             float: left;
             text-align: center;
@@ -243,6 +274,7 @@ export default {
             background: none;
             color: #606266;
             border-bottom: 1px solid #0096fe;
+            border-radius: 0;
             box-shadow: 0 0 0 0 #fff;
         }
         .el-radio-button__inner:hover {

@@ -227,7 +227,7 @@ export default {
         },
         screen() {
             getServer(this.queryData.screen).then( res => {
-                console.log(res)
+                // console.log(res)
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.screen = res.data.data
                 }
@@ -262,12 +262,19 @@ export default {
             float: left;
             text-align: center;
             border-left: none;
+            border: none;
+        }
+        label:hover {
+            border: none;
         }
         .el-radio-button__inner {
             border: none;
             border-bottom: 1px solid transparent;
             width: 100%;
             color: #606266;
+        }
+        .el-radio-button__inner:hover {
+            border-bottom: 1px solid transparent;
         }
         .el-radio-button__orig-radio:checked+.el-radio-button__inner {
             border: none;
@@ -409,11 +416,12 @@ export default {
             }
             .top {
                 overflow: hidden;
+                display: block;
                 h3.title{
                     float: left;
                     // font-size:16px;
                     font-size: .28rem;
-                    line-height: .3rem;
+                    // line-height: .3rem;
                     color: #333;
                     margin-top: .05rem;
                     border: none;

@@ -20,6 +20,8 @@
 import {getServer} from "@/api/index";
 import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
 export default {
     data() {
         return {
@@ -70,9 +72,16 @@ export default {
         },
     },
     mounted() {
-        // this.$nextTick(function () {// })
+        var that = this
+　　    that.$nextTick(function(){  
+    　　　　var mySwiper = new Swiper(".swiper-container",{ 
+    　　　　　　direction:"horizontal",/*横向滑动*/ 
+　　　　 　　   loop:true,
+　　　　　　    pagination:".swiper-pagination",/*分页器*/ 
+　　　　 　　   autoplay:3000/*每隔3秒自动播放*/ 
+    　　　　});
+    　　})
     },
-
     created() {
         this.shareFunc()
     }

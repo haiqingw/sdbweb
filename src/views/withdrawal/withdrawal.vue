@@ -127,9 +127,11 @@ export default {
                     userID: this.$store.state.user.uid, 
                     userPhone: this.$store.state.user.uphone
                 }
-            }
+            },
+          
         };
     },
+    inject: ['reload'],
     methods: {
         handleChange(index) {
             this.renderData.balanceList.forEach ( (item, i) => {
@@ -142,13 +144,22 @@ export default {
             this.drawInfo()
         },
         balanceList () {
-            getServer(this.queryData.balanceList).then( res => {
+            getServer(this.queryData.balanceList)
+            .then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.balanceList = res.data.data
                     this.queryData.cashWithdrawal.payType = res.data.data[0].t
                     this.queryData.drawInfo.payType = res.data.data[0].t
+                    // this.$set(this.queryData.drawInfo, 'payType', res.data.data[0].t)
+                    // this.queryData.drawInfo.payType = Object.assign({}, res.data.data[0].t)
                     this.renderData.mattersNeedingAttention.ktx = res.data.data[0].ktx
                 }
+                // return new Promise( (resolve, reject) => {
+                //     resolve()
+                // })
+            })
+            .then( res => {
+                this.drawInfo()
             })
         },
         drawInfo () {
@@ -180,36 +191,47 @@ export default {
             console.log("全部提现")
         },
         confirmCashWithdrawal() {
-            const reg =  /^[0-9]+\.?[0-9]*$/;
-            if( this.queryData.cashWithdrawal.money.trim() == "" ) {
-                Toast('请输入提现金额')
-                return
-            } 
-            if( parseFloat( this.queryData.cashWithdrawal.money ) >  parseFloat(this.renderData.mattersNeedingAttention.ktx) )  {
-                Toast('可提现金额不足')
-                return
-            } 
-            if(  parseFloat(this.queryData.cashWithdrawal.money)  < parseFloat(this.renderData.drawInfo.mixm) ) {
-                Toast("单笔最低提现" + this.renderData.drawInfo.mixm + "元")
-                return
-            }
-            if( parseFloat(this.queryData.cashWithdrawal.money) > parseFloat(this.renderData.drawInfo.maxm) ) {
-                Toast("单笔最高提现" + this.renderData.drawInfo.maxm + "元")
-                return
-            }
-            if( reg.test( this.queryData.cashWithdrawal.money ) ) {
-                MessageBox.confirm("你确定要提现吗?", "提现")
-                .then(action => {
-                    getServer(this.queryData.cashWithdrawal).then( res => {
-                        if( res.data.responseStatus === 1 ) {
-                            Toast('提现成功')
-                        } else {
-                           Toast( response[res.data.responseStatus] )
-                        }
+            getServer(this.queryData.balanceList)
+            .then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.mattersNeedingAttention.ktx = res.data.data[0].ktx
+                }
+            })
+            .then( res => {
+                const reg =  /^[0-9]+\.?[0-9]*$/;
+                if( this.queryData.cashWithdrawal.money.trim() == "" ) {
+                    Toast('请输入提现金额')
+                    return
+                } 
+                if( parseFloat( this.queryData.cashWithdrawal.money ) >  parseFloat(this.renderData.mattersNeedingAttention.ktx) )  {
+                    Toast('可提现金额不足')
+                    return
+                } 
+                if(  parseFloat(this.queryData.cashWithdrawal.money)  < parseFloat(this.renderData.drawInfo.mixm) ) {
+                    Toast("单笔最低提现" + this.renderData.drawInfo.mixm + "元")
+                    return
+                }
+                if( parseFloat(this.queryData.cashWithdrawal.money) > parseFloat(this.renderData.drawInfo.maxm) ) {
+                    Toast("单笔最高提现" + this.renderData.drawInfo.maxm + "元")
+                    return
+                }
+                if( reg.test( this.queryData.cashWithdrawal.money ) ) {
+                    MessageBox.confirm("你确定要提现吗?", "提现")
+                    .then(action => {
+                        getServer(this.queryData.cashWithdrawal).then( res => {
+                            if( res.data.responseStatus === 1 ) {
+                                Toast('提现成功')
+                            } else {
+                            Toast( response[res.data.responseStatus] )
+                            }
+                        })
                     })
-                })
-                .catch(() => {});
-            }
+                    .catch(() => {
+                        // this.reload()
+                    });
+                }
+            })
+           
         },
         inpVerification () {
             this.queryData.cashWithdrawal.money = this.queryData.cashWithdrawal.money.replace(/[^\d.]/g, "");
@@ -224,15 +246,19 @@ export default {
         }
     },
     created () {
-        this.balanceList()
         this.bankInfo()
         this.mattersNeedingAttention()
+        this.balanceList()
+        // this.drawInfo() 
     },
-    beforeUpdate() {
-        // this.balanceList()
-        this.drawInfo()
-    }
-    
+    // beforeUpdate() {
+    //     this.balanceList()
+    //     this.drawInfo()
+    // },
+    // updated() {
+    //     this.balanceList()
+    //     this.drawInfo()
+    // }
 };
 </script>
 <style lang="scss">

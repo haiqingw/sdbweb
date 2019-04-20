@@ -75,7 +75,7 @@
                                         <li class="line_bottom flex" v-for="(item, index) in renderData.odlListData" :key="index">
                                             <div>
                                                 <div class="top">
-                                                    <span class="s" v-if="item.product">{{item.product}}</span>
+                                                    <span class="s" v-if="item.product !== null">{{item.product}}</span>
                                                     <h3 class="title">{{item.storageName}}</h3> 
                                                 </div>
                                                 <p>
@@ -379,9 +379,13 @@ export default {
                 overflow: hidden;
                 h3.title{
                     float: left;
-                    font-size:16px;
+                    // font-size:16px;
+                    font-size: .28rem;
+                    line-height: .3rem;
                     color: #333;
                     margin-top: .05rem;
+                    border: none;
+                    display: block;
                 }
                 span.s {
                     background-color: rgba(64,158,255,.1);

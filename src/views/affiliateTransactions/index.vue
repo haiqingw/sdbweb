@@ -297,8 +297,9 @@ export default {
   box-sizing: border-box;
   // z-index: 9999;
   h3 {
-    font-size: 14px;
-    padding-top: 0.1rem;
+    // font-size: 14px;
+    font-size: .26rem;
+    margin-top: .1rem;
   }
   div {
     font-size: 1rem;
@@ -308,12 +309,14 @@ export default {
 }
 .quickScreeningNav {
   // justify-content: space-around;
-  height: 40px;
+//   height: 40px;
   // position: fixed;
   // right: 0;
   // top: 1rem;
-  line-height: 40px;
+//   line-height: 40px;
   // z-index: 9999;
+//   height: .4rem;
+//   line-height: .4rem;
   a {
     font-size: 12px;
     display: block;

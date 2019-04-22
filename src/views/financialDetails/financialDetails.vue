@@ -129,7 +129,8 @@ import {getServer} from '@/api/index'
 import { Indicator } from 'mint-ui'
 import Swiper from 'swiper';
 import 'swiper/dist/css/swiper.min.css';
-import autoScrollInstance from '@/assets/js/autoScroll'
+// import autoScrollInstance from '@/assets/js/autoScroll'
+import {autoScroll, scrollTo} from '@/assets/js/autoScroll'
 export default {
     // components: {
     //     'modal-tag': modalTag,  //组件
@@ -197,7 +198,8 @@ export default {
             //点击谁，谁就高亮 ，定一个变量，click事件的赋值使其相等，而在:class 中 判断是否相等，即可
             this.navActiveIndex = index;
             //插件的调取方法
-            autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
+            // autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
+            scrollTo(this.$refs.nav.childNodes[index])
         },
 
         //点击modal的事件

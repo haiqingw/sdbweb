@@ -50,13 +50,32 @@
             <!-- 切换 筛选 -->
             <!-- switchSacreeningMain -->
             <div class="choice">
-                <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
-                    <swiper :options="swiperOption">
+                <!-- <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
+                    <swiper :options="swiperOption" ref="goodSwiper">
                         <swiper-slide v-for="item in renderData.screen" :key="item.types">
                             <el-radio-button :label="item.types">{{item.name}}</el-radio-button>
                         </swiper-slide>
                     </swiper>
-                </el-radio-group>
+                </el-radio-group> -->
+                <div class="topic-list-inner">
+                    <div class="nav" ref="nav">
+                        <div class="box" v-for="(item,index) in renderData.screen" :key="item.types" @click="queryTopic(item, index, item.types)">
+                            <div class="item" :class="{active:navActiveIndex==index}">{{item.name}}</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
+                        <!-- <img src="./images/drop-down.png" alt="" class="drop-down" :class="{reverse:showModal}"> -->
+                    </div>
+
+                    <!-- use the modal component, pass in the prop -->
+                  
+
+                    <!--传递子组件的方法，参数-->
+                    <!--queryTopic:方法-->
+                    <!--selectTag：数据-->
+
+                </div>
             </div>
             <!-- 列表 -->
             <div class="financialDetailsList">
@@ -110,9 +129,16 @@ import {getServer} from '@/api/index'
 import { Indicator } from 'mint-ui'
 import Swiper from 'swiper';
 import 'swiper/dist/css/swiper.min.css';
+import autoScrollInstance from '@/assets/js/autoScroll'
 export default {
+    // components: {
+    //     'modal-tag': modalTag,  //组件
+    // },
     data() {
         return {
+            navActiveIndex: 0, //当前高亮的tab选项卡index
+            showModal: false, //是否显示modal
+            selectTag: null,   //传递个子组件（modal）的数据的
             isDownLoading: false,//下拉刷新
             isUpLoading: false,//上拉加载
             upFinished: false,//上拉加载完毕
@@ -151,20 +177,39 @@ export default {
                 }
             },
             swiperOption: {
+                loop: true,//设置 active slide 居中后，会有左右留白现象，添加此会让未尾的导航补齐前后空白
+                slideToClickedSlide: true,//设置为true则点击slide会过渡到这个slide。
                 slidesPerView: 3,
-                spaceBetween: 30,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
+                centeredSlides: true,//设定为true时，active slide会居中，而不是默认状态下的居左。
+                freeMode: true,
+                initialSlide: 1,//默认第二个
             }
         };
     },
     methods: {
+        queryTopic(data, index, type) {
+            this.queryData.list.stypes = type
+            this.upFinished = false
+            this.queryData.list.page = 1
+            this.renderData.odlListData = []
+            // this.isDownLoading = true
+            this.profitList()
+            //点击谁，谁就高亮 ，定一个变量，click事件的赋值使其相等，而在:class 中 判断是否相等，即可
+            this.navActiveIndex = index;
+            //插件的调取方法
+            autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
+        },
+
+        //点击modal的事件
+        openTagModal(tag) {
+            event.stopPropagation() //点击箭头，阻止事件向下传递
+            this.showModal = true //modal的出现
+            this.selectTag = tag; //传值给modal子组件
+        },
         clickChange () {
             if( this.type === 'selectionDate' ) {
                 this.selectYear()
-            } else {
+            } else { 
                 delete this.queryData.list.dates
                 this.isClicked = false
                 this.queryData.list.types = this.type
@@ -238,17 +283,70 @@ export default {
         // this.profitList()
         // this.onLoadList()
         this.screen()
+    },
+    mounted () {
+      
     }
 };
 </script>
 <style lang="scss">
+ .topic-list-inner {
+    width: 100%;
+    background: #fff;
+  }
+
+  .nav {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    .box {
+      white-space: nowrap;
+      font-size: 0.3rem;
+      padding: 0 0.5rem;
+      height: 0.9rem;
+      line-height: 0.9rem;
+      color: #333333;
+      .item {
+        height: 100%;
+        &.active {
+          color: #0096fe;
+          border-bottom: 1.5px solid #0096fe;
+        }
+      }
+    }
+  }
+
+  .nav-right-arrow {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 1rem;
+    height: 0.9rem;
+    /*background: #fff;*/
+    background-image: linear-gradient(to right, rgba(#fff, 0), #fff 30%, #fff);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .drop-down {
+      width: 0.22rem;
+      /*padding-top: 0.35rem;*/
+      /*margin-left: 0.22rem;*/
+      transform: rotate(0deg);
+      transition: all 0.5s;
+      &.reverse {
+        transform: rotate(-180deg);
+      }
+    }
+  }
 .financial-details {
     .choice {
         position: fixed;
         width: 100%;
         left: 0;
         // top: 2rem;
-        top: .6rem;
+        top: .8rem;
         background: #fff;
         z-index: 9999;
         // overflow-x: auto;

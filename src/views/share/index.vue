@@ -74,7 +74,7 @@ export default {
                 // console.log(res.data)
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.share = res.data.qrcode;
-                }
+                } 
             });
         },
     },

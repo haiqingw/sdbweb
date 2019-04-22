@@ -51,8 +51,8 @@
             <!-- switchSacreeningMain -->
             <div class="choice">
                 <!-- <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
-                    <swiper :options="swiperOption" ref="goodSwiper">
-                        <swiper-slide v-for="item in renderData.screen" :key="item.types">
+                    <swiper :options="swiperOption" ref="mySwiper" v-if="renderData.screen.length > 0">
+                        <swiper-slide  v-for="item in renderData.screen" :key="item.types">
                             <el-radio-button :label="item.types">{{item.name}}</el-radio-button>
                         </swiper-slide>
                     </swiper>
@@ -65,16 +65,7 @@
                     </div>
 
                     <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
-                        <!-- <img src="./images/drop-down.png" alt="" class="drop-down" :class="{reverse:showModal}"> -->
                     </div>
-
-                    <!-- use the modal component, pass in the prop -->
-                  
-
-                    <!--传递子组件的方法，参数-->
-                    <!--queryTopic:方法-->
-                    <!--selectTag：数据-->
-
                 </div>
             </div>
             <!-- 列表 -->
@@ -87,7 +78,7 @@
                                 @refresh="onDownRefresh"
                             >
                                 <van-list
-                                    v-model="isUpLoading"                 
+                                    v-model="isUpLoading"
                                     :finished="upFinished"
                                     finished-text="没有更多了"
                                     @load="onLoadList"
@@ -98,7 +89,7 @@
                                             <div>
                                                 <div class="top">
                                                     <span class="s" v-if="item.product">{{item.product}}</span>
-                                                    <h3 class="title">{{item.storageName}}</h3> 
+                                                    <h3 class="title">{{item.storageName}}</h3>
                                                 </div>
                                                 <p>
                                                     {{item.remark}}
@@ -121,7 +112,7 @@
             <!-- 列表 -->
             <!-- :bottom-method="loadBottom" -->
         </div>
-       
+
     </div>
 </template>
 <script>
@@ -130,7 +121,8 @@ import { Indicator } from 'mint-ui'
 import Swiper from 'swiper';
 import 'swiper/dist/css/swiper.min.css';
 // import autoScrollInstance from '@/assets/js/autoScroll'
-import {autoScroll, scrollTo} from '@/assets/js/autoScroll'
+import AutoScroll from '@/assets/js/autoScroll'
+let autoScrollInstance = null 
 export default {
     // components: {
     //     'modal-tag': modalTag,  //组件
@@ -160,7 +152,7 @@ export default {
             queryData: {
                 list: {
                     requestType: 'spendinginto',
-                    requestKeywords:'earnings', 
+                    requestKeywords:'earnings',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
@@ -178,14 +170,22 @@ export default {
                 }
             },
             swiperOption: {
+                // init: false,
                 loop: true,//设置 active slide 居中后，会有左右留白现象，添加此会让未尾的导航补齐前后空白
                 slideToClickedSlide: true,//设置为true则点击slide会过渡到这个slide。
                 slidesPerView: 3,
                 centeredSlides: true,//设定为true时，active slide会居中，而不是默认状态下的居左。
                 freeMode: true,
                 initialSlide: 1,//默认第二个
+                observer: true,//修改swiper自己或子元素时，自动初始化swiper
+                observeParents: true,//修改swiper的父元素时，自动初始化swiper
             }
         };
+    },
+    computed: {
+        swiper() {
+            return this.$refs.mySwiper.swiper;
+        }
     },
     methods: {
         queryTopic(data, index, type) {
@@ -198,10 +198,10 @@ export default {
             //点击谁，谁就高亮 ，定一个变量，click事件的赋值使其相等，而在:class 中 判断是否相等，即可
             this.navActiveIndex = index;
             //插件的调取方法
-            // autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
-            scrollTo(this.$refs.nav.childNodes[index])
+            if (autoScrollInstance) { //确保的插件加载成功
+                autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
+            }
         },
-
         //点击modal的事件
         openTagModal(tag) {
             event.stopPropagation() //点击箭头，阻止事件向下传递
@@ -211,7 +211,7 @@ export default {
         clickChange () {
             if( this.type === 'selectionDate' ) {
                 this.selectYear()
-            } else { 
+            } else {
                 delete this.queryData.list.dates
                 this.isClicked = false
                 this.queryData.list.types = this.type
@@ -277,9 +277,10 @@ export default {
                 // console.log(res)
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.screen = res.data.data
+                    autoScrollInstance = new AutoScroll(this.$refs.nav, {spaceBetween: 0})//节点 nav
                 }
             })
-        }
+        },
     },
     created () {
         // this.profitList()
@@ -287,11 +288,17 @@ export default {
         this.screen()
     },
     mounted () {
-      
-    }
+
+    },
+    // updated() {
+    //     if ( this.renderData.screen.length > 1 ) {
+    //         this.swiper.init();
+    //     }
+    // },
 };
 </script>
 <style lang="scss">
+
  .topic-list-inner {
     width: 100%;
     background: #fff;
@@ -305,7 +312,7 @@ export default {
       white-space: nowrap;
       font-size: 0.3rem;
       padding: 0 0.5rem;
-      height: 0.9rem;
+      height: 1rem;
       line-height: 0.9rem;
       color: #333333;
       .item {
@@ -353,6 +360,8 @@ export default {
         z-index: 9999;
         // overflow-x: auto;
         overflow: auto;
+        line-height: .8rem;
+        height: .8rem;
         .el-radio-group {
             width: 100%;
         }

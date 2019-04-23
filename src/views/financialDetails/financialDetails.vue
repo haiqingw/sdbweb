@@ -12,43 +12,18 @@
         </div>
         <!-- 列表 -->
         <div class="financialDetailsMain">
-            <!-- 筛选 -->
-            <!-- <div class="timeScreeningMain">
-                <div class="timeScreeningItem line_bottom">
-                    <em>开始时间</em>
-                    <div>
-                        <span>请选择开始时间</span>
-                        <input type="data">
-                    </div>
-                </div>
-                <div class="selector selectYear" @click="selectYear">
-                    <div class="show_year">
-                    <p v-if="!isClicked">请选择日期筛选</p>
-                    <p v-if="isClicked">{{ year }}年{{ month }}月{{ date }}日</p>
-                    </div>
-                </div>
-                <mt-datetime-picker
-                    v-model="dateValue"
-                    type="date"
-                    ref="datePicker"
-                    year-format="{value} 年"
-                    month-format="{value} 月"
-                    date-format="{value} 日"
-                    :endDate="new Date()"
-                    @confirm="handleConfirm"
-                    @cancel="handleCancel"
-                >
-                </mt-datetime-picker>
-                <div class="timeScreeningItem line_bottom">
-                    <em>结束时间</em>
-                    <div>
-                        <span>请选择结束时间</span>
-                        <input type="data">
-                    </div>
-                </div>
-            </div> -->
-            <!-- 切换 筛选 -->
             <!-- switchSacreeningMain -->
+            <div class="time-choice">
+                <div class="block">
+                    <el-date-picker
+                        v-model="queryData.list.dates"
+                        type="month"
+                        placeholder="请选择日期"
+                        @change="changeMonth"
+                    >
+                    </el-date-picker>
+                </div>
+            </div>
             <div class="choice">
                 <!-- <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
                     <swiper :options="swiperOption" ref="mySwiper" v-if="renderData.screen.length > 0">
@@ -63,16 +38,15 @@
                             <div class="item" :class="{active:navActiveIndex==index}">{{item.name}}</div>
                         </div>
                     </div>
-
-                    <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
-                    </div>
+                    <!-- <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
+                    </div> -->
                 </div>
             </div>
             <!-- 列表 -->
             <div class="financialDetailsList">
             <!-- line_bottom -->
-            <div class="flex switchSacreeningMain">
-                <div class="financialDetailsList" v-if="isData">
+                <div class="flex switchSacreeningMain">
+                    <div class="financialDetailsList" v-if="isData">
                             <van-pull-refresh
                                 v-model="isDownLoading"
                                 @refresh="onDownRefresh"
@@ -105,7 +79,7 @@
                             </van-pull-refresh>
                         </div>
                         <div class="no-data" v-else>
-                            <img src="@/assets/images/no-data.png" alt="">
+                            <img src="@/assets/images/no-data.png" />
                         </div>
                 </div>
             </div>
@@ -122,6 +96,7 @@ import Swiper from 'swiper';
 import 'swiper/dist/css/swiper.min.css';
 // import autoScrollInstance from '@/assets/js/autoScroll'
 import AutoScroll from '@/assets/js/autoScroll'
+import { parseTime, timeFormate } from '@/utils/index'
 let autoScrollInstance = null 
 export default {
     // components: {
@@ -141,7 +116,6 @@ export default {
             pickerValue: "按时间筛选",
             year: "",
             month: "",
-            date: "",
             dateValue: "",
             isClicked: false,
             renderData: {
@@ -159,7 +133,8 @@ export default {
                     page: 0,
                     limit: 15,
                     types: 'Z',
-                    stypes: 'JY' // (JY 交易  JH 激活)
+                    stypes: 'JY', // (JY 交易  JH 激活)
+                    dates: timeFormate(new Date()).substring(0, 7)
                 },
                 screen: {
                     requestType: 'spendinginto',
@@ -188,6 +163,12 @@ export default {
         }
     },
     methods: {
+        changeMonth () {
+            this.queryData.list.page = 0
+            this.renderData.odlListData = []
+            this.queryData.list.dates = parseTime(this.queryData.list.dates).substring(0, 7)
+            this.onLoadList()
+        },
         queryTopic(data, index, type) {
             this.queryData.list.stypes = type
             this.upFinished = false
@@ -201,33 +182,6 @@ export default {
             if (autoScrollInstance) { //确保的插件加载成功
                 autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
             }
-        },
-        //点击modal的事件
-        openTagModal(tag) {
-            event.stopPropagation() //点击箭头，阻止事件向下传递
-            this.showModal = true //modal的出现
-            this.selectTag = tag; //传值给modal子组件
-        },
-        clickChange () {
-            if( this.type === 'selectionDate' ) {
-                this.selectYear()
-            } else {
-                delete this.queryData.list.dates
-                this.isClicked = false
-                this.queryData.list.types = this.type
-                this.upFinished = false
-                this.isData = true
-                this.queryData.list.page = 0
-                this.renderData.oldList = []
-                this.onLoadList()
-            }
-        },
-        handleClick () {
-            this.upFinished = false
-            this.queryData.list.page = 1
-            this.renderData.odlListData = []
-            // this.isDownLoading = true
-            this.profitList()
         },
         onLoadList () {
             // console.log("进来", this.queryData.list.page)
@@ -248,8 +202,11 @@ export default {
             this.profitList();
         },
         profitList () {
+            Indicator.open();
             this.isDisabled = true
+            console.log(this.queryData.list)
             getServer(this.queryData.list).then( res => {
+                Indicator.close();
                 // console.log(res)
                 if( res.data.responseStatus === 1 ) {
                     this.isDisabled = false
@@ -299,11 +256,33 @@ export default {
 </script>
 <style lang="scss">
 
- .topic-list-inner {
+.financial-details .v-modal {
+    z-index: 9999 !important;
+}
+.financial-details .mint-popup-bottom {
+    z-index: 99999 !important;
+}
+.time-choice {
+    position: fixed;
+    top: .8rem;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    .block {
+        padding: 0 .2rem;
+        .el-input {
+            display: block;
+            width: 100%;
+        }
+        .el-input__inner {
+            border: none;
+        }
+    }
+}
+.topic-list-inner {
     width: 100%;
     background: #fff;
   }
-
   .nav {
     display: flex;
     overflow-x: auto;
@@ -319,7 +298,7 @@ export default {
         height: 100%;
         &.active {
           color: #0096fe;
-          border-bottom: 1.5px solid #0096fe;
+        //   border-bottom: .01rem solid #0096fe;
         }
       }
     }
@@ -355,9 +334,9 @@ export default {
         width: 100%;
         left: 0;
         // top: 2rem;
-        top: .8rem;
+        top: 1.5rem;
         background: #fff;
-        z-index: 9999;
+        z-index: 999;
         // overflow-x: auto;
         overflow: auto;
         line-height: .8rem;
@@ -420,7 +399,7 @@ export default {
 }
 .financialDetailsMain {
     // margin-top: 3.3rem;
-    margin-top:1.8rem;
+    margin-top: 2.3rem;
     // position: fixed;
     // left:0;
     // top:160px;
@@ -436,7 +415,7 @@ export default {
     left: 0;
     top: 40px;
     background: #fff;
-    z-index: 99999;
+    z-index: 999;
 }
 .switchScreeningMain {
     // position: fixed;

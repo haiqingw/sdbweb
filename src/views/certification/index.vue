@@ -59,7 +59,7 @@ export default {
                 if (res.data.responseStatus === 1) {
                     this.$router.push({name: 'certificationNext'});
                 } else {
-                    Toast(response[res.data.responseStatus]);
+                    // Toast(response[res.data.responseStatus]);
                 }
             });
         },

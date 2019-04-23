@@ -15,7 +15,7 @@ body {
 }
 .index-list1 ul li {
     width: 25%;
-    padding: .26rem .4rem;
+    padding: .26rem 0;
     box-sizing: border-box;
     float: left;
     border-right: .01rem solid #eaeaea;

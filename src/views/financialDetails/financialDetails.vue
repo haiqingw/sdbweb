@@ -50,10 +50,23 @@
             <!-- 切换 筛选 -->
             <!-- switchSacreeningMain -->
             <div class="choice">
-                <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
-                    <el-radio-button label="JY">交易</el-radio-button>
-                    <el-radio-button label="JH">激活</el-radio-button>
-                </el-radio-group>
+                <!-- <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
+                    <swiper :options="swiperOption" ref="mySwiper" v-if="renderData.screen.length > 0">
+                        <swiper-slide  v-for="item in renderData.screen" :key="item.types">
+                            <el-radio-button :label="item.types">{{item.name}}</el-radio-button>
+                        </swiper-slide>
+                    </swiper>
+                </el-radio-group> -->
+                <div class="topic-list-inner">
+                    <div class="nav" ref="nav">
+                        <div class="box" v-for="(item,index) in renderData.screen" :key="item.types" @click="queryTopic(item, index, item.types)">
+                            <div class="item" :class="{active:navActiveIndex==index}">{{item.name}}</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
+                    </div>
+                </div>
             </div>
             <!-- 列表 -->
             <div class="financialDetailsList">
@@ -65,7 +78,7 @@
                                 @refresh="onDownRefresh"
                             >
                                 <van-list
-                                    v-model="isUpLoading"                 
+                                    v-model="isUpLoading"
                                     :finished="upFinished"
                                     finished-text="没有更多了"
                                     @load="onLoadList"
@@ -76,7 +89,7 @@
                                             <div>
                                                 <div class="top">
                                                     <span class="s" v-if="item.product">{{item.product}}</span>
-                                                    <h3 class="title">{{item.storageName}}</h3> 
+                                                    <h3 class="title">{{item.storageName}}</h3>
                                                 </div>
                                                 <p>
                                                     {{item.remark}}
@@ -99,15 +112,26 @@
             <!-- 列表 -->
             <!-- :bottom-method="loadBottom" -->
         </div>
-       
+
     </div>
 </template>
 <script>
 import {getServer} from '@/api/index'
 import { Indicator } from 'mint-ui'
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
+// import autoScrollInstance from '@/assets/js/autoScroll'
+import AutoScroll from '@/assets/js/autoScroll'
+let autoScrollInstance = null 
 export default {
+    // components: {
+    //     'modal-tag': modalTag,  //组件
+    // },
     data() {
         return {
+            navActiveIndex: 0, //当前高亮的tab选项卡index
+            showModal: false, //是否显示modal
+            selectTag: null,   //传递个子组件（modal）的数据的
             isDownLoading: false,//下拉刷新
             isUpLoading: false,//上拉加载
             upFinished: false,//上拉加载完毕
@@ -122,12 +146,13 @@ export default {
             isClicked: false,
             renderData: {
                 listData: [],
-                odlListData: []
+                odlListData: [],
+                screen: []
             },
             queryData: {
                 list: {
                     requestType: 'spendinginto',
-                    requestKeywords:'earnings', 
+                    requestKeywords:'earnings',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
@@ -135,11 +160,54 @@ export default {
                     limit: 15,
                     types: 'Z',
                     stypes: 'JY' // (JY 交易  JH 激活)
+                },
+                screen: {
+                    requestType: 'spendinginto',
+                    requestKeywords:'earingsclass',
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             },
+            swiperOption: {
+                // init: false,
+                loop: true,//设置 active slide 居中后，会有左右留白现象，添加此会让未尾的导航补齐前后空白
+                slideToClickedSlide: true,//设置为true则点击slide会过渡到这个slide。
+                slidesPerView: 3,
+                centeredSlides: true,//设定为true时，active slide会居中，而不是默认状态下的居左。
+                freeMode: true,
+                initialSlide: 1,//默认第二个
+                observer: true,//修改swiper自己或子元素时，自动初始化swiper
+                observeParents: true,//修改swiper的父元素时，自动初始化swiper
+            }
         };
     },
+    computed: {
+        swiper() {
+            return this.$refs.mySwiper.swiper;
+        }
+    },
     methods: {
+        queryTopic(data, index, type) {
+            this.queryData.list.stypes = type
+            this.upFinished = false
+            this.queryData.list.page = 1
+            this.renderData.odlListData = []
+            // this.isDownLoading = true
+            this.profitList()
+            //点击谁，谁就高亮 ，定一个变量，click事件的赋值使其相等，而在:class 中 判断是否相等，即可
+            this.navActiveIndex = index;
+            //插件的调取方法
+            if (autoScrollInstance) { //确保的插件加载成功
+                autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
+            }
+        },
+        //点击modal的事件
+        openTagModal(tag) {
+            event.stopPropagation() //点击箭头，阻止事件向下传递
+            this.showModal = true //modal的出现
+            this.selectTag = tag; //传值给modal子组件
+        },
         clickChange () {
             if( this.type === 'selectionDate' ) {
                 this.selectYear()
@@ -204,33 +272,109 @@ export default {
                 }
             })
         },
-
+        screen() {
+            getServer(this.queryData.screen).then( res => {
+                // console.log(res)
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.screen = res.data.data
+                    autoScrollInstance = new AutoScroll(this.$refs.nav, {spaceBetween: 0})//节点 nav
+                }
+            })
+        },
     },
     created () {
         // this.profitList()
         // this.onLoadList()
-    }
+        this.screen()
+    },
+    mounted () {
+
+    },
+    // updated() {
+    //     if ( this.renderData.screen.length > 1 ) {
+    //         this.swiper.init();
+    //     }
+    // },
 };
 </script>
 <style lang="scss">
+
+ .topic-list-inner {
+    width: 100%;
+    background: #fff;
+  }
+
+  .nav {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    .box {
+      white-space: nowrap;
+      font-size: 0.3rem;
+      padding: 0 0.5rem;
+      height: 1rem;
+      line-height: 0.9rem;
+      color: #333333;
+      .item {
+        height: 100%;
+        &.active {
+          color: #0096fe;
+          border-bottom: 1.5px solid #0096fe;
+        }
+      }
+    }
+  }
+
+  .nav-right-arrow {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 1rem;
+    height: 0.9rem;
+    /*background: #fff;*/
+    background-image: linear-gradient(to right, rgba(#fff, 0), #fff 30%, #fff);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .drop-down {
+      width: 0.22rem;
+      /*padding-top: 0.35rem;*/
+      /*margin-left: 0.22rem;*/
+      transform: rotate(0deg);
+      transition: all 0.5s;
+      &.reverse {
+        transform: rotate(-180deg);
+      }
+    }
+  }
 .financial-details {
     .choice {
         position: fixed;
         width: 100%;
         left: 0;
         // top: 2rem;
-        top: .6rem;
+        top: .8rem;
         background: #fff;
         z-index: 9999;
+        // overflow-x: auto;
+        overflow: auto;
+        line-height: .8rem;
+        height: .8rem;
         .el-radio-group {
             width: 100%;
         }
         label {
-            width: 50%;
+            // width: 50%;
             display: block;
             float: left;
             text-align: center;
             border-left: none;
+            border: none;
+        }
+        label:hover {
+            border: none;
         }
         .el-radio-button__inner {
             border: none;
@@ -238,11 +382,15 @@ export default {
             width: 100%;
             color: #606266;
         }
+        .el-radio-button__inner:hover {
+            border-bottom: 1px solid transparent;
+        }
         .el-radio-button__orig-radio:checked+.el-radio-button__inner {
             border: none;
             background: none;
             color: #606266;
             border-bottom: 1px solid #0096fe;
+            border-radius: 0;
             box-shadow: 0 0 0 0 #fff;
         }
         .el-radio-button__inner:hover {
@@ -377,11 +525,16 @@ export default {
             }
             .top {
                 overflow: hidden;
+                display: block;
                 h3.title{
                     float: left;
-                    font-size:16px;
+                    // font-size:16px;
+                    font-size: .28rem;
+                    // line-height: .3rem;
                     color: #333;
                     margin-top: .05rem;
+                    border: none;
+                    display: block;
                 }
                 span.s {
                     background-color: rgba(64,158,255,.1);

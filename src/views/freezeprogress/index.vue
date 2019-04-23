@@ -118,7 +118,7 @@ export default {
       Indicator.open();
       getServer(this.queryData).then(res => {
           Indicator.close();
-          console.log(res)
+        //   console.log(res)
         if (res.data.responseStatus === 1) {
           this.noPosDataStatus = false;
           this.freezeData = res.data.data;

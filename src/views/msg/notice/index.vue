@@ -12,13 +12,13 @@
         <div class="notice-content">
             <div class="notice-list" v-if="isData">
                 <ul>
-                    <li v-for="item in renderData.listData" :key="item.id">
+                    <li v-for="item in renderData.listData" :key="item.id" class="line_bottom">
                         <div class="img">
-                            <img :src="item.picUrl" alt="">
+                            <router-link :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}"><img :src="item.picUrl" alt=""></router-link>
                         </div>
                         <div class="content">
                             <div class="title">
-                                <h3>{{item.title}}</h3>
+                                <router-link tag="h3" :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}">{{item.title}}</router-link>
                                 <span :class="{ 'no' : item.readStatus === '未读'}" >{{item.readStatus}}</span>
                             </div>
                             <!-- <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p> -->
@@ -98,7 +98,6 @@
 .notice-list ul li {
     margin-bottom: 0.3rem;
     padding-bottom: .2rem;
-    background: #fff;
 }
 .notice-list ul li .img {
     height: 2rem;
@@ -157,7 +156,6 @@
 .notice-list ul li .content .time-more {
     overflow: hidden;
     font-size: 0.26rem;
-    margin-top: 0.2rem;
 }
 .notice-list ul li .content .time-more span {
     float: left;

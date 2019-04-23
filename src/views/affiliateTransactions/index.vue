@@ -34,11 +34,11 @@
         <a href="javascript:;">当月</a>
         <a href="javascript:;">累计</a> -->
           <el-radio-group v-model="type" size="medium" @change="clickChange">
-            <el-radio-button :disabled="isUpLoading" label="yesterday"
-              >昨日</el-radio-button
-            >
             <el-radio-button :disabled="isUpLoading" label="days"
               >当日</el-radio-button
+            >
+            <el-radio-button :disabled="isUpLoading" label="yesterday"
+              >昨日</el-radio-button
             >
             <el-radio-button :disabled="isUpLoading" label="mons"
               >当月</el-radio-button
@@ -107,7 +107,7 @@ import { getServer } from "@/api/index";
 export default {
   data() {
     return {
-      type: "yesterday",
+      type: "days",
       isDownLoading: false, //下拉刷新
       isUpLoading: false, //上拉加载
       upFinished: false, //上拉加载完毕
@@ -128,7 +128,7 @@ export default {
           userID: this.$store.state.user.uid,
           userPhone: this.$store.state.user.uphone,
           page: 0,
-          types: "yesterday"
+          types: "days"
           // dates: ''
           // limit: 10
         }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="affiliateTransactions">
     <!-- header -->
     <div class="return">
       <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
@@ -9,12 +9,6 @@
     <div class="affiliateTransactionsMain">
       <!-- 按时间筛选 -->
       <div class="affiliateTransactionsHeaderMain">
-        <div class="selector selectYear" @click="selectYear">
-          <!-- <div class="show_year">
-          <p v-if="!isClicked">请选择日期筛选</p>
-          <p v-if="isClicked">{{ year }}年{{ month }}月{{ date }}日</p>
-        </div> -->
-        </div>
         <mt-datetime-picker
           v-model="dateValue"
           type="date"
@@ -27,13 +21,23 @@
           @cancel="handleCancel"
         >
         </mt-datetime-picker>
+        <div class="time-screening">
+            <el-select v-model="productName" placeholder="按产品" @change="byProductChange">
+                <el-option
+                v-for="item in renderData.product"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+                </el-option>
+            </el-select>
+        </div>
         <!-- 快捷筛选 -->
         <div class="quickScreeningNav">
           <!-- <a class="active" href="javascript:;">昨日</a>
         <a href="javascript:;">当日</a>
         <a href="javascript:;">当月</a>
         <a href="javascript:;">累计</a> -->
-          <el-radio-group v-model="type" size="medium" @change="clickChange">
+          <!-- <el-radio-group v-model="type" size="medium" @change="clickChange">
             <el-radio-button :disabled="isUpLoading" label="days"
               >当日</el-radio-button
             >
@@ -49,7 +53,7 @@
             <el-radio-button label="selectionDate">
               <em @click="screeningTime">按时间筛选</em>
             </el-radio-button>
-          </el-radio-group>
+          </el-radio-group> -->
         </div>
         <!-- 交易总金额 -->
         <div class="tradingTotalMoneyMain">
@@ -65,12 +69,9 @@
           </div>
         </div>
       </div>
-
       <!-- <div class="interval"></div> -->
-
       <!-- 下属交易列表 -->
-
-      <div class="tradingListMain">
+      <!-- <div class="tradingListMain">
         <van-pull-refresh
           v-model="isDownLoading"
           @refresh="onDownRefresh"
@@ -98,20 +99,122 @@
         <div class="no-data" v-else>
           <img src="@/assets/images/no-data.png" alt="" />
         </div>
+      </div> -->
+      <!-- v-load-more -->
+       <!-- <div class="tradingListMain" v-load-more="loaderMore" >
+            <div
+              class="bodyItem"
+              v-for="item in renderData.oldList"
+              :key="item.id"
+              v-if="isData"
+            >
+              <p>{{ item.busname }}({{ item.phone }})</p>
+              <p>交易笔数：{{ item.con }}</p>
+              <p>交易金额：{{ item.money }}</p>
+              <p>产品终端号：{{ item.terminal }}</p>
+            </div>
+        <div class="no-data" v-else>
+          <img src="@/assets/images/no-data.png" alt="" />
+        </div>
+      </div> -->
+      <div class="tradingListMain" v-load-more="loaderMore">
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { getServer } from "@/api/index";
+import {loadMore} from './mixin'
 export default {
   data() {
     return {
+        offset: 0, // 批次加载店铺列表，每次加载20个 limit = 20
+        shopListArr:[], // 店铺列表数据
+        preventRepeatReuqest: false, //到达底部加载数据，防止重复加载
+        showBackStatus: false, //显示返回顶部按钮
+        showLoading: true, //显示加载动画
+        touchend: false, //没有更多数据
       type: "days",
-      isDownLoading: false, //下拉刷新
-      isUpLoading: false, //上拉加载
-      upFinished: false, //上拉加载完毕
-      offset: 10, //滚动条与底部距离小于 offset 时触发load事件
+    //   isDownLoading: false, //下拉刷新
+    //   isUpLoading: false, //上拉加载
+    //   upFinished: false, //上拉加载完毕
+    //   offset: 10, //滚动条与底部距离小于 offset 时触发load事件
       isData: true,
       pickerValue: "按时间筛选",
       year: "",
@@ -120,26 +223,65 @@ export default {
       dateValue: "",
       isClicked: false,
       ATurnover: "0.00",
+      productName: "",
       queryData: {
         list: {
-          requestType: "funds",
-          requestKeywords: "merchandise",
-          platformID: this.$store.state.user.pid,
-          userID: this.$store.state.user.uid,
-          userPhone: this.$store.state.user.uphone,
-          page: 0,
-          types: "days"
+        //   requestType: "funds",
+        //   requestKeywords: "merchandise",
+        //   platformID: this.$store.state.user.pid,
+        //   userID: this.$store.state.user.uid,
+        //   userPhone: this.$store.state.user.uphone,
+        //   page: 0,
+        //   types: "days"
           // dates: ''
           // limit: 10
-        }
+            requestType: 'funds',
+            requestKeywords:'transactions',
+            platformID: this.$store.state.user.pid,
+            userID: this.$store.state.user.uid,
+            userPhone: this.$store.state.user.uphone,
+            page: 1,
+            types: "days",
+            proid: 17
+        },
+        product: {
+            requestType: 'agent',
+            requestKeywords: 'product',
+            platformID: this.$store.state.user.pid
+        },
       },
       renderData: {
         list: [],
-        oldList: []
+        oldList: [],
+        product: []
       }
     };
   },
+  mixins: [loadMore],
   methods: {
+    loaderMore(){
+        
+        console.log(123)
+        if (this.touchend) {
+            returna
+        }
+        
+        //防止重复请求
+        if (this.preventRepeatReuqest) {
+            return
+        }
+        this.showLoading = true;
+        this.preventRepeatReuqest = true;
+        //数据的定位加20位
+        this.offset += 20;
+        // let res = await getServer();
+        //当获取数据小于20，说明没有更多数据，不需要再次请求数据
+        // if (res.length < 20) {
+        //     this.touchend = true;
+        //     return
+        // }
+        this.preventRepeatReuqest = false;
+    },
     screeningTime() {
       this.clickChange();
     },
@@ -157,12 +299,12 @@ export default {
         this.onLoadList();
       }
     },
-    onLoadList() {
-      this.queryData.list.page++;
-      this.isUpLoading = true;
-      // console.log(this.queryData.list.page)
-      this.list();
-    },
+    // onLoadList() {
+    //   this.queryData.list.page++;
+    //   this.isUpLoading = true;
+    //   // console.log(this.queryData.list.page)
+    //   this.list();
+    // },
     onDownRefresh() {
       this.queryData.list.page = 1;
       this.renderData.oldList = [];
@@ -196,6 +338,7 @@ export default {
           this.ATurnover = res.data.sum;
           this.isData = true;
           this.renderData.list = res.data.data;
+          console.log(this.renderData.list)
           this.renderData.list.forEach(item => {
             this.renderData.oldList.push(item);
           });
@@ -217,11 +360,48 @@ export default {
           this.ATurnover = "0";
         }
       });
-    }
-  }
+    },
+    productList() {
+        getServer(this.queryData.product).then( res => {
+            if( res.data.responseStatus === 1 ) {
+                this.renderData.product = res.data.data
+                this.productName = res.data.data[0].name
+                this.queryData.list.proid = res.data.data[0].id
+            }
+        })
+    },
+    byProductChange () {
+        this.queryData.list.proid = this.productName
+        this.renderData.oldList = []
+        this.queryData.list.page = 0
+        this.onLoadList()
+    },
+  },
+  created () {
+    //   this.productList()
+    //   this.list()
+  },
 };
 </script>
 <style lang="scss">
+.time-screening {
+    text-align: center;
+    margin-top: .8rem;
+    overflow: hidden;
+    .el-select{
+        display: block;
+        width: 30%;
+        float: right;
+    }
+    .el-input__inner {
+        border: none;
+        background: transparent;
+        color: #fff;
+    }
+    .el-select .el-input .el-select__caret {
+        color: #fff;
+    }
+}
 .affiliateTransactionsHeaderMain {
   width: 100%;
   position: fixed;
@@ -272,11 +452,12 @@ export default {
 .selector {
   font-size: 14px;
   background: #089cfe;
-  height: 40px;
+//   height: 40px;
+    height: .8rem;
   text-align: left;
-  line-height: 40px;
+  height: .8rem;
   padding: 0 10px;
-  border-bottom: 1px solid #fff;
+//   border-bottom: 1px solid #fff;
   color: #fff;
   // position: fixed;
   width: 100%;
@@ -354,6 +535,6 @@ export default {
 }
 .tradingListMain {
   //   padding-top: 155px;
-  padding-top: 3.8rem;
+  margin-top: 4.2rem;
 }
 </style>

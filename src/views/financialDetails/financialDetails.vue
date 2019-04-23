@@ -34,8 +34,8 @@
                 </el-radio-group> -->
                 <div class="topic-list-inner">
                     <div class="nav" ref="nav">
-                        <div class="box" v-for="(item,index) in renderData.screen" :key="item.types" @click="queryTopic(item, index, item.types)">
-                            <div class="item" :class="{active:navActiveIndex==index}">{{item.name}}</div>
+                        <div class="box"  :class="{active:navActiveIndex==index}"  v-for="(item,index) in renderData.screen" :key="item.types" @click="queryTopic(item, index, item.types)">
+                            <el-button type="text" >{{item.name}}</el-button>
                         </div>
                     </div>
                     <!-- <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
@@ -59,19 +59,19 @@
                                     :offset= "offset"
                                 >
                                     <ul class="financialDetailsListUl">
-                                        <li class="line_bottom flex" v-for="(item, index) in renderData.odlListData" :key="index">
-                                            <div>
-                                                <div class="top">
+                                        <li class="line_bottom" v-for="(item, index) in renderData.odlListData" :key="index">
+                                            <div class="top">
+                                                <div class="title">
                                                     <span class="s" v-if="item.product">{{item.product}}</span>
-                                                    <h3 class="title">{{item.storageName}}</h3>
+                                                    <h3>{{item.storageName}}</h3>
                                                 </div>
-                                                <p>
+                                                <h3 class="money">+{{item.changeAmount}}</h3>
+                                            </div>
+                                            <div class="bottom">
+                                                <p class="p1">
                                                     {{item.remark}}
                                                 </p>
-                                            </div>
-                                            <div>
-                                                <h3>+{{item.changeAmount}}</h3>
-                                                <p>{{item.createTime}}</p>
+                                                <p class="p2">{{item.createTime}}</p>
                                             </div>
                                         </li>
                                     </ul>
@@ -104,7 +104,7 @@ export default {
     // },
     data() {
         return {
-            isServer: true,
+            isServer: false,
             navActiveIndex: 0, //当前高亮的tab选项卡index
             showModal: false, //是否显示modal
             selectTag: null,   //传递个子组件（modal）的数据的
@@ -173,11 +173,11 @@ export default {
         queryTopic(data, index, type) {
             this.queryData.list.stypes = type
             this.upFinished = false
-            this.queryData.list.page = 1
+            this.queryData.list.page = 0
             this.renderData.odlListData = []
             // this.isDownLoading = true
             if ( this.isServer ) {
-                this.profitList()
+                this.onLoadList()
             }
             //点击谁，谁就高亮 ，定一个变量，click事件的赋值使其相等，而在:class 中 判断是否相等，即可
             this.navActiveIndex = index;
@@ -205,13 +205,11 @@ export default {
             this.profitList();
         },
         profitList () {
+            this.isServer = false
             Indicator.open();
             this.isDisabled = true
-            this.isServer = false
             getServer(this.queryData.list).then( res => {
                 Indicator.close();
-                // console.log(res)
-                this.isServer = true
                 if( res.data.responseStatus === 1 ) {
                     this.isDisabled = false
                     this.isData = true
@@ -221,15 +219,18 @@ export default {
                     this.renderData.listData.forEach( item => {
                         this.renderData.odlListData.push(item)
                     })
+                    this.isServer = true
                 } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
                     this.isDisabled = false
                     this.upFinished = true
                     this.isUpLoading = false
+                    this.isServer = true
                 } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
                     this.isDisabled = false
                     this.upFinished = false
                     this.isUpLoading = false
                     this.isData = false
+                    this.isServer = true
                 }
             })
         },
@@ -259,13 +260,70 @@ export default {
 };
 </script>
 <style lang="scss">
-
+.financial-details .el-button {
+    color: #000;
+}
+.financialDetailsListUl {
+    li {
+        padding: .15rem 0;
+    }
+    div {
+        overflow: hidden;
+        font-size: .3rem;
+        padding: 0 .2rem;
+        box-sizing: border-box;
+    }
+    .top {
+        width: 100%;
+        margin-bottom: .14rem;
+        .title {
+            float: left;
+            padding: 0;
+            span {
+                float: left;
+                background-color: rgba(64,158,255,.1);
+                display: inline-block;
+                font-size: .2rem;
+                color: #409eff;
+                border-radius: 4px;
+                box-sizing: border-box;
+                border: 1px solid rgba(64,158,255,.2);
+                white-space: nowrap;
+                margin-right: .2rem;
+                width: .8rem;
+                text-align: center;
+                line-height: .38rem;
+            }
+            h3 {
+                float: left;
+                font-size: .28rem;
+                color: #333;
+                margin-top: .05rem;
+            }
+        }
+        .money {
+            float: right;
+            color:#f33;
+        }
+    }
+    .bottom {
+        width: 100%;
+        font-size: .26rem;
+        .p1 {
+            float: left;
+        }
+        .p2 {
+            float: right;
+        }
+    }
+}
 .financial-details .v-modal {
     z-index: 9999 !important;
 }
 .financial-details .mint-popup-bottom {
     z-index: 99999 !important;
 }
+
 .time-choice {
     position: fixed;
     top: .8rem;
@@ -273,6 +331,7 @@ export default {
     width: 100%;
     z-index: 999;
     .block {
+        background: #fff;
         padding: 0 .2rem;
         .el-input {
             display: block;
@@ -305,6 +364,9 @@ export default {
         //   border-bottom: .01rem solid #0096fe;
         }
       }
+    }
+    .active .el-button {
+        color: #0096fe;
     }
   }
 
@@ -494,59 +556,6 @@ export default {
 }
 .mint-loadmore-top {
     font-size: 14px;
-}
-.financial-details .financialDetailsListUl{
-    padding:0 15px;
-    li{
-        padding:10px 0;
-        overflow: hidden;
-        justify-content: space-between;
-        // height: 300px;
-        div{
-             h3{
-                font-size:16px;
-            }
-            .top {
-                overflow: hidden;
-                display: block;
-                h3.title{
-                    float: left;
-                    // font-size:16px;
-                    font-size: .28rem;
-                    // line-height: .3rem;
-                    color: #333;
-                    margin-top: .05rem;
-                    border: none;
-                    display: block;
-                }
-                span.s {
-                    background-color: rgba(64,158,255,.1);
-                    display: inline-block;
-                    font-size: .2rem;
-                    color: #409eff;
-                    border-radius: 4px;
-                    box-sizing: border-box;
-                    border: 1px solid rgba(64,158,255,.2);
-                    white-space: nowrap;
-                    margin-right: .2rem;
-                    width: .8rem;
-                    text-align: center;
-                    float: left;
-                    line-height: .38rem;
-                }
-            }
-            p{
-                font-size:14px;
-                margin-top: .1rem;
-            }
-            &:last-of-type {
-                text-align:right;
-                h3{
-                    color:#f33;
-                }
-            }
-        }
-    }
 }
 .financial-details .choice .el-radio-group{
     border-bottom:1px solid #f1f1f1;

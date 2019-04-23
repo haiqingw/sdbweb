@@ -16,13 +16,13 @@
             </div>
             <div class="odd-numbers">
                 <img src="@/assets/images/click-deliver-goods-odd-numbers.png" alt="">
-                <el-input v-model="queryData.sub.waybillNumber" placeholder="请输入或扫码终端码"></el-input>
+                <el-input v-model="queryData.sub.waybillNumber" placeholder="请输入或扫码"></el-input>
                 <a href="javascript:;" @click="sys_click">扫码录入</a>
             </div>
         </div>
         <div class="interval"></div>
         <div>
-            <div class="terminal-num-list">
+            <!-- <div class="terminal-num-list">
                 <h3>终端号列表</h3>
                 <van-pull-refresh
                     v-model="isDownLoading"
@@ -54,13 +54,15 @@
                 <div class="no-data" v-else>
                     <img src="@/assets/images/no-data.png" alt="">
                 </div>
-            </div>
+            </div> -->
         </div>
         <!-- isSelectedTerminal && renderData.sub.name == '' && renderData.sub.oddNumbers == ''  -->
         <div class="bottom-deliver-goods">
-            <em>已选终端号：{{queryData.sub.terminalNo}}</em>
-            <el-button type="text" 
-            @click="sub">
+            <!-- <em>已选终端号：{{queryData.sub.terminalNo}}</em> -->
+            <el-button 
+                @click="sub"
+                type="primary"
+            >
             提交
             </el-button>
         </div>
@@ -99,15 +101,23 @@
                         code: "code"
                     },
                     sub: {
-                        requestType:'agent', 
-                        requestKeywords:'delivery', 
-                        platformID: this.$store.state.user.pid, 
+                        // requestType:'agent', 
+                        // requestKeywords:'delivery', 
+                        // platformID: this.$store.state.user.pid, 
+                        // userID: this.$store.state.user.uid,
+                        // userPhone: this.$store.state.user.uphone,
+                        // orderID: this.$route.params.id,
+                        // courierName: JSON.parse(sessionStorage.getItem('expressName')) || "",
+                        // waybillNumber: "",
+                        // terminalNo: ""
+                        requestType: 'orderpub',
+                        requestKeywords: 'delivery', 
+                        platformID: this.$store.state.user.pid,
                         userID: this.$store.state.user.uid,
                         userPhone: this.$store.state.user.uphone,
                         orderID: this.$route.params.id,
                         courierName: JSON.parse(sessionStorage.getItem('expressName')) || "",
-                        waybillNumber: "",
-                        terminalNo: ""
+                        waybillNumber: ""
                     }
                 },
                 renderData: {
@@ -202,9 +212,8 @@
                     Toast("请选择快递")
                 } else if( this.queryData.sub.waybillNumber == ''  ) {
                     Toast("请选择快递单号")
-                } else if( this.queryData.sub.terminalNo == '' ) {
-                    Toast("请选择终端号")
                 } else {
+                    console.log(this.queryData.sub)
                     MessageBox.confirm("您确定要发货吗?", "发货")
                     .then(action => {
                         getServer(this.queryData.sub).then( res => {
@@ -230,18 +239,14 @@
     font-size: .3rem;
     overflow: hidden;
     width: 100%;
-    padding: .2rem 0;
+    padding: .2rem;
     background: #fff;
+    box-sizing: border-box;
 }
-.bottom-deliver-goods .el-button--text {
-    float: right;
-    margin-right: .2rem;
-    padding: 0;
+.bottom-deliver-goods .el-button {
+    width: 100%;
 }
-.bottom-deliver-goods em {
-    float: left;
-    margin-left: .2rem;
-}
+
 .click-deliver-goods .express-info {
     margin-top:40px;
 }

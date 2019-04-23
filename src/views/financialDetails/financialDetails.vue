@@ -104,6 +104,7 @@ export default {
     // },
     data() {
         return {
+            isServer: true,
             navActiveIndex: 0, //当前高亮的tab选项卡index
             showModal: false, //是否显示modal
             selectTag: null,   //传递个子组件（modal）的数据的
@@ -175,7 +176,9 @@ export default {
             this.queryData.list.page = 1
             this.renderData.odlListData = []
             // this.isDownLoading = true
-            this.profitList()
+            if ( this.isServer ) {
+                this.profitList()
+            }
             //点击谁，谁就高亮 ，定一个变量，click事件的赋值使其相等，而在:class 中 判断是否相等，即可
             this.navActiveIndex = index;
             //插件的调取方法
@@ -204,10 +207,11 @@ export default {
         profitList () {
             Indicator.open();
             this.isDisabled = true
-            console.log(this.queryData.list)
+            this.isServer = false
             getServer(this.queryData.list).then( res => {
                 Indicator.close();
                 // console.log(res)
+                this.isServer = true
                 if( res.data.responseStatus === 1 ) {
                     this.isDisabled = false
                     this.isData = true

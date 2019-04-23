@@ -155,6 +155,7 @@ export default {
     judgeRealNameAuth(url) {
       Indicator.open();
       getServer(this.queryData.checkcerData).then(res => {
+        Indicator.close();
         if (res.data.responseStatus === 1) {
           getServer(this.queryData.checkbankcardData).then(res => {
             if (res.data.responseStatus === 1) {
@@ -165,6 +166,8 @@ export default {
               this.$router.push({ name: "certificationNext" });
             }
           });
+        } else {
+            this.$router.push({ name: "certification" });
         }
       });
     },

@@ -73,7 +73,8 @@
 .details-content .title {
     font-size: 0.28rem;
     overflow: hidden;
-    margin: .3rem 0;
+    /* margin: .3rem 0; */
+    line-height: .8rem;
 }
 .details-content .title h3 {
     float: left;

@@ -283,7 +283,7 @@ export default {
   float:left;
   padding:10px;
   box-sizing:border-box;
-  font-size:14px;
+  font-size:12px;
   color:#fff;
 }
 .rateBrandMain>div:first-of-type{

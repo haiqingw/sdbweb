@@ -92,6 +92,8 @@ export default {
               this.$router.push({ name: "certificationNext" });
             }
           });
+        } else {
+            this.$router.push({ name: "certification" });
         }
       });
     }

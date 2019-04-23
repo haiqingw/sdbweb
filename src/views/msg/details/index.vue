@@ -9,11 +9,13 @@
             <span>详细</span>
         </div>
         <div class="details-content" v-if="isData">
-            <div class="title">
+            <div class="title line_bottom">
                 <h3>{{renderData.detailsData.title}}</h3>
                 <time>{{renderData.detailsData.sendTime}}</time>
             </div>
-            <div class="content">{{renderData.detailsData.content}}</div>
+            <div class="content" v-html="renderData.detailsData.content">
+                <!-- {{renderData.detailsData.content}} -->
+            </div>
         </div>
         <div class="no-data" v-else>
             <img src="@/assets/images/no-data.png" alt="">
@@ -47,9 +49,9 @@
             mgDetails () {
                 Indicator.open()
                 getServer(this.queryData.msgDetails).then( res => {
+                    console.log(res)
                     if(res.data.responseStatus === 1) {
                         Indicator.close()
-                        res.data.data.content = res.data.data.content.replace(/<[^>]+>/g,"");
                         this.renderData.detailsData = res.data.data
                     } else if( res.data.responseStatus === 300 ) {
                         Indicator.close()
@@ -85,6 +87,7 @@
 .details-content .content {
     font-size: .26rem;
     line-height: .4rem;
+    padding-top:0.2rem;
 }
 </style>
 

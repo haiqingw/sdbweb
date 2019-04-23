@@ -117,6 +117,7 @@ export default {
     width: 0.8rem;
     height: 0.8rem;
     border-radius: 50%;
+    overflow: hidden;
 }
 .msg-view-list .text {
     margin-left: 0.3rem;

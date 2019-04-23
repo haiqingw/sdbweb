@@ -43,7 +43,7 @@
                 </div>
             </div>
             <!-- 列表 -->
-            <div class="financialDetailsList">
+            <div class="financialDetailsList line_top">
             <!-- line_bottom -->
                 <div class="flex switchSacreeningMain">
                     <div class="financialDetailsList" v-if="isData">
@@ -386,6 +386,7 @@ export default {
 }
 .financialDetailsList {
     width: 100%;
+    margin-top:0.2rem;
 }
 .loadingMore {
     line-height: 40px;

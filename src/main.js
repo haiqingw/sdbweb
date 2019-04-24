@@ -12,6 +12,8 @@ import 'swiper/dist/css/swiper.css'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import wx from 'weixin-js-sdk'
+import Cube from 'cube-ui'
+
 
 import '@/permission'
 import '@/icons'
@@ -34,6 +36,7 @@ Vue.use(Swiper)
 Vue.use(Vant);
 Vue.use(infiniteScroll);
 Vue.use(Vue2OrgTree)
+Vue.use(Cube)
 // Vue.use(Axios)
 // Vue.prototype.$http = axios
  

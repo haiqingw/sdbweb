@@ -173,7 +173,7 @@ export default {
     },
     methods: {
         onPullingDown() {
-            console.log("下拉刷新");
+            // console.log("下拉刷新");
             this.renderData.odlListData = []
             this.queryData.list.page = 1
             this.profitList()
@@ -227,30 +227,20 @@ export default {
         profitList () {
             this.isServer = false
             Indicator.open();
-            this.isDisabled = true
             getServer(this.queryData.list).then( res => {
+                this.isServer = true
                 Indicator.close();
                 if( res.data.responseStatus === 1 ) {
-                    this.isDisabled = false
-                    this.isData = true
-                    this.isDownLoading = false
-                    this.isUpLoading = false
+                    this.isData = true;
                     this.renderData.listData = res.data.data
                     this.renderData.listData.forEach( item => {
                         this.renderData.odlListData.push(item)
                     })
-                    this.isServer = true
+                   
                 } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
-                    this.isDisabled = false
-                    this.upFinished = true
-                    this.isUpLoading = false
-                    this.isServer = true
+                    this.$refs.scroll.forceUpdate();
                 } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
-                    this.isDisabled = false
-                    this.upFinished = false
-                    this.isUpLoading = false
-                    this.isData = false
-                    this.isServer = true
+                    this.isData = false;
                 }
             })
         },

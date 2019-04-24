@@ -324,6 +324,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.mint-indicator-wrapper {
+    z-index: 999;
+}
 .affiliateTransactionsMain {
     font-size: .3rem;
 }

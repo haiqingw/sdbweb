@@ -260,6 +260,10 @@ export default {
 };
 </script>
 <style lang="scss">
+.mint-indicator-mask {
+    z-index: 99;
+    opacity: 1;
+}
 .financial-details .el-button {
     color: #000;
 }

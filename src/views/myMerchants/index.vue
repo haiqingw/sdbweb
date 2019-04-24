@@ -1,12 +1,10 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="组织架构">
-            <router-link to="/" slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-        <div style="height:40px;"></div>
+        <div class="return">
+            <img src="@/assets/images/return.png" alt=""  @click="$router.go(-1)"/>
+            <span>组织架构</span>
+        </div>
         <!-- myMerchants -->
         <div class="myMerchantsHeaderMain">
             <div class="myMerchantsHeaderTopMain flex">
@@ -64,6 +62,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.myMerchantsHeaderMain {
+    margin-top: .8rem;
+}
 .myMerchantsHeaderTopMain {
     justify-content: space-between;
     padding: 10px;
@@ -140,7 +141,7 @@ export default {
         color: #333;
         display: block;
         padding: 0 0.1rem;
-        float: left;
+        // float: left;
         margin: 0 10px 10px 0;
     }
 }
@@ -199,7 +200,7 @@ em.moreEm::after {
             color: #333;
             display: block;
             padding: 0 10px;
-            float: left;
+            // float: left;
             margin: 0 10px 10px 0;
         }
     }

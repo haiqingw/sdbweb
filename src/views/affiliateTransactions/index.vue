@@ -199,6 +199,15 @@ export default {
     },
     // mixins: [loadMore],
     methods: {
+        scrollTo() {
+            this.$refs.scroll.scrollTo(
+                0,
+                0
+                // this.scrollToY,
+                // this.scrollToTime,
+                // this.scrollToEasing
+            )
+        },
         onPullingDown() {
             console.log("下拉刷新");
             this.renderData.list = []
@@ -229,6 +238,7 @@ export default {
             this.clickChange();
         },
         clickChange() {
+            this.scrollTo()
             // console.log(this.type)
             if (this.type === "selectionDate") {
                 this.selectYear();

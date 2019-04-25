@@ -43,11 +43,12 @@
                 </div>
             </div>
             <!-- 列表 -->
-            <div class="financialDetailsList line_top">
+            <div class="financialDetailsList line_top" ref="financialDetailsList">
             <!-- line_bottom -->
                 <div class="flex switchSacreeningMain">
                     <div class="financialDetailsList scroll-list-wrap" v-if="isData">
-                            <cube-scroll ref="scroll" 
+                            <cube-scroll 
+                                ref="scroll" 
                                 :data="renderData.odlListData"
                                 @pulling-down="onPullingDown"
                                 @pulling-up="onPullingUp"
@@ -171,7 +172,17 @@ export default {
             return this.$refs.mySwiper.swiper;
         }
     },
+    
     methods: {
+        scrollTo() {
+            this.$refs.scroll.scrollTo(
+                0,
+                0
+                // this.scrollToY,
+                // this.scrollToTime,
+                // this.scrollToEasing
+            )
+        },
         onPullingDown() {
             // console.log("下拉刷新");
             this.renderData.odlListData = []
@@ -205,6 +216,7 @@ export default {
             this.profitList()
         },
         queryTopic(data, index, type) {
+            this.$refs.scroll.forceUpdate();
             this.queryData.list.stypes = type
             this.upFinished = false
             this.queryData.list.page = 1
@@ -219,6 +231,7 @@ export default {
             if (autoScrollInstance) { //确保的插件加载成功
                 autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
             }
+            this.scrollTo()
         },
         // activationOnLoadList () {
         //     this.queryData.list.page++
@@ -258,14 +271,21 @@ export default {
         this.profitList()
         this.screen()
     },
-    mounted () {
-
-    },
     // updated() {
     //     if ( this.renderData.screen.length > 1 ) {
     //         this.swiper.init();
     //     }
     // },
+    // updated () {    // 切换不同模块时触发
+    //     this.$nextTick(()=>{    
+    //         if(this.$refs.financialDetailsListUl){    // 滚动元素跳转到顶部
+    //             this.$refs.financialDetailsList.scrollTop = 0;
+    //             console.log(this.$refs.financialDetailsList.scrollTo)
+    //         }
+    //     })
+    // }
+    mounted() {
+    },
 };
 </script>
 <style lang="scss">
@@ -277,10 +297,9 @@ export default {
 }
 .financial-details .scroll-list-wrap{
         height: 11rem;
-        overflow: auto;
+        overflow-y: scroll;
         .item{
             padding: 10px 10px;
-
             &:nth-child(2n+1){
                 background: #ccc;
             }

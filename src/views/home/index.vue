@@ -118,7 +118,7 @@
             <a href="javascript:;">申请代理</a>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <div class="img">
             <router-link to="/mall">
               <img src="@/assets/images/index-list2-img5.png" alt="" />
@@ -127,7 +127,7 @@
           <div class="text">
             <router-link to="/mall">机具商场</router-link>
           </div>
-        </li>
+        </li> -->
         <li v-if="renderData.info.level == 2">
           <div class="img">
             <router-link to="/financialDetails"
@@ -154,7 +154,7 @@
             <a href="">排行榜</a>
           </div>
         </li> -->
-        <li v-if="renderData.info.level == 2">
+        <!-- <li v-if="renderData.info.level == 2">
           <div class="img">
             <router-link to="/deliverGoods"
               ><img src="@/assets/images/index-list2-img4.png" alt=""
@@ -163,7 +163,7 @@
           <div class="text">
             <router-link to="/deliverGoods">订单管理</router-link>
           </div>
-        </li>
+        </li> -->
         
       </ul>
     </div>

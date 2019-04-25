@@ -138,14 +138,14 @@
             <router-link to="/financialDetails">收益明细</router-link>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <div class="img">
             <router-link to="/myMerchants"><img src="@/assets/images/index-list2-img7.png" alt=""/></router-link>
           </div>
           <div class="text">
             <router-link to="/myMerchants">组织架构</router-link>
           </div>
-        </li>
+        </li> -->
         <!-- <li>
           <div class="img">
             <img src="@/assets/images/index-list2-img8.png" alt="">

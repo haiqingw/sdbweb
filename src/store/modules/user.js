@@ -106,10 +106,14 @@ const user = {
                 })
             })
         },
-        LogOut({commit}) {
-            return new Promise( resolve => {
-                window.sessionStorage.clear()
-                resolve()
+        LogOut({commit}, data) {
+            return new Promise( (resolve, reject) => {
+                getServer(data).then( res => {
+                    if( res.data.responseStatus === 1 ) {
+                        window.sessionStorage.clear()
+                        resolve()
+                    }
+                }); 
             })
         }
     }

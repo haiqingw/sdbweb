@@ -219,10 +219,11 @@ export default {
                     MessageBox.confirm("你确定要提现吗?", "提现")
                     .then(action => {
                         getServer(this.queryData.cashWithdrawal).then( res => {
+                            // console.log(res)
                             if( res.data.responseStatus === 1 ) {
                                 Toast('提现成功')
                             } else {
-                            Toast( response[res.data.responseStatus] )
+                                Toast( response[res.data.responseStatus] )
                             }
                         })
                     })

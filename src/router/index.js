@@ -198,6 +198,16 @@ export default new Router({
       component: resolve => require(['@/views/myMerchants/index'], resolve), 
     }, 
     {
+        path: '/myMerchantsTwo', //我的团队
+        name: 'myMerchantsTwo',
+        component: resolve => require(['@/views/myMerchants/two/index'], resolve), 
+    }, 
+    {
+        path: '/myMerchantsThree', //我的团队
+        name: 'myMerchantsThree',
+        component: resolve => require(['@/views/myMerchants/three/index'], resolve), 
+    }, 
+    {
       path: '/about', //关于我们
       name: 'about',
       component: resolve => require(['@/views/about/index'], resolve), 
@@ -291,6 +301,10 @@ export default new Router({
       path: '/forgetPasswordNext', //忘记密码第二部
       name: 'forgetPasswordNext',
       component: resolve => require(['@/views/forgetPassword/forgetPasswordNext'], resolve),
-    },
+    }, {
+      path: '/agentData', //代理商数据统计
+      name: 'agentData',
+      component: resolve => require(['@/views/agentData'], resolve),
+    }
   ]
 })

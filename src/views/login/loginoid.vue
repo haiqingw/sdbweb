@@ -22,6 +22,7 @@
             //     console.log(res)
             // })
             window.location.href = 'http://ttsplus.xylrcs.cn/index.php/App/Wchat/getOpenid'
+            // window.location.href = 'http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid'
         }     
     }
 </script>

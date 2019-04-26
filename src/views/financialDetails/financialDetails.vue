@@ -43,21 +43,17 @@
                 </div>
             </div>
             <!-- 列表 -->
-            <div class="financialDetailsList line_top">
+            <div class="financialDetailsList line_top" ref="financialDetailsList">
             <!-- line_bottom -->
                 <div class="flex switchSacreeningMain">
-                    <div class="financialDetailsList" v-if="isData">
-                            <van-pull-refresh
-                                v-model="isDownLoading"
-                                @refresh="onDownRefresh"
+                    <div class="financialDetailsList scroll-list-wrap" v-if="isData">
+                            <cube-scroll 
+                                ref="scroll" 
+                                :data="renderData.odlListData"
+                                @pulling-down="onPullingDown"
+                                @pulling-up="onPullingUp"
+                                :options="options"
                             >
-                                <van-list
-                                    v-model="isUpLoading"
-                                    :finished="upFinished"
-                                    finished-text="没有更多了"
-                                    @load="onLoadList"
-                                    :offset= "offset"
-                                >
                                     <ul class="financialDetailsListUl">
                                         <li class="line_bottom" v-for="(item, index) in renderData.odlListData" :key="index">
                                             <div class="top">
@@ -75,8 +71,7 @@
                                             </div>
                                         </li>
                                     </ul>
-                                </van-list>
-                            </van-pull-refresh>
+                                </cube-scroll>
                         </div>
                         <div class="no-data" v-else>
                             <img src="@/assets/images/no-data.png" />
@@ -104,6 +99,20 @@ export default {
     // },
     data() {
         return {
+            options: {
+                pullDownRefresh: {
+                    threshold: 90,
+                    stop: 40,
+                    txt: '刷新成功'
+                },                                // 配置下拉刷新 
+                pullUpLoad: {
+                    threshold: 0,
+                    txt: {
+                        more: '上拉加载更多',
+                        noMore: '没有更多数据'
+                    }
+                }                                 // 配置上拉加载，若要关闭可直接 pullUpLoad：false
+            },
             isServer: false,
             navActiveIndex: 0, //当前高亮的tab选项卡index
             showModal: false, //是否显示modal
@@ -131,7 +140,7 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    page: 0,
+                    page: 1,
                     limit: 15,
                     types: 'Z',
                     stypes: 'JY', // (JY 交易  JH 激活)
@@ -163,21 +172,60 @@ export default {
             return this.$refs.mySwiper.swiper;
         }
     },
+    
     methods: {
+        scrollTo() {
+            this.$refs.scroll.scrollTo(
+                0,
+                0
+                // this.scrollToY,
+                // this.scrollToTime,
+                // this.scrollToEasing
+            )
+        },
+        onPullingDown() {
+            // console.log("下拉刷新");
+            this.renderData.odlListData = []
+            this.queryData.list.page = 1
+            this.profitList()
+        },
+        // 触发上拉加载
+        onPullingUp() {
+            // alert(1)
+            // console.log("上拉加载");
+            // 模拟更新数据
+            // setTimeout(() => {
+            //     if (Math.random() > 0.5) {
+            //         // 如果有新数据
+            //         let newPage = [1, 2, 3, 4, 5, 6];
+            //         console.log("有新数据");
+            //         this.msg = this.msg.concat(newPage);
+            //     } else {
+            //         // 如果没有新数据
+            //         this.$refs.scroll.forceUpdate();
+            //     }
+            // }, 1000);
+            this.queryData.list.page++
+            this.profitList()
+           
+        },
         changeMonth () {
-            this.queryData.list.page = 0
+            this.queryData.list.page = 1
             this.renderData.odlListData = []
             this.queryData.list.dates = parseTime(this.queryData.list.dates).substring(0, 7)
-            this.onLoadList()
+            this.profitList()
         },
         queryTopic(data, index, type) {
+            if(this.isData) {
+                this.scrollTo()
+            }
             this.queryData.list.stypes = type
             this.upFinished = false
-            this.queryData.list.page = 0
+            this.queryData.list.page = 1
             this.renderData.odlListData = []
             // this.isDownLoading = true
             if ( this.isServer ) {
-                this.onLoadList()
+                this.profitList()
             }
             //点击谁，谁就高亮 ，定一个变量，click事件的赋值使其相等，而在:class 中 判断是否相等，即可
             this.navActiveIndex = index;
@@ -186,51 +234,27 @@ export default {
                 autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
             }
         },
-        onLoadList () {
-            // console.log("进来", this.queryData.list.page)
-            this.queryData.list.page++
-            // this.isUpLoading = true
-            // console.log(this.queryData.list.page)
-            this.profitList()
-        },
-        activationOnLoadList () {
-            this.queryData.list.page++
-            this.profitList()
-        },
-        onDownRefresh(){
-            console.log("下拉刷新")
-            this.queryData.list.page = 1
-            this.renderData.odlListData = []
-            this.isDownLoading = true
-            this.profitList();
-        },
+        // activationOnLoadList () {
+        //     this.queryData.list.page++
+        //     this.profitList()
+        // },
         profitList () {
             this.isServer = false
             Indicator.open();
-            this.isDisabled = true
             getServer(this.queryData.list).then( res => {
+                this.isServer = true
                 Indicator.close();
                 if( res.data.responseStatus === 1 ) {
-                    this.isDisabled = false
-                    this.isData = true
-                    this.isDownLoading = false
-                    this.isUpLoading = false
+                    this.isData = true;
                     this.renderData.listData = res.data.data
                     this.renderData.listData.forEach( item => {
                         this.renderData.odlListData.push(item)
                     })
-                    this.isServer = true
+                   
                 } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
-                    this.isDisabled = false
-                    this.upFinished = true
-                    this.isUpLoading = false
-                    this.isServer = true
+                    this.$refs.scroll.forceUpdate();
                 } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
-                    this.isDisabled = false
-                    this.upFinished = false
-                    this.isUpLoading = false
-                    this.isData = false
-                    this.isServer = true
+                    this.isData = false;
                 }
             })
         },
@@ -245,21 +269,51 @@ export default {
         },
     },
     created () {
-        // this.profitList()
-        // this.onLoadList()
+        this.profitList()
         this.screen()
-    },
-    mounted () {
-
     },
     // updated() {
     //     if ( this.renderData.screen.length > 1 ) {
     //         this.swiper.init();
     //     }
     // },
+    // updated () {    // 切换不同模块时触发
+    //     this.$nextTick(()=>{    
+    //         if(this.$refs.financialDetailsListUl){    // 滚动元素跳转到顶部
+    //             this.$refs.financialDetailsList.scrollTop = 0;
+    //             console.log(this.$refs.financialDetailsList.scrollTo)
+    //         }
+    //     })
+    // }
+    mounted() {
+    },
 };
 </script>
 <style lang="scss">
+.financial-details {
+    font-size: .3rem;
+}
+.financial-details .before-trigger {
+    font-size: .3rem;
+}
+.financial-details .scroll-list-wrap{
+        height: 11rem;
+        overflow-y: scroll;
+        .item{
+            padding: 10px 10px;
+            &:nth-child(2n+1){
+                background: #ccc;
+            }
+        }
+}
+.mint-indicator-wrapper {
+    z-index: 99999;
+}
+.mint-indicator-mask {
+    z-index: 9999;
+    opacity: 1;
+    // background: #000;
+}
 .financial-details .el-button {
     color: #000;
 }

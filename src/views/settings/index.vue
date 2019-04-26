@@ -65,6 +65,13 @@ export default {
           userID: this.$store.state.user.uid,
           platformID: this.$store.state.user.pid,
           userPhone: this.$store.state.user.uphone
+        },
+        logout: {
+            requestType: 'personal',
+            requestKeywords:'launchland', 
+            platformID: this.$store.state.user.pid,
+            userID: this.$store.state.user.uid,
+            userPhone: this.$store.state.user.uphone
         }
       }
     };
@@ -73,10 +80,10 @@ export default {
     logout() {
       MessageBox.confirm("您确定要退出吗?", "退出")
         .then(action => {
-          this.$store.dispatch("LogOut").then(() => {
-            // location.reload();
-            this.$router.push({ path: "/login" });
-          });
+            this.$store.dispatch("LogOut", this.queryData.logout).then(() => {
+                location.reload();
+                this.$router.push({ path: "/loginoid" });
+            })
         })
         .catch(() => {});
     },

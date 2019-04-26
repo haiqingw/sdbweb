@@ -51,7 +51,7 @@
                 <!-- 提现账户信息 -->
                 <div class="withdrawalAccount">
                     <h3 class="withdrawalTitle">账户信息</h3>
-                    <p class="line_bottom">收款姓名：{{$store.state.user.uname}}</p>
+                    <p class="line_bottom">收款姓名：{{renderData.bankInfo.names}}</p>
                     <p>收款银行卡：{{renderData.bankInfo.bankName}}(尾号{{renderData.bankInfo.cardNum}})</p>
                 </div>
                 <div class="interval"></div>
@@ -219,10 +219,11 @@ export default {
                     MessageBox.confirm("你确定要提现吗?", "提现")
                     .then(action => {
                         getServer(this.queryData.cashWithdrawal).then( res => {
+                            // console.log(res)
                             if( res.data.responseStatus === 1 ) {
                                 Toast('提现成功')
                             } else {
-                            Toast( response[res.data.responseStatus] )
+                                Toast( response[res.data.responseStatus] )
                             }
                         })
                     })

@@ -1,19 +1,18 @@
 <template>
-    <div>
+    <div class="myMerchants">
         <!-- header -->
-        <mt-header fixed title="组织架构">
-            <router-link to="/" slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-        <div style="height:40px;"></div>
+        <div class="return">
+            <img src="@/assets/images/return.png" alt=""  @click="$router.go(-1)"/>
+            <span>组织架构</span>
+        </div>
         <!-- myMerchants -->
         <div class="myMerchantsHeaderMain">
             <div class="myMerchantsHeaderTopMain flex">
-                <span>当前位置：
+                <!-- <span>当前位置：
                     <b>任勇强</b>
                 </span>
-                <em>关闭</em>
+                <em>关闭</em> -->
+                当月团队新增1人，当月直增1人
             </div>
             <div class="myMerchantsHeaderSubMain">
                 <span>当前所属：</span>
@@ -30,10 +29,23 @@
                 <em>下属用户</em>
             </div>
             <div class="myMerchantsBodySubMain">
-                <em class="moreEm" @click="openSub">史晓宇(157****2396)【5】</em>
-                <em>智伟(157****4545)</em>
-                <em>韩建文(157****5656)</em>
-                <em>任向文(157****7878)</em>
+                <em class="moreEm" @click="openSub">
+                    <span>
+                        史晓宇(157****2396)
+                    </span>
+                    <span>
+                        下级代理：5
+                    </span>
+                    <span>
+                        以拨机器：1
+                    </span>
+                    <span>
+                        激活机器：1
+                    </span>
+                    <span>
+                        未激活机器：1
+                    </span>
+                </em>
             </div>
         </div>
         <!-- 下级Pupon -->
@@ -43,27 +55,84 @@
                 <em @click="openSub">关闭</em>
             </div>
             <div>
-                <em>任二永(132****5462)</em>
-                <em class="moreEm">任勇强(132****5462)【3】</em>
+                <!-- class="moreEm" -->
+                <em>
+                    <span>
+                        任二永(132****5462)
+                    </span>
+                    <span>
+                        下级代理：5
+                    </span>
+                    <span>
+                        以拨机器：1
+                    </span>
+                    <span>
+                        激活机器：1
+                    </span>
+                    <span>
+                        未激活机器：1
+                    </span>
+                </em>
+            </div>
+        </div>
+        <div class="total">
+            <div>
+                一级激活1台，交易量：1万
+            </div>
+            <div>
+                二级激活1台，交易量：1万
+            </div>
+            <div>
+                三级激活1台，交易量：1万
+            </div>
+            <div>
+                总计：服务商30人，激活80台，交易量170万
             </div>
         </div>
     </div>
 </template>
 <script>
+import {getServer} from '@/api/index'
 export default {
     data() {
         return {
-            popupVisible: false
+            popupVisible: false,
+            queryData: {
+                list: {
+                    requestType: 'agentdata',
+                    requestKeywords:'organization', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    dates: "2019-04"
+                }
+            }
         };
     },
     methods: {
         openSub() {
             this.popupVisible = !this.popupVisible;
-        }
+        },
+        list() {
+            getServer(this.queryData.list).then( res => {
+                console.log(res)
+            })
+        },
+    },
+    created () {
+        this.list()
     }
 };
 </script>
 <style lang="scss">
+.myMerchants .total {
+    font-size: .3rem;
+    padding: 0 10px;
+    line-height: .4rem;
+}
+.myMerchantsHeaderMain {
+    margin-top: .8rem;
+}
 .myMerchantsHeaderTopMain {
     justify-content: space-between;
     padding: 10px;
@@ -143,8 +212,11 @@ export default {
         color: #333;
         display: block;
         padding: 0 0.1rem;
-        float: left;
+        // float: left;
         margin: 0 10px 10px 0;
+        span {
+            display: block;
+        }
     }
 }
 em.moreEm {
@@ -202,8 +274,13 @@ em.moreEm::after {
             color: #333;
             display: block;
             padding: 0 10px;
-            float: left;
+            // float: left;
             margin: 0 10px 10px 0;
+        }
+    }
+    em {
+        span {
+            display: block;
         }
     }
 }

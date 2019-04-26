@@ -195,7 +195,7 @@
     position: fixed;
     width:100%;
     left:0;
-    top:13px;
+    top: .4rem;
     z-index:9;
     background:#fff;
 }

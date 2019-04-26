@@ -2,7 +2,7 @@
   <div class="index-home">
     <div class="isLogin">
       <div class="index-banner" v-if="islogin">
-        <van-swipe @change="onChange">
+        <van-swipe @change="onChange" :autoplay="3000">
           <van-swipe-item
             v-for="(item, index) in bannerListData"
             v-bind:item="item"
@@ -140,10 +140,10 @@
         </li>
         <!-- <li>
           <div class="img">
-            <router-link to="/organization"><img src="@/assets/images/index-list2-img7.png" alt=""/></router-link>
+            <router-link to="/myMerchants"><img src="@/assets/images/index-list2-img7.png" alt=""/></router-link>
           </div>
           <div class="text">
-            <router-link to="/organization">组织架构</router-link>
+            <router-link to="/myMerchants">组织架构</router-link>
           </div>
         </li> -->
         <!-- <li>
@@ -154,7 +154,7 @@
             <a href="">排行榜</a>
           </div>
         </li> -->
-        <li v-if="renderData.info.level == 2">
+        <!-- <li v-if="renderData.info.level == 2">
           <div class="img">
             <router-link to="/deliverGoods"
               ><img src="@/assets/images/index-list2-img4.png" alt=""
@@ -163,7 +163,7 @@
           <div class="text">
             <router-link to="/deliverGoods">订单管理</router-link>
           </div>
-        </li>
+        </li> -->
         
       </ul>
     </div>

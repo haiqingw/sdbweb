@@ -12,22 +12,24 @@
         <div class="notice-content">
             <div class="notice-list" v-if="isData">
                 <ul>
-                    <li v-for="item in renderData.listData" :key="item.id" class="line_bottom">
-                        <div class="img">
-                            <router-link :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}"><img :src="item.picUrl" alt=""></router-link>
-                        </div>
-                        <div class="content">
-                            <div class="title">
-                                <router-link tag="h3" :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}">{{item.title}}</router-link>
-                                <span :class="{ 'no' : item.readStatus === '未读'}" >{{item.readStatus}}</span>
+                    <router-link tag="li" v-for="item in renderData.listData" :key="item.id" :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}">
+                        <!-- <li v-for="item in renderData.listData" :key="item.id" class=""> -->
+                            <div class="img">
+                                <router-link :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}"><img :src="item.picUrl" alt=""></router-link>
                             </div>
-                            <!-- <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p> -->
-                            <div class="time-more">
-                                <span>{{item.sendTime}}</span>
-                                <router-link :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}">查看详情</router-link>
+                            <div class="content">
+                                <div class="title">
+                                    <router-link tag="h3" :to="{name: 'msgDetails', params: {id: item.id, cid: item.classID}}">{{item.title}}</router-link>
+                                    <span :class="{ 'no' : item.readStatus === '未读'}" >{{item.readStatus}}</span>
+                                </div>
+                                <!-- <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p> -->
+                                <div class="time-more">
+                                    <span>{{item.sendTime}}</span>
+                                    <a href="javascript:;">查看详情</a>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        <!-- </li> -->
+                    </router-link>
                 </ul>
             </div>
             <div class="no-data" v-else>
@@ -98,6 +100,7 @@
 .notice-list ul li {
     margin-bottom: 0.3rem;
     padding-bottom: .2rem;
+    border-bottom: 1px solid #f1f1f1;
 }
 .notice-list ul li .img {
     height: 2rem;

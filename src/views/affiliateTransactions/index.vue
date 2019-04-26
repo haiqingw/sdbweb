@@ -38,10 +38,10 @@
                     <a href="javascript:;">累计</a>-->
                     <el-radio-group v-model="type" size="medium" @change="clickChange">
                         <!-- :disabled="isUpLoading" -->
-                        <el-radio-button label="days">当日</el-radio-button>
-                        <el-radio-button label="yesterday">昨日</el-radio-button>
-                        <el-radio-button label="mons">当月</el-radio-button>
-                        <el-radio-button label="all">累计</el-radio-button>
+                        <el-radio-button label="days" :disabled="isServer">当日</el-radio-button>
+                        <el-radio-button label="yesterday" :disabled="isServer">昨日</el-radio-button>
+                        <el-radio-button label="mons" :disabled="isServer">当月</el-radio-button>
+                        <el-radio-button label="all" :disabled="isServer">累计</el-radio-button>
                         <el-radio-button label="selectionDate">
                             <em @click="screeningTime">按时间筛选</em>
                         </el-radio-button>
@@ -106,11 +106,18 @@
                     @pulling-down="onPullingDown"
                     @pulling-up="onPullingUp"
                     :options="options"
+                    v-if="isData"
                 >
-                    <div class="bodyItem" v-for="(item,index) in renderData.list" :key="index">
-                        <p>{{item.title}}</p>
+                    <div class="bodyItem" v-for="item in renderData.list" :key="item.id" v-if="isData">
+                        <p>{{ item.busname }}({{ item.phone }})</p>
+                        <p>交易笔数：{{ item.con }}</p>
+                        <p>交易金额：{{ item.money }}</p>
+                        <p>产品终端号：{{ item.terminal }}</p>
                     </div>
                 </cube-scroll>
+                <div class="no-data" v-else>
+                    <img src="@/assets/images/no-data.png" alt>
+                </div>
             </div>
             <!-- </div> -->
         </div>
@@ -120,24 +127,25 @@
 import { getServer } from "@/api/index";
 // import { Style, Button } from 'cube-ui'
 // import { loadMore } from "./mixin";
+import { Indicator } from 'mint-ui';
 export default {
     data() {
         return {
+            isServer: false,
             options: {
-                    pullDownRefresh: {
-                        threshold: 90,
-                        stop: 40,
-                        txt: '刷新成功'
-                    },                                // 配置下拉刷新 
-                    pullUpLoad: {
-                        threshold: 0,
-                        txt: {
-                            more: '上拉加载更多',
-                            noMore: '没有更多数据'
-                        }
-                    }                                 // 配置上拉加载，若要关闭可直接 pullUpLoad：false
-                },
-
+                pullDownRefresh: {
+                    threshold: 90,
+                    stop: 40,
+                    txt: '刷新成功'
+                },                                // 配置下拉刷新 
+                pullUpLoad: {
+                    threshold: 0,
+                    txt: {
+                        more: '上拉加载更多',
+                        noMore: '没有更多数据'
+                    }
+                }                                 // 配置上拉加载，若要关闭可直接 pullUpLoad：false
+            },
             offset: 0, // 批次加载店铺列表，每次加载20个 limit = 20
             shopListArr: [], // 店铺列表数据
             preventRepeatReuqest: false, //到达底部加载数据，防止重复加载
@@ -145,10 +153,6 @@ export default {
             showLoading: true, //显示加载动画
             touchend: false, //没有更多数据
             type: "days",
-            //   isDownLoading: false, //下拉刷新
-            //   isUpLoading: false, //上拉加载
-            //   upFinished: false, //上拉加载完毕
-            //   offset: 10, //滚动条与底部距离小于 offset 时触发load事件
             isData: true,
             pickerValue: "按时间筛选",
             year: "",
@@ -176,7 +180,9 @@ export default {
                     userPhone: this.$store.state.user.uphone,
                     page: 1,
                     types: "days",
-                    proid: 17
+                    // proid: 17
+                    proid: "",
+                    limit: 10
                 },
                 product: {
                     requestType: "agent",
@@ -185,68 +191,7 @@ export default {
                 }
             },
             renderData: {
-                list: [
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                    {
-                        title: "1"
-                    },
-                ],
+                list: [],
                 oldList: [],
                 product: []
             }
@@ -254,63 +199,47 @@ export default {
     },
     // mixins: [loadMore],
     methods: {
+        scrollTo() {
+            this.$refs.scroll.scrollTo(
+                0,
+                0
+                // this.scrollToY,
+                // this.scrollToTime,
+                // this.scrollToEasing
+            )
+        },
         onPullingDown() {
             console.log("下拉刷新");
-            // 模拟更新数据
-            setTimeout(() => {
-                if (Math.random() > 0.5) {
-                    // 如果有新数据
-                    console.log("有新数据");
-                    this.msg.unshift(1);
-                } else {
-                    // 如果没有新数据，调用 forceUpdate(), 显示成功文案，延迟 stopTime 时间完成刷新
-                    this.$refs.scroll.forceUpdate();
-                }
-            }, 1000);
+            this.renderData.list = []
+            this.queryData.list.page = 1
+            this.list()
         },
         // 触发上拉加载
         onPullingUp() {
-            console.log("上拉加载");
+            // alert(1)
+            // console.log("上拉加载");
             // 模拟更新数据
-            setTimeout(() => {
-                if (Math.random() > 0.5) {
-                    // 如果有新数据
-                    let newPage = [1, 2, 3, 4, 5, 6];
-                    console.log("有新数据");
-                    this.msg = this.msg.concat(newPage);
-                } else {
-                    // 如果没有新数据
-                    this.$refs.scroll.forceUpdate();
-                }
-            }, 1000);
+            // setTimeout(() => {
+            //     if (Math.random() > 0.5) {
+            //         // 如果有新数据
+            //         let newPage = [1, 2, 3, 4, 5, 6];
+            //         console.log("有新数据");
+            //         this.msg = this.msg.concat(newPage);
+            //     } else {
+            //         // 如果没有新数据
+            //         this.$refs.scroll.forceUpdate();
+            //     }
+            // }, 1000);
+            this.queryData.list.page++
+            this.list()
+           
         },
-        // loaderMore() {
-
-        //     // alert("到底了")
-        //     if (this.touchend) {
-        //         returna;
-        //     }
-
-        //     //防止重复请求
-        //     if (this.preventRepeatReuqest) {
-        //         return;
-        //     }
-        //     this.showLoading = true;
-        //     this.preventRepeatReuqest = true;
-        //     //数据的定位加20位
-        //     this.offset += 20;
-        //     // let res = await getServer();
-        //     //当获取数据小于20，说明没有更多数据，不需要再次请求数据
-        //     // if (res.length < 20) {
-        //     //     this.touchend = true;
-        //     //     return
-        //     // }
-        //     this.preventRepeatReuqest = false;
-        // },
         screeningTime() {
             this.clickChange();
         },
         clickChange() {
+            this.scrollTo()
+            // console.log(this.type)
             if (this.type === "selectionDate") {
                 this.selectYear();
             } else {
@@ -319,98 +248,104 @@ export default {
                 this.queryData.list.types = this.type;
                 this.upFinished = false;
                 this.isData = true;
-                this.queryData.list.page = 0;
-                this.renderData.oldList = [];
+                this.queryData.list.page = 1;
+                this.renderData.list = [];
                 this.list();
             }
-        },
-        // onLoadList() {
-        //   this.queryData.list.page++;
-        //   this.isUpLoading = true;
-        //   // console.log(this.queryData.list.page)
-        //   this.list();
-        // },
-        onDownRefresh() {
-            this.queryData.list.page = 1;
-            this.renderData.oldList = [];
-            this.isDownLoading = true;
-            this.list();
         },
         selectYear() {
             this.$refs.datePicker.open();
         },
         handleCancel() {
-            this.queryData.list.types = "selectionDate";
-            // this.type = this.queryData.list.types
+            // this.queryData.list.types = "selectionDate";
+            if( this.queryData.list.dates ) {
+                this.queryData.list.types = "selectionDate";
+            } else {
+                this.type = this.queryData.list.types
+            }
         },
         handleConfirm(value) {
             this.year = value.getFullYear();
             this.month = value.getMonth() + 1;
             this.date = value.getDate();
             this.isClicked = true;
-            this.queryData.list.dates =
-                this.year + "-" + this.month + "-" + this.date;
+            this.queryData.list.dates = this.year + "-" + this.month + "-" + this.date;
             this.queryData.list.types = "days";
             this.upFinished = false;
             this.isData = true;
-            this.queryData.list.page = 0;
-            this.renderData.oldList = [];
-            this.onLoadList();
+            this.queryData.list.page = 1;
+            // this.renderData.oldList = [];
+            this.renderData.list = []
+            // this.onLoadList();
+            this.list()
         },
         list() {
+            Indicator.open();
+            this.isServer = true
+            // alert(this.queryData.list.proid)
+            // console.log(this.queryData.list)
             getServer(this.queryData.list).then(res => {
-                console.log(res);
+                this.isServer = false
+                Indicator.close();
+                // console.log(res.data.data.constructor === Array);
                 if (res.data.responseStatus === 1) {
+                    // console.log(res.data.data.length)
+                    // console.log(res.data)
                     this.ATurnover = res.data.sum;
                     this.isData = true;
-                    this.renderData.list = res.data.data;
-                    //   this.renderData.list.forEach(item => {
-                    //     this.renderData.oldList.push(item);
-                    //   });
-                    //   this.isDownLoading = false;
-                    //   this.isUpLoading = false;
-                } else if (
-                    res.data.responseStatus === 300 &&
-                    this.queryData.list.page !== 1
-                ) {
-                    //   this.upFinished = true;
-                    //   this.isUpLoading = false;
-                } else if (
-                    res.data.responseStatus === 300 &&
-                    this.queryData.list.page === 1
-                ) {
-                    //   this.upFinished = false;
-                    //   this.isUpLoading = false;
+                    // this.renderData.list = res.data.data;
+                    res.data.data.forEach(item => {
+                        this.renderData.list.push(item);
+                    });
+                } else if ( res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                    this.$refs.scroll.forceUpdate();
+                } else if ( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
                     this.isData = false;
-                    //   this.ATurnover = "0";
+                    this.ATurnover = "0.00"
                 }
             });
         },
         productList() {
-            getServer(this.queryData.product).then(res => {
+            getServer(this.queryData.product)
+            .then(res => {
+                // console.log(res)
                 if (res.data.responseStatus === 1) {
                     this.renderData.product = res.data.data;
                     this.productName = res.data.data[0].name;
                     this.queryData.list.proid = res.data.data[0].id;
                 }
-            });
+            })
+            .then( () => {
+                this.list()
+            })
         },
         byProductChange() {
             this.queryData.list.proid = this.productName;
-            this.renderData.oldList = [];
-            this.queryData.list.page = 0;
-            this.onLoadList();
+            this.queryData.list.page = 1;
+            // this.onLoadList();
+            this.renderData.list = []
+            this.list()
         }
     },
     created() {
-        //   this.productList()
+        this.productList()
         // this.list();
     }
 };
 </script>
 <style lang="scss">
-.scroll-list-wrap{
-        // height: 350px;
+.mint-indicator-wrapper {
+    z-index: 999;
+}
+.affiliateTransactionsMain {
+    font-size: .3rem;
+}
+.affiliateTransactions .before-trigger {
+    font-size: .3rem;
+}
+.affiliateTransactions .scroll-list-wrap{
+        height: 9rem;
+        overflow: auto;
         .item{
             padding: 10px 10px;
 
@@ -571,6 +506,6 @@ export default {
 }
 .tradingListMain {
     //   padding-top: 155px;
-    margin-top: 5rem;
+    margin-top: 4.5rem;
 }
 </style>

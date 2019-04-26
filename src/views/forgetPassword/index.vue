@@ -62,7 +62,7 @@ export default {
         forgetParam: {
           requestType: "operating",
           requestKeywords: "sendmsg",
-          type: "forget"
+          type: "forget",
         }
       }
     };
@@ -133,6 +133,7 @@ export default {
         this.isSend = true;
         this.verificationCodeText = "验证码发送中";
         getServer(this.queryData.forgetParam).then(res => {
+            console.log(res)
           if (res.data.responseStatus === 1) {
             this.Verify = res.data.code;
             var inter = setInterval(() => {

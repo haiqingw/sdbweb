@@ -34,7 +34,7 @@
                                     结算方式：{{item.method}}
                                 </em>
                             </div>
-                            <!-- <a href="javascript:;" @click="allWithdrawal">全部提现</a> -->
+                            <a href="javascript:;" @click="allWithdrawal(item.money)">全部提现</a>
                         </div>
                     </mt-swipe-item>
                 </mt-swipe>
@@ -187,8 +187,14 @@ export default {
                 }
             })
         },
-        allWithdrawal() {
-            console.log("全部提现")
+        allWithdrawal(money) {
+            // console.log("全部提现")
+            if( parseFloat(money) == 0 ) {
+                Toast("暂无可提现金额")
+                this.queryData.cashWithdrawal.money = ""
+            } else {
+                this.queryData.cashWithdrawal.money = money
+            }
         },
         confirmCashWithdrawal() {
             getServer(this.queryData.balanceList)

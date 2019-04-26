@@ -188,7 +188,7 @@ export default new Router({
       component: resolve => require(['@/views/settings/index'], resolve), 
     },
     {
-      path: '/freezeprogress', //待解冻
+      path: '/freezeprogress/:money', //待解冻
       name: 'freezeprogress',
       component: resolve => require(['@/views/freezeprogress/index'], resolve), 
     }, 

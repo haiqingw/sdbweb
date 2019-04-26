@@ -143,7 +143,7 @@ export default {
                     txt: {
                         more: '上拉加载更多',
                         noMore: '没有更多数据'
-                    }
+                    },
                 }                                 // 配置上拉加载，若要关闭可直接 pullUpLoad：false
             },
             offset: 0, // 批次加载店铺列表，每次加载20个 limit = 20
@@ -209,7 +209,7 @@ export default {
             )
         },
         onPullingDown() {
-            console.log("下拉刷新");
+            // console.log("下拉刷新");
             this.renderData.list = []
             this.queryData.list.page = 1
             this.list()
@@ -238,7 +238,9 @@ export default {
             this.clickChange();
         },
         clickChange() {
-            this.scrollTo()
+            if(this.isData) {
+                this.scrollTo()
+            }
             // console.log(this.type)
             if (this.type === "selectionDate") {
                 this.selectYear();

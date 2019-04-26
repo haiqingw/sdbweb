@@ -216,7 +216,9 @@ export default {
             this.profitList()
         },
         queryTopic(data, index, type) {
-            this.$refs.scroll.forceUpdate();
+            if(this.isData) {
+                this.scrollTo()
+            }
             this.queryData.list.stypes = type
             this.upFinished = false
             this.queryData.list.page = 1
@@ -231,7 +233,6 @@ export default {
             if (autoScrollInstance) { //确保的插件加载成功
                 autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
             }
-            this.scrollTo()
         },
         // activationOnLoadList () {
         //     this.queryData.list.page++

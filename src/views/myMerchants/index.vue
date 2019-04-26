@@ -70,11 +70,14 @@ export default {
     font-size: 14px;
     color: #fff;
     background: #26a2ff;
+    span{
+        line-height:24px;
+    }
     em {
         border-radius: 5px;
         border: 1px solid #fff;
         box-sizing: border-box;
-        padding: 0 5px;
+        padding: 5px 8px;
         font-size: 12px;
     }
 }

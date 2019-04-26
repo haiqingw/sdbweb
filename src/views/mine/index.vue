@@ -217,7 +217,7 @@ export default {
   width: 100%;
   margin: 0 auto;
   background: #fff;
-  padding: 15px;
+  padding: 15px 15px 20px;
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0 0 20px #ccc;
@@ -293,6 +293,7 @@ export default {
     }
     p {
       font-size: 12px;
+      padding-top:0.15rem;
     }
   }
 }

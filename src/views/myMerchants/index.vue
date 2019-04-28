@@ -40,10 +40,10 @@
                                 {{item.busname}}
                                 <em v-if="item.phone">({{item.phone}})</em>
                                 <p>升级时间：{{item.upgradeTime}}</p>
-                                <a href="javascript:;">
+                                <!-- <a href="javascript:;">
                                     查看下级代理
                                     <img src="@/assets/images/arrRightIcon.png" alt="rightArr">
-                                </a>
+                                </a> -->
                             </h3>
                             <div class="flex">
                                 <div @click="openSub(item.childAgent, item.id, item.phone)">
@@ -107,7 +107,7 @@ export default {
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 1,
-                    limit: 10
+                    limit: 5
                 },
                 actived: {
                     requestType: "agentdata",
@@ -143,7 +143,7 @@ export default {
         openTotalPupon() {
             this.popupVisible = !this.popupVisible;
         },
-        openSub(agentNum, id, phone) {
+        async openSub(agentNum, id, phone) {
             this.renderData.list = [];
             if (agentNum != "0") {
                 this.scrollTo();
@@ -151,12 +151,21 @@ export default {
                 this.queryData.list.bid = id;
                 this.queryData.list.phone = phone;
                 Indicator.open();
-                getServer(this.queryData.list).then(res => {
-                    Indicator.close();
-                    if (res.data.responseStatus === 1) {
-                        this.renderData.list = res.data.data;
+                let res = await getServer(this.queryData.list);
+                if (res.data.responseStatus === 1) {
+                    this.renderData.list = res.data.data;
+                    //获取激活、未激活
+                    this.dataarr = [];
+                    for (var i = 0; i < res.data.data.length; i++) {
+                        this.dataarr.push(res.data.data[i].id);
                     }
-                });
+                    var $data = this.dataarr;
+                    for (let i = 0; i < $data.length; i++) {
+                        this.activeList($data[i]);
+                        this.inactivelist($data[i]);
+                    }
+                }
+                Indicator.close();
             }
         },
         async list() {
@@ -169,7 +178,7 @@ export default {
                 this.renderData.listData.forEach(item => {
                     this.renderData.list.push(item);
                 });
-                console.log(this.renderData.list);
+                //获取激活、未激活
                 this.dataarr = [];
                 for (var i = 0; i < res.data.data.length; i++) {
                     this.dataarr.push(res.data.data[i].id);
@@ -330,7 +339,7 @@ export default {
         border: 1px solid #f1f1f1;
         color: #333;
         display: block;
-        padding: 0 0.1rem;
+        padding: 0 0.2rem;
         // float: left;
         margin: 0 10px 10px 0;
         > h3 {

@@ -11,13 +11,13 @@
             <div class="merchantsMonthTotalMain">
                 <div class="merchantsMonthTotalBox flex">
                     <div>
-                        <p>100</p>
+                        <p>暂未开放</p>
                         <h3>二级代理
                             <em>(人)</em>
                         </h3>
                     </div>
                     <div>
-                        <p>100</p>
+                        <p>暂未开放</p>
                         <h3>三级代理
                             <em>(人)</em>
                         </h3>
@@ -171,7 +171,6 @@ export default {
         async list() {
             Indicator.open();
             let res = await getServer(this.queryData.list);
-            console.log("res", res);
             if (res.data.responseStatus === 1) {
                 this.isData = true;
                 this.renderData.listData = res.data.data;

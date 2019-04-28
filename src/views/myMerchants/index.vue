@@ -25,34 +25,41 @@
                 </div>
             </div>
         </div>
+        <!-- 条件筛选 开始 -->
+             <!-- 按产品 parker -->
+
+             <!-- 按用户 input -->
+             
+        <!-- 条件筛选 结束 -->
         <div class="myMerchantsBodyMain">
             <div class="myMerchantsBodySubMain">
                 <div class="financialDetailsList scroll-list-wrap" v-if="isData">
                     <cube-scroll ref="scroll" :data="renderData.list" @pulling-down="onPullingDown" @pulling-up="onPullingUp" :options="options">
-                        <div class="myMerchantsItem" :id='"merchantId"+item.id' v-for="(item, index) in renderData.list" :key="index" @click="openSub(item.terminalData.childAgent, item.id, item.phone)">
+                        <div class="myMerchantsItem" v-for="(item, index) in renderData.list" :key="index">
                             <h3 class="line_bottom">
                                 {{item.busname}}
                                 <em v-if="item.phone">({{item.phone}})</em>
+                                <p>升级时间：{{item.upgradeTime}}</p>
                                 <a href="javascript:;">
                                     查看下级代理
                                     <img src="@/assets/images/arrRightIcon.png" alt="rightArr">
                                 </a>
                             </h3>
                             <div class="flex">
-                                <div>
-                                    <p>0</p>
+                                <div @click="openSub(item.childAgent, item.id, item.phone)">
+                                    <p>{{item.childAgent ? item.childAgent : 0}}</p>
                                     <h3>下级代理</h3>
                                 </div>
                                 <div>
-                                    <p ref='yb'>0</p>
+                                    <p >{{item.belong ? item.belong : 0}}</p>
                                     <h3>已拨(台)</h3>
                                 </div>
                                 <div>
-                                    <p ref='"jh"+item.id'>0</p>
+                                    <p :ref='"jh"+item.id'><img src="@/assets/images/loadingIcon.gif"></p>
                                     <h3>激活(台)</h3>
                                 </div>
                                 <div>
-                                    <p ref='"wjh"+item.id'>0</p>
+                                    <p :ref='"wjh"+item.id'><img src="@/assets/images/loadingIcon.gif"></p>
                                     <h3>未激活(台)</h3>
                                 </div>
                             </div>
@@ -70,6 +77,7 @@
 import { getServer } from "@/api/index";
 // import { parseTime, timeFormate } from "@/utils/index";
 import { Indicator, Toast } from "mint-ui";
+import $ from 'jquery' 
 export default {
     data() {
         return {
@@ -100,7 +108,17 @@ export default {
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 1,
-                    limit: 2
+                    limit: 10
+                },
+                actived:{
+                    requestType: "agentdata",
+                    requestKeywords:"isactive", 
+                    platformID:this.$store.state.user.pid
+                },
+                inactive:{
+                    requestType:"agentdata",
+                    requestKeywords:"notactive", 
+                    platformID:this.$store.state.user.pid
                 }
             },
             renderData: {
@@ -128,7 +146,7 @@ export default {
         },
         openSub(agentNum, id, phone) {
             this.renderData.list = [];
-            if (agentNum !== "0") {
+            if (agentNum != "0") {
                 this.scrollTo();
                 this.queryData.list.page = 1;
                 this.queryData.list.bid = id;
@@ -145,12 +163,14 @@ export default {
         async list() {
             Indicator.open();
             let res = await getServer(this.queryData.list);
+            console.log('res',res)
             if (res.data.responseStatus === 1) {
                     this.isData = true;
                     this.renderData.listData = res.data.data;
                     this.renderData.listData.forEach(item => {
                         this.renderData.list.push(item);
                     });
+                    console.log(this.renderData.list);
                     for (var i = 0; i < res.data.data.length; i++) {
                         this.dataarr.push(res.data.data[i].id);
                     }
@@ -166,57 +186,32 @@ export default {
                     this.isData = false;
                 }
                 Indicator.close();
-            // await getServer(this.queryData.list).then(res => {
-            //     Indicator.close();
-            //     if (res.data.responseStatus === 1) {
-            //         this.isData = true;
-            //         this.renderData.listData = res.data.data;
-            //         this.renderData.listData.forEach(item => {
-            //             this.renderData.list.push(item);
-            //         });
-            //         for (var i = 0; i < res.data.data.length; i++) {
-            //             this.dataarr.push(res.data.data[i].id);
-            //         }
-
-            //     } else if (
-            //         res.data.responseStatus === 300 &&
-            //         this.queryData.list.page !== 1
-            //     ) {
-            //         this.$refs.scroll.forceUpdate();
-            //     } else if (
-            //         res.data.responseStatus === 300 &&
-            //         this.queryData.list.page === 1
-            //     ) {
-            //         this.isData = false;
-            //     }
-            // });
-        },
-        //请求已拨台数
-        async dialList(mid) {
-            var ids = "yb";
-            console.log(ids);
-            // this.$refs.yd.innerText = mid;
         },
         //请求激活台数
         async activeList(mid) {
-            console.log(mid);
+            this.queryData.actived.id = mid;
+            let res = await getServer(this.queryData.actived);
+            let ids = "jh"+mid; 
+            $(this.$refs[ids]).html(res.data.con);
         },
         //请求未激活台数
-        async inactive(mid) {
-            console.log(mid);
+        async inactivelist(mid) {
+            this.queryData.inactive.id = mid;
+            let res = await getServer(this.queryData.inactive);
+            let ids = "wjh" + mid;
+            $(this.$refs[ids]).html(res.data.con); 
         }
     },
     created() {
         // this.list();
     },
-    mounted() {
-        this.list();
-        console.log('数据：' + this.dataarr);
-        // for (let i = 0; i < data.length; i++) {
-        //     this.dialList(data[i]);
-        //     this.activeList(data[i]);
-        //     this.inactive(data[i]);
-        // }
+    async mounted() {
+        await this.list();
+        var $data = this.dataarr;
+        for (let i = 0; i < $data.length; i++) {
+            this.activeList($data[i]);
+            this.inactivelist($data[i]);
+        }
     }
 };
 </script>
@@ -339,12 +334,18 @@ export default {
         // float: left;
         margin: 0 10px 10px 0;
         > h3 {
-            line-height: 40px;
+            line-height: 24px;
             font-weight: bold;
+            padding-top:5px;
+            position: relative;
             a {
-                float: right;
                 color: #333;
                 font-size: 12px;
+                line-height:12px;
+                position: absolute;
+                right:10px;
+                top:50%;
+                margin-top:-6px;
                 img {
                     width: 10px;
                     height: 10px;
@@ -353,6 +354,12 @@ export default {
                     display: inline-block;
                     margin-left: 2px;
                 }
+            }
+            p{
+                font-size:12px;
+                line-height:12px;
+                padding-bottom:10px;
+                color:#999;
             }
         }
         > div {
@@ -372,6 +379,10 @@ export default {
                     line-height: 25px;
                     font-size: 25px;
                     padding-top: 3px;
+                    img{
+                        width:25px;
+                        height:25px;
+                    }
                 }
             }
         }

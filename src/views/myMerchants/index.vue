@@ -26,10 +26,10 @@
             </div>
         </div>
         <!-- 条件筛选 开始 -->
-             <!-- 按产品 parker -->
+        <!-- 按产品 parker -->
 
-             <!-- 按用户 input -->
-             
+        <!-- 按用户 input -->
+
         <!-- 条件筛选 结束 -->
         <div class="myMerchantsBodyMain">
             <div class="myMerchantsBodySubMain">
@@ -51,7 +51,7 @@
                                     <h3>下级代理</h3>
                                 </div>
                                 <div>
-                                    <p >{{item.belong ? item.belong : 0}}</p>
+                                    <p>{{item.belong ? item.belong : 0}}</p>
                                     <h3>已拨(台)</h3>
                                 </div>
                                 <div>
@@ -77,12 +77,11 @@
 import { getServer } from "@/api/index";
 // import { parseTime, timeFormate } from "@/utils/index";
 import { Indicator, Toast } from "mint-ui";
-import $ from 'jquery' 
+import $ from "jquery";
 export default {
     data() {
         return {
-
-            dataarr:[],
+            dataarr: [],
             isData: true,
             options: {
                 pullDownRefresh: {
@@ -110,15 +109,15 @@ export default {
                     page: 1,
                     limit: 10
                 },
-                actived:{
+                actived: {
                     requestType: "agentdata",
-                    requestKeywords:"isactive", 
-                    platformID:this.$store.state.user.pid
+                    requestKeywords: "isactive",
+                    platformID: this.$store.state.user.pid
                 },
-                inactive:{
-                    requestType:"agentdata",
-                    requestKeywords:"notactive", 
-                    platformID:this.$store.state.user.pid
+                inactive: {
+                    requestType: "agentdata",
+                    requestKeywords: "notactive",
+                    platformID: this.$store.state.user.pid
                 }
             },
             renderData: {
@@ -130,16 +129,16 @@ export default {
         scrollTo() {
             this.$refs.scroll.scrollTo(0, 0);
         },
-        onPullingDown() {
+        async onPullingDown() {
             this.renderData.list = [];
             this.queryData.list.page = 1;
-            this.list();
+            await this.list();
             this.scrollTo();
         },
         // 触发上拉加载
-        onPullingUp() {
+        async onPullingUp() {
             this.queryData.list.page++;
-            this.list();
+            await this.list();
         },
         openTotalPupon() {
             this.popupVisible = !this.popupVisible;
@@ -163,35 +162,41 @@ export default {
         async list() {
             Indicator.open();
             let res = await getServer(this.queryData.list);
-            console.log('res',res)
+            console.log("res", res);
             if (res.data.responseStatus === 1) {
-                    this.isData = true;
-                    this.renderData.listData = res.data.data;
-                    this.renderData.listData.forEach(item => {
-                        this.renderData.list.push(item);
-                    });
-                    console.log(this.renderData.list);
-                    for (var i = 0; i < res.data.data.length; i++) {
-                        this.dataarr.push(res.data.data[i].id);
-                    }
-                } else if (
-                    res.data.responseStatus === 300 &&
-                    this.queryData.list.page !== 1
-                ) {
-                    this.$refs.scroll.forceUpdate();
-                } else if (
-                    res.data.responseStatus === 300 &&
-                    this.queryData.list.page === 1
-                ) {
-                    this.isData = false;
+                this.isData = true;
+                this.renderData.listData = res.data.data;
+                this.renderData.listData.forEach(item => {
+                    this.renderData.list.push(item);
+                });
+                console.log(this.renderData.list);
+                this.dataarr = [];
+                for (var i = 0; i < res.data.data.length; i++) {
+                    this.dataarr.push(res.data.data[i].id);
                 }
-                Indicator.close();
+                var $data = this.dataarr;
+                for (let i = 0; i < $data.length; i++) {
+                    this.activeList($data[i]);
+                    this.inactivelist($data[i]);
+                }
+            } else if (
+                res.data.responseStatus === 300 &&
+                this.queryData.list.page !== 1
+            ) {
+                this.$refs.scroll.forceUpdate();
+            } else if (
+                res.data.responseStatus === 300 &&
+                this.queryData.list.page === 1
+            ) {
+                this.isData = false;
+            }
+            Indicator.close();
         },
         //请求激活台数
         async activeList(mid) {
             this.queryData.actived.id = mid;
             let res = await getServer(this.queryData.actived);
-            let ids = "jh"+mid; 
+            let ids = "jh" + mid;
             $(this.$refs[ids]).html(res.data.con);
         },
         //请求未激活台数
@@ -199,7 +204,7 @@ export default {
             this.queryData.inactive.id = mid;
             let res = await getServer(this.queryData.inactive);
             let ids = "wjh" + mid;
-            $(this.$refs[ids]).html(res.data.con); 
+            $(this.$refs[ids]).html(res.data.con);
         }
     },
     created() {
@@ -207,11 +212,6 @@ export default {
     },
     async mounted() {
         await this.list();
-        var $data = this.dataarr;
-        for (let i = 0; i < $data.length; i++) {
-            this.activeList($data[i]);
-            this.inactivelist($data[i]);
-        }
     }
 };
 </script>
@@ -336,16 +336,16 @@ export default {
         > h3 {
             line-height: 24px;
             font-weight: bold;
-            padding-top:5px;
+            padding-top: 5px;
             position: relative;
             a {
                 color: #333;
                 font-size: 12px;
-                line-height:12px;
+                line-height: 12px;
                 position: absolute;
-                right:10px;
-                top:50%;
-                margin-top:-6px;
+                right: 10px;
+                top: 50%;
+                margin-top: -6px;
                 img {
                     width: 10px;
                     height: 10px;
@@ -355,11 +355,11 @@ export default {
                     margin-left: 2px;
                 }
             }
-            p{
-                font-size:12px;
-                line-height:12px;
-                padding-bottom:10px;
-                color:#999;
+            p {
+                font-size: 12px;
+                line-height: 12px;
+                padding-bottom: 10px;
+                color: #999;
             }
         }
         > div {
@@ -379,9 +379,9 @@ export default {
                     line-height: 25px;
                     font-size: 25px;
                     padding-top: 3px;
-                    img{
-                        width:25px;
-                        height:25px;
+                    img {
+                        width: 25px;
+                        height: 25px;
                     }
                 }
             }
@@ -618,8 +618,8 @@ em.moreEm::after {
     border: none;
     color: #fff;
 }
-.mint-indicator{
-    z-index:9999999999;
+.mint-indicator {
+    z-index: 9999999999;
     position: relative;
 }
 </style>

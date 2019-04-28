@@ -144,8 +144,8 @@ export default {
             this.popupVisible = !this.popupVisible;
         },
         async openSub(agentNum, id, phone) {
-            this.renderData.list = [];
             if (agentNum != "0") {
+                this.renderData.list = [];
                 this.scrollTo();
                 this.queryData.list.page = 1;
                 this.queryData.list.bid = id;
@@ -166,7 +166,7 @@ export default {
                     }
                 }
                 Indicator.close();
-            }
+            } 
         },
         async list() {
             Indicator.open();

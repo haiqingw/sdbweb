@@ -9,89 +9,51 @@
         <div class="myMerchantsHeaderMain">
             <!-- 当月新增 开始 -->
             <div class="merchantsMonthTotalMain">
-                <div class="block">
-                    <el-date-picker
-                        v-model="queryData.list.dates"
-                        type="month"
-                        placeholder="请选择日期"
-                        @change="changeMonth"
-                    ></el-date-picker>
-                </div>
-                <!-- <h3>我的当月团队成员统计
-                    <a href="javascript:;" @click="openTotalPupon">查看全部统计<img src="@/assets/images/arrRightWriteIcon.png" alt="rightArr"></a>
-                </h3>-->
                 <div class="merchantsMonthTotalBox flex">
                     <div>
-                        <!-- <h3>我的当月新增(人)</h3>
-                        <p>100</p>-->
-                        <router-link tag="h3" to="/myMerchantsTwo">二级</router-link>
+                        <p>100</p>
+                        <h3>二级代理
+                            <em>(人)</em>
+                        </h3>
                     </div>
                     <div>
-                        <!-- <h3>我的当月直增(人)</h3>
-                        <p>100</p>-->
-                        <router-link tag="h3" to="/myMerchantsThree">三级</router-link>
+                        <p>100</p>
+                        <h3>三级代理
+                            <em>(人)</em>
+                        </h3>
                     </div>
                 </div>
             </div>
-            <!-- <div class="myMerchantsHeaderSubMain line_bottom">
-                <span>当前所属：</span>
-                <div class="flex">
-                    <em>任勇强</em><img src="@/assets/images/notice-list-more.png" alt="">
-                    <em>任勇强</em><img src="@/assets/images/notice-list-more.png" alt="">
-                    <em>任勇强</em>
-                </div>
-            </div>-->
         </div>
         <div class="myMerchantsBodyMain">
             <div class="myMerchantsBodySubMain">
                 <div class="financialDetailsList scroll-list-wrap" v-if="isData">
-                    <cube-scroll
-                        ref="scroll"
-                        :data="renderData.list"
-                        @pulling-down="onPullingDown"
-                        @pulling-up="onPullingUp"
-                        :options="options"
-                    >
-                        <div class="myMerchantsItem" v-for="(item, index) in renderData.list" :key="index" @click="openSub(item.terminalData.childAgent, item.id, item.phone)">
-                            <!-- {{item.upgradeTime}}时间 -->
+                    <cube-scroll ref="scroll" :data="renderData.list" @pulling-down="onPullingDown" @pulling-up="onPullingUp" :options="options">
+                        <div class="myMerchantsItem" :id='"merchantId"+item.id' v-for="(item, index) in renderData.list" :key="index" @click="openSub(item.terminalData.childAgent, item.id, item.phone)">
                             <h3 class="line_bottom">
-                                {{item.busname}}<em v-if="item.phone">({{item.phone}})</em>
-                                <!-- <a href="javascript:;">
+                                {{item.busname}}
+                                <em v-if="item.phone">({{item.phone}})</em>
+                                <a href="javascript:;">
                                     查看下级代理
-                                    <img
-                                        src="@/assets/images/arrRightIcon.png"
-                                        alt="rightArr"
-                                    >
-                                </a> -->
+                                    <img src="@/assets/images/arrRightIcon.png" alt="rightArr">
+                                </a>
                             </h3>
                             <div class="flex">
                                 <div>
-                                    <h3>
-                                        下级代理
-                                        <em>(人)</em>
-                                    </h3>
-                                    <p>{{item.terminalData.childAgent}}</p>
+                                    <p>0</p>
+                                    <h3>下级代理</h3>
                                 </div>
                                 <div>
-                                    <h3>
-                                        已拨
-                                        <em>(台)</em>
-                                    </h3>
-                                    <p>{{item.terminalData.belong}}</p>
+                                    <p ref='yb'>0</p>
+                                    <h3>已拨(台)</h3>
                                 </div>
                                 <div>
-                                    <h3>
-                                        激活
-                                        <em>(台)</em>
-                                    </h3>
-                                    <p>{{item.terminalData.isActive}}</p>
+                                    <p ref='"jh"+item.id'>0</p>
+                                    <h3>激活(台)</h3>
                                 </div>
                                 <div>
-                                    <h3>
-                                        未激活
-                                        <em>(台)</em>
-                                    </h3>
-                                    <p>{{item.terminalData.notActive}}</p>
+                                    <p ref='"wjh"+item.id'>0</p>
+                                    <h3>未激活(台)</h3>
                                 </div>
                             </div>
                         </div>
@@ -102,101 +64,17 @@
                 </div>
             </div>
         </div>
-        <!-- 全部统计弹窗 开始 -->
-        <div class="myMerchantsTotalPuponMain" v-show="popupVisible">
-            <!-- <div class="myMerchantsTotalPuponHeaderMain line_bottom">
-                <em>我的商户数据统计</em>
-                <a href="javascript:;" @click="openTotalPupon">关闭</a>
-            </div>-->
-            <!-- <div class="myMerchantsTotalPuponBodyMain">
-                <div class="myMerchantsTotalPuponItem flex line_bottom">
-                    <span>
-                        <img src="@/assets/images/agentTotalNumIcon.png" alt="服务商人数"> 服务商人数
-                    </span>
-                    <em>
-                        <b>100</b>人
-                    </em>
-                </div>
-                 <div class="myMerchantsTotalPuponItem flex line_bottom">
-                    <span>
-                        <img src="@/assets/images/agentTotalActiveIcon.png" alt="激活台数"> 激活台数
-                    </span>
-                    <em>
-                        <b>100</b>台 
-                    </em>
-                </div>
-                 <div class="myMerchantsTotalPuponItem flex">
-                    <span>
-                        <img src="@/assets/images/agentTotalTradingIcon.png" alt="交易量"> 交易量
-                    </span>
-                    <em>
-                        <b>10000</b>元
-                    </em>
-                </div>
-            <div class="interval"></div>-->
-            <!-- 一级代理 -->
-            <!-- <h3 class="agentTotalTitleH3 line_bottom">一级代理</h3>
-                <div class="agentTotalMain flex">
-                    <div>
-                        <h3>
-                            激活台数(台)
-                        </h3>
-                        <p>100</p>
-                    </div>
-                    <div>
-                        <h3>
-                            交易量(元)
-                        </h3>
-                        <p>100000000</p>
-                    </div>
-                </div>
-            <div class="interval"></div>-->
-            <!-- 二级代理 -->
-            <!-- <h3 class="agentTotalTitleH3 line_bottom">二级代理</h3>
-                <div class="agentTotalMain flex">
-                    <div>
-                        <h3>
-                            激活台数(台)
-                        </h3>
-                        <p>100</p>
-                    </div>
-                    <div>
-                        <h3>
-                            交易量(元)
-                        </h3>
-                        <p>100000000</p>
-                    </div>
-                </div>
-            <div class="interval"></div>-->
-            <!-- 三级代理 -->
-            <!-- <h3 class="agentTotalTitleH3 line_bottom">三级代理</h3>
-                <div class="agentTotalMain flex">
-                    <div>
-                        <h3>
-                            激活台数(台)
-                        </h3>
-                        <p>100</p>
-                    </div>
-                    <div>
-                        <h3>
-                            交易量(元)
-                        </h3>
-                        <p>100000000</p>
-                    </div>
-                </div>
-            <div class="interval"></div>-->
-            <!-- </div> -->
-        </div>
-        <!-- 全部统计弹窗 结束 -->
     </div>
 </template>
 <script>
 import { getServer } from "@/api/index";
-import { parseTime, timeFormate } from '@/utils/index'
-import { Indicator, Toast } from "mint-ui"
+// import { parseTime, timeFormate } from "@/utils/index";
+import { Indicator, Toast } from "mint-ui";
 export default {
     data() {
         return {
+
+            dataarr:[],
             isData: true,
             options: {
                 pullDownRefresh: {
@@ -221,9 +99,8 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    dates: timeFormate(new Date()).substring(0, 7),
                     page: 1,
-                    limit: 10
+                    limit: 2
                 }
             },
             renderData: {
@@ -233,16 +110,9 @@ export default {
     },
     methods: {
         scrollTo() {
-            this.$refs.scroll.scrollTo(
-                0,
-                0
-                // this.scrollToY,
-                // this.scrollToTime,
-                // this.scrollToEasing
-            );
+            this.$refs.scroll.scrollTo(0, 0);
         },
         onPullingDown() {
-            // console.log("下拉刷新");
             this.renderData.list = [];
             this.queryData.list.page = 1;
             this.list();
@@ -250,20 +120,6 @@ export default {
         },
         // 触发上拉加载
         onPullingUp() {
-            // alert(1)
-            // console.log("上拉加载");
-            // 模拟更新数据
-            // setTimeout(() => {
-            //     if (Math.random() > 0.5) {
-            //         // 如果有新数据
-            //         let newPage = [1, 2, 3, 4, 5, 6];
-            //         console.log("有新数据");
-            //         this.msg = this.msg.concat(newPage);
-            //     } else {
-            //         // 如果没有新数据
-            //         this.$refs.scroll.forceUpdate();
-            //     }
-            // }, 1000);
             this.queryData.list.page++;
             this.list();
         },
@@ -271,31 +127,33 @@ export default {
             this.popupVisible = !this.popupVisible;
         },
         openSub(agentNum, id, phone) {
-            this.renderData.list = []
-            if( agentNum !== "0" ) {
+            this.renderData.list = [];
+            if (agentNum !== "0") {
                 this.scrollTo();
-                this.queryData.list.page = 1
-                this.queryData.list.bid = id
-                this.queryData.list.phone = phone
+                this.queryData.list.page = 1;
+                this.queryData.list.bid = id;
+                this.queryData.list.phone = phone;
                 Indicator.open();
-                getServer(this.queryData.list).then( res => {
+                getServer(this.queryData.list).then(res => {
                     Indicator.close();
-                    if( res.data.responseStatus === 1 ) {
+                    if (res.data.responseStatus === 1) {
                         this.renderData.list = res.data.data;
                     }
-                })
+                });
             }
         },
-        list() {
+        async list() {
             Indicator.open();
-            getServer(this.queryData.list).then(res => {
-                Indicator.close();
-                if (res.data.responseStatus === 1) {
+            let res = await getServer(this.queryData.list);
+            if (res.data.responseStatus === 1) {
                     this.isData = true;
                     this.renderData.listData = res.data.data;
                     this.renderData.listData.forEach(item => {
                         this.renderData.list.push(item);
                     });
+                    for (var i = 0; i < res.data.data.length; i++) {
+                        this.dataarr.push(res.data.data[i].id);
+                    }
                 } else if (
                     res.data.responseStatus === 300 &&
                     this.queryData.list.page !== 1
@@ -307,20 +165,58 @@ export default {
                 ) {
                     this.isData = false;
                 }
-            });
+                Indicator.close();
+            // await getServer(this.queryData.list).then(res => {
+            //     Indicator.close();
+            //     if (res.data.responseStatus === 1) {
+            //         this.isData = true;
+            //         this.renderData.listData = res.data.data;
+            //         this.renderData.listData.forEach(item => {
+            //             this.renderData.list.push(item);
+            //         });
+            //         for (var i = 0; i < res.data.data.length; i++) {
+            //             this.dataarr.push(res.data.data[i].id);
+            //         }
+
+            //     } else if (
+            //         res.data.responseStatus === 300 &&
+            //         this.queryData.list.page !== 1
+            //     ) {
+            //         this.$refs.scroll.forceUpdate();
+            //     } else if (
+            //         res.data.responseStatus === 300 &&
+            //         this.queryData.list.page === 1
+            //     ) {
+            //         this.isData = false;
+            //     }
+            // });
         },
-        changeMonth() {
-            this.renderData.list = [];
-            this.scrollTo();
-            this.queryData.list.page = 1
-            this.queryData.list.dates = parseTime(
-                this.queryData.list.dates
-            ).substring(0, 7);
-            this.list();
+        //请求已拨台数
+        async dialList(mid) {
+            var ids = "yb";
+            console.log(ids);
+            // this.$refs.yd.innerText = mid;
+        },
+        //请求激活台数
+        async activeList(mid) {
+            console.log(mid);
+        },
+        //请求未激活台数
+        async inactive(mid) {
+            console.log(mid);
         }
     },
     created() {
+        // this.list();
+    },
+    mounted() {
         this.list();
+        console.log('数据：' + this.dataarr);
+        // for (let i = 0; i < data.length; i++) {
+        //     this.dialList(data[i]);
+        //     this.activeList(data[i]);
+        //     this.inactive(data[i]);
+        // }
     }
 };
 </script>
@@ -334,20 +230,20 @@ export default {
     // background: #000;
 }
 .myMerchants {
-    font-size: .3rem;
+    font-size: 0.3rem;
 }
 .myMerchants .before-trigger {
-    font-size: .3rem;
+    font-size: 0.3rem;
 }
-.myMerchants .scroll-list-wrap{
-        height: 11rem;
-        overflow-y: scroll;
-        .item{
-            padding: 10px 10px;
-            &:nth-child(2n+1){
-                background: #ccc;
-            }
+.myMerchants .scroll-list-wrap {
+    height: 11rem;
+    overflow-y: scroll;
+    .item {
+        padding: 10px 10px;
+        &:nth-child(2n + 1) {
+            background: #ccc;
         }
+    }
 }
 .myMerchants .total {
     font-size: 0.3rem;
@@ -414,7 +310,7 @@ export default {
     }
 }
 .myMerchantsBodyMain {
-    padding: 3rem 10px 10px;
+    padding: 2.8rem 10px 10px;
 }
 .myMerchantsBodyTopMain {
     font-size: 16px;
@@ -587,7 +483,7 @@ em.moreEm::after {
 .merchantsMonthTotalMain {
     justify-content: space-around;
     background: #089cfe;
-    padding: 15px;
+    padding: 15px 15px 25px;
     color: #fff;
     > h3 {
         font-size: 14px;
@@ -608,12 +504,17 @@ em.moreEm::after {
         text-align: center;
         font-size: 14px;
         width: 100%;
-        h3 {
-            padding-top: 10px;
-        }
+        line-height: 36px;
         p {
             line-height: 40px;
-            font-size: 22px;
+            font-size: 30px;
+        }
+        h3 {
+            font-size: 14px;
+            line-height: 20px;
+            em {
+                font-size: 12px;
+            }
         }
     }
 }
@@ -697,5 +598,17 @@ em.moreEm::after {
             font-weight: bold;
         }
     }
+}
+.merchantsMonthTotalMain .el-date-editor {
+    float: left;
+}
+.merchantsMonthTotalMain .el-date-editor input {
+    background: none;
+    border: none;
+    color: #fff;
+}
+.mint-indicator{
+    z-index:9999999999;
+    position: relative;
 }
 </style>

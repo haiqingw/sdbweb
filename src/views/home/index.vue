@@ -134,7 +134,7 @@
                 <li>
                     <div class="img">
                         <router-link to="/myMerchants">
-                            <img src="@/assets/images/index-list2-img7.png" alt>
+                            <img src="@/assets/images/organizationIcon.png" alt>
                         </router-link>
                     </div>
                     <div class="text">

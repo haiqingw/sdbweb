@@ -4,12 +4,10 @@
         <div class="mineHeaderMain">
             <h3>个人中心</h3>
             <div class="mineHeaderBox">
-                <a href="javascript:;" class="mineNoticeBtn">
-                    <router-link to="/settings">
+                    <router-link to="/settings" class="mineNoticeButton">
                         <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
                     </router-link>
                     <!-- <i></i> -->
-                </a>
                 <div class="mineHeaderHeader">
                     <span>
                         <img src="@/assets/images/logoSmallImg.jpg" alt="头像">
@@ -249,7 +247,7 @@ export default {
         box-shadow: 0 0 20px #ccc;
         position: relative;
     }
-  .mineNoticeBtn {
+  .mineNoticeButton {
     display: block;
     width: 30px;
     height: 30px;
@@ -347,6 +345,7 @@ export default {
         }
         p {
             font-size: 12px;
+            padding-top:5px;
         }
     }
 }

@@ -298,8 +298,9 @@ export default {
   // z-index: 9999;
   h3 {
     // font-size: 14px;
-    font-size: .26rem;
-    margin-top: .1rem;
+    font-size: 0.26rem;
+    margin-top: 0.3rem;
+    padding-bottom: 0.1rem;
   }
   div {
     font-size: 1rem;

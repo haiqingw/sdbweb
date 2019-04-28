@@ -3,7 +3,7 @@
     <div class="myMerchantsTotalPuponMain">
         <div class="return">
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
-            <span>二级</span>
+            <span>二级代理</span>
         </div>
         <div class="myMerchantsTotalPuponBodyMain">
             <div class="block">
@@ -172,6 +172,12 @@ export default {
 .myMerchantsTotalPuponBodyMain {
     padding: 0 15px;
     margin-top: 0.8rem;
+    .el-date-editor{
+        input{
+            background:none;
+            border:none;
+        }
+    }
 }
 .myMerchantsTotalPuponItem {
     justify-content: space-between;

@@ -138,7 +138,7 @@ export default {
                 let res = await getServer(this.queryData.list);
                 if (res.data.responseStatus === 1) {
                     this.renderData.list = res.data.data;
-                    //获取激活、未激活
+                    //获取激活、未激活\
                     this.dataarr = [];
                     for (var i = 0; i < res.data.data.length; i++) {
                         this.dataarr.push(res.data.data[i].id);

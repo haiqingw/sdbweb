@@ -120,7 +120,7 @@
           <div class="text">
             <router-link to="/mall">机具商场</router-link>
           </div>
-                </li>-->
+                </li> -->
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/financialDetails">

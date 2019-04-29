@@ -11,14 +11,16 @@
             <div class="merchantsMonthTotalMain">
                 <div class="merchantsMonthTotalBox flex">
                     <div>
-                        <p>暂未开放</p>
-                        <h3>二级代理
+                        <p>{{this.agenttwoNum}}</p>
+                        <h3>
+                            二级代理
                             <em>(人)</em>
                         </h3>
                     </div>
                     <div>
-                        <p>暂未开放</p>
-                        <h3>三级代理
+                        <p>{{this.agentthreeNum}}</p>
+                        <h3>
+                            三级代理
                             <em>(人)</em>
                         </h3>
                     </div>
@@ -27,15 +29,46 @@
         </div>
         <!-- 条件筛选 开始 -->
         <!-- 按产品 parker -->
-
+        <div class="choice">
+            <div class="select">
+                <el-select v-model="byProduct.value" placeholder="按产品" @change="byProductChange">
+                    <el-option
+                        v-for="item in byProduct.options"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                    ></el-option>
+                </el-select>
+            </div>
+            <div class="search">
+                <el-form ref="form" :model="form" label-width="">
+                    <el-form-item>
+                        <el-input v-model="form.search"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="search">搜索</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
         <!-- 按用户 input -->
 
         <!-- 条件筛选 结束 -->
         <div class="myMerchantsBodyMain">
             <div class="myMerchantsBodySubMain">
                 <div class="financialDetailsList scroll-list-wrap" v-if="isData">
-                    <cube-scroll ref="scroll" :data="renderData.list" @pulling-down="onPullingDown" @pulling-up="onPullingUp" :options="options">
-                        <div class="myMerchantsItem" v-for="(item, index) in renderData.list" :key="index">
+                    <cube-scroll
+                        ref="scroll"
+                        :data="renderData.list"
+                        @pulling-down="onPullingDown"
+                        @pulling-up="onPullingUp"
+                        :options="options"
+                    >
+                        <div
+                            class="myMerchantsItem"
+                            v-for="(item, index) in renderData.list"
+                            :key="index"
+                        >
                             <h3 class="line_bottom">
                                 {{item.busname}}
                                 <em v-if="item.phone">({{item.phone}})</em>
@@ -43,7 +76,7 @@
                                 <!-- <a href="javascript:;">
                                     查看下级代理
                                     <img src="@/assets/images/arrRightIcon.png" alt="rightArr">
-                                </a> -->
+                                </a>-->
                             </h3>
                             <div class="flex">
                                 <div @click="openSub(item.childAgent, item.id, item.phone)">
@@ -55,11 +88,15 @@
                                     <h3>已拨(台)</h3>
                                 </div>
                                 <div>
-                                    <p :ref='"jh"+item.id'><img src="@/assets/images/loadingIcon.gif"></p>
+                                    <p :ref="'jh' + item.id">
+                                        <img src="@/assets/images/loadingIcon.gif">
+                                    </p>
                                     <h3>激活(台)</h3>
                                 </div>
                                 <div>
-                                    <p :ref='"wjh"+item.id'><img src="@/assets/images/loadingIcon.gif"></p>
+                                    <p :ref=" 'wjh' + item.id">
+                                        <img src="@/assets/images/loadingIcon.gif">
+                                    </p>
                                     <h3>未激活(台)</h3>
                                 </div>
                             </div>
@@ -81,6 +118,33 @@ import $ from "jquery";
 export default {
     data() {
         return {
+            agenttwoNum: "0",
+            agentthreeNum: "0",
+            form: {
+                search: '',
+            },
+            byProduct: {
+                options: [
+                    {
+                        id: "1",
+                        label: "按产品"
+                    }
+                ],
+                value: ""
+            },
+            usageState: {
+                options: [
+                    {
+                        value: "2",
+                        label: '已使用'
+                    }, 
+                    {
+                        value: "1",
+                        label: '未使用'
+                    }, 
+                ],
+                value: ''
+            },
             dataarr: [],
             isData: true,
             options: {
@@ -107,17 +171,41 @@ export default {
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 1,
-                    limit: 5
+                    limit: 5,
+                    proid: ""
                 },
                 actived: {
                     requestType: "agentdata",
                     requestKeywords: "isactive",
-                    platformID: this.$store.state.user.pid
+                    platformID: this.$store.state.user.pid,
+                    proid: ""
                 },
                 inactive: {
                     requestType: "agentdata",
                     requestKeywords: "notactive",
+                    platformID: this.$store.state.user.pid,
+                    proid: ""
+                },
+                productList: {
+                    requestType: "agent",
+                    requestKeywords: "product",
                     platformID: this.$store.state.user.pid
+                },
+                agenttwo: {
+                    requestType: "agentdata",
+                    requestKeywords: "agenttwo",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    proid: ""
+                },
+                agentthree: {
+                    requestType: "agentdata",
+                    requestKeywords: "agentthree",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    proid: ""
                 }
             },
             renderData: {
@@ -127,14 +215,65 @@ export default {
         };
     },
     methods: {
-        async returnSuperior () {
-            this.levelFour = true
+        search () {
+            if( this.form.search === "" ) {
+                Toast("请输入内容")
+            } else {
+                this.renderData.list = []
+                this.queryData.list.page = 1
+                this.queryData.list.keywords = this.form.search
+                this.list().then( () => {
+                    delete this.queryData.list.keywords
+                })
+            }
+        },
+        agenttwo () {
+            getServer(this.queryData.agenttwo).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.agenttwoNum = res.data.con
+                }
+            });
+        },
+        agentthree() {
+            getServer(this.queryData.agentthree).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.agentthreeNum = res.data.con
+                }
+            });
+        },
+        productList() {
+            getServer(this.queryData.productList).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.byProduct.options = res.data.data;
+                    this.queryData.list.proid = res.data.data[0].id
+                    this.queryData.agenttwo.proid = res.data.data[0].id
+                    this.queryData.agentthree.proid = res.data.data[0].id
+                    this.queryData.actived.proid = res.data.data[0].id
+                    this.queryData.inactive.proid = res.data.data[0].id
+                    this.byProduct.value = res.data.data[0].name
+                }
+            }).then( res => {
+                this.list();
+                this.agenttwo();
+                this.agentthree();
+            })
+        },
+        async byProductChange() {
+            this.queryData.list.proid = this.byProduct.value;
+            this.queryData.actived.proid = this.byProduct.value;
+            this.queryData.inactive.proid = this.byProduct.value;
+            this.renderData.list = [];
+            this.queryData.list.page = 1;
+            await this.list();
+        },
+        async returnSuperior() {
+            this.levelFour = true;
             if (this.queryData.list.bid) {
                 this.renderData.list = [];
                 this.scrollTo();
                 this.queryData.list.page = 1;
-                delete this.queryData.list.bid
-                delete this.queryData.list.phone
+                delete this.queryData.list.bid;
+                delete this.queryData.list.phone;
                 let res = await getServer(this.queryData.list);
                 if (res.data.responseStatus === 1) {
                     this.renderData.list = res.data.data;
@@ -150,7 +289,7 @@ export default {
                     }
                 }
             } else {
-                this.$router.go(-1)
+                this.$router.go(-1);
             }
         },
         scrollTo() {
@@ -172,7 +311,7 @@ export default {
         },
         async openSub(agentNum, id, phone) {
             if (agentNum != "0" && this.levelFour) {
-                this.levelFour = false
+                this.levelFour = false;
                 this.renderData.list = [];
                 this.scrollTo();
                 this.queryData.list.page = 1;
@@ -194,7 +333,7 @@ export default {
                     }
                 }
                 Indicator.close();
-            } 
+            }
         },
         async list() {
             Indicator.open();
@@ -245,13 +384,46 @@ export default {
     },
     created() {
         // this.list();
+        this.productList();
     },
     async mounted() {
-        await this.list();
+        // await this.list();
     }
 };
 </script>
 <style lang="scss">
+.myMerchants .choice {
+    margin-top: 2.4rem;
+    padding: 0.1rem;
+    position: fixed;
+    overflow: hidden;
+    background: #fff;
+    z-index: 9999;
+}
+.myMerchants .choice>div {
+    display: block;
+}
+.myMerchants .choice .select {
+    float: left;
+    width: 48%;
+}
+.myMerchants .choice .search {
+    float: right;
+    width: 48%;
+}
+.myMerchants .choice .search .el-form-item {
+    float: left;
+    margin-bottom: 0;
+}
+.myMerchants .choice .search .el-form-item:first-child {
+    width: 58%;
+}
+.myMerchants .choice .search .el-form-item:last-child {
+    float: right;
+}
+.myMerchants .choice .search .el-form-item .el-form-item__content {
+    width: 100%;
+}
 .mint-indicator-wrapper {
     z-index: 99999;
 }
@@ -341,7 +513,7 @@ export default {
     }
 }
 .myMerchantsBodyMain {
-    padding: 2.8rem 10px 10px;
+    padding: 3.4rem 10px 10px;
 }
 .myMerchantsBodyTopMain {
     font-size: 16px;
@@ -530,7 +702,8 @@ em.moreEm::after {
 .merchantsMonthTotalMain {
     justify-content: space-around;
     background: #089cfe;
-    padding: 15px 15px 25px;
+    // padding: 15px 15px 25px;
+    padding: .1rem;
     color: #fff;
     > h3 {
         font-size: 14px;

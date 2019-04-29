@@ -397,7 +397,7 @@ export default {
     padding: 0.1rem;
     position: fixed;
     overflow: hidden;
-    top: 2.4rem;
+    top: 2.3rem;
     background: #fff;
     z-index: 9999;
 }

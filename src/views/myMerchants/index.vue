@@ -393,10 +393,11 @@ export default {
 </script>
 <style lang="scss">
 .myMerchants .choice {
-    margin-top: 2.4rem;
+    // margin-top: 2.3rem;
     padding: 0.1rem;
     position: fixed;
     overflow: hidden;
+    top: 2.4rem;
     background: #fff;
     z-index: 9999;
 }

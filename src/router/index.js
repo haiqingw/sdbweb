@@ -4,7 +4,8 @@ Vue.use(Router)
 export default new Router({
   routes: [{
         path: '/',
-        name: 'index/:money',
+        // name: 'index/:money',
+        name: 'index',
       component: resolve => require(['@/views/home/index'], resolve),
       meta: {
         requireAuth: true

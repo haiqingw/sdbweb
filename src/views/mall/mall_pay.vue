@@ -50,18 +50,18 @@
       <span>支付押金</span>
       <em> <i>￥</i>{{ renderData.listDetail.deposit }}</em>
     </div>
-    <div class="mallPayDepositMain flex line_top">
+    <!-- <div class="mallPayDepositMain flex line_top">
       <span>冻结金额</span>
       <em> <i>￥</i>{{ renderData.listDetail.frozen }}</em>
-    </div>
+    </div> -->
     <div class="interval"></div>
-    <div class="mallPayTipMain">
+    <!-- <div class="mallPayTipMain">
       <img src="@/assets/images/confirmPressImg.png" alt="押金备注" />
       <h3>为什么收冻结金额?</h3>
       <p>
         防止恶意领取。收货后联系客服注册、激活。激活后冻结金额按规则解冻，提现即可。
       </p>
-    </div>
+    </div> -->
     <div class="interval"></div>
     <div class="mallPayWechatMain">
       <div>

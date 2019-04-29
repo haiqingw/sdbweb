@@ -2,7 +2,7 @@
     <div class="myMerchants">
         <!-- header -->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="returnSuperior">
             <span>组织架构</span>
         </div>
         <!-- myMerchants -->
@@ -122,10 +122,37 @@ export default {
             },
             renderData: {
                 list: []
-            }
+            },
+            levelFour: true
         };
     },
     methods: {
+        async returnSuperior () {
+            this.levelFour = true
+            if (this.queryData.list.bid) {
+                this.renderData.list = [];
+                this.scrollTo();
+                this.queryData.list.page = 1;
+                delete this.queryData.list.bid
+                delete this.queryData.list.phone
+                let res = await getServer(this.queryData.list);
+                if (res.data.responseStatus === 1) {
+                    this.renderData.list = res.data.data;
+                    //获取激活、未激活
+                    this.dataarr = [];
+                    for (var i = 0; i < res.data.data.length; i++) {
+                        this.dataarr.push(res.data.data[i].id);
+                    }
+                    var $data = this.dataarr;
+                    for (let i = 0; i < $data.length; i++) {
+                        this.activeList($data[i]);
+                        this.inactivelist($data[i]);
+                    }
+                }
+            } else {
+                this.$router.go(-1)
+            }
+        },
         scrollTo() {
             this.$refs.scroll.scrollTo(0, 0);
         },
@@ -144,7 +171,8 @@ export default {
             this.popupVisible = !this.popupVisible;
         },
         async openSub(agentNum, id, phone) {
-            if (agentNum != "0") {
+            if (agentNum != "0" && this.levelFour) {
+                this.levelFour = false
                 this.renderData.list = [];
                 this.scrollTo();
                 this.queryData.list.page = 1;

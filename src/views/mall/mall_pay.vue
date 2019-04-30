@@ -67,7 +67,8 @@
       <div>
         <img src="@/assets/images/weChatPayIcon.png" alt="微信支付" /> 微信支付
       </div>
-      <em> <i>￥</i>{{ parseFloat(renderData.listDetail.deposit) + parseFloat(renderData.listDetail.frozen) + parseFloat(renderData.listDetail.nowPrice)}}</em>
+      <!-- + parseFloat(renderData.listDetail.frozen) -->
+      <em> <i>￥</i>{{ parseFloat(renderData.listDetail.deposit) + parseFloat(renderData.listDetail.nowPrice)}}</em>
     </div>
     <!-- 确认支付 -->
     <div class="submitPayBtn">

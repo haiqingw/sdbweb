@@ -112,14 +112,14 @@
                     </div>
                 </li>
                 <!-- <li>
-          <div class="img">
-            <router-link to="/mall">
-              <img src="@/assets/images/index-list2-img5.png" alt="" />
-            </router-link>
-          </div>
-          <div class="text">
-            <router-link to="/mall">机具商场</router-link>
-          </div>
+                    <div class="img">
+                        <router-link to="/mall">
+                            <img src="@/assets/images/index-list2-img5.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/mall">机具商场</router-link>
+                    </div>
                 </li> -->
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
@@ -131,7 +131,7 @@
                         <router-link to="/financialDetails">收益明细</router-link>
                     </div>
                 </li>
-                <li>
+                <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/myMerchants">
                             <img src="@/assets/images/organizationIcon.png" alt>
@@ -150,15 +150,15 @@
           </div>
                 </li>-->
                 <!-- <li v-if="renderData.info.level == 2">
-          <div class="img">
-            <router-link to="/deliverGoods"
-              ><img src="@/assets/images/index-list2-img4.png" alt=""
-            /></router-link>
-          </div>
-          <div class="text">
-            <router-link to="/deliverGoods">订单管理</router-link>
-          </div>
-                </li>-->
+                    <div class="img">
+                        <router-link to="/deliverGoods">
+                            <img src="@/assets/images/index-list2-img4.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/deliverGoods">订单管理</router-link>
+                    </div>
+                </li> -->
             </ul>
         </div>
         <Footer></Footer>

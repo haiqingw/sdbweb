@@ -160,7 +160,7 @@
                 this.queryData.list.isReceipt = this.activeName
                 this.upFinished = false
                 this.isData = true
-                this.queryData.list.page = 1
+                this.queryData.list.page = 0
                 this.deliverGoodsList()
             },
             deliverGoodsList () {

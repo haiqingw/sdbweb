@@ -16,7 +16,12 @@
             </div>
             <div class="odd-numbers">
                 <img src="@/assets/images/click-deliver-goods-odd-numbers.png" alt="">
-                <el-input v-model="queryData.sub.waybillNumber" placeholder="请输入或扫码"></el-input>
+                <el-input v-model="queryData.sub.waybillNumber" placeholder="请输入或扫码录入快递单号"></el-input>
+                <a href="javascript:;" @click="sys_click">扫码录入</a>
+            </div>
+            <div class="odd-numbers">
+                <img src="@/assets/images/click-deliver-goods-odd-terminal.png" alt="">
+                <el-input v-model="queryData.sub.terminalNo" placeholder="请输入或扫码录入终端号"></el-input>
                 <a href="javascript:;" @click="sys_click">扫码录入</a>
             </div>
         </div>
@@ -117,7 +122,8 @@
                         userPhone: this.$store.state.user.uphone,
                         orderID: this.$route.params.id,
                         courierName: JSON.parse(sessionStorage.getItem('expressName')) || "",
-                        waybillNumber: ""
+                        waybillNumber: "",
+                        terminalNo: ""
                     }
                 },
                 renderData: {

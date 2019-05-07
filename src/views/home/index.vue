@@ -149,7 +149,7 @@
             <a href="">排行榜</a>
           </div>
                 </li>-->
-                <li v-if="renderData.info.level == 2">
+                <li v-if="renderData.info.level == 2" style="display:none;">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>

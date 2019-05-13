@@ -103,30 +103,40 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
-                <router-link tag="li" to="/application-agent">
+                <li>
                     <div class="img">
-                        <img src="@/assets/images/index-list2-img3.png" alt>
+                        <router-link to="/application-agent">
+                            <img src="@/assets/images/index-list2-img3.png" alt>
+                        </router-link>
                     </div>
                     <div class="text">
-                        <a href="javascript:;">申请代理</a>
+                        <router-link to="/application-agent">
+                            申请代理
+                        </router-link>
                     </div>
-                </router-link>
-                <router-link tag="li" to="/application-agent-To-examine">
+                </li>
+                <li>
                     <div class="img">
-                        <img src="@/assets/images/index-list2-img3.png" alt>
+                        <router-link to="/application-agent-To-examine">
+                            <img src="@/assets/images/index-list2-img3.png" alt>
+                        </router-link>
                     </div>
                     <div class="text">
-                        <a href="javascript:;">代理审核</a>
+                        <router-link to="/application-agent-To-examine">
+                            代理审核
+                        </router-link>
                     </div>
-                </router-link>
-                <router-link tag="li" to="/dial-code">
+                </li>
+                <li>
                     <div class="img">
-                        <img src="@/assets/images/index-list2-img3.png" alt>
+                        <router-link to="/dial-code">
+                            <img src="@/assets/images/index-list2-img3.png" alt>
+                        </router-link>
                     </div>
                     <div class="text">
-                        <a href="javascript:;">拨码</a>
+                        <router-link to="/dial-code">拨码</router-link>
                     </div>
-                </router-link>
+                </li>
                 <!-- <li>
                     <div class="img">
                         <router-link to="/mall">

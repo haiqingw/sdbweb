@@ -439,7 +439,7 @@ export default {
     font-size: 0.3rem;
 }
 .myMerchants .scroll-list-wrap {
-    height: 11rem;
+    height:9.7rem;
     overflow-y: scroll;
     .item {
         padding: 10px 10px;
@@ -830,5 +830,8 @@ em.moreEm::after {
 .mint-indicator {
     z-index: 9999999999;
     position: relative;
+}
+.cube-scroll-list-wrapper{
+    min-height:100px !important;
 }
 </style>

@@ -157,7 +157,11 @@
             <a href="">排行榜</a>
           </div>
                 </li>-->
+<<<<<<< HEAD
                 <!-- <li v-if="renderData.info.level == 2">
+=======
+                <li v-if="renderData.info.level == 2" style="display:none;">
+>>>>>>> 16ebcd01d1d95c49d18e5866b0979c022afd9d5f
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>

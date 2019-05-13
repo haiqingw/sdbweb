@@ -47,7 +47,7 @@
                 </li>
                 <li>
                     <router-link
-                        :to="{ name: 'freezeprogress', params: { money: renderData.thaw } }"
+                        :to="{ name: 'freezeprogress' }"
                     >
                         <div class="index-list1-img">
                             <img src="@/assets/images/index-list1-4.png" alt>
@@ -103,7 +103,7 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
-                <router-link tag="li" @click="applyAgent" to="/application-agent">
+                <router-link tag="li" to="/application-agent">
                     <div class="img">
                         <img src="@/assets/images/index-list2-img3.png" alt>
                     </div>
@@ -111,7 +111,15 @@
                         <a href="javascript:;">申请代理</a>
                     </div>
                 </router-link>
-                <router-link tag="li" @click="applyAgent" to="/dial-code">
+                <router-link tag="li" to="/application-agent-To-examine">
+                    <div class="img">
+                        <img src="@/assets/images/index-list2-img3.png" alt>
+                    </div>
+                    <div class="text">
+                        <a href="javascript:;">代理审核</a>
+                    </div>
+                </router-link>
+                <router-link tag="li" to="/dial-code">
                     <div class="img">
                         <img src="@/assets/images/index-list2-img3.png" alt>
                     </div>
@@ -157,11 +165,8 @@
             <a href="">排行榜</a>
           </div>
                 </li>-->
-<<<<<<< HEAD
                 <!-- <li v-if="renderData.info.level == 2">
-=======
                 <li v-if="renderData.info.level == 2" style="display:none;">
->>>>>>> 16ebcd01d1d95c49d18e5866b0979c022afd9d5f
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -291,13 +296,6 @@ export default {
                 }
             });
         },
-        //申请代理商
-        applyAgent() {
-            Toast({
-                message: "请联系您的上级代理",
-                duration: 1000
-            });
-        }
     },
     created() {
         this.listOne();

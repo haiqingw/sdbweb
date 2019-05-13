@@ -10,7 +10,7 @@
             <div class="freezeProgressHeader">
                 <img src="../../assets/images/freezeProgressHeaderImg.jpg">
                 <div class="freezeProgressHeaderBox">
-                    {{ $route.params.money }}
+                    {{ renderData.thaw }}
                     <span>待解冻金额(元)</span>
                 </div>
             </div>
@@ -103,18 +103,31 @@ export default {
             noPosDataStatus: false,
             freezeData: {},
             queryData: {
-                requestType: "thaw",
-                requestKeywords: "thawlist",
-                platformID: this.$store.state.user.pid,
-                userID: this.$store.state.user.uid,
-                userPhone: this.$store.state.user.uphone
+                freezeData: {
+                    requestType: "thaw",
+                    requestKeywords: "thawlist",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                thaw: {
+                    requestType: "thaw",
+                    requestKeywords: "thawmoney",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                }
+            },
+
+            renderData: {
+                thaw: ""
             }
         };
     },
     methods: {
         getfreezeListFn() {
             Indicator.open();
-            getServer(this.queryData).then(res => {
+            getServer(this.queryData.freezeData).then(res => {
                 Indicator.close();
                 //   console.log(res)
                 if (res.data.responseStatus === 1) {
@@ -124,10 +137,16 @@ export default {
                     this.noPosDataStatus = true;
                 }
             });
+        },
+        thaw() {
+            getServer(this.queryData.thaw).then(res => {
+                this.renderData.thaw = res.data.thawMoney;
+            });
         }
     },
     created() {
         this.getfreezeListFn();
+        this.thaw();
     }
 };
 </script>

@@ -189,7 +189,7 @@ export default new Router({
       component: resolve => require(['@/views/settings/index'], resolve), 
     },
     {
-      path: '/freezeprogress/:money', //待解冻
+      path: '/freezeprogress', //待解冻
       name: 'freezeprogress',
       component: resolve => require(['@/views/freezeprogress/index'], resolve), 
     }, 
@@ -326,6 +326,11 @@ export default new Router({
         path: '/dial-code-subordinate/:terminalNoId', 
         name: 'dial-code-subordinate',
         component: resolve => require(['@/views/dial-code/subordinate'], resolve),
+    },
+    {
+        path: '/application-agent-To-examine', 
+        name: 'application-agent-To-examine',
+        component: resolve => require(['@/views/application-agent-To-examine'], resolve),
     }
   ]
 })

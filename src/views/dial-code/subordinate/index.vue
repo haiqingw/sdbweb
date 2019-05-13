@@ -12,10 +12,17 @@
                 <el-button type="primary" @click="search">搜索</el-button>
             </div>
             <div class="dial-code-subordinate-list">
-                <div v-for="item in renderData.list" :key="item.id" v-if="isData">
-                    <span>{{item.id}}</span>
-                    <span>{{item.phone}}</span>
-                    <span @click="confirmDialCode(item.id)">选择</span>
+                <div class="item" v-for="item in renderData.list" :key="item.id" v-if="isData">
+                    <div class="img">
+                        <img src="@/assets/images/dial-code-user.png" alt="">
+                    </div>
+                    <div class="info">
+                        <span>{{item.busname}}</span>
+                        <span>{{item.phone}}</span>
+                    </div>
+                    <div class="confirmDialCode">
+                        <span @click="confirmDialCode(item.id)">选择</span>
+                    </div>
                 </div>
                 <div class="no-data" v-else>
                     <span>暂无</span>
@@ -63,7 +70,6 @@
                     Toast("请输入要搜索的手机号")
                 } else {
                     getServer(this.queryData.search).then( res => {
-                        console.log(res)
                         if( res.data.responseSatus === 1 ) {
                             this.isData = true
                             this.renderData.list = res.data.data
@@ -75,8 +81,18 @@
                     })
                 }
             },
-            confirmDialCode() {
-
+            confirmDialCode(id) {
+                this.queryData.confirmDialCode.childID = id
+                getServer(this.queryData.confirmDialCode).then( res => {
+                    if ( res.data.responseSatus === 1 ) {
+                        Toast("拨码成功")
+                        setTimeout( () => {
+                            this.$router.go(-1)
+                        }, 500)
+                    } else {
+                        Toast(response[res.data.responseStatus])
+                    }
+                })
             }
         }
     }
@@ -103,6 +119,29 @@
     }
     .dial-code-subordinate-list {
         font-size: .3rem;
+        margin-top: .3rem;
+    }
+    .dial-code-subordinate-list .item {
+        padding: .2rem;
+        box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+        overflow: hidden;
+    }
+    .dial-code-subordinate-list .item .img {
+        width: .8rem;
+        float: left;
+    }
+    .dial-code-subordinate-list .item .info {
+        float: left;
+        margin-left: .3rem;
+        line-height: .4rem;
+    } 
+    .dial-code-subordinate-list .item .info span {
+        display: block;
+    }
+    .dial-code-subordinate-list .item .confirmDialCode {
+        float: right;
+        color: #409EFF;
+        line-height: .8rem;
     }
 </style>
 

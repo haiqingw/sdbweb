@@ -76,7 +76,7 @@
 <script>
     import { getServer } from '@/api/index'
     import response from '@/assets/js/response.js'
-    import { Toast } from 'mint-ui';
+    import { Toast, Indicator } from 'mint-ui';
     export default {
         data () {
             return {
@@ -176,9 +176,11 @@
                 })
             },
             terminalList () {
+                Indicator.open()
                 this.upFinished = false
                 getServer(this.queryData.list).then( res => {
                     // console.log(response[res.data.responseStatus])
+                    Indicator.close()
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true
                         this.renderData.list = res.data.data

@@ -25,16 +25,16 @@
                             <h3>{{item.types}}</h3>
                             <p>
                                 <i>￥</i>
-                                {{item.money}}
+                                {{item.ktx}}
                             </p>
                             <div class="flex">
                                 <span>
-                                    可提现：
-                                    <b>{{item.ktx}}</b>
+                                    总余额：
+                                    <b>{{item.money}}</b>
                                 </span>
                                 <em>结算方式：{{item.method}}</em>
                             </div>
-                            <a href="javascript:;" v-if="isBinding" @click="allWithdrawal(item.money)">全部提现</a>
+                            <a href="javascript:;" v-if="isBinding" @click="allWithdrawal(item.ktx)">全部提现</a>
                         </div>
                     </mt-swipe-item>
                 </mt-swipe>

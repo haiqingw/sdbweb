@@ -306,6 +306,26 @@ export default new Router({
       path: '/agentData', //代理商数据统计
       name: 'agentData',
       component: resolve => require(['@/views/agentData'], resolve),
+    },
+    {
+        path: '/application-agent', 
+        name: 'application-agent',
+        component: resolve => require(['@/views/application-agent/index'], resolve),
+    },
+    {
+        path: '/application-agent-details', 
+        name: 'application-agent-details',
+        component: resolve => require(['@/views/application-agent/details'], resolve),
+    },
+    {
+        path: '/dial-code', 
+        name: 'dial-code',
+        component: resolve => require(['@/views/dial-code/index/index'], resolve),
+    },
+    {
+        path: '/dial-code-subordinate/:terminalNoId', 
+        name: 'dial-code-subordinate',
+        component: resolve => require(['@/views/dial-code/subordinate'], resolve),
     }
   ]
 })

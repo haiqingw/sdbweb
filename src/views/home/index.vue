@@ -103,14 +103,22 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
-                <li @click="applyAgent">
+                <router-link tag="li" @click="applyAgent" to="/application-agent">
                     <div class="img">
                         <img src="@/assets/images/index-list2-img3.png" alt>
                     </div>
                     <div class="text">
                         <a href="javascript:;">申请代理</a>
                     </div>
-                </li>
+                </router-link>
+                <router-link tag="li" @click="applyAgent" to="/dial-code">
+                    <div class="img">
+                        <img src="@/assets/images/index-list2-img3.png" alt>
+                    </div>
+                    <div class="text">
+                        <a href="javascript:;">拨码</a>
+                    </div>
+                </router-link>
                 <!-- <li>
                     <div class="img">
                         <router-link to="/mall">
@@ -259,7 +267,6 @@ export default {
         },
         bannerList() {
             getServer(this.queryData.bannerData).then(res => {
-                console.log(res)
                 // console.log(res);
                 this.bannerLength = res.data.data.length;
                 this.bannerListData = res.data.data;

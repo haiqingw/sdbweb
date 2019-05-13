@@ -33,7 +33,6 @@
                                     <time>2000-00-00 00:00:00</time>
                                     <el-button type="text" class="button more">查看详细</el-button>
                                 </div>
-                               
                             </div>
                         </el-card>
                     </li>

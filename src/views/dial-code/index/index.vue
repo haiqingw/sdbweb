@@ -1,26 +1,17 @@
 
-
 <template>
-    <div class="my-terminal">
+    <div class="dial-code">
         <div class="return">
-            <img src="@/assets/images/return.png" alt=""  @click="$router.go(-1)"/>
-            <span>我的终端</span>
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <span>拨码</span>
         </div>
-        <div class="my-terminal-choice line_bottom">
+         <div class="my-terminal-choice line_bottom">
             <el-select v-model="byProduct.value" placeholder="按产品" @change="byProductChange">
                 <el-option
                 v-for="item in byProduct.options"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id">
-                </el-option>
-            </el-select>
-            <el-select v-model="usageState.value" placeholder="使用状态" @change="usageStateChange">
-                <el-option
-                v-for="item in usageState.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
                 </el-option>
             </el-select>
             <el-select v-model="byBatch.value" placeholder="按批次" @change="byBatchChange">
@@ -48,8 +39,11 @@
                         <li v-for="item in renderData.oldList" :key="item.id">
                             <div class="name-state">
                                 <h3>{{item.productName}}</h3>
-                                <el-tag type="danger" v-if="item.useStatus === '未使用'">{{item.useStatus}}</el-tag>
-                                <el-tag type="success" v-if="item.useStatus === '已使用' ">{{item.useStatus}}</el-tag>
+                                <!-- <el-tag type="danger" v-if="item.useStatus === '未使用'">{{item.useStatus}}</el-tag>
+                                <el-tag type="success" v-if="item.useStatus === '已使用' ">{{item.useStatus}}</el-tag> -->
+                                <el-checkbox-group v-model="checkList" @change="handleCheckedCitiesChange">
+                                    <el-checkbox :label="item.id"></el-checkbox>
+                                </el-checkbox-group>
                             </div>
                             <div class="terminal-number">
                                 {{item.terminalNo}}
@@ -67,6 +61,10 @@
                     </ul>
                 </van-list>
             </van-pull-refresh>
+            <div class="confirm" @click="confirm">
+                <em>已选{{checkList.length}}</em>
+                <span>确定</span>
+            </div>
         </div>
         <div class="no-data" v-else>
             <img src="@/assets/images/no-data.png" alt="">
@@ -74,9 +72,11 @@
     </div>
 </template>
 
+
 <script>
     import { getServer } from '@/api/index'
     import response from '@/assets/js/response.js'
+    import { Toast } from 'mint-ui';
     export default {
         data () {
             return {
@@ -85,25 +85,13 @@
                 upFinished: false,//上拉加载完毕
                 offset: 10, //滚动条与底部距离小于 offset 时触发load事件
                 isData: true,
+                checkList: [],
                 byProduct: {
                     options: [
                         {   
                             id: "1",
                             label: '按产品'
                         },
-                    ],
-                    value: ''
-                },
-                usageState: {
-                    options: [
-                        {
-                            value: "2",
-                            label: '已使用'
-                        }, 
-                        {
-                            value: "1",
-                            label: '未使用'
-                        }, 
                     ],
                     value: ''
                 },
@@ -137,7 +125,7 @@
                         userPhone: this.$store.state.user.uphone,
                         // productID: "",  //产品ID
                         // batchNo: "",      //批次号
-                        // useStatus: "",  //使用状态
+                        useStatus: "1",  //使用状态
                         page: 0,
                         limit: 10
                     }
@@ -149,14 +137,19 @@
             }
         },
         methods: {
+            confirm () {
+                if (this.checkList.length == 0) {
+                    Toast("请选择终端")
+                } else {
+                    this.$router.push({ name: 'dial-code-subordinate', params: { terminalNoId: this.checkList.join() }})
+                }
+               
+            },
+            handleCheckedCitiesChange() {
+                // this.checkNum = this.checkList.length
+            },
             byProductChange () {
                 this.queryData.list.productID = this.byProduct.value
-                this.renderData.oldList = []
-                this.queryData.list.page = 0
-                this.onLoadList()
-            },
-            usageStateChange () {
-                this.queryData.list.useStatus = this.usageState.value
                 this.renderData.oldList = []
                 this.queryData.list.page = 0
                 this.onLoadList()
@@ -228,10 +221,38 @@
 </script>
 
 <style>
-.my-terminal .el-input--suffix .el-input__inner {
+.dial-code .el-checkbox-group {
+    float: right;
+}
+.dial-code .el-checkbox__label {
+    display: none;
+}
+.dial-code .van-list {
+    padding-bottom: .6rem;
+}
+.dial-code .confirm {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    font-size: .3rem;
+    color: #fff;
+    background: #089cfe;
+    width: 100%;
+    line-height: .8rem;
+    height: .8rem;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+}
+.dial-code .confirm em {
+    float: left;
+}
+.dial-code .confirm span {
+    float: right;
+}
+.dial-code .el-input--suffix .el-input__inner {
     text-align: center;
 }
-.my-terminal .no-data {
+.dial-code .no-data {
     margin-top: 67%;
 }
 .my-terminal-choice {
@@ -240,25 +261,25 @@
     top: .7rem;
     z-index: 99;
 }
-.my-terminal .my-terminal-choice {
+.dial-code .my-terminal-choice {
     display: flex;
     font-size: 0.28rem;
     text-align: center;
     line-height: .4rem;
     padding:.2rem 0 0.1rem;
 }
-.my-terminal .my-terminal-choice .el-select {
+.dial-code .my-terminal-choice .el-select {
     flex: 1;
-    background: url(../../assets/images/my-terminal-choice-drop-down.png) no-repeat 2rem center;
+    background: url(../../../assets/images/my-terminal-choice-drop-down.png) no-repeat 2rem center;
     background-size: 10%;
 }
-.my-terminal .my-terminal-choice .el-select input {
+.dial-code .my-terminal-choice .el-select input {
     border: none;
 }
-.my-terminal .mint-popup {
+.dial-code .mint-popup {
     width: 100%;
 }
-.my-terminal .mint-popup .picker-slot.picker-slot-right {
+.dial-code .mint-popup .picker-slot.picker-slot-right {
     text-align: center;
 }
 .my-terminal-list {
@@ -298,6 +319,9 @@
     font-weight: normal;
     padding: .3rem 0;
 }
+.my-terminal-list .el-checkbox__input {
+    vertical-align: inherit;
+}
 .my-terminal-list ul li .time-batch {
     overflow: hidden;
     color: #ccc;
@@ -314,5 +338,4 @@
     float: right;
 }
 </style>
-
 

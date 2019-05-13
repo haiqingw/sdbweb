@@ -55,8 +55,13 @@
                                 {{item.terminalNo}}
                             </div>
                             <div class="time-batch">
-                                <time>{{item.allotTime}}</time>    
-                                <span>{{item.batchNo}}</span>
+                                <div class="left">
+                                    <span v-if=" item.useName !== '0' ">使用者：{{item.useName}}</span>
+                                    <time>{{item.allotTime}}</time>    
+                                </div>
+                                <div class="right">
+                                    <span>{{item.batchNo}}</span>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -180,6 +185,7 @@
             terminalList () {
                 this.upFinished = false
                 getServer(this.queryData.list).then( res => {
+                    console.log(res)
                     // console.log(response[res.data.responseStatus])
                     if( res.data.responseStatus === 1 ) {
                         this.isData = true
@@ -279,6 +285,10 @@
     line-height: 0.6rem;
     color: #303133;
 }
+.my-terminal-list ul li .name-state h3 span {
+    margin-left: .18rem;
+    font-size: .28rem;
+}
 .my-terminal-list ul li .name-state span {
     float: right;
 }
@@ -295,10 +305,13 @@
     font-size: 0.26rem;
     line-height: 0.4rem;
 }
-.my-terminal-list ul li .time-batch time {
+.my-terminal-list ul li .time-batch .left {
     float: left;
 }
-.my-terminal-list ul li .time-batch span {
+.my-terminal-list ul li .time-batch .left span {
+    margin-right: .2rem;
+}
+.my-terminal-list ul li .time-batch .right {
     float: right;
 }
 </style>

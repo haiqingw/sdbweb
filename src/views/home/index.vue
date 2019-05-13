@@ -149,7 +149,7 @@
             <a href="">排行榜</a>
           </div>
                 </li>-->
-                <li v-if="renderData.info.level == 2">
+                <!-- <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -158,7 +158,7 @@
                     <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
-                </li>
+                </li> -->
             </ul>
         </div>
         <Footer></Footer>
@@ -200,7 +200,7 @@ export default {
                 },
                 bannerData: {
                     requestType: "list",
-                    requestKeywords: "advertis",
+                    requestKeywords: "newadvertis",
                     types: "syl",
                     platformID: this.$store.state.user.pid
                 },
@@ -259,6 +259,7 @@ export default {
         },
         bannerList() {
             getServer(this.queryData.bannerData).then(res => {
+                console.log(res)
                 // console.log(res);
                 this.bannerLength = res.data.data.length;
                 this.bannerListData = res.data.data;

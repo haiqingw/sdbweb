@@ -331,6 +331,11 @@ export default new Router({
         path: '/application-agent-To-examine', 
         name: 'application-agent-To-examine',
         component: resolve => require(['@/views/application-agent-To-examine'], resolve),
+    },
+    {
+        path: '/dial-code-list/:id', 
+        name: 'dial-code-list',
+        component: resolve => require(['@/views/dial-code/list'], resolve),
     }
   ]
 })

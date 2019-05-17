@@ -103,7 +103,7 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
-                <li>
+                <!-- <li>
                     <div class="img">
                         <router-link to="/application-agent">
                             <img src="@/assets/images/index-list2-img3.png" alt>
@@ -136,7 +136,7 @@
                     <div class="text">
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
-                </li>
+                </li> -->
                 <!-- <li>
                     <div class="img">
                         <router-link to="/mall">
@@ -175,8 +175,8 @@
             <a href="">排行榜</a>
           </div>
                 </li>-->
-                <!-- <li v-if="renderData.info.level == 2">
-                <li v-if="renderData.info.level == 2" style="display:none;">
+                <!-- <li v-if="renderData.info.level == 2"> -->
+                <!-- <li v-if="renderData.info.level == 2" style="display:none;">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -246,7 +246,7 @@ export default {
                     userPhone: this.$store.state.user.uphone
                 },
                 loginSuccess: {
-                    requestType: "personal",
+                    requestType: "buslogin",
                     requestKeywords: "cordeopenid",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,

@@ -17,5 +17,5 @@ router.beforeEach((to, from, next) => {
         } else {
             next(`/loginoid?redirect = $ {to.path}`) // 否则全部重定向到登录页
         }
-  }
+    }
 })

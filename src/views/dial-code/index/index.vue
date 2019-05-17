@@ -262,6 +262,7 @@
     left: 0;
     top: .7rem;
     z-index: 99;
+    width: 100%;
 }
 .dial-code .my-terminal-choice {
     display: flex;

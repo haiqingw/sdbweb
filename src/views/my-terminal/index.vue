@@ -5,12 +5,12 @@
         <div class="return">
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
             <span>我的终端</span>
-            <a
+            <!-- <a
                 class="withdrawalRecord"
                 @click="dialCodeList"
                 href="javascript:;"
                 style="color:#fff;"
-            >退码列表</a>
+            >退码列表</a> -->
         </div>
         <div class="my-terminal-choice line_bottom">
             <el-select v-model="byProduct.value" @change="byProductChange">
@@ -70,9 +70,9 @@
                                     <span>{{item.batchNo}}</span>
                                 </div>
                             </div>
-                            <div class="code-out" v-if="item.useStatus === '未使用'" @click="codeOut">
+                            <!-- <div class="code-out" v-if="item.useStatus === '未使用'" @click="codeOut">
                                 <span>退码</span>
-                            </div>
+                            </div> -->
                         </li>
                     </ul>
                     </cube-scroll>

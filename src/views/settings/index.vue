@@ -83,13 +83,16 @@ export default {
                     this.$store
                         .dispatch("LogOut", this.queryData.logout)
                         .then(() => {
-                            location.reload();
-                            this.$router.push({
-                                path: "/loginoid",
-                                query: {
-                                    plat: this.$store.state.user.plat
-                                }
-                            });
+                            // location.reload();
+                            setTimeout( () => {
+                                this.$router.push({
+                                    // path: "/loginoid",
+                                    path: "/loginoid",
+                                    query: {
+                                        plat: this.$store.state.user.plat
+                                    }
+                                });
+                            }, 500)
                         });
                 })
                 .catch(() => {});

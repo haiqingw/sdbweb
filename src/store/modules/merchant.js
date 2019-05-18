@@ -15,6 +15,7 @@ const merchant = {
     },
     actions: {
         merchantInfo({commit}, plat) {
+            // alert(plat)
             Indicator.open()
             window.sessionStorage.clear()
             const queryData = {

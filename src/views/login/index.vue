@@ -108,6 +108,10 @@ export default {
         },
         merchantInfo() {
             this.queryData.merchantInfo.plat = this.$route.query.plat;
+            // alert(this.$route.query.plat)
+            // alert(window.location.href)
+            // alert(this.$route.query)
+            // alert(this.$route.path)
             getServer(this.queryData.merchantInfo).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.renderData.merchantInfo = res.data.data;
@@ -138,9 +142,9 @@ export default {
 .logo {
     margin-bottom: .8rem;
 }
-.logo img {
-    /* border-radius: 50%; */
-}
+/* .logo img {
+    border-radius: 50%;
+} */
 .login-from {
     width: 80%;
     margin: 0 auto;

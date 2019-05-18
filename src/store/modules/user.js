@@ -57,6 +57,7 @@ const user = {
                 plat : userInfo.plat
             }
             commit('SET_PLAT', userInfo.plat)
+            // commit('SET_PLAT', 187)
             return new Promise( (resolve, reject) => {
                 getServer(queryData).then( res => {
                     // console.log(res)
@@ -122,6 +123,7 @@ const user = {
                 getServer(data).then( res => {
                     if( res.data.responseStatus === 1 ) {
                         // window.sessionStorage.clear()
+                        // alert(123)
                         window.localStorage.removeItem('uid');
                         window.localStorage.removeItem('pid');
                         window.localStorage.removeItem('uname');

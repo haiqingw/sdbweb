@@ -7,25 +7,13 @@
             </router-link>
         </mt-header> -->
         <div class="return">
-            <img
-                src="@/assets/images/return.png" alt="" 
-                @click="$router.go(-1)"
-            />
+            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
             <span>提现记录</span>
         </div>
         <!-- withdrawalRecord -->
         <div class="withdrawalRecordMain" v-if="isData">
-            <van-pull-refresh
-                v-model="isDownLoading"
-                @refresh="onDownRefresh"
-            >
-                <van-list
-                    v-model="isUpLoading"                 
-                    :finished="upFinished"
-                    finished-text="没有更多了"
-                    @load="onLoadList"
-                    :offset= "offset"
-                >
+            <van-pull-refresh v-model="isDownLoading" @refresh="onDownRefresh">
+                <van-list v-model="isUpLoading" :finished="upFinished" finished-text="没有更多了" @load="onLoadList" :offset="offset">
                     <!-- <div class="withdrawalRecordItem">
                         <em>审核中</em>
                         <div class="withdrawalRecordHeader flex line_bottom">
@@ -56,20 +44,25 @@
                         <em v-if="item.reviewStatus == 4">{{item.reStatus}}</em>
                         <div class="withdrawalRecordHeader flex line_bottom">
                             <div>
-                                <h3>{{item.drawMoney}}</h3>
+                                <h3>{{item.arviAmount}}</h3>
                                 <p>提现金额</p>
                             </div>
                         </div>
                         <div class="withdrawalRecordBody">
-                            <p>手续费:
-                                <b>{{item.pou}}元</b>
-                            </p>
-                            <p>税金:
-                                <b>{{item.tax}}元</b>
-                            </p>
-                            <p>实到账:
-                                <b>{{item.arviAmount}}元</b>
-                            </p>
+                            <div class="withdrawRecordTop flex line_bottom">
+                                <p>
+                                    <b>{{item.pou}}<i>元</i></b>
+                                    <span>手续费</span>
+                                </p>
+                                <p>
+                                    <b>{{item.tax}}<i>元</i></b>
+                                    <span>税金</span>
+                                </p>
+                                <p>
+                                    <b>{{item.drawMoney}}<i>元</i></b>
+                                    <span>实到账</span>
+                                </p>
+                            </div>
                             <!-- <p>审核状态:
                                 <b>{{item.reviewStatus}}</b>
                             </p> -->
@@ -78,7 +71,7 @@
                                 <b v-if="item.status == 2">{{item.drawStatus}}</b>
                             </p>
                             <p>提现时间:{{item.drawTime}}</p>
-                            <p>备注:{{item.remark}}</p>
+                            <p>备注:<span style="color:#f33">{{item.remark}}</span></p>
                         </div>
                     </div>
                 </van-list>
@@ -90,27 +83,27 @@
     </div>
 </template>
 <script>
-    import { getServer } from '@/api/index'
-    import response from '@/assets/js/response.js'
+import { getServer } from "@/api/index";
+import response from "@/assets/js/response.js";
 export default {
     data() {
         return {
-            isDownLoading: false,//下拉刷新
-            isUpLoading: false,//上拉加载
-            upFinished: false,//上拉加载完毕
+            isDownLoading: false, //下拉刷新
+            isUpLoading: false, //上拉加载
+            upFinished: false, //上拉加载完毕
             offset: 10, //滚动条与底部距离小于 offset 时触发load事件
             isData: true,
             queryData: {
                 list: {
-                    requestType: 'spendinginto',
-                    requestKeywords:'spending', 
+                    requestType: "spendinginto",
+                    requestKeywords: "spending",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 0,
                     // limit: '20',
-                    types: 'T',
-                    stypes: 'TX'
+                    types: "T",
+                    stypes: "TX"
                 }
             },
             renderData: {
@@ -119,43 +112,49 @@ export default {
             }
         };
     },
-    methods:{
-        onLoadList () {
+    methods: {
+        onLoadList() {
             // console.log("进来", this.queryData.list.page)
-            this.queryData.list.page++
-            this.isUpLoading = true
+            this.queryData.list.page++;
+            this.isUpLoading = true;
             // console.log(this.queryData.list.page)
-            this.withdrawalList()
-        },
-        onDownRefresh(){
-            this.queryData.list.page = 1
-            this.renderData.oldList = []
-            this.isDownLoading = true
             this.withdrawalList();
         },
-        withdrawalList () {
-            getServer(this.queryData.list).then( res => {
-                if( res.data.responseStatus === 1 ) {
-                    this.isData = true
-                    this.renderData.list = res.data.data
-                    this.renderData.list.forEach( item => {
-                        this.renderData.oldList.push(item)
-                    })
-                    this.isDownLoading = false
-                    this.isUpLoading = false
-                } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
-                    this.upFinished = true
-                    this.isUpLoading = false
-                } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
-                    this.upFinished = false
-                    this.isUpLoading = false
-                    this.isData = false
+        onDownRefresh() {
+            this.queryData.list.page = 1;
+            this.renderData.oldList = [];
+            this.isDownLoading = true;
+            this.withdrawalList();
+        },
+        withdrawalList() {
+            getServer(this.queryData.list).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.isData = true;
+                    this.renderData.list = res.data.data;
+                    this.renderData.list.forEach(item => {
+                        this.renderData.oldList.push(item);
+                    });
+                    this.isDownLoading = false;
+                    this.isUpLoading = false;
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page !== 1
+                ) {
+                    this.upFinished = true;
+                    this.isUpLoading = false;
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page === 1
+                ) {
+                    this.upFinished = false;
+                    this.isUpLoading = false;
+                    this.isData = false;
                 }
-            })
+            });
         }
     },
-    created () {
-        this.withdrawalList()
+    created() {
+        this.withdrawalList();
     }
 };
 </script>
@@ -168,7 +167,7 @@ export default {
     padding: 10px;
     overflow: hidden;
     position: relative;
-    margin:5px 5px 15px;
+    margin: 5px 5px 15px;
     em {
         display: block;
         width: 100px;
@@ -193,7 +192,7 @@ export default {
 .withdrawalRecordHeader {
     justify-content: space-around;
     padding-bottom: 15px;
-    padding-top:12px;
+    padding-top: 12px;
     div {
         text-align: center;
         h3 {
@@ -203,6 +202,7 @@ export default {
         p {
             font-size: 12px;
             color: #333;
+            padding-top: 10px;
         }
         &:nth-of-type(2) {
             width: 100px;
@@ -221,7 +221,7 @@ export default {
     }
 }
 .withdrawalRecordBody {
-    padding-top: 10px;
+    padding-top:7px;
     p {
         line-height: 24px;
         font-size: 12px;
@@ -255,5 +255,28 @@ export default {
 }
 .mint-loadmore-top {
     font-size: 14px;
+}
+.withdrawRecordTop{
+    justify-content: space-around;
+    padding-bottom:13px;
+    margin-bottom:10px;
+    p{
+        width:100%;
+        text-align:center;
+        b{
+            font-weight:bold;
+            display:block;
+            font-size:14px;
+            i{
+                font-size:12px;
+                padding-left:1px;
+            }
+        }
+        span{
+            display: block;
+            font-size:12px;
+            line-height:12px;
+        }
+    }
 }
 </style>

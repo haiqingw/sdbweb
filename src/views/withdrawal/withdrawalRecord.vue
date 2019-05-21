@@ -56,20 +56,25 @@
                         <em v-if="item.reviewStatus == 4">{{item.reStatus}}</em>
                         <div class="withdrawalRecordHeader flex line_bottom">
                             <div>
-                                <h3>{{item.drawMoney}}</h3>
+                                <h3>{{item.arviAmount}}</h3>
                                 <p>提现金额</p>
                             </div>
                         </div>
                         <div class="withdrawalRecordBody">
-                            <p>手续费:
-                                <b>{{item.pou}}元</b>
-                            </p>
-                            <p>税金:
-                                <b>{{item.tax}}元</b>
-                            </p>
-                            <p>实到账:
-                                <b>{{item.arviAmount}}元</b>
-                            </p>
+                            <div class="withdrawRecordTop flex line_bottom">
+                                <p>
+                                    <b>{{item.pou}}<i>元</i></b>
+                                    <span>手续费</span>
+                                </p>
+                                <p>
+                                    <b>{{item.tax}}<i>元</i></b>
+                                    <span>税金</span>
+                                </p>
+                                <p>
+                                    <b>{{item.drawMoney}}<i>元</i></b>
+                                    <span>实到账</span>
+                                </p>
+                            </div>
                             <!-- <p>审核状态:
                                 <b>{{item.reviewStatus}}</b>
                             </p> -->
@@ -78,7 +83,7 @@
                                 <b v-if="item.status == 2">{{item.drawStatus}}</b>
                             </p>
                             <p>提现时间:{{item.drawTime}}</p>
-                            <p>备注:{{item.remark}}</p>
+                            <p>备注:<span style="color:#f33">{{item.remark}}</span></p>
                         </div>
                     </div>
                 </van-list>
@@ -168,7 +173,7 @@ export default {
     padding: 10px;
     overflow: hidden;
     position: relative;
-    margin:5px 5px 15px;
+    margin: 5px 5px 15px;
     em {
         display: block;
         width: 100px;
@@ -193,7 +198,7 @@ export default {
 .withdrawalRecordHeader {
     justify-content: space-around;
     padding-bottom: 15px;
-    padding-top:12px;
+    padding-top: 12px;
     div {
         text-align: center;
         h3 {
@@ -203,6 +208,7 @@ export default {
         p {
             font-size: 12px;
             color: #333;
+            padding-top: 10px;
         }
         &:nth-of-type(2) {
             width: 100px;
@@ -221,7 +227,7 @@ export default {
     }
 }
 .withdrawalRecordBody {
-    padding-top: 10px;
+    padding-top:7px;
     p {
         line-height: 24px;
         font-size: 12px;
@@ -255,5 +261,28 @@ export default {
 }
 .mint-loadmore-top {
     font-size: 14px;
+}
+.withdrawRecordTop{
+    justify-content: space-around;
+    padding-bottom:13px;
+    margin-bottom:10px;
+    p{
+        width:100%;
+        text-align:center;
+        b{
+            font-weight:bold;
+            display:block;
+            font-size:14px;
+            i{
+                font-size:12px;
+                padding-left:1px;
+            }
+        }
+        span{
+            display: block;
+            font-size:12px;
+            line-height:12px;
+        }
+    }
 }
 </style>

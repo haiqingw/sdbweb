@@ -315,7 +315,7 @@ export default {
         this.info();
         this.todayProfit();
         // this.loginSuccess.openid = this.$route.query.opid
-        alert(this.queryData.loginSuccess.openid)
+        // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {
         });
     }

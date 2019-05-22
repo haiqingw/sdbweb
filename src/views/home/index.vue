@@ -137,16 +137,16 @@
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
                 </li> -->
-                <!-- <li>
+                <li>
                     <div class="img">
                         <router-link to="/mall">
                             <img src="@/assets/images/index-list2-img5.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
-                        <router-link to="/mall">机具商场</router-link>
+                        <router-link to="/mall">机具商城</router-link>
                     </div>
-                </li> -->
+                </li>
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/financialDetails">
@@ -176,7 +176,7 @@
           </div>
                 </li>-->
                 <!-- <li v-if="renderData.info.level == 2"> -->
-                <!-- <li v-if="renderData.info.level == 2" style="display:none;">
+                <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -185,7 +185,7 @@
                     <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
-                </li> -->
+                </li>
             </ul>
         </div>
         <Footer></Footer>

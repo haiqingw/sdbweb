@@ -50,6 +50,8 @@
                 >
                     <ul>
                         <li v-for="item in renderData.list" :key="item.id">
+                            <img v-if="item.isActive == 2" class="stampImgR" src="@/assets/images/stampImg-active.png" alt="已激活">
+                             <img v-if="item.isActive == 1" class="stampImgR" src="@/assets/images/stampImg.png" alt="未激活">
                             <div class="name-state">
                                 <h3>{{item.productName}}</h3>
                                 <el-tag
@@ -276,6 +278,11 @@ export default {
 </script>
 
 <style lang="scss">
+.my-terminal-list .isActive {
+    text-align: center;
+    line-height: .3rem;
+    padding-bottom: .2rem;
+}
 .my-terminal-list {
     font-size: 0.3rem;
 }
@@ -357,6 +364,15 @@ export default {
     border: 1px solid #ebeef5;
     background-color: #fff;
     margin-bottom: 0.3rem;
+    position: relative;
+}
+.my-terminal-list ul li .stampImgR{
+    width:1.6rem;
+    height:1.6rem;
+    position: absolute;
+    bottom:0.1rem;
+    right:0.1rem;
+    z-index:99;
 }
 .my-terminal-list ul li .name-state {
     overflow: hidden;

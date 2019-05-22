@@ -13,140 +13,29 @@
             </div>
             <!-- 审核列表 -->
             <div class="agentCheckListMain">
-                <div class="agentCheckListItem">
+                <div class="agentCheckListItem agentCheckedListItem" v-for = "(item,index) in checkListArr" :key = "index">
                     <h3>申请人：
-                        <span>任勇强</span>
+                        <span>{{item.name}}</span>
                     </h3>
                     <div class="flex">
                         <span>
                             联系方式：
-                            <i>13296905340</i>
+                            <i>{{item.phone}}</i>
                         </span>
                         <a href="tel:13296905340">
                             <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
                         </a>
                     </div>
-                    <p>申请时间：2019-05-22 15:00:00</p>
-                    <a href="javascript:;">审核</a>
-                </div>
-                <div class="agentCheckListItem">
-                    <h3>申请人：
-                        <span>任勇强</span>
-                    </h3>
-                    <div class="flex">
-                        <span>
-                            联系方式：
-                            <i>13296905340</i>
-                        </span>
-                        <a href="tel:13296905340">
-                            <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
-                        </a>
-                    </div>
-                    <p>申请时间：2019-05-22 15:00:00</p>
-                    <a href="javascript:;">审核</a>
-                </div>
-                <div class="agentCheckListItem">
-                    <h3>申请人：
-                        <span>任勇强</span>
-                    </h3>
-                    <div class="flex">
-                        <span>
-                            联系方式：
-                            <i>13296905340</i>
-                        </span>
-                        <a href="tel:13296905340">
-                            <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
-                        </a>
-                    </div>
-                    <p>申请时间：2019-05-22 15:00:00</p>
-                    <a href="javascript:;">审核</a>
-                </div>
-                <div class="agentCheckListItem">
-                    <h3>申请人：
-                        <span>任勇强</span>
-                    </h3>
-                    <div class="flex">
-                        <span>
-                            联系方式：
-                            <i>13296905340</i>
-                        </span>
-                        <a href="tel:13296905340">
-                            <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
-                        </a>
-                    </div>
-                    <p>申请时间：2019-05-22 15:00:00</p>
-                    <a href="javascript:;">审核</a>
-                </div>
-                <div class="agentCheckListItem">
-                    <h3>申请人：
-                        <span>任勇强</span>
-                    </h3>
-                    <div class="flex">
-                        <span>
-                            联系方式：
-                            <i>13296905340</i>
-                        </span>
-                        <a href="tel:13296905340">
-                            <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
-                        </a>
-                    </div>
-                    <p>申请时间：2019-05-22 15:00:00</p>
-                    <a href="javascript:;">审核</a>
-                </div>
-                <div class="agentCheckListItem">
-                    <h3>申请人：
-                        <span>任勇强</span>
-                    </h3>
-                    <div class="flex">
-                        <span>
-                            联系方式：
-                            <i>13296905340</i>
-                        </span>
-                        <a href="tel:13296905340">
-                            <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
-                        </a>
-                    </div>
-                    <p>申请时间：2019-05-22 15:00:00</p>
-                    <a href="javascript:;">审核</a>
-                </div>
-                <div class="agentCheckListItem">
-                    <h3>申请人：
-                        <span>任勇强</span>
-                    </h3>
-                    <div class="flex">
-                        <span>
-                            联系方式：
-                            <i>13296905340</i>
-                        </span>
-                        <a href="tel:13296905340">
-                            <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
-                        </a>
-                    </div>
-                    <p>申请时间：2019-05-22 15:00:00</p>
-                    <a href="javascript:;">审核</a>
-                </div>
-                <div class="agentCheckListItem">
-                    <h3>申请人：
-                        <span>任勇强</span>
-                    </h3>
-                    <div class="flex">
-                        <span>
-                            联系方式：
-                            <i>13296905340</i>
-                        </span>
-                        <a href="tel:13296905340">
-                            <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
-                        </a>
-                    </div>
-                    <span>代理产品：鼎刷，闪POS</span>
-                    <p>审核时间：2019-05-22 15:00:00</p>
-                    <a href="javascript:;">修改</a>
+                    <span>代理产品：{{item.agentPro}}</span>
+                    <!-- <p>申请时间：{{item.applyTime}}</p> -->
+                    <p>审核时间：{{item.checkTime}}</p>
+                    <a href="javascript:;" @click="showProModel(item.id)">审核</a>
                 </div>
             </div>
             <!-- 选择产品弹窗 -->
-            <van-dialog v-model="show" title="请选择产品" show-cancel-button>
+            <van-dialog v-model="show" title="请选择产品" show-cancel-button @confirm="test">
                 <div class="checkSelectProductMain">
-                    <van-checkbox-group v-model="result">
+                    <van-checkbox-group v-model="result" >
                         <van-checkbox v-for="(item, index) in list" :key="index" :name="item.name">
                             {{ item.name }}
                         </van-checkbox>
@@ -160,7 +49,7 @@
 export default {
     data() {
         return {
-            show: true,
+            show: false,
             result: [],
             list: [
                 {
@@ -191,62 +80,23 @@ export default {
                     id: 4,
                     name: "银POS4"
                 }
-                // {
-                //     id: 1,
-                //     name: "闪POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "银POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "闪POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "银POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "闪POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "银POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "闪POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "银POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "闪POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "银POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "闪POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "银POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "闪POS"
-                // },
-                // {
-                //     id: 1,
-                //     name: "银POS"
-                // }
+            ],
+            checkListArr:[
+                {
+                    id:1,
+                    name:'任勇强',
+                    phone:'13296905340',
+                    agentPro:'鼎刷，闪POS',
+                    applyTime:'2019-05-22 15:15:00',
+                    checkTime:'2019-05-22 15:15:00'
+
+                },
+                {
+                    id:2,
+                    name:'史晓宇',
+                    phone:'13777777777',
+                    time:'2019-05-22 15:15:00'
+                }
             ]
         };
     },
@@ -255,6 +105,13 @@ export default {
             this.$refs.checkboxes[index].toggle();
             console.log(index);
             // console.log(this.result)
+        },
+        showProModel(mid){
+            console.log(mid);
+            this.show = !this.show;
+        },
+        test() {
+            console.log(123)
         }
     }
 };
@@ -344,7 +201,12 @@ export default {
         display: block;
         line-height:30px;
         font-size:14px;
-        padding:0 15px;
+        padding:5px 15px 0;
+    }
+}
+.agentCheckedListItem{
+    p{
+        margin-top:-5px;
     }
 }
 .checkSelectProductMain {
@@ -353,7 +215,7 @@ export default {
     max-height: 150px;
     overflow-x: hidden;
 }
-.application-agent-To-examine .van-dialog__header {
-    line-height: 40px;
-}
+// .application-agent-To-examine .van-dialog__header {
+//     line-height: 40px;
+// }
 </style>

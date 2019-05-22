@@ -14,20 +14,55 @@
     </div>
 </template>
 <script>
+import { getServer } from "@/api/index";
+import response from '@/assets/js/response.js'
+import { Indicator, Toast } from 'mint-ui'
 export default {
     data() {
-        return {};
+        return {
+            queryData: {
+                applyAgent: {
+                    requestType: 'personal',
+                    requestKeywords: 'serviceprovider',
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                isAgent: {
+                    requestType: "personal",
+                    requestKeywords: "whetherapply",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                }
+            }
+        };
     },
-    methods:{
-        applyAgent(){
-           console.log('申请代理');
+    methods: {
+        applyAgent() {
+            getServer(this.queryData.isAgent).then(res => {
+                if (res.data.responseStatus === 1) {
+                    getServer(this.queryData.applyAgent).then(res => {
+                        if( res.data.responseStatus === 1) {
+                            Toast("申请成功");
+                            setTimeout(() => {
+                                this.$router.push({path: "/"})
+                            }, 300);
+                        } else {
+                            Toast(response[res.data.responseStatus]);
+                        }
+                    })
+                } else {
+                    Toast(response[res.data.responseStatus]);
+                }
+            });
         }
     }
 };
 </script>
 <style lang="scss">
 .application-agent {
-    padding-top:0.8rem;
+    padding-top: 0.8rem;
 }
 .applyAgentButtonMain {
     position: fixed;

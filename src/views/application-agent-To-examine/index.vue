@@ -13,8 +13,13 @@
             </div>
             <!-- 审核列表 -->
             <div class="agentCheckListMain">
-                <div class="agentCheckListItem agentCheckedListItem" v-for = "(item,index) in checkListArr" :key = "index">
-                    <h3>申请人：
+                <div
+                    class="agentCheckListItem agentCheckedListItem"
+                    v-for="(item,index) in checkListArr"
+                    :key="index"
+                >
+                    <h3>
+                        申请人：
                         <span>{{item.name}}</span>
                     </h3>
                     <div class="flex">
@@ -23,7 +28,10 @@
                             <i>{{item.phone}}</i>
                         </span>
                         <a href="tel:13296905340">
-                            <img src="@/assets/images/invitation-record-lis-telephone.png" alt="一键拨号">
+                            <img
+                                src="@/assets/images/invitation-record-lis-telephone.png"
+                                alt="一键拨号"
+                            >
                         </a>
                     </div>
                     <span>代理产品：{{item.agentPro}}</span>
@@ -35,10 +43,12 @@
             <!-- 选择产品弹窗 -->
             <van-dialog v-model="show" title="请选择产品" show-cancel-button @confirm="test">
                 <div class="checkSelectProductMain">
-                    <van-checkbox-group v-model="result" >
-                        <van-checkbox v-for="(item, index) in list" :key="index" :name="item.name">
-                            {{ item.name }}
-                        </van-checkbox>
+                    <van-checkbox-group v-model="result">
+                        <van-checkbox
+                            v-for="(item, index) in renderData.list"
+                            :key="index"
+                            :name="item.name"
+                        >{{ item.name }}</van-checkbox>
                     </van-checkbox-group>
                 </div>
             </van-dialog>
@@ -46,58 +56,39 @@
     </div>
 </template>
 <script>
+import { getServer } from "@/api/index";
 export default {
     data() {
         return {
             show: false,
             result: [],
-            list: [
-                {
-                    id: 1,
-                    name: "鼎刷"
-                },
+            checkListArr: [
                 {
                     id: 2,
-                    name: "闪POS"
-                },
-                {
-                    id: 3,
-                    name: "银POS"
-                },
-                {
-                    id: 4,
-                    name: "银POS1"
-                },
-                {
-                    id: 4,
-                    name: "银POS2"
-                },
-                {
-                    id: 4,
-                    name: "银POS3"
-                },
-                {
-                    id: 4,
-                    name: "银POS4"
+                    name: "史晓宇",
+                    phone: "13777777777",
+                    time: "2019-05-22 15:15:00"
                 }
             ],
-            checkListArr:[
-                {
-                    id:1,
-                    name:'任勇强',
-                    phone:'13296905340',
-                    agentPro:'鼎刷，闪POS',
-                    applyTime:'2019-05-22 15:15:00',
-                    checkTime:'2019-05-22 15:15:00'
-
+            queryData: {
+                listProduct: {
+                    requestType: "personal",
+                    requestKeywords: "agentproduct",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 },
-                {
-                    id:2,
-                    name:'史晓宇',
-                    phone:'13777777777',
-                    time:'2019-05-22 15:15:00'
+                list: {
+                    requestType: "personal",
+                    requestKeywords: "audits",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
-            ]
+            },
+            renderData: {
+                list: [],
+            }
         };
     },
     methods: {
@@ -106,13 +97,32 @@ export default {
             console.log(index);
             // console.log(this.result)
         },
-        showProModel(mid){
-            console.log(mid);
-            this.show = !this.show;
+        showProModel(mid) {
+            // alert(123)
+            getServer(this.queryData.listProduct).then(res => {
+                // alert(JSON.stringify(res))
+                if (res.data.responseStatus === 1) {
+                    this.show = !this.show;
+                    // alert(res.data.data.length)
+                    alert(JSON.stringify(res.data))
+                    this.renderData.list = res.data.data;
+                }
+            });
         },
         test() {
-            console.log(123)
+            console.log(123);
+        },
+        list() {
+            getServer(this.queryData.list).then(res => {
+                //  alert(JSON.stringify(res))
+                if (res.data.responseStatus === 1) {
+                    this.checkListArr = res.data.data;
+                }
+            });
         }
+    },
+    created() {
+        this.list()
     }
 };
 </script>
@@ -197,16 +207,16 @@ export default {
         color: #999;
         line-height: 30px;
     }
-    >span{
+    > span {
         display: block;
-        line-height:30px;
-        font-size:14px;
-        padding:5px 15px 0;
+        line-height: 30px;
+        font-size: 14px;
+        padding: 5px 15px 0;
     }
 }
-.agentCheckedListItem{
-    p{
-        margin-top:-5px;
+.agentCheckedListItem {
+    p {
+        margin-top: -5px;
     }
 }
 .checkSelectProductMain {

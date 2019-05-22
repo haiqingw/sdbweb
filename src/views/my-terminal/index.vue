@@ -5,12 +5,12 @@
         <div class="return">
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
             <span>我的终端</span>
-            <a
+            <!-- <a
                 class="withdrawalRecord"
                 @click="dialCodeList"
                 href="javascript:;"
                 style="color:#fff;"
-            >退码列表</a>
+            >退码列表</a>-->
         </div>
         <div class="my-terminal-choice line_bottom">
             <el-select v-model="byProduct.value" @change="byProductChange">
@@ -38,9 +38,10 @@
                 ></el-option>
             </el-select>
         </div>
-        <div class="my-terminal-list" v-if="isData">
-            <div class="scroll-list-wrap tradingListMain">
-                <cube-scroll ref="scroll" 
+        <div class="my-terminal-list">
+            <div class="scroll-list-wrap">
+                <cube-scroll
+                    ref="scroll"
                     :data="renderData.list"
                     @pulling-down="onPullingDown"
                     @pulling-up="onPullingUp"
@@ -70,16 +71,16 @@
                                     <span>{{item.batchNo}}</span>
                                 </div>
                             </div>
-                            <div class="code-out" v-if="item.useStatus === '未使用'" @click="codeOut">
+                            <!-- <div class="code-out" v-if="item.useStatus === '未使用'" @click="codeOut">
                                 <span>退码</span>
-                            </div>
+                            </div>-->
                         </li>
                     </ul>
-                    </cube-scroll>
+                </cube-scroll>
+                <div class="no-data" v-else>
+                    <img src="@/assets/images/no-data.png" alt>
+                </div>
             </div>
-        </div>
-        <div class="no-data" v-else>
-            <img src="@/assets/images/no-data.png" alt>
         </div>
     </div>
 </template>
@@ -87,7 +88,7 @@
 <script>
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
-import { Indicator } from 'mint-ui';
+import { Indicator } from "mint-ui";
 export default {
     data() {
         return {
@@ -105,14 +106,15 @@ export default {
                     }
                 } // 配置上拉加载，若要关闭可直接 pullUpLoad：false
             },
-            isData: true,
+            _isData: true,
+            get isData() {
+                return this._isData;
+            },
+            set isData(value) {
+                this._isData = value;
+            },
             byProduct: {
-                options: [
-                    // {
-                    //     id: "1",
-                    //     label: '按产品'
-                    // },
-                ],
+                options: [],
                 value: ""
             },
             usageState: {
@@ -164,53 +166,55 @@ export default {
                 }
             },
             renderData: {
-                list: [],
+                list: []
             }
         };
     },
     methods: {
         scrollTo() {
-            this.$refs.scroll.scrollTo(
-                0,
-                0
-            )
+            this.$refs.scroll.scrollTo(0, 0);
         },
         onPullingDown() {
-            this.renderData.list = []
-            this.queryData.list.page = 1
-            this.terminalList()
+            this.renderData.list = [];
+            this.queryData.list.page = 1;
+            this.terminalList();
         },
         // 触发上拉加载
         onPullingUp() {
-            this.queryData.list.page++
-            this.terminalList()
-           
+            this.queryData.list.page++;
+            this.terminalList();
         },
-        dialCodeList() {
-            this.$router.push({
-                name: "dial-code-list",
-                params: { id: this.byProduct.value }
-            });
-        },
+        // dialCodeList() {
+        //     this.$router.push({
+        //         name: "dial-code-list",
+        //         params: { id: this.byProduct.value }
+        //     });
+        // },
         codeOut() {
             console.log("退码");
         },
         byProductChange() {
-            this.scrollTo()
+            if (this.isData) {
+                this.scrollTo();
+            }
             this.queryData.list.productID = this.byProduct.value;
             this.renderData.list = [];
             this.queryData.list.page = 1;
             this.terminalList();
         },
         usageStateChange() {
-            this.scrollTo()
+            if (this.isData) {
+                this.scrollTo();
+            }
             this.queryData.list.useStatus = this.usageState.value;
             this.renderData.list = [];
             this.queryData.list.page = 1;
             this.terminalList();
         },
         byBatchChange() {
-            this.scrollTo()
+            if (this.isData) {
+                this.scrollTo();
+            }
             this.queryData.list.batchNo = this.byBatch.value;
             this.renderData.list = [];
             this.queryData.list.page = 1;
@@ -226,7 +230,7 @@ export default {
                     }
                 })
                 .then(() => {
-                    this.terminalList()
+                    this.terminalList();
                 });
         },
         choiceBatch() {
@@ -238,7 +242,6 @@ export default {
             });
         },
         terminalList() {
-            this.upFinished = false;
             getServer(this.queryData.list).then(res => {
                 // console.log(response[res.data.responseStatus])
                 Indicator.close();
@@ -246,20 +249,24 @@ export default {
                 if (res.data.responseStatus === 1) {
                     // console.log(res.data.data.length)
                     // console.log(res.data)
-                    this.ATurnover = res.data.sum;
                     this.isData = true;
                     // this.renderData.list = res.data.data;
                     res.data.data.forEach(item => {
                         this.renderData.list.push(item);
                     });
-                } else if ( res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page != 1
+                ) {
                     this.$refs.scroll.forceUpdate();
-                } else if ( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page == 1
+                ) {
                     this.isData = false;
-                    this.ATurnover = "0.00"
                 }
             });
-        },
+        }
     },
     created() {
         this.choiceProduct();
@@ -270,24 +277,24 @@ export default {
 
 <style lang="scss">
 .my-terminal-list {
-    font-size: .3rem;
+    font-size: 0.3rem;
 }
-.my-terminal-list  .before-trigger {
-    font-size: .3rem;
+.my-terminal-list .before-trigger {
+    font-size: 0.3rem;
 }
 .my-terminal-list {
     height: 11rem;
 }
-.my-terminal-list .scroll-list-wrap{
-        height: 11rem;
-        overflow: auto;
-        .item{
-            padding: 10px 10px;
+.my-terminal-list .scroll-list-wrap {
+    height: 11rem;
+    overflow: auto;
+    .item {
+        padding: 10px 10px;
 
-            &:nth-child(2n+1){
-                background: #ccc;
-            }
+        &:nth-child(2n + 1) {
+            background: #ccc;
         }
+    }
 }
 .my-terminal-list ul li .code-out {
     overflow: hidden;
@@ -307,7 +314,7 @@ export default {
     text-align: center;
 }
 .my-terminal .no-data {
-    margin-top: 67%;
+    margin-top: 70%;
 }
 .my-terminal-choice {
     position: fixed;

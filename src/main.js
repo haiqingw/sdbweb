@@ -14,6 +14,8 @@ import 'vant/lib/index.css';
 import wx from 'weixin-js-sdk'
 import Cube from 'cube-ui'
 
+import VueWechatTitle from 'vue-wechat-title'
+Vue.use(VueWechatTitle)
 
 import '@/permission'
 import '@/icons'

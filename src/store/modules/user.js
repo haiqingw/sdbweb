@@ -12,7 +12,8 @@ const user = {
         pid: window.sessionStorage.getItem('pid'),
         uname: window.sessionStorage.getItem('uname'),
         uphone: window.sessionStorage.getItem('uphone'),
-        islogin: window.sessionStorage.getItem('islogin')
+        islogin: window.sessionStorage.getItem('islogin'),
+        plat: window.sessionStorage.getItem('plat')
     },
     mutations: {
         SET_UID: (state, uid) => {
@@ -34,6 +35,10 @@ const user = {
         SET_ISLOGIN: (state, islogin) => {
             state.islogin = islogin
             window.sessionStorage.setItem('islogin', islogin)
+        },
+        SET_PLAT: (state, plat) => {
+            state.plat = plat
+            window.sessionStorage.setItem('plat', plat)
         }
     },
     actions: {
@@ -41,11 +46,18 @@ const user = {
             Indicator.open()
             window.sessionStorage.clear()
             const queryData = {
-                requestType: 'personal', 
-                requestKeywords: 'login', 
+                // requestType: 'personal', 
+                // requestKeywords: 'login', 
+                // account: userInfo.phone, 
+                // password: userInfo.password
+                requestType: 'buslogin',
+                requestKeywords: 'buslogins',
                 account: userInfo.phone, 
-                password: userInfo.password
+                password: userInfo.password,
+                plat : userInfo.plat
             }
+            commit('SET_PLAT', userInfo.plat)
+            // commit('SET_PLAT', 187)
             return new Promise( (resolve, reject) => {
                 getServer(queryData).then( res => {
                     // console.log(res)
@@ -79,7 +91,7 @@ const user = {
             Indicator.open()
             window.sessionStorage.clear()
             const crodeUser = {
-                requestType: 'personal',
+                requestType: 'buslogin',
                 requestKeywords:'crodeuser', 
                 openid: openid
             }
@@ -110,7 +122,13 @@ const user = {
             return new Promise( (resolve, reject) => {
                 getServer(data).then( res => {
                     if( res.data.responseStatus === 1 ) {
-                        window.sessionStorage.clear()
+                        // window.sessionStorage.clear()
+                        // alert(123)
+                        window.localStorage.removeItem('uid');
+                        window.localStorage.removeItem('pid');
+                        window.localStorage.removeItem('uname');
+                        window.localStorage.removeItem('uphone');
+                        commit('SET_ISLOGIN', false) 
                         resolve()
                     }
                 }); 

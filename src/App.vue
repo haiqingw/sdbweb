@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <router-view v-if="isRouterAlive"></router-view>
-  </div>
+    <div id="app">
+        <router-view v-if="isRouterAlive" v-wechat-title='$store.state.merchant.title'></router-view>
+    </div>
 </template>
 
 <script>
@@ -9,12 +9,12 @@ export default {
   name: 'App',
     provide () {
         return {
-        reload: this.reload
+            reload: this.reload
         }
     },
     data () {
         return {
-            isRouterAlive: true
+            isRouterAlive: true 
         }
     },
     methods: {
@@ -23,7 +23,9 @@ export default {
             this.$nextTick(function () {
                 this.isRouterAlive = true
             })
-        }
+        },
+    },
+    created() {
     }
 }
 </script>

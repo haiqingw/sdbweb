@@ -2,51 +2,46 @@
 
 
 <template>
-  <div class="settings">
-    <div class="return">
-      <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
-      <span>设置中心</span>
-    </div>
-    <div class="settings-list">
-      <ul>
-        <!-- <router-link to="/changePhoneNumber" tag="li" class="line_bottom">
+    <div class="settings">
+        <div class="return">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <span>设置中心</span>
+        </div>
+        <div class="settings-list">
+            <ul>
+                <!-- <router-link to="/changePhoneNumber" tag="li" class="line_bottom">
                     <img src="@/assets/images/settingPhoneIcon.png" alt="更换手机号">
                     <span>更换手机号</span>
                     <i></i>
-                </router-link> -->
-        <router-link tag="li" to="/modifyInfo" class="line_bottom">
-          <img src="@/assets/images/minechangeInfoIcon.png" alt="修改个人信息" />
-          <span>修改个人信息</span>
-          <i></i>
-        </router-link>
-        <li class="line_bottom" @click="judgeRealNameAuth('changeCard')">
-          <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡" />
-          <span>绑定(更换)结算卡</span>
-          <i></i>
-        </li>
-        <router-link tag="li" to="/mall/mall_address" class="line_bottom">
-          <img src="@/assets/images/mineAddressIcon.png" alt="收货地址管理" />
-          <span>收货地址管理</span>
-          <i></i>
-        </router-link>
-        <router-link to="/changePassword" tag="li" class="line_bottom">
-          <img src="@/assets/images/settingPasswordIcon.png" alt="修改密码" />
-          <span>修改密码</span>
-          <i></i>
-        </router-link>
-        <router-link to="/feedback" tag="li" class="line_bottom">
-          <img src="@/assets/images/settingFeedbackIcon.png" alt="意见反馈" />
-          <span>意见反馈</span>
-          <i></i>
-        </router-link>
-        <li @click="logout" class="line_bottom">
-          <img src="@/assets/images/exitIcon.png" alt="退出登录" />
-          <span>退出登录</span>
-          <i></i>
-        </li>
-      </ul>
+                </router-link>-->
+                <li class="line_bottom" @click="judgeRealNameAuth('changeCard')">
+                    <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡">
+                    <span>更换结算卡</span>
+                    <i></i>
+                </li>
+                <router-link tag="li" to="/mall/mall_address" class="line_bottom">
+                    <img src="@/assets/images/mineAddressIcon.png" alt="收货地址管理">
+                    <span>收货地址管理</span>
+                    <i></i>
+                </router-link>
+                <router-link to="/changePassword" tag="li" class="line_bottom">
+                    <img src="@/assets/images/settingPasswordIcon.png" alt="修改密码">
+                    <span>修改密码</span>
+                    <i></i>
+                </router-link>
+                <router-link to="/feedback" tag="li" class="line_bottom">
+                    <img src="@/assets/images/settingFeedbackIcon.png" alt="意见反馈">
+                    <span>意见反馈</span>
+                    <i></i>
+                </router-link>
+                <li @click="logout" class="line_bottom">
+                    <img src="@/assets/images/exitIcon.png" alt="退出登录">
+                    <span>退出登录</span>
+                    <i></i>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -88,8 +83,16 @@ export default {
                     this.$store
                         .dispatch("LogOut", this.queryData.logout)
                         .then(() => {
-                            location.reload();
-                            this.$router.push({ path: "/loginoid" });
+                            // location.reload();
+                            setTimeout( () => {
+                                this.$router.push({
+                                    // path: "/loginoid",
+                                    path: "/loginoid",
+                                    query: {
+                                        plat: this.$store.state.user.plat
+                                    }
+                                });
+                            }, 500)
                         });
                 })
                 .catch(() => {});
@@ -110,10 +113,6 @@ export default {
                     this.$router.push({ name: "certification" });
                 }
             });
-        },
-        // 修改个人信息
-        modifyInfo(){
-           this.$router.push({ name: "modifyInfo" }); 
         }
     }
 };

@@ -15,7 +15,8 @@ export default new Router({
     {
         path: '/loginoid',
         name: 'loginoid',
-        component: resolve => require(['@/views/login/loginoid.vue'], resolve),
+        component: () =>
+        import('@/views/login/loginoid.vue'),
         meta: {
             requireAuth: true
         }

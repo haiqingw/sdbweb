@@ -34,7 +34,11 @@
                                 </span>
                                 <em>结算方式：{{item.method}}</em>
                             </div>
-                            <a href="javascript:;" v-if="isBinding" @click="allWithdrawal(item.ktx)">全部提现</a>
+                            <a
+                                href="javascript:;"
+                                v-if="isBinding"
+                                @click="allWithdrawal(item.ktx)"
+                            >全部提现</a>
                         </div>
                     </mt-swipe-item>
                 </mt-swipe>
@@ -154,6 +158,9 @@ export default {
                 .then(res => {
                     if (res.data.responseStatus === 1) {
                         this.renderData.balanceList = res.data.data;
+                        this.renderData.balanceList = this.renderData.balanceList.filter(
+                            item => item.t == "1"
+                        );
                         this.queryData.cashWithdrawal.payType =
                             res.data.data[0].t;
                         this.queryData.drawInfo.payType = res.data.data[0].t;
@@ -162,9 +169,6 @@ export default {
                         this.renderData.mattersNeedingAttention.ktx =
                             res.data.data[0].ktx;
                     }
-                    // return new Promise( (resolve, reject) => {
-                    //     resolve()
-                    // })
                 })
                 .then(res => {
                     this.drawInfo();
@@ -181,7 +185,7 @@ export default {
         bankInfo() {
             getServer(this.queryData.bankInfo).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.isBinding = true
+                    this.isBinding = true;
                     this.confirm = "确认提现";
                     this.renderData.bankInfo = res.data.bankcard;
                     this.renderData.bankInfo.cardNum = this.renderData.bankInfo.cardNum.substring(
@@ -189,7 +193,7 @@ export default {
                     );
                     // console.log(this.renderData.bankInfo)
                 } else if (res.data.responseStatus === 202) {
-                    this.isBinding = false
+                    this.isBinding = false;
                     this.confirm = "绑定银行卡";
                     Toast(response[res.data.responseStatus]);
                 }
@@ -223,6 +227,9 @@ export default {
                     })
                     .then(res => {
                         const reg = /^[0-9]+\.?[0-9]*$/;
+                        this.queryData.cashWithdrawal.money = String(
+                            this.queryData.cashWithdrawal.money
+                        );
                         if (this.queryData.cashWithdrawal.money.trim() == "") {
                             Toast("请输入提现金额");
                             return;
@@ -267,6 +274,9 @@ export default {
                                         // console.log(res)
                                         if (res.data.responseStatus === 1) {
                                             Toast("提现成功");
+                                            setTimeout(() => {
+                                                this.$router.push("/");
+                                            }, 300);
                                         } else {
                                             Toast(
                                                 response[
@@ -282,7 +292,7 @@ export default {
                         }
                     });
             } else if (this.confirm === "绑定银行卡") {
-                this.$router.push("/changeCard") 
+                this.$router.push("/changeCard");
             }
         },
         inpVerification() {

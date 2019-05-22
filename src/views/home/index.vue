@@ -103,7 +103,7 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
-                <!-- <li>
+                <li>
                     <div class="img">
                         <router-link to="/application-agent">
                             <img src="@/assets/images/index-list2-img3.png" alt>
@@ -136,7 +136,7 @@
                     <div class="text">
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
-                </li> -->
+                </li>
                 <li>
                     <div class="img">
                         <router-link to="/mall">

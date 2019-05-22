@@ -273,10 +273,12 @@ export default {
     font-size: 10px;
     margin-right: 10px;
     padding-right: 5px;
+    line-height: 12px;
+    padding-top: 1px;
 }
 .pDadvantageMain div span {
     background: #c3b091;
-    padding: 0 5px;
+    padding: 1px 5px;
     color: #fff;
 }
 .rateBrandMain {

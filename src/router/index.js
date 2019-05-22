@@ -336,6 +336,11 @@ export default new Router({
         path: '/dial-code-list/:id', 
         name: 'dial-code-list',
         component: resolve => require(['@/views/dial-code/list'], resolve),
+    },
+    {
+      path: '/modifyInfo', //修改个人信息
+      name: 'modifyInfo',
+      component: resolve => require(['@/views/modifyInfo'], resolve),
     }
   ]
 })

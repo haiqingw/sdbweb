@@ -14,9 +14,14 @@
                     <span>更换手机号</span>
                     <i></i>
                 </router-link> -->
+        <router-link tag="li" to="/modifyInfo" class="line_bottom">
+          <img src="@/assets/images/minechangeInfoIcon.png" alt="修改个人信息" />
+          <span>修改个人信息</span>
+          <i></i>
+        </router-link>
         <li class="line_bottom" @click="judgeRealNameAuth('changeCard')">
           <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡" />
-          <span>更换结算卡</span>
+          <span>绑定(更换)结算卡</span>
           <i></i>
         </li>
         <router-link tag="li" to="/mall/mall_address" class="line_bottom">
@@ -49,100 +54,106 @@ import response from "@/assets/js/response.js";
 import { MessageBox, Indicator, Toast } from "mint-ui";
 import { getServer } from "@/api/index";
 export default {
-  data() {
-    return {
-      queryData: {
-        checkcerData: {
-          requestType: "personal",
-          requestKeywords: "checkcer",
-          userID: this.$store.state.user.uid,
-          platformID: this.$store.state.user.pid,
-          userPhone: this.$store.state.user.uphone
-        },
-        checkbankcardData: {
-          requestType: "operating",
-          requestKeywords: "checkbankcard",
-          userID: this.$store.state.user.uid,
-          platformID: this.$store.state.user.pid,
-          userPhone: this.$store.state.user.uphone
-        },
-        logout: {
-            requestType: 'personal',
-            requestKeywords:'launchland', 
-            platformID: this.$store.state.user.pid,
-            userID: this.$store.state.user.uid,
-            userPhone: this.$store.state.user.uphone
-        }
-      }
-    };
-  },
-  methods: {
-    logout() {
-      MessageBox.confirm("您确定要退出吗?", "退出")
-        .then(action => {
-            this.$store.dispatch("LogOut", this.queryData.logout).then(() => {
-                location.reload();
-                this.$router.push({ path: "/loginoid" });
-            })
-        })
-        .catch(() => {});
-    },
-    judgeRealNameAuth(url) {
-      Indicator.open();
-      getServer(this.queryData.checkcerData).then(res => {
-        Indicator.close();
-        if (res.data.responseStatus === 1) {
-          getServer(this.queryData.checkbankcardData).then(res => {
-            if (res.data.responseStatus === 1) {
-              this.$router.push({ name: url });
-            } else {
-              this.$router.push({ name: "certificationNext" });
+    data() {
+        return {
+            queryData: {
+                checkcerData: {
+                    requestType: "personal",
+                    requestKeywords: "checkcer",
+                    userID: this.$store.state.user.uid,
+                    platformID: this.$store.state.user.pid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                checkbankcardData: {
+                    requestType: "operating",
+                    requestKeywords: "checkbankcard",
+                    userID: this.$store.state.user.uid,
+                    platformID: this.$store.state.user.pid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                }
             }
-          });
-        } else {
-            this.$router.push({ name: "certification" });
+        };
+    },
+    methods: {
+        logout() {
+            MessageBox.confirm("您确定要退出吗?", "退出")
+                .then(action => {
+                    this.$store
+                        .dispatch("LogOut", this.queryData.logout)
+                        .then(() => {
+                            location.reload();
+                            this.$router.push({ path: "/loginoid" });
+                        });
+                })
+                .catch(() => {});
+        },
+        judgeRealNameAuth(url) {
+            Indicator.open();
+            getServer(this.queryData.checkcerData).then(res => {
+                Indicator.close();
+                if (res.data.responseStatus === 1) {
+                    getServer(this.queryData.checkbankcardData).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            this.$router.push({ name: url });
+                        } else {
+                            this.$router.push({ name: "certificationNext" });
+                        }
+                    });
+                } else {
+                    this.$router.push({ name: "certification" });
+                }
+            });
+        },
+        // 修改个人信息
+        modifyInfo(){
+           this.$router.push({ name: "modifyInfo" }); 
         }
-      });
     }
-  }
 };
 </script>
 
 
 <style>
 .settings-list {
-  margin-top: 1rem;
+    margin-top: 1rem;
 }
 .settings-list ul {
-  padding: 0 0.2rem;
+    padding: 0 0.2rem;
 }
 .settings-list ul li {
-  font-size: 0.26rem;
-  overflow: hidden;
-  line-height: 0.7rem;
-  padding: 0.1rem 0;
-  color: #000;
+    font-size: 0.26rem;
+    overflow: hidden;
+    line-height: 0.7rem;
+    padding: 0.1rem 0;
+    color: #000;
 }
 .settings-list ul li img {
-  width: 20px;
-  height: 20px;
-  float: left;
-  margin-right: 0.15rem;
-  margin-top: 0.145rem;
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right: 0.15rem;
+    margin-top: 0.145rem;
 }
 .settings-list ul li a {
-  color: #333;
+    color: #333;
 }
 .settings-list ul li span {
-  float: left;
+    float: left;
 }
 .settings-list ul li i {
-  float: right;
-  width: 0.2rem;
-  height: 0.2rem;
-  background: url(../../assets/images/settings-ico.png) no-repeat;
-  background-size: 100%;
-  margin-top: 0.22rem;
+    float: right;
+    width: 0.2rem;
+    height: 0.2rem;
+    background: url(../../assets/images/settings-ico.png) no-repeat;
+    background-size: 100%;
+    margin-top: 0.22rem;
 }
 </style>
 

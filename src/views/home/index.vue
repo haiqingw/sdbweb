@@ -90,17 +90,7 @@
                         </router-link>
                     </div>
                     <div class="text">
-                        <router-link to="/bindingMplements">自助绑机</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.info.level == 2">
-                    <div class="img">
-                        <router-link to="/myMerchants">
-                            <img src="@/assets/images/organizationIcon.png" alt>
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/myMerchants">商户拓展</router-link>
+                        <router-link to="/bindingMplements">绑定机具</router-link>
                     </div>
                 </li>
                 <li v-if="renderData.info.level == 2">
@@ -116,7 +106,7 @@
                 <li>
                     <div class="img">
                         <router-link to="/application-agent">
-                            <img src="@/assets/images/index-list2-img3.png" alt>
+                            <img src="@/assets/images/index-list2-img_applyAgent.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
@@ -128,7 +118,7 @@
                 <li>
                     <div class="img">
                         <router-link to="/application-agent-To-examine">
-                            <img src="@/assets/images/index-list2-img3.png" alt>
+                            <img src="@/assets/images/index-list2-img_agentCheck.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
@@ -137,7 +127,7 @@
                         </router-link>
                     </div>
                 </li>
-                <li>
+                <!-- <li>
                     <div class="img">
                         <router-link to="/dial-code">
                             <img src="@/assets/images/index-list2-img3.png" alt>
@@ -146,7 +136,7 @@
                     <div class="text">
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
-                </li>
+                </li> -->
                 <li>
                     <div class="img">
                         <router-link to="/mall">
@@ -177,17 +167,16 @@
                         <router-link to="/myMerchants">组织架构</router-link>
                     </div>
                 </li>
-                
                 <!-- <li>
-                        <div class="img">
-                            <img src="@/assets/images/index-list2-img8.png" alt="">
-                        </div>
-                        <div class="text">
-                            <a href="">排行榜</a>
-                        </div>
-                    </li>-->
+          <div class="img">
+            <img src="@/assets/images/index-list2-img8.png" alt="">
+          </div>
+          <div class="text">
+            <a href="">排行榜</a>
+          </div>
+                </li>-->
                 <!-- <li v-if="renderData.info.level == 2"> -->
-                <li v-if="renderData.info.level == 2">
+                <!-- <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -196,7 +185,7 @@
                     <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
-                </li>
+                </li> -->
             </ul>
         </div>
         <Footer></Footer>

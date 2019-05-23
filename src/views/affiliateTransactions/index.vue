@@ -99,16 +99,22 @@
                 <div class="no-data" v-else>
                     <img src="@/assets/images/no-data.png" alt>
             </div>-->
-            
+
             <div class="scroll-list-wrap tradingListMain">
-                <cube-scroll ref="scroll" 
+                <cube-scroll
+                    ref="scroll"
                     :data="renderData.list"
                     @pulling-down="onPullingDown"
                     @pulling-up="onPullingUp"
                     :options="options"
                     v-if="isData"
                 >
-                    <div class="bodyItem" v-for="item in renderData.list" :key="item.id" v-if="isData">
+                    <div
+                        class="bodyItem"
+                        v-for="item in renderData.list"
+                        :key="item.id"
+                        v-if="isData"
+                    >
                         <p>{{ item.busname }}({{ item.phone }})</p>
                         <p>交易笔数：{{ item.con }}</p>
                         <p>交易金额：{{ item.money }}</p>
@@ -127,7 +133,7 @@
 import { getServer } from "@/api/index";
 // import { Style, Button } from 'cube-ui'
 // import { loadMore } from "./mixin";
-import { Indicator } from 'mint-ui';
+import { Indicator } from "mint-ui";
 export default {
     data() {
         return {
@@ -136,15 +142,15 @@ export default {
                 pullDownRefresh: {
                     threshold: 90,
                     stop: 40,
-                    txt: '刷新成功'
-                },                                // 配置下拉刷新 
+                    txt: "刷新成功"
+                }, // 配置下拉刷新
                 pullUpLoad: {
                     threshold: 0,
                     txt: {
-                        more: '上拉加载更多',
-                        noMore: '没有更多数据'
-                    },
-                }                                 // 配置上拉加载，若要关闭可直接 pullUpLoad：false
+                        more: "上拉加载更多",
+                        noMore: "没有更多数据"
+                    }
+                } // 配置上拉加载，若要关闭可直接 pullUpLoad：false
             },
             offset: 0, // 批次加载店铺列表，每次加载20个 limit = 20
             shopListArr: [], // 店铺列表数据
@@ -206,13 +212,13 @@ export default {
                 // this.scrollToY,
                 // this.scrollToTime,
                 // this.scrollToEasing
-            )
+            );
         },
         onPullingDown() {
             // console.log("下拉刷新");
-            this.renderData.list = []
-            this.queryData.list.page = 1
-            this.list()
+            this.renderData.list = [];
+            this.queryData.list.page = 1;
+            this.list();
         },
         // 触发上拉加载
         onPullingUp() {
@@ -230,16 +236,15 @@ export default {
             //         this.$refs.scroll.forceUpdate();
             //     }
             // }, 1000);
-            this.queryData.list.page++
-            this.list()
-           
+            this.queryData.list.page++;
+            this.list();
         },
         screeningTime() {
             this.clickChange();
         },
         clickChange() {
-            if(this.isData) {
-                this.scrollTo()
+            if (this.isData) {
+                this.scrollTo();
             }
             // console.log(this.type)
             if (this.type === "selectionDate") {
@@ -260,10 +265,10 @@ export default {
         },
         handleCancel() {
             // this.queryData.list.types = "selectionDate";
-            if( this.queryData.list.dates ) {
+            if (this.queryData.list.dates) {
                 this.queryData.list.types = "selectionDate";
             } else {
-                this.type = this.queryData.list.types
+                this.type = this.queryData.list.types;
             }
         },
         handleConfirm(value) {
@@ -271,23 +276,24 @@ export default {
             this.month = value.getMonth() + 1;
             this.date = value.getDate();
             this.isClicked = true;
-            this.queryData.list.dates = this.year + "-" + this.month + "-" + this.date;
+            this.queryData.list.dates =
+                this.year + "-" + this.month + "-" + this.date;
             this.queryData.list.types = "days";
             this.upFinished = false;
             this.isData = true;
             this.queryData.list.page = 1;
             // this.renderData.oldList = [];
-            this.renderData.list = []
+            this.renderData.list = [];
             // this.onLoadList();
-            this.list()
+            this.list();
         },
         list() {
             Indicator.open();
-            this.isServer = true
+            this.isServer = true;
             // alert(this.queryData.list.proid)
             // console.log(this.queryData.list)
             getServer(this.queryData.list).then(res => {
-                this.isServer = false
+                this.isServer = false;
                 Indicator.close();
                 // console.log(res.data.data.constructor === Array);
                 if (res.data.responseStatus === 1) {
@@ -299,38 +305,44 @@ export default {
                     res.data.data.forEach(item => {
                         this.renderData.list.push(item);
                     });
-                } else if ( res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page !== 1
+                ) {
                     this.$refs.scroll.forceUpdate();
-                } else if ( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page === 1
+                ) {
                     this.isData = false;
-                    this.ATurnover = "0.00"
+                    this.ATurnover = "0.00";
                 }
             });
         },
         productList() {
             getServer(this.queryData.product)
-            .then(res => {
-                // console.log(res)
-                if (res.data.responseStatus === 1) {
-                    this.renderData.product = res.data.data;
-                    this.productName = res.data.data[0].name;
-                    this.queryData.list.proid = res.data.data[0].id;
-                }
-            })
-            .then( () => {
-                this.list()
-            })
+                .then(res => {
+                    // console.log(res)
+                    if (res.data.responseStatus === 1) {
+                        this.renderData.product = res.data.data;
+                        this.productName = res.data.data[0].name;
+                        this.queryData.list.proid = res.data.data[0].id;
+                    }
+                })
+                .then(() => {
+                    this.list();
+                });
         },
         byProductChange() {
             this.queryData.list.proid = this.productName;
             this.queryData.list.page = 1;
             // this.onLoadList();
-            this.renderData.list = []
-            this.list()
+            this.renderData.list = [];
+            this.list();
         }
     },
     created() {
-        this.productList()
+        this.productList();
         // this.list();
     }
 };
@@ -340,21 +352,21 @@ export default {
     z-index: 999;
 }
 .affiliateTransactionsMain {
-    font-size: .3rem;
+    font-size: 0.3rem;
 }
 .affiliateTransactions .before-trigger {
-    font-size: .3rem;
+    font-size: 0.3rem;
 }
-.affiliateTransactions .scroll-list-wrap{
-        height: 9rem;
-        overflow: auto;
-        .item{
-            padding: 10px 10px;
+.affiliateTransactions .scroll-list-wrap {
+    height: 9rem;
+    overflow: auto;
+    .item {
+        padding: 10px 10px;
 
-            &:nth-child(2n+1){
-                background: #ccc;
-            }
+        &:nth-child(2n + 1) {
+            background: #ccc;
         }
+    }
 }
 
 .time-screening {

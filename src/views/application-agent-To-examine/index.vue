@@ -12,33 +12,58 @@
                 <a href="javascript:;">待审核</a>
                 <a href="javascript:;" class="active">已审核</a>
                 </div>-->
+                <!-- v-for="(item,index) in unaudited" -->
                 <el-tab-pane label="待审核" name="1">
                     <div class="agentCheckListMain" v-if="isUnauditedData">
                         <div
                             class="agentCheckListItem agentCheckedListItem"
-                            v-for="(item,index) in unaudited"
+                            v-for="(item, index) in unaudited"
                             :key="index"
                         >
-                            <h3>
-                                申请人：
-                                <span>{{item.name}}</span>
-                            </h3>
-                            <div class="flex">
-                                <span>
-                                    联系方式：
-                                    <i>{{item.phone}}</i>
-                                </span>
-                                <a href="tel:13296905340">
-                                    <img
-                                        src="@/assets/images/invitation-record-lis-telephone.png"
-                                        alt="一键拨号"
-                                    >
-                                </a>
+                            <div class="top">
+                                <div class="left">
+                                    <h3>
+                                        申请人：
+                                        <span>{{item.name}}</span>
+                                    </h3>
+                                    <div class="flex">
+                                        <span>
+                                            联系方式：
+                                            <i>{{item.phone}}</i>
+                                        </span>
+                                        <a href="tel:13296905340">
+                                            <img
+                                                src="@/assets/images/invitation-record-lis-telephone.png"
+                                                alt="一键拨  号"
+                                            >
+                                        </a>
+                                    </div>
+                                    <!-- <span>申请产品：{{item.product}}</span> -->
+                                </div>
+                                <div class="right">
+                                    <a
+                                        href="javascript:;"
+                                        v-if="item.status != 2"
+                                        @click="showProModel(item.id, item.bid)"
+                                    >审核</a>
+                                    <a
+                                        href="javascript:;"
+                                        v-if="item.status != 2"
+                                        @click="cancelAudit(item.id)"
+                                    >取消审核</a>
+                                </div>
                             </div>
-                            <!-- <span>代理产品：{{item.agentPro}}</span> -->
-                            <!-- <p>申请时间：{{item.applyTime}}</p> -->
-                            <p>审核时间：{{item.createTime}}</p>
-                            <a href="javascript:;" @click="showProModel(item.id, item.bid)">审核</a>
+
+                            <!-- <span></span> -->
+                            <!-- <p>取消时间：{{item.applyTime}}</p> -->
+
+                            <p>
+                                <span>审核时间：{{item.createTime}}</span>
+                                <span>
+                                    审核状态：
+                                    <em style="color: #f56c6c">{{item.stat}}</em>
+                                </span>
+                            </p>
                         </div>
                     </div>
                     <div class="no-data" v-else>
@@ -49,29 +74,50 @@
                     <div class="agentCheckListMain" v-if="isAuditedData">
                         <div
                             class="agentCheckListItem agentCheckedListItem"
-                            v-for="(item,index) in audited"
+                            v-for="(item, index) in audited"
                             :key="index"
                         >
-                            <h3>
-                                申请人：
-                                <span>{{item.name}}</span>
-                            </h3>
-                            <div class="flex">
-                                <span>
-                                    联系方式：
-                                    <i>{{item.phone}}</i>
-                                </span>
-                                <a href="tel:13296905340">
-                                    <img
-                                        src="@/assets/images/invitation-record-lis-telephone.png"
-                                        alt="一键拨号"
-                                    >
-                                </a>
+                            <div class="top">
+                                <div class="left">
+                                    <h3>
+                                        申请人：
+                                        <span>{{item.name}}</span>
+                                    </h3>
+                                    <div class="flex">
+                                        <span>
+                                            联系方式：
+                                            <i>{{item.phone}}</i>
+                                        </span>
+                                        <a href="tel:13296905340">
+                                            <img
+                                                src="@/assets/images/invitation-record-lis-telephone.png"
+                                                alt="一键拨  号"
+                                            >
+                                        </a>
+                                    </div>
+                                    <span class="product">申请产品：{{item.product}}</span>
+                                </div>
+                                <div class="right">
+                                    <a
+                                        style="background-color: #089cfe"
+                                        href="javascript:;"
+                                        v-if="item.status != 2"
+                                        @click="modifyProduct(item.id, item.bid)"
+                                    >修改</a>
+                                </div>
                             </div>
-                            <!-- <span>代理产品：{{item.agentPro}}</span> -->
-                            <!-- <p>申请时间：{{item.applyTime}}</p> -->
-                            <p>审核时间：{{item.createTime}}</p>
-                            <a href="javascript:;" @click="showProModel(item.id, item.bid)">修改</a>
+
+                            <!-- <span></span> -->
+                            <!-- <p>取消时间：{{item.applyTime}}</p> -->
+
+                            <p>
+                                <span>审核时间：{{item.createTime}}</span>
+                                <span>
+                                    审核状态：
+                                    <!-- <em style="color: #67c23a">{{item.stat}}</em> -->
+                                    <em style="color: #67c23a">{{item.review}}</em>
+                                </span>
+                            </p>
                         </div>
                     </div>
                     <div class="no-data" v-else>
@@ -97,8 +143,8 @@
 </template>
 <script>
 import { getServer } from "@/api/index";
-import response from '@/assets/js/response.js'
-import { Indicator, Toast } from 'mint-ui'
+import response from "@/assets/js/response.js";
+import { MessageBox, Indicator, Toast } from "mint-ui";
 export default {
     data() {
         return {
@@ -110,6 +156,7 @@ export default {
             checkListArr: [],
             audited: [],
             unaudited: [],
+            state: "",
             queryData: {
                 listProduct: {
                     requestType: "personal",
@@ -126,14 +173,32 @@ export default {
                     userPhone: this.$store.state.user.uphone
                 },
                 productConfirm: {
-                    requestType: 'personal',
-                    requestKeywords: 'auditmod',
+                    requestType: "personal",
+                    requestKeywords: "agentreview",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     productID: "",
                     auditID: "", // 申请列表ID,
-                    applicantID: ""  // 申请人ID
+                    applicantID: "" // 申请人ID
+                },
+                modify: {
+                    requestType: "personal",
+                    requestKeywords: "auditmod",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    productID: "",
+                    auditID: "", // 申请列表ID,
+                    applicantID: "" // 申请人ID
+                },
+                cancelAudit: {
+                    requestType: "personal",
+                    requestKeywords: "auditcancel",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    id: ""
                 }
             },
             renderData: {
@@ -142,9 +207,36 @@ export default {
         };
     },
     methods: {
+        cancelAudit(id) {
+            this.queryData.cancelAudit.id = id;
+            MessageBox.confirm("您确定要取消审核吗?", "取消审核")
+                .then(action => {
+                    getServer(this.queryData.cancelAudit).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            Toast("已取消审核");
+                            this.list();
+                        }
+                    });
+                })
+                .catch(() => {});
+        },
         showProModel(auditID, applicantID) {
-            this.queryData.productConfirm.applicantID = applicantID
-            this.queryData.productConfirm.auditID = auditID
+            this.state = "add";
+            this.queryData.productConfirm.applicantID = applicantID;
+            this.queryData.productConfirm.auditID = auditID;
+            getServer(this.queryData.listProduct).then(res => {
+                // alert(JSON.stringify(res))
+                if (res.data.responseStatus === 1) {
+                    this.show = !this.show;
+                    // alert(res.data.data.length)
+                    this.renderData.list = res.data.data;
+                }
+            });
+        },
+        modifyProduct(auditID, applicantID) {
+            this.state = "modify";
+            this.queryData.modify.applicantID = applicantID;
+            this.queryData.modify.auditID = auditID;
             getServer(this.queryData.listProduct).then(res => {
                 // alert(JSON.stringify(res))
                 if (res.data.responseStatus === 1) {
@@ -155,49 +247,70 @@ export default {
             });
         },
         productConfirm() {
-            this.queryData.productConfirm.productID = this.result.join(',')
-            getServer(this.queryData.productConfirm).then(res => {
-                // alert(response[res.data.responseStatus])
-                if (res.data.responseStatus === 1) {
-                    if( this.activeName === "1" ) {
-                        Toast("审核成功")
-                    } else {
-                        Toast("修改成功")
+            this.queryData.productConfirm.productID = this.result.join(",");
+            this.queryData.modify.productID = this.result.join(",");
+            if (this.state === "add") {
+                getServer(this.queryData.productConfirm).then(res => {
+                    // alert(response[res.data.responseStatus]);
+                    if (res.data.responseStatus === 1) {
+                        if (this.activeName === "1") {
+                            Toast("审核成功");
+                        } else {
+                            Toast("修改成功");
+                        }
+                        this.activeName = "2";
+                        this.list();
                     }
-                    this.activeName = "2";
-                    this.list();
-                }
-            });
+                });
+            } else {
+                getServer(this.queryData.modify).then(res => {
+                    // alert(response[res.data.responseStatus])
+                    if (res.data.responseStatus === 1) {
+                        if (this.activeName === "1") {
+                            Toast("审核成功");
+                        } else {
+                            Toast("修改成功");
+                        }
+                        this.list();
+                    }
+                });
+            }
         },
         list() {
-            Indicator.open()
+            Indicator.open();
             getServer(this.queryData.list).then(res => {
                 Indicator.close();
                 if (res.data.responseStatus === 1) {
                     // this.checkListArr = res.data.data;
-                    // alert(JSON.stringify(res.data.data))
+                    // alert(JSON.stringify(res));
                     this.unaudited = res.data.data.filter(
                         item => item.review == "未审核"
                     );
                     this.audited = res.data.data.filter(
                         item => item.review != "未审核"
                     );
+                    this.isData();
+                } else if (res.data.responseStatus === 300) {
+                    this.isData();
                 }
             });
         },
         handleClick() {
-            this.list()
+            this.list();
+            this.isData();
+        },
+        isData() {
             if (this.activeName === "1") {
                 if (this.unaudited.length === 0) {
-                    this.isUnauditedData = false
+                    this.isUnauditedData = false;
                 } else {
-                    this.isUnauditedData = true
+                    this.isUnauditedData = true;
                 }
             } else {
                 if (this.audited.length === 0) {
-                    this.isAuditedData = false
+                    this.isAuditedData = false;
                 } else {
-                    this.isAuditedData = true
+                    this.isAuditedData = true;
                 }
             }
         }
@@ -262,41 +375,67 @@ export default {
     }
 }
 .agentCheckListItem {
+    width: 100%;
     border-bottom: 5px solid #f1f1f1;
-    padding-right: 100px;
+    // padding-right: 100px;
+    // padding-bottom: 0.3rem;
     position: relative;
-    > a {
-        display: block;
-        width: 80px;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        font-size: 16px;
-        background: #089cfe;
-        color: #fff;
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        margin-top: -20px;
-    }
-    h3 {
-        line-height: 40px;
-        font-size: 18px;
-        color: #333;
-        padding: 0 15px;
-    }
-    div {
-        padding: 0 15px;
-        line-height: 20px;
-        span {
-            font-size: 16px;
-        }
-        a {
-            margin-left: 10px;
-            img {
-                width: 20px;
-                height: 20px;
+    box-sizing: border-box;
+    .top {
+        overflow: hidden;
+        .left {
+            float: left;
+            h3 {
+                line-height: 40px;
+                font-size: 18px;
+                color: #333;
+                padding: 0 15px;
+            }
+            div {
+                padding: 0 15px;
+                line-height: 20px;
+                span {
+                    font-size: 16px;
+                }
+                a {
+                    margin-left: 10px;
+                    img {
+                        width: 20px;
+                        height: 20px;
+                        display: block;
+                    }
+                }
+            }
+            span.product:last-of-type {
+                font-size: 16px;
+                color: #333;
                 display: block;
+                padding: .1rem 15px;
+            }
+        }
+        .right {
+            float: right;
+            padding: 10px 15px 0;
+            > a:first-of-type {
+                display: block;
+                width: 80px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                font-size: 16px;
+                background: #089cfe;
+                color: #fff;
+                margin-bottom: 0.1rem;
+            }
+            > a:last-of-type {
+                display: block;
+                width: 80px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                font-size: 16px;
+                background: #f56c6c;
+                color: #fff;
             }
         }
     }
@@ -305,6 +444,15 @@ export default {
         padding: 3px 15px 2px;
         color: #999;
         line-height: 30px;
+        overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
+        span:first-of-type {
+            float: left;
+        }
+        span:last-of-type {
+            float: right;
+        }
     }
     > span {
         display: block;

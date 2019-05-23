@@ -1,2 +1,0 @@
-webpackJsonp([58],{upEk:function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r={render:function(){var t=this,e=t.$createElement,r=t._self._c||e;return r("div",{staticClass:"application-agent-details"},[r("div",{staticClass:"return"},[r("img",{attrs:{src:n("1Hd4"),alt:""},on:{click:function(e){return t.$router.go(-1)}}}),t._v(" "),r("span",[t._v("申请代理")])])])},staticRenderFns:[]},l=n("VU/8")(null,r,!1,null,null,null);e.default=l.exports}});
-//# sourceMappingURL=58.eead384a678c2e0731e9.js.map

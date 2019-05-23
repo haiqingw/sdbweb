@@ -5,7 +5,7 @@
     <!-- header -->
     <div class="return">
       <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
-      <span>绑定机具</span>
+      <span>自助绑机</span>
     </div>
     <!-- body -->
     <div class="bingding-mplements-c">

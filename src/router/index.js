@@ -337,6 +337,11 @@ export default new Router({
       path: '/modifyInfo', //修改个人信息
       name: 'modifyInfo',
       component: resolve => require(['@/views/modifyInfo'], resolve),
+    },
+    {
+      path: '/merchantsExpand', //商户拓展
+      name: 'expand',
+      component: resolve => require(['@/views/merchantsExpand'], resolve),
     }
   ]
 })

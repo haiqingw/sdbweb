@@ -11,8 +11,8 @@
                 <el-input v-model="queryData.search.keywords" placeholder="请输入名字或手机号"></el-input>
                 <el-button type="primary" @click="search">搜索</el-button>
             </div>
-            <div class="dial-code-subordinate-list">
-                <div class="item" v-for="item in renderData.list" :key="item.id" v-if="isData">
+            <div class="dial-code-subordinate-list" v-if="isData">
+                <div class="item" v-for="item in renderData.list" :key="item.id">
                     <div class="img">
                         <img src="@/assets/images/dial-code-user.png" alt>
                     </div>
@@ -24,9 +24,9 @@
                         <span @click="confirmDialCode(item.id)">选择</span>
                     </div>
                 </div>
-                <div class="no-data" v-else>
-                    <img src="@/assets/images/no-data.png" alt>
-                </div>
+            </div>
+            <div class="no-data" v-else>
+                <img src="@/assets/images/no-data.png" alt>
             </div>
         </div>
     </div>
@@ -104,10 +104,10 @@ export default {
                         Toast("拨码成功");
                         setTimeout(() => {
                             this.$router.go(-1);
-                            this.conduct = true
+                            this.conduct = true;
                         }, 500);
                     } else {
-                        this.conduct = true
+                        this.conduct = true;
                         Toast(response[res.data.responseStatus]);
                     }
                 });
@@ -137,6 +137,9 @@ export default {
 
 
 <style>
+.dial-code-subordinate .no-data {
+    width: 70%;
+}
 .dial-code-subordinate-content {
     margin-top: 0.8rem;
 }
@@ -148,7 +151,7 @@ export default {
     overflow: hidden;
 }
 .dial-code-subordinate-content .search .el-input {
-    width: 80%;
+    width: 70%;
     float: left;
 }
 .dial-code-subordinate-content .search .el-button {

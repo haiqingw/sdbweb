@@ -21,53 +21,56 @@
                     :label="item.batchNo"
                     :value="item.batchNo"
                 ></el-option>
-            </el-select> -->
+            </el-select>-->
         </div>
-        <div class="my-terminal-list" v-if="isData">
-            <cube-scroll
-                ref="scroll"
-                :data="renderData.list"
-                @pulling-down="onPullingDown"
-                @pulling-up="onPullingUp"
-                :options="options"
-                v-if="isData"
-            >
-                <ul>
-                    <li v-for="item in renderData.list" :key="item.id">
-                        <div class="name-state">
-                            <h3>{{item.productName}}</h3>
-                            <!-- <el-tag type="danger" v-if="item.useStatus === '未使用'">{{item.useStatus}}</el-tag>
-                            <el-tag type="success" v-if="item.useStatus === '已使用' ">{{item.useStatus}}</el-tag>-->
-                            <!-- <el-checkbox-group
+        <div class="my-terminal-list">
+            <div class="dial-codelist" v-if="isData">
+                <cube-scroll
+                    ref="scroll"
+                    :data="renderData.list"
+                    @pulling-down="onPullingDown"
+                    @pulling-up="onPullingUp"
+                    :options="options"
+                    v-if="isData"
+                >
+                    <ul>
+                        <li v-for="item in renderData.list" :key="item.id">
+                            <div class="name-state">
+                                <h3>{{item.productName}}</h3>
+                                <!-- <el-tag type="danger" v-if="item.useStatus === '未使用'">{{item.useStatus}}</el-tag>
+                                <el-tag type="success" v-if="item.useStatus === '已使用' ">{{item.useStatus}}</el-tag>-->
+                                <!-- <el-checkbox-group
                                 v-model="checkList"
                                 @change="handleCheckedCitiesChange"
                             >
                                 <el-checkbox :label="item.id"></el-checkbox>
-                            </el-checkbox-group>-->
-                            <van-checkbox-group v-model="checkList">
-                                <van-checkbox :name="item.id"></van-checkbox>
-                            </van-checkbox-group>
-                        </div>
-                        <div class="terminal-number">{{item.terminalNo}}</div>
-                        <div class="time-batch">
-                            <div class="left">
-                                <span v-if=" item.useName !== '0' ">使用者：{{item.useName}}</span>
-                                <time>{{item.allotTime}}</time>
+                                </el-checkbox-group>-->
+                                <van-checkbox-group v-model="checkList">
+                                    <van-checkbox :name="item.id"></van-checkbox>
+                                </van-checkbox-group>
                             </div>
-                            <div class="right">
-                                <span>{{item.batchNo}}</span>
+                            <div class="terminal-number">{{item.terminalNo}}</div>
+                            <div class="time-batch">
+                                <div class="left">
+                                    <span v-if=" item.useName !== '0' ">使用者：{{item.useName}}</span>
+                                    <time>{{item.allotTime}}</time>
+                                </div>
+                                <div class="right">
+                                    <span>{{item.batchNo}}</span>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </cube-scroll>
-            <div class="confirm" @click="confirm">
-                <em>已选{{checkList.length}}</em>
-                <span>确定</span>
+                        </li>
+                    </ul>
+                </cube-scroll>
+            </div>
+            <div class="no-data" v-else>
+                <img src="@/assets/images/no-data.png" alt>
             </div>
         </div>
-        <div class="no-data" v-else>
-            <img src="@/assets/images/no-data.png" alt>
+        <div class="height: 1rem;"></div>
+        <div class="confirm" @click="confirm">
+            <em>已选{{checkList.length}}</em>
+            <span>确定</span>
         </div>
     </div>
 </template>
@@ -211,10 +214,10 @@ export default {
             });
         },
         terminalList() {
-            Indicator.open();
+            // Indicator.open();
             getServer(this.queryData.list).then(res => {
                 // console.log(response[res.data.responseStatus])
-                Indicator.close();
+                // Indicator.close();
                 // console.log(res.data.data.constructor === Array);
                 if (res.data.responseStatus === 1) {
                     // console.log(res.data.data.length)
@@ -248,8 +251,14 @@ export default {
 </script>
 
 <style lang="scss">
+.mint-indicator {
+    z-index: 999999999999999;
+}
 .mint-indicator-wrapper {
-    z-index: 999;
+    z-index: 999999999999999;
+}
+.mint-indicator-mask {
+    z-index: 999999999999999;
 }
 .my-terminal-list {
     font-size: 0.3rem;
@@ -260,12 +269,14 @@ export default {
 .my-terminal-list {
     height: 11rem;
 }
+.my-terminal-list .dial-codelist {
+    height: 11rem;
+}
 .my-terminal-list .scroll-list-wrap {
     height: 11rem;
     overflow: auto;
     .item {
         padding: 10px 10px;
-
         &:nth-child(2n + 1) {
             background: #ccc;
         }
@@ -281,6 +292,7 @@ export default {
     padding-bottom: 0.6rem;
 }
 .dial-code .confirm {
+    display: block;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -292,6 +304,7 @@ export default {
     height: 0.8rem;
     padding: 0 0.2rem;
     box-sizing: border-box;
+    z-index: 99999999999999999999999999999999;
 }
 .dial-code .confirm em {
     float: left;

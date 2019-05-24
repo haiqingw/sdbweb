@@ -134,7 +134,7 @@
                             v-for="(item, index) in renderData.list"
                             :key="index"
                             :name="item.id"
-                        >{{ item.name }}</van-checkbox>
+                        >{{ item.productName }}</van-checkbox>
                     </van-checkbox-group>
                 </div>
             </van-dialog>

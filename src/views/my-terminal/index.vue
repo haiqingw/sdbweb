@@ -83,13 +83,13 @@
                                     <span>{{item.batchNo}}</span>
                                 </div>
                             </div>
-                            <!-- <div
+                            <div
                                 class="code-out"
                                 v-if="item.isActive == 1"
                                 @click="codeOut(item.id, item.useID, item.terminalNo)"
                             >
                                 <span>退码</span>
-                            </div> -->
+                            </div>
                         </li>
                     </ul>
                 </cube-scroll>
@@ -410,8 +410,8 @@ export default {
     width: 1.6rem;
     height: 1.6rem;
     position: absolute;
-    // bottom: 0.9rem;
-    bottom: .1rem;
+    bottom: 0.9rem;
+    // bottom: .1rem;
     right: 0.1rem;
     z-index: 99;
 }

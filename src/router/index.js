@@ -319,7 +319,7 @@ export default new Router({
         component: resolve => require(['@/views/dial-code/index/index'], resolve),
     },
     {
-        path: '/dial-code-subordinate/:terminalNoId', 
+        path: '/dial-code-subordinate/:terminalNoId/:id', 
         name: 'dial-code-subordinate',
         component: resolve => require(['@/views/dial-code/subordinate'], resolve),
     },

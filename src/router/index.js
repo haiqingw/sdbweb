@@ -329,9 +329,16 @@ export default new Router({
         component: resolve => require(['@/views/application-agent-To-examine'], resolve),
     },
     {
-        path: '/dial-code-list/:id', 
+        // path: '/dial-code-list/:id', 
+        path: '/dial-code-list', 
         name: 'dial-code-list',
         component: resolve => require(['@/views/dial-code/list'], resolve),
+    },
+    {
+        // path: '/dial-code-list/:id', 
+        path: '/callback-list', 
+        name: 'callback-list',
+        component: resolve => require(['@/views/dial-code/callback-list'], resolve),
     },
     {
       path: '/modifyInfo', //修改个人信息

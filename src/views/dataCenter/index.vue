@@ -122,9 +122,9 @@
                 </div>
             </div>
         </div>
-        <div class="interval"></div>
+        <!-- <div class="interval"></div> -->
         <!-- 我的收益 -->
-        <div class="myEarningMain">
+        <div v-if="dataCenterStatus" class="myEarningMain">
             <div class="myEarningTitleMain">
                 <span>交易/收益</span>
                 <em>全部<img src="@/assets/images/arrRightIcon.png" alt="右箭头"></em>
@@ -193,7 +193,7 @@ export default {
     data() {
         return {
             colorDataStr: "#ffe8b8",
-            dataCenterStatus: true,
+            dataCenterStatus: false,
             colorData: ["#ffe8b8", "#ff6638", "#6eb6ff"],
             realIndex1: 0,
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],

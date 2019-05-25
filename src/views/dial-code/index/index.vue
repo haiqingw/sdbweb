@@ -4,6 +4,7 @@
         <div class="return">
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
             <span>拨码</span>
+            <router-link class="withdrawalRecord" to="/dial-code-list" style="color:#fff;">拨码记录</router-link>
         </div>
         <div class="my-terminal-choice line_bottom">
             <el-select v-model="byProduct.value" placeholder="按产品" @change="byProductChange">
@@ -15,11 +16,7 @@
                 ></el-option>
             </el-select>
             <div class="search">
-                <van-search
-                    @search="onSearch"
-                    placeholder="请输入搜索关键词"
-                    v-model="queryData.search.val"
-                />
+                <van-search @search="onSearch" placeholder="请输入搜索关键词" v-model="search"/>
             </div>
             <!-- <el-select v-model="byBatch.value" placeholder="按批次" @change="byBatchChange">
                 <el-option
@@ -154,9 +151,7 @@ export default {
                     page: 1,
                     limit: 10
                 },
-                search: {
-                    val: ""
-                }
+                search: ""
             },
             renderData: {
                 list: []
@@ -165,7 +160,8 @@ export default {
     },
     methods: {
         onSearch() {
-            alert(1);
+            this.queryData.list.page = 1;
+            this.terminalList();
         },
         onPullingDown() {
             this.renderData.list = [];
@@ -227,6 +223,11 @@ export default {
             });
         },
         terminalList() {
+            if (this.search === "") {
+                delete this.queryData.list.keywords;
+            } else {
+                this.queryData.list.keywords = this.search;
+            }
             // Indicator.open();
             getServer(this.queryData.list).then(res => {
                 // console.log(response[res.data.responseStatus])
@@ -264,7 +265,19 @@ export default {
 </script>
 
 <style lang="scss">
-.van-search {
+.dial-code .no-data {
+    width: 70%;
+}
+.dial-code .van-checkbox {
+    overflow: initial;
+}
+.dial-code .van-checkbox__icon .van-icon {
+    width: 0.5rem;
+    height: 0.5rem;
+    font-size: 0.4rem;
+    line-height: 0.5rem;
+}
+.dial-code .van-search {
     padding: 0;
 }
 .mint-indicator {

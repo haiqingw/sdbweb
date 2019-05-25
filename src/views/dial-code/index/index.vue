@@ -14,6 +14,13 @@
                     :value="item.id"
                 ></el-option>
             </el-select>
+            <div class="search">
+                <van-search
+                    @search="onSearch"
+                    placeholder="请输入搜索关键词"
+                    v-model="queryData.search.val"
+                />
+            </div>
             <!-- <el-select v-model="byBatch.value" placeholder="按批次" @change="byBatchChange">
                 <el-option
                     v-for="item in byBatch.options"
@@ -52,7 +59,7 @@
                             <div class="terminal-number">{{item.terminalNo}}</div>
                             <div class="time-batch">
                                 <div class="left">
-                                    <span v-if=" item.useName !== '0' ">使用者：{{item.useName}}</span>
+                                    <!-- <span v-if=" item.useName !== '0' ">使用者：{{item.useName}}</span> -->
                                     <time>{{item.allotTime}}</time>
                                 </div>
                                 <div class="right">
@@ -146,6 +153,9 @@ export default {
                     useStatus: "1", //使用状态
                     page: 1,
                     limit: 10
+                },
+                search: {
+                    val: ""
                 }
             },
             renderData: {
@@ -154,6 +164,9 @@ export default {
         };
     },
     methods: {
+        onSearch() {
+            alert(1);
+        },
         onPullingDown() {
             this.renderData.list = [];
             this.queryData.list.page = 1;
@@ -251,6 +264,9 @@ export default {
 </script>
 
 <style lang="scss">
+.van-search {
+    padding: 0;
+}
 .mint-indicator {
     z-index: 999999999999999;
 }

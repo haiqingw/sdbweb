@@ -75,11 +75,11 @@ const user = {
                     } else if(data.responseStatus === 200) {
                         Indicator.close()
                         reject(res)
-                        // Toast(response[res.data.responseStatus])
+                        Toast(response[res.data.responseStatus])
                     } else {
                         Indicator.close()
                         reject(res)
-                        // Toast(response[res.data.responseStatus])
+                        Toast(response[res.data.responseStatus])
                     }
                 }).catch( err => {
                     reject(err)

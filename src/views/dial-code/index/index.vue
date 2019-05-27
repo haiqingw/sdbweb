@@ -69,6 +69,7 @@
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import { Toast, Indicator } from "mint-ui";
+import wx from 'weixin-js-sdk'
 export default {
     data() {
         return {
@@ -137,7 +138,12 @@ export default {
                     limit: 10,
                     terminals: ""
                 },
-                searchVal: ""
+                searchVal: "",
+                sweepCode: {
+                    requestType: "sharecode",
+                    requestKeywords: "jssdks",
+                    code: "code"
+                }
             },
             renderData: {
                 list: []
@@ -270,7 +276,7 @@ export default {
                         //     success: function (res) {
 
                         //     }
-                        // });
+                        // });f
                         wx.scanQRCode({
                             needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
                             // scanType: ["barCode"], // 可以指定扫二维码还是一维码，默认二者都有
@@ -281,9 +287,9 @@ export default {
                                     if (result.indexOf(",") >= 0) {
                                         var tempArray = result.split(",");
                                         var tempNum = tempArray[1];
-                                        $this.queryData.search = tempNum;
-                                        this.queryData.list.page = 1
-                                        this.terminalList()
+                                        $this.queryData.searchVal = tempNum;
+                                        this.queryData.list.page = 1;
+                                        this.terminalList();
                                     } else {
                                         Toast("获取失败");
                                     }
@@ -312,7 +318,7 @@ export default {
 .dial-code .search .el-button {
     padding: 0;
     float: right;
-    padding-right: .2rem;
+    // padding-right: 0.1rem;
     line-height: 32px;
 }
 .dial-code .no-data {
@@ -329,7 +335,7 @@ export default {
 }
 .dial-code .van-search {
     padding: 0;
-    width: 70%;
+    width: 80%;
     float: left;
 }
 .mint-indicator {

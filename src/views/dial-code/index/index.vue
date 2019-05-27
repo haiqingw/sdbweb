@@ -4,6 +4,7 @@
         <div class="return">
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
             <span>拨码</span>
+            <router-link class="withdrawalRecord" to="/dial-code-list" style="color:#fff;">拨码记录</router-link>
         </div>
         <div class="my-terminal-choice line_bottom">
             <el-select v-model="byProduct.value" placeholder="按产品" @change="byProductChange">
@@ -15,20 +16,10 @@
                 ></el-option>
             </el-select>
             <div class="search">
-                <van-search
-                    @search="onSearch"
-                    placeholder="请输入搜索关键词"
-                    v-model="queryData.search.val"
-                />
+                <van-search @search="onSearch" v-model="queryData.searchVal"/>
+                <!-- <el-input v-model="search"></el-input> -->
+                <el-button type="text" @click="sys_click">扫码</el-button>
             </div>
-            <!-- <el-select v-model="byBatch.value" placeholder="按批次" @change="byBatchChange">
-                <el-option
-                    v-for="item in byBatch.options"
-                    :key="item.batchNo"
-                    :label="item.batchNo"
-                    :value="item.batchNo"
-                ></el-option>
-            </el-select>-->
         </div>
         <div class="my-terminal-list">
             <div class="dial-codelist" v-if="isData">
@@ -44,14 +35,6 @@
                         <li v-for="item in renderData.list" :key="item.id">
                             <div class="name-state">
                                 <h3>{{item.productName}}</h3>
-                                <!-- <el-tag type="danger" v-if="item.useStatus === '未使用'">{{item.useStatus}}</el-tag>
-                                <el-tag type="success" v-if="item.useStatus === '已使用' ">{{item.useStatus}}</el-tag>-->
-                                <!-- <el-checkbox-group
-                                v-model="checkList"
-                                @change="handleCheckedCitiesChange"
-                            >
-                                <el-checkbox :label="item.id"></el-checkbox>
-                                </el-checkbox-group>-->
                                 <van-checkbox-group v-model="checkList">
                                     <van-checkbox :name="item.id"></van-checkbox>
                                 </van-checkbox-group>
@@ -59,7 +42,6 @@
                             <div class="terminal-number">{{item.terminalNo}}</div>
                             <div class="time-batch">
                                 <div class="left">
-                                    <!-- <span v-if=" item.useName !== '0' ">使用者：{{item.useName}}</span> -->
                                     <time>{{item.allotTime}}</time>
                                 </div>
                                 <div class="right">
@@ -87,6 +69,7 @@
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import { Toast, Indicator } from "mint-ui";
+import wx from 'weixin-js-sdk'
 export default {
     data() {
         return {
@@ -152,10 +135,14 @@ export default {
                     // batchNo: "",      //批次号
                     useStatus: "1", //使用状态
                     page: 1,
-                    limit: 10
+                    limit: 10,
+                    terminals: ""
                 },
-                search: {
-                    val: ""
+                searchVal: "",
+                sweepCode: {
+                    requestType: "sharecode",
+                    requestKeywords: "jssdks",
+                    code: "code"
                 }
             },
             renderData: {
@@ -165,7 +152,8 @@ export default {
     },
     methods: {
         onSearch() {
-            alert(1);
+            this.queryData.list.page = 1;
+            this.terminalList();
         },
         onPullingDown() {
             this.renderData.list = [];
@@ -178,6 +166,7 @@ export default {
             this.terminalList();
         },
         confirm() {
+            // alert(JSON.stringify(this.checkList))
             if (this.checkList.length == 0) {
                 Toast("请选择终端");
             } else {
@@ -227,6 +216,11 @@ export default {
             });
         },
         terminalList() {
+            if (this.queryData.searchVal === "") {
+                delete this.queryData.list.terminals;
+            } else {
+                this.queryData.list.terminals = this.queryData.searchVal;
+            }
             // Indicator.open();
             getServer(this.queryData.list).then(res => {
                 // console.log(response[res.data.responseStatus])
@@ -240,6 +234,7 @@ export default {
                     res.data.data.forEach(item => {
                         this.renderData.list.push(item);
                     });
+                    // this.checkList.push("35943")
                 } else if (
                     res.data.responseStatus === 300 &&
                     this.queryData.list.page != 1
@@ -252,8 +247,60 @@ export default {
                     this.isData = false;
                 }
             });
+        },
+        sys_click() {
+            this.queryData.sweepCode.code = window.location.href.split("#")[0];
+            getServer(this.queryData.sweepCode).then(res => {
+                if (res.data.responseStatus === 1) {
+                    wx.config({
+                        // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        debug: false,
+                        // 必填，公众号的唯一标识
+                        appId: res.data.data.appId,
+                        // 必填，生成签名的时间戳
+                        timestamp: res.data.data.timestamp,
+                        // 必填，生成签名的随机串
+                        nonceStr: res.data.data.nonceStr,
+                        // 必填，签名
+                        signature: res.data.data.signature,
+                        // 必填，需要使用的JS接口列表，所有JS接口列表
+                        jsApiList: ["checkJsApi", "scanQRCode"]
+                    });
+                    wx.error(function(res) {
+                        // alert("出错了：" + res.errMsg);//这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
+                    });
+                    var $this = this;
+                    wx.ready(function() {
+                        // wx.checkJsApi({
+                        //     jsApiList: ['scanQRCode', 'checkJsApi'],
+                        //     success: function (res) {
+
+                        //     }
+                        // });f
+                        wx.scanQRCode({
+                            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                            // scanType: ["barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                            scanType: ["qrCode", "barCode"],
+                            success: function(res) {
+                                setTimeout(() => {
+                                    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                                    if (result.indexOf(",") >= 0) {
+                                        var tempArray = result.split(",");
+                                        var tempNum = tempArray[1];
+                                        $this.queryData.searchVal = tempNum;
+                                        this.queryData.list.page = 1;
+                                        this.terminalList();
+                                    } else {
+                                        Toast("获取失败");
+                                    }
+                                    // $this.queryData.confirmBinding.terminal = result
+                                }, 300);
+                            }
+                        });
+                    });
+                }
+            });
         }
-        // 下拉刷新
     },
     created() {
         this.choiceProduct();
@@ -264,8 +311,32 @@ export default {
 </script>
 
 <style lang="scss">
-.van-search {
+.dial-code .search {
+    text-align: center;
+    width: 50%;
+}
+.dial-code .search .el-button {
     padding: 0;
+    float: right;
+    // padding-right: 0.1rem;
+    line-height: 32px;
+}
+.dial-code .no-data {
+    width: 70%;
+}
+.dial-code .van-checkbox {
+    overflow: initial;
+}
+.dial-code .van-checkbox__icon .van-icon {
+    width: 0.5rem;
+    height: 0.5rem;
+    font-size: 0.4rem;
+    line-height: 0.5rem;
+}
+.dial-code .van-search {
+    padding: 0;
+    width: 80%;
+    float: left;
 }
 .mint-indicator {
     z-index: 999999999999999;
@@ -348,12 +419,7 @@ export default {
     line-height: 0.4rem;
     padding: 0.2rem 0 0.1rem;
 }
-.dial-code .my-terminal-choice .el-select {
-    flex: 1;
-    background: url(../../../assets/images/my-terminal-choice-drop-down.png)
-        no-repeat 2rem center;
-    background-size: 10%;
-}
+
 .dial-code .my-terminal-choice .el-select input {
     border: none;
 }

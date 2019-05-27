@@ -111,7 +111,7 @@
                         <router-link to="/application-agent">申请代理</router-link>
                     </div>
                 </li>
-                <li>
+                <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/application-agent-To-examine">
                             <img src="@/assets/images/index-list2-img_agentCheck.png" alt>

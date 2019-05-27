@@ -122,9 +122,9 @@
                 </div>
             </div>
         </div>
-        <div class="interval"></div>
+        <!-- <div class="interval"></div> -->
         <!-- 我的收益 -->
-        <div class="myEarningMain">
+        <div v-if="dataCenterStatus" class="myEarningMain">
             <div class="myEarningTitleMain">
                 <span>交易/收益</span>
                 <em>{{wayVal}}<img src="@/assets/images/arrRightIcon.png" alt="右箭头"></em>

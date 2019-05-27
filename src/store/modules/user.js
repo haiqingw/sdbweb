@@ -65,7 +65,7 @@ const user = {
                     const data = res.data
                     if(data.responseStatus === 1) {
                         Indicator.close();
-                        Toast('登录成功')
+                        // Toast('登录成功')
                         commit('SET_UID', data.userID)
                         commit('SET_PID', data.platformID)
                         commit('SET_UNAME', data.userName)

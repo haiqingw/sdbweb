@@ -50,8 +50,18 @@
                 >
                     <ul>
                         <li v-for="item in renderData.list" :key="item.id">
-                            <img v-if="item.isActive == 2" class="stampImgR" src="@/assets/images/stampImg-active.png" alt="已激活">
-                             <img v-if="item.isActive == 1" class="stampImgR" src="@/assets/images/stampImg.png" alt="未激活">
+                            <img
+                                v-if="item.isActive == 2"
+                                class="stampImgR"
+                                src="@/assets/images/stampImg-active.png"
+                                alt="已激活"
+                            >
+                            <img
+                                v-if="item.isActive == 1"
+                                class="stampImgR"
+                                src="@/assets/images/stampImg.png"
+                                alt="未激活"
+                            >
                             <div class="name-state">
                                 <h3>{{item.productName}}</h3>
                                 <el-tag
@@ -73,9 +83,13 @@
                                     <span>{{item.batchNo}}</span>
                                 </div>
                             </div>
-                            <!-- <div class="code-out" v-if="item.useStatus === '未使用'" @click="codeOut">
+                            <div
+                                class="code-out"
+                                v-if="item.isActive == 1"
+                                @click="codeOut(item.id, item.useID, item.terminalNo)"
+                            >
                                 <span>退码</span>
-                            </div>-->
+                            </div>
                         </li>
                     </ul>
                 </cube-scroll>
@@ -90,7 +104,7 @@
 <script>
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
-import { Indicator } from "mint-ui";
+import { Indicator, Toast, MessageBox } from "mint-ui";
 export default {
     data() {
         return {
@@ -165,6 +179,16 @@ export default {
                     // useStatus: "",  //使用状态
                     page: 1,
                     limit: 10
+                },
+                codeOut: {
+                    requestType: "terminalmanage",
+                    requestKeywords: "backyards",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    childID: "", //（下级商户ID）,
+                    machineID: "", // 终端列表ID（接口输出的ID）,
+                    terminal: "" //终端号
                 }
             },
             renderData: {
@@ -192,8 +216,24 @@ export default {
         //         params: { id: this.byProduct.value }
         //     });
         // },
-        codeOut() {
-            console.log("退码");
+        codeOut(id, useId, terminalNo) {
+            this.queryData.codeOut.childID = useId;
+            this.queryData.codeOut.machineID = id;
+            this.queryData.codeOut.terminal = terminalNo;
+            MessageBox.confirm("您确定要退码吗?", "退码")
+                .then(action => {
+                    getServer(this.queryData.codeOut).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            Toast("退码成功");
+                            this.renderData.list = [];
+                            this.queryData.list.page = 1;
+                            this.terminalList();
+                        } else {
+                            Toast(response[res.data.responseStatus]);
+                        }
+                    });
+                })
+                .catch(() => {});
         },
         byProductChange() {
             if (this.isData) {
@@ -280,8 +320,8 @@ export default {
 <style lang="scss">
 .my-terminal-list .isActive {
     text-align: center;
-    line-height: .3rem;
-    padding-bottom: .2rem;
+    line-height: 0.3rem;
+    padding-bottom: 0.2rem;
 }
 .my-terminal-list {
     font-size: 0.3rem;
@@ -366,13 +406,14 @@ export default {
     margin-bottom: 0.3rem;
     position: relative;
 }
-.my-terminal-list ul li .stampImgR{
-    width:1.6rem;
-    height:1.6rem;
+.my-terminal-list ul li .stampImgR {
+    width: 1.6rem;
+    height: 1.6rem;
     position: absolute;
-    bottom:0.1rem;
-    right:0.1rem;
-    z-index:99;
+    bottom: 0.9rem;
+    // bottom: .1rem;
+    right: 0.1rem;
+    z-index: 99;
 }
 .my-terminal-list ul li .name-state {
     overflow: hidden;

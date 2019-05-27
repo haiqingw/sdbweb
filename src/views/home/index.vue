@@ -35,7 +35,7 @@
                     <div class="index-list1-img">
                         <img src="@/assets/images/index-list1-2.png" alt>
                     </div>
-                       <div class="index-list1-text">{{ renderData.listOneData.curentmonth }}</div>
+                    <div class="index-list1-text">{{ renderData.listOneData.curentmonth }}</div>
                     <div class="index-list1-explain">当月赚钱</div>
                 </li>
                 <li>
@@ -46,9 +46,7 @@
                     <div class="index-list1-explain">总赚钱</div>
                 </li>
                 <li>
-                    <router-link
-                        :to="{ name: 'freezeprogress' }"
-                    >
+                    <router-link :to="{ name: 'freezeprogress' }">
                         <div class="index-list1-img">
                             <img src="@/assets/images/index-list1-4.png" alt>
                         </div>
@@ -90,17 +88,7 @@
                         </router-link>
                     </div>
                     <div class="text">
-                        <router-link to="/bindingMplements">自助绑机</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.info.level == 2">
-                    <div class="img">
-                        <router-link to="/myMerchants">
-                            <img src="@/assets/images/organizationIcon.png" alt>
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/myMerchants">商户拓展</router-link>
+                        <router-link to="/bindingMplements">绑定机具</router-link>
                     </div>
                 </li>
                 <li v-if="renderData.info.level == 2">
@@ -113,28 +101,24 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
-                <li>
+                <li v-if="renderData.info.level != 2">
                     <div class="img">
                         <router-link to="/application-agent">
-                            <img src="@/assets/images/index-list2-img3.png" alt>
+                            <img src="@/assets/images/index-list2-img_applyAgent.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
-                        <router-link to="/application-agent">
-                            申请代理
-                        </router-link>
+                        <router-link to="/application-agent">申请代理</router-link>
                     </div>
                 </li>
                 <li>
                     <div class="img">
                         <router-link to="/application-agent-To-examine">
-                            <img src="@/assets/images/index-list2-img3.png" alt>
+                            <img src="@/assets/images/index-list2-img_agentCheck.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
-                        <router-link to="/application-agent-To-examine">
-                            代理审核
-                        </router-link>
+                        <router-link to="/application-agent-To-examine">代理审核</router-link>
                     </div>
                 </li>
                 <li>
@@ -147,7 +131,7 @@
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
                 </li>
-                <li>
+                <!-- <li>
                     <div class="img">
                         <router-link to="/mall">
                             <img src="@/assets/images/index-list2-img5.png" alt>
@@ -156,7 +140,7 @@
                     <div class="text">
                         <router-link to="/mall">机具商城</router-link>
                     </div>
-                </li>
+                </li> -->
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/financialDetails">
@@ -177,17 +161,16 @@
                         <router-link to="/myMerchants">组织架构</router-link>
                     </div>
                 </li>
-                
                 <!-- <li>
-                        <div class="img">
-                            <img src="@/assets/images/index-list2-img8.png" alt="">
-                        </div>
-                        <div class="text">
-                            <a href="">排行榜</a>
-                        </div>
-                    </li>-->
+          <div class="img">
+            <img src="@/assets/images/index-list2-img8.png" alt="">
+          </div>
+          <div class="text">
+            <a href="">排行榜</a>
+          </div>
+                </li>-->
                 <!-- <li v-if="renderData.info.level == 2"> -->
-                <li v-if="renderData.info.level == 2">
+                <!-- <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -196,7 +179,7 @@
                     <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
-                </li>
+                </li>-->
             </ul>
         </div>
         <Footer></Footer>
@@ -316,7 +299,7 @@ export default {
                     this.renderData.info = res.data.data;
                 }
             });
-        },
+        }
     },
     created() {
         this.listOne();
@@ -327,8 +310,7 @@ export default {
         this.todayProfit();
         // this.loginSuccess.openid = this.$route.query.opid
         // alert(this.queryData.loginSuccess.openid)
-        getServer(this.queryData.loginSuccess).then(res => {
-        });
+        getServer(this.queryData.loginSuccess).then(res => {});
     }
 };
 </script>

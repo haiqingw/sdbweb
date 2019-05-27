@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- header -->
-        <mt-header fixed title="数据中心"></mt-header>
+        <!-- <mt-header fixed title="数据中心" :style="{'background':colorDataStr}"></mt-header> -->
         <!-- dataCenter -->
         <div class="dataCenterStopMain" v-if="!dataCenterStatus">
             <img src="@/assets/images/stopImg.png" alt="建设中">
@@ -10,40 +10,40 @@
         </div>
         <div class="dataCenterMain" v-if="dataCenterStatus">
             <!-- 选择产品 -->
-            <div class="selectProMain">
+            <div class="selectProMain" :style="{'background':colorDataStr}" @click="popupVisibleStatus()">
                 <span>请先选择产品</span>
-                <em>请选择<img src="@/assets/images/arrRightIcon.png" alt="右箭头"></em>
-                <select name="">
-                    <option value="1">鼎刷</option>
-                    <option value="2">闪POS</option>
+                <em>{{proVal}}<img src="@/assets/images/arrRightWriteIcon.png" alt="右箭头"></em>
+                <select name="" v-model="proVal">
+                    <option :value="val.name" v-for="(val,index) in proList" :key="index">{{val.name}}</option>
                 </select>
             </div>
             <!-- 选择分类 -->
             <div class="selectClassifyMain">
-                <swiper class="swiper-container">
-                    <swiper-slide>
-                        <div class="classifyItem" :style="{'background':colorData[0]}">
-                            <p>0</p>
-                            <span>代理</span>
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="classifyItem" :style="{'background':colorData[0]}">
+                                <p>0</p>
+                                <span>代理</span>
+                            </div>
                         </div>
-                    </swiper-slide>
-                    <swiper-slide>
-                        <div class="classifyItem" :style="{'background':colorData[1]}">
-                            <p>0</p>
-                            <span>团队</span>
+                        <div class="swiper-slide">
+                            <div class="classifyItem" :style="{'background':colorData[1]}">
+                                <p>0</p>
+                                <span>团队</span>
+                            </div>
                         </div>
-                    </swiper-slide>
-                    <swiper-slide>
-                        <div class="classifyItem" :style="{'background':colorData[2]}">
-                            <p>0</p>
-                            <span>终端</span>
+                        <div class="swiper-slide">
+                            <div class="classifyItem" :style="{'background':colorData[2]}">
+                                <p>0</p>
+                                <span>终端</span>
+                            </div>
                         </div>
-                    </swiper-slide>
-                </swiper>
+                    </div>
+                </div>
             </div>
             <!-- 日/月切换 -->
-                        <!--  -->
-         
+            <!--  -->
             <div class="dmTabMain" :style="{'border-color':colorDataStr,'background':colorDataStr}">
                 <span class="active">日</span>
                 <span>月</span>
@@ -55,7 +55,7 @@
             <!-- 统计 -->
             <div class="statisticalMain">
                 <!-- 团队 -->
-                <div class="statisticalItem" style="display:none;">
+                <div class="statisticalItem" v-show="reallyIndex == 1">
                     <div class="flex">
                         <div class="line_right">
                             <p>0</p>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <!-- 终端 -->
-                <div class="statisticalItem">
+                <div class="statisticalItem" v-show="reallyIndex == 2">
                     <div class="flex">
                         <div class="line_right">
                             <p>0</p>
@@ -104,7 +104,7 @@
                     <p>终端总激活数量0个</p>
                 </div>
                 <!-- 商户 -->
-                <div class="statisticalItem" style="display:none;">
+                <div class="statisticalItem" v-show="reallyIndex == 0">
                     <div class="flex">
                         <div class="line_right">
                             <p>0</p>
@@ -127,17 +127,15 @@
         <div class="myEarningMain">
             <div class="myEarningTitleMain">
                 <span>交易/收益</span>
-                <em>全部<img src="@/assets/images/arrRightIcon.png" alt="右箭头"></em>
-                <select name="" id="">
-                    <option value="1">全部</option>
-                    <option value="2">交易</option>
-                    <option value="3">激活</option>
+                <em>{{wayVal}}<img src="@/assets/images/arrRightIcon.png" alt="右箭头"></em>
+                <select name="" id="" v-model="wayVal">
+                    <option :value="val.name" v-for="(val,index) in wayList" :key="index">{{val.name}}</option>
                 </select>
             </div>
             <div class="myEarningBox">
                 <div class="myEarningTop">
                     <span>共交易0笔，合计(万元)</span>
-                    <div class="flex">
+                    <div class="flex" :style="{'border-color':colorDataStr,'background':colorDataStr}">
                         <em class="active">日</em>
                         <em>月</em>
                     </div>
@@ -192,12 +190,43 @@ import "swiper/dist/css/swiper.min.css";
 export default {
     data() {
         return {
-            colorDataStr: "#ffe8b8",
+            colorDataStr: "#ffd274",
             dataCenterStatus: true,
-            colorData: ["#ffe8b8", "#ff6638", "#6eb6ff"],
+            colorData: ["#6eb6ff", "#ff6638", "#f3b32d"],
             realIndex1: 0,
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
-            moneyData: [932, 910, 932, 290, 40, 320]
+            moneyData: [0, 0, 0, 0, 0, 0],
+            reallyIndex: 0,
+            proList: [
+                {
+                    id: 0,
+                    name: "鼎刷"
+                },
+                {
+                    id: 1,
+                    name: "闪POS"
+                },
+                {
+                    id: 2,
+                    name: "快钱"
+                }
+            ],
+            wayList: [
+                {
+                    id: 1,
+                    name: "全部"
+                },
+                {
+                    id: 2,
+                    name: "交易"
+                },
+                {
+                    id: 3,
+                    name: "激活"
+                }
+            ],
+            proVal: "",
+            wayVal: ""
         };
     },
     components: {
@@ -213,9 +242,12 @@ export default {
             slideToClickedSlide: true,
             on: {
                 slideChangeTransitionEnd: function() {
-                    // that.realIndex1 = this.realIndex;
-                    // console.log(that.colorData[this.realIndex])
-                    // that.colorDataStr = that.colorData[that.realIndex1]
+                    that.reallyIndex = this.realIndex;
+                    console.log(that.reallyIndex);
+                    //console.log(that.colorData[this.realIndex])
+                    that.colorDataStr = that.colorData[that.reallyIndex];
+                    that.drawLine("myChart0", that.monthData, that.moneyData);
+                    that.drawColumn("myChart1", that.monthData, that.moneyData);
                 }
             }
         });
@@ -233,7 +265,19 @@ export default {
                 tooltip: {},
                 xAxis: {
                     type: "category",
-                    data: monthData
+                    data: monthData,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: this.colorData[this.reallyIndex]
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: this.colorData[this.reallyIndex],
+                            width: 2
+                        }
+                    }
                 },
                 yAxis: {
                     show: false,
@@ -243,7 +287,15 @@ export default {
                     {
                         data: moneyData,
                         type: "line",
-                        itemStyle: { normal: { label: { show: true } } }
+                        itemStyle: {
+                            normal: {
+                                label: { show: true },
+                                color: this.colorData[this.reallyIndex],
+                                lineStyle: {
+                                    color: this.colorData[this.reallyIndex]
+                                }
+                            }
+                        }
                     }
                 ]
             });
@@ -258,7 +310,19 @@ export default {
                 tooltip: {},
                 xAxis: {
                     type: "category",
-                    data: monthData
+                    data: monthData,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: this.colorData[this.reallyIndex]
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: this.colorData[this.reallyIndex],
+                            width: 2
+                        }
+                    }
                 },
                 yAxis: {
                     show: false,
@@ -268,23 +332,48 @@ export default {
                     {
                         data: moneyData,
                         type: "bar",
-                        itemStyle: { normal: { label: { show: true } } }
+                        itemStyle: {
+                            normal: {
+                                label: { show: true },
+                                color: this.colorData[this.reallyIndex]
+                            }
+                        }
                     }
                 ]
             });
         },
-        onChange(index) {
-            console.log(index);
+        // proChange(val) {
+        //     console.log(val);
+        // },
+        popupVisibleStatus(){
+            console.log('aa');
+            this.popupVisible = !this.popupVisible;
         }
     },
     created() {
-        this.moneyData = [10, 400, 340, 500, 870, 897];
+        this.proVal = this.proList[0].name;
+        this.wayVal = this.wayList[0].name;
+        this.moneyData = [100, 200, 120, 300, 500, 20];
     }
 };
 </script>
 <style lang="scss">
+.swiper-slide {
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    transition: 300ms;
+}
 .dataCenterMain {
-    padding: 45px 15px 15px;
+    padding: 55px 15px 15px;
 }
 .dataCenterBox {
     box-shadow: 0 0 5px #ccc;
@@ -374,13 +463,24 @@ export default {
     line-height: 40px;
     overflow: hidden;
     position: relative;
+    padding: 0 10px;
+    // background:rgb(255, 102, 56);
+    color: #fff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+    // border-top:1px solid #fff;
     span {
         float: left;
-        font-size: 14px;
+        font-size: 16px;
     }
     em {
         float: right;
-        font-size: 14px;
+        font-size: 16px;
         img {
             width: 14px;
             height: 14px;
@@ -405,7 +505,7 @@ export default {
 .classifyItem {
     display: block;
     width: 100px;
-    height: 100px;
+    height: 81px;
     background: #f1f1f1;
     border-radius: 50%;
     font-size: 20px;
@@ -415,14 +515,15 @@ export default {
     color: #fff;
     font-weight: bold;
     padding-top: 19px;
-    box-sizing: border-box;
+    // box-sizing: border-box;
+    border-width:5px;
+    border-style:solid;
     p {
         font-size: 24px;
     }
 }
 .swiper-slide:not(.swiper-slide-active) {
     transform: scale(0.7);
-    transition: all 0.2s;
 }
 .dmTabMain {
     width: 100px;
@@ -482,6 +583,7 @@ export default {
     }
     em {
         float: right;
+        font-size: 16px;
         img {
             width: 14px;
             height: 14px;
@@ -491,14 +593,14 @@ export default {
             display: inline-block;
         }
     }
-    select{
+    select {
         position: absolute;
-        right:0;
-        top:0;
-        height:30px;
-        z-index:999;
-        opacity:0;
-        font-size:14px;
+        right: 0;
+        top: 0;
+        height: 30px;
+        z-index: 999;
+        opacity: 0;
+        font-size: 16px;
     }
 }
 .myEarningTop {
@@ -522,10 +624,11 @@ export default {
             width: 100%;
             font-size: 14px;
             text-align: center;
+            color: #fff;
             line-height: 30px;
             &.active {
-                background: #6eb6ff;
-                color: #fff;
+                background: #fff;
+                color: #333;
             }
         }
     }

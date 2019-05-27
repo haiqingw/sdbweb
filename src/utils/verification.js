@@ -1,7 +1,7 @@
 
 
 export function checkPhone(rule, phone, callback) {  // 验证手机号
-    if (!(/^1(3|4|5|7|8|9)\d{9}$/.test(phone))) {
+    if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(phone))) {
         return callback(new Error('请输入正确手机号'))
     } else {
         return callback()

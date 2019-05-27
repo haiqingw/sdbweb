@@ -439,7 +439,7 @@ export default {
     font-size: 0.3rem;
 }
 .myMerchants .scroll-list-wrap {
-    height:9.7rem;
+    height: 11rem;
     overflow-y: scroll;
     .item {
         padding: 10px 10px;

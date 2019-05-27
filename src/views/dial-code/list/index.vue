@@ -8,124 +8,127 @@
         </div>
         <div class="content">
             <div class="my-terminal-list" v-if="isData">
-                <van-pull-refresh v-model="isDownLoading" @refresh="onDownRefresh">
-                    <van-list
-                        v-model="isUpLoading"
-                        :finished="upFinished"
-                        finished-text="没有更多了"
-                        @load="onLoadList"
-                        :offset="offset"
-                    >
-                        <ul>
-                            <li v-for="item in renderData.oldList" :key="item.id">
-                                <div class="name-state">
-                                    <h3>{{item.productName}}</h3>
-                                    <el-tag
-                                        type="danger"
-                                        v-if="item.useStatus === '未使用'"
-                                    >{{item.useStatus}}</el-tag>
-                                    <el-tag
-                                        type="success"
-                                        v-if="item.useStatus === '已使用' "
-                                    >{{item.useStatus}}</el-tag>
+                <cube-scroll
+                    ref="scroll"
+                    :data="renderData.list"
+                    @pulling-down="onPullingDown"
+                    @pulling-up="onPullingUp"
+                    :options="options"
+                    v-if="isData"
+                >
+                    <ul>
+                        <li v-for="item in renderData.oldList" :key="item.id">
+                            <div class="name-state">
+                                <h3>{{item.productName}}</h3>
+                                <el-tag
+                                    type="danger"
+                                    v-if="item.useStatus === '未使用'"
+                                >{{item.useStatus}}</el-tag>
+                                <el-tag
+                                    type="success"
+                                    v-if="item.useStatus === '已使用' "
+                                >{{item.useStatus}}</el-tag>
+                            </div>
+                            <div class="terminal-number">{{item.terminalNo}}</div>
+                            <div class="time-batch">
+                                <div class="left">
+                                    <span v-if=" item.useName !== '0' ">使用者：{{item.useName}}</span>
+                                    <time>{{item.allotTime}}</time>
                                 </div>
-                                <div class="terminal-number">{{item.terminalNo}}</div>
-                                <div class="time-batch">
-                                    <div class="left">
-                                        <span v-if=" item.useName !== '0' ">使用者：{{item.useName}}</span>
-                                        <time>{{item.allotTime}}</time>
-                                    </div>
-                                    <div class="right">
-                                        <span>{{item.batchNo}}</span>
-                                    </div>
+                                <div class="right">
+                                    <span>{{item.batchNo}}</span>
                                 </div>
-                                <!-- <div
+                            </div>
+                            <!-- <div
                                     class="code-out"
                                     v-if="item.useStatus === '未使用'"
                                     @click="codeOut"
                                 >
                                     <span>退码</span>
-                                </div> -->
-                            </li>
-                        </ul>
-                    </van-list>
-                </van-pull-refresh>
+                            </div>-->
+                        </li>
+                    </ul>
+                </cube-scroll>
+            </div>
+            <div class="no-data" v-else>
+                dsafdasfsdfdsasd
+                <img src="@/assets/images/no-data.png" alt>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { getServer } from '@/api/index'
-    import response from '@/assets/js/response.js'
-    export default {
-        data() {
-            return {
-                isDownLoading: false,//下拉刷新
-                isUpLoading: false,//上拉加载
-                upFinished: false,//上拉加载完毕
-                offset: 10, //滚动条与底部距离小于 offset 时触发load事件
-                isData: true,
-                queryData: {
-                    list: {
-                        requestType: 'agent',
-                        requestKeywords: 'terminal',
-                        platformID: this.$store.state.user.pid,
-                        userID: this.$store.state.user.uid,
-                        userPhone: this.$store.state.user.uphone,
-                        productID: this.$route.params.id,  //产品ID
-                        page: 0,
-                        limit: 10
+import { getServer } from "@/api/index";
+import response from "@/assets/js/response.js";
+export default {
+    data() {
+        return {
+            options: {
+                pullDownRefresh: {
+                    threshold: 90,
+                    stop: 40,
+                    txt: "刷新成功"
+                }, // 配置下拉刷新
+                pullUpLoad: {
+                    threshold: 0,
+                    txt: {
+                        more: "上拉加载更多",
+                        noMore: "没有更多数据"
                     }
-                },
-                renderData: {
-                    list: [],
-                    oldList: []
+                } // 配置上拉加载，若要关闭可直接 pullUpLoad：false
+            },
+            isData: true,
+            queryData: {
+                list: {
+                    requestType: "agent",
+                    requestKeywords: "terminal",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    productID: this.$route.params.id, //产品ID
+                    page: 1,
+                    limit: 10
                 }
+            },
+            renderData: {
+                list: [],
             }
+        };
+    },
+    methods: {
+        terminalList() {
+            this.upFinished = false;
+            getServer(this.queryData.list).then(res => {
+                // console.log(response[res.data.responseStatus])
+                Indicator.close();
+                // console.log(res.data.data.constructor === Array);
+                if (res.data.responseStatus === 1) {
+                    // console.log(res.data.data.length)
+                    // console.log(res.data)
+                    this.isData = true;
+                    // this.renderData.list = res.data.data;
+                    res.data.data.forEach(item => {
+                        this.renderData.list.push(item);
+                    });
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page != 1
+                ) {
+                    this.$refs.scroll.forceUpdate();
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page == 1
+                ) {
+                    this.isData = false;
+                }
+            });
         },
-        methods: {
-             terminalList () {
-                this.upFinished = false
-                getServer(this.queryData.list).then( res => {
-                    // console.log(response[res.data.responseStatus])
-                    if( res.data.responseStatus === 1 ) {
-                        this.isData = true
-                        this.renderData.list = res.data.data
-                        this.renderData.list.forEach( item => {
-                            this.renderData.oldList.push(item)
-                        })
-                        this.isDownLoading = false
-                        this.isUpLoading = false
-                    } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
-                        this.upFinished = true
-                        this.isUpLoading = false
-                    } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
-                        this.upFinished = false
-                        this.isUpLoading = false
-                        this.isData = false
-                    }
-                })
-            },
-            // 下拉刷新
-            onLoadList () {
-                // console.log("进来", this.queryData.list.page)
-                this.queryData.list.page++
-                this.isUpLoading = true
-                // console.log(this.queryData.list.page)
-                this.terminalList()
-            },
-            onDownRefresh(){
-                this.queryData.list.page = 1
-                this.renderData.oldList = []
-                this.isDownLoading = true
-                this.terminalList();
-            },
-        },
-        created () {
-            this.terminalList()
-        }
+    },
+    created() {
+        this.terminalList();
     }
+};
 </script>
 
 <style>

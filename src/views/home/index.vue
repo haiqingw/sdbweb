@@ -131,6 +131,16 @@
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
                 </li>
+                <li>
+                    <div class="img">
+                        <router-link to="/merchantsExpand">
+                            <img src="@/assets/images/index-list2-img3.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/merchantsExpand">商户拓展</router-link>
+                    </div>
+                </li>
                 <!-- <li>
                     <div class="img">
                         <router-link to="/mall">

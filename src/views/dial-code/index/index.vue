@@ -288,8 +288,8 @@ export default {
                                         var tempArray = result.split(",");
                                         var tempNum = tempArray[1];
                                         $this.queryData.searchVal = tempNum;
-                                        this.queryData.list.page = 1;
-                                        this.terminalList();
+                                        $this.queryData.list.page = 1;
+                                        $this.terminalList();
                                     } else {
                                         Toast("获取失败");
                                     }
@@ -354,17 +354,17 @@ export default {
     font-size: 0.3rem;
 }
 .my-terminal-list {
-    height: 11rem;
+    height: 10rem;
 }
 .my-terminal-list .dial-codelist {
-    height: 11rem;
+    height: 10rem;
 }
 .my-terminal-list .scroll-list-wrap {
-    height: 11rem;
+    height: 10rem;
     overflow: auto;
     .item {
         padding: 10px 10px;
-        &:nth-child(2n + 1) {
+        &:nth-child(2n + 1) {    
             background: #ccc;
         }
     }
@@ -392,6 +392,7 @@ export default {
     padding: 0 0.2rem;
     box-sizing: border-box;
     z-index: 99999999999999999999999999999999;
+    // margin-top: .5rem;
 }
 .dial-code .confirm em {
     float: left;

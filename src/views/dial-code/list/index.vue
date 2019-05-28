@@ -279,10 +279,10 @@ export default {
     font-size: 0.3rem;
 }
 .my-terminal-list .dial-codelist {
-    height: 12rem;
+    height: 11rem;
 }
 .my-terminal-list .scroll-list-wrap {
-    height: 12rem;
+    height: 11rem;
     overflow: auto;
     .item {
         padding: 10px 10px;

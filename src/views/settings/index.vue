@@ -19,6 +19,11 @@
                     <span>更换结算卡</span>
                     <i></i>
                 </li>
+                <li v-if="isCer" class="line_bottom" @click="modifyAuthentication">
+                    <img src="@/assets/images/certificationIcon.png" alt="实名认证">
+                    <span>修改实名认证</span>
+                    <i></i>
+                </li>
                 <router-link tag="li" to="/mall/mall_address" class="line_bottom">
                     <img src="@/assets/images/mineAddressIcon.png" alt="收货地址管理">
                     <span>收货地址管理</span>
@@ -51,6 +56,7 @@ import { getServer } from "@/api/index";
 export default {
     data() {
         return {
+            isCer: false,
             queryData: {
                 checkcerData: {
                     requestType: "personal",
@@ -72,6 +78,13 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                isCer: {
+                    requestType: "personal",
+                    requestKeywords: "checkcer",
+                    userID: this.$store.state.user.uid,
+                    platformID: this.$store.state.user.pid,
+                    userPhone: this.$store.state.user.uphone
                 }
             }
         };
@@ -84,7 +97,7 @@ export default {
                         .dispatch("LogOut", this.queryData.logout)
                         .then(() => {
                             // location.reload();
-                            setTimeout( () => {
+                            setTimeout(() => {
                                 this.$router.push({
                                     // path: "/loginoid",
                                     path: "/loginoid",
@@ -92,7 +105,7 @@ export default {
                                         plat: this.$store.state.user.plat
                                     }
                                 });
-                            }, 500)
+                            }, 500);
                         });
                 })
                 .catch(() => {});
@@ -113,7 +126,26 @@ export default {
                     this.$router.push({ name: "certification" });
                 }
             });
+        },
+        modifyAuthentication() {
+            this.$router.push({
+                name: "certification-modify"
+            });
+        },
+        isCerFn() {
+            getServer(this.queryData.isCer).then(res => {
+                if (res.data.responseStatus === 1) {
+                    // this.$router.push({ name: "certificationNext" });
+                    this.isCer = true;
+                } else {
+                    // Toast(response[res.data.responseStatus]);
+                    this.isCer = false;
+                }
+            });
         }
+    },
+    created() {
+        this.isCerFn();
     }
 };
 </script>

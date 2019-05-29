@@ -349,6 +349,11 @@ export default new Router({
       path: '/merchantsExpand', //商户拓展
       name: 'expand',
       component: resolve => require(['@/views/merchantsExpand'], resolve),
-    }
+    },
+    {
+        path: '/certification-modify', //修改实名认证
+        name: 'certification-modify',
+        component: resolve => require(['@/views/certification/modify'], resolve),
+      }
   ]
 })

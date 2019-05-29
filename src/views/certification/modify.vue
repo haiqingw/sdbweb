@@ -9,7 +9,7 @@
         </div>
         <!-- body -->
         <div class="certificationMain">
-            <h3>绑定结算卡</h3>
+            <h3>修改实名认证</h3>
             <p>为有效保障您的资金安全，请填写与您身份证一致的信息，否则不会通过审核！</p>
             <div class="itemTopTextMain">
                 <p>真实姓名</p>
@@ -91,6 +91,13 @@ export default {
                     userID: this.$store.state.user.uid,
                     platformID: this.$store.state.user.pid,
                     userPhone: this.$store.state.user.uphone
+                },
+                isCer: {
+                    requestType: "personal",
+                    requestKeywords: "checkcer",
+                    userID: this.$store.state.user.uid,
+                    platformID: this.$store.state.user.pid,
+                    userPhone: this.$store.state.user.uphone
                 }
             }
         };
@@ -100,7 +107,17 @@ export default {
         isBindCard() {
             getServer(this.queryData.isBindBankCard).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.$router.push({ name: "certificationComplete" });
+                    // this.$router.push({ name: "certificationComplete" });
+                }
+            });
+        },
+        isCerFn() {
+            getServer(this.queryData.isCer).then(res => {
+                alert(JSON.stringify(res));
+                if (res.data.responseStatus === 1) {
+                    // this.$router.push({ name: "certificationNext" });
+                } else {
+                    // Toast(response[res.data.responseStatus]);
                 }
             });
         },
@@ -120,6 +137,7 @@ export default {
                 this.queryData.bankNameData.cardNum != undefined
             ) {
                 getServer(this.queryData.bankNameData).then(res => {
+                    alert(JSON.stringify(res));
                     if (res.data.responseStatus === 1) {
                         if (res.data.bankName == "未知") {
                             Toast({
@@ -177,6 +195,7 @@ export default {
     created() {
         this.isBindCard();
         this.getRealName();
+        this.isCerFn();
     }
 };
 </script>

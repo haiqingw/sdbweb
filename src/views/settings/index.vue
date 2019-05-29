@@ -134,7 +134,7 @@ export default {
         },
         modifyAuthentication() {
             this.$router.push({
-                name: "certification-modify"
+                name: "modifyInfo"
             });
         },
         isCerFn() {

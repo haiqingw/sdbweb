@@ -2,7 +2,9 @@
     <div>
         <!-- header -->
         <div class="return">
-            <router-link to="/mine"><img src="@/assets/images/return.png" alt="" /></router-link>
+            <router-link to="/mine">
+                <img src="@/assets/images/return.png" alt>
+            </router-link>
             <span>修改个人信息</span>
         </div>
         <!-- body -->
@@ -12,13 +14,21 @@
             <div class="itemTopTextMain">
                 <p>真实姓名</p>
                 <div class="line_bottom">
-                    <input type="text" placeholder="请填写您本人的真实姓名" v-model="queryData.realNameCer.name">
+                    <input
+                        type="text"
+                        placeholder="请填写您本人的真实姓名"
+                        v-model="queryData.realNameCer.name"
+                    >
                 </div>
             </div>
             <div class="itemTopTextMain">
                 <p>身份证号</p>
                 <div class="line_bottom">
-                    <input type="text" placeholder="请填写您本人的身份证号" v-model="queryData.realNameCer.idcard">
+                    <input
+                        type="text"
+                        placeholder="请填写您本人的身份证号"
+                        v-model="queryData.realNameCer.idcard"
+                    >
                 </div>
             </div>
             <div class="submitBtnMain">
@@ -35,45 +45,47 @@ export default {
     data() {
         return {
             queryData: {
-                isCer: {
-                    requestType: "personal",
-                    requestKeywords: "checkcer",
-                    userID: this.$store.state.user.uid,
-                    platformID: this.$store.state.user.pid,
-                    userPhone: this.$store.state.user.uphone
-                },
                 realNameCer: {
                     requestType: "operating",
                     requestKeywords: "realnameauth",
                     userID: this.$store.state.user.uid,
                     platformID: this.$store.state.user.pid,
                     userPhone: this.$store.state.user.uphone
+                },
+                info: {
+                    
                 }
-            }
+            },
         };
     },
     methods: {
         //提交数据
         submitModification() {
             let reg = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/;
-            if(this.queryData.realNameCer.name == '' || this.queryData.realNameCer.name == undefined){
-                Toast('请输入您的真实姓名');
+            if (
+                this.queryData.realNameCer.name == "" ||
+                this.queryData.realNameCer.name == undefined
+            ) {
+                Toast("请输入您的真实姓名");
                 return;
             }
-            if(this.queryData.realNameCer.idcard == '' || this.queryData.realNameCer.idcard == undefined){
-                Toast('请输入您的身份证号');
+            if (
+                this.queryData.realNameCer.idcard == "" ||
+                this.queryData.realNameCer.idcard == undefined
+            ) {
+                Toast("请输入您的身份证号");
                 return;
             }
-            if (!(reg.test(this.queryData.realNameCer.idcard))){
-               Toast('身份证号格式不规范');
-               return;
+            if (!reg.test(this.queryData.realNameCer.idcard)) {
+                Toast("身份证号格式不规范");
+                return;
             }
             getServer(this.queryData.realNameCer).then(res => {
                 if (res.data.responseStatus === 1) {
-                    Toast('修改成功');
-                    setTimeout(()=>{
-                        this.$router.push({name: "mine"});
-                    },1000)
+                    Toast("修改成功");
+                    setTimeout(() => {
+                        this.$router.push({ name: "mine" });
+                    }, 1000);
                 } else {
                     Toast(response[res.data.responseStatus]);
                 }
@@ -81,7 +93,6 @@ export default {
         }
     },
     created() {
-        this.isCerFn();
     }
 };
 </script>
@@ -112,8 +123,8 @@ export default {
         font-weight: bold;
     }
     > div {
-        height:50px;
-        line-height:50px;
+        height: 50px;
+        line-height: 50px;
         input {
             border: none;
             background: none;

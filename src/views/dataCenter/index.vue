@@ -30,7 +30,7 @@
                         <div class="swiper-slide">
                             <div class="classifyItem" :style="{'background':colorData[1]}">
                                 <p>0</p>
-                                <span>团队</span>
+                                <span>商户</span>
                             </div>
                         </div>
                         <div class="swiper-slide">
@@ -150,7 +150,7 @@
                 <div class="myEarningStatisticalMain flex">
                     <div class="line_right">
                         <p>0.00</p>
-                        <h3>团结合计(万元)</h3>
+                        <h3>团队合计(万元)</h3>
                     </div>
                     <div>
                         <p>0.00</p>

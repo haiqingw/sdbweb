@@ -354,6 +354,11 @@ export default new Router({
         path: '/certification-modify', //修改实名认证
         name: 'certification-modify',
         component: resolve => require(['@/views/certification/modify'], resolve),
+      },
+      {
+        path: '/modifyInfo', //修改个人信息
+        name: 'modifyInfo',
+        component: resolve => require(['@/views/modifyInfo'], resolve),
       }
   ]
 })

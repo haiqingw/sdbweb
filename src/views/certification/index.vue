@@ -47,22 +47,14 @@ export default {
                     requestKeywords: "realnameauth",
                     userID: this.$store.state.user.uid,
                     platformID: this.$store.state.user.pid,
-                    userPhone: this.$store.state.user.uphone
+                    userPhone: this.$store.state.user.uphone,
+                    name: "",
+                    idcard: ""
                 }
             }
         };
     },
     methods: {
-        // 判断是否实名认证
-        isCerFn() {
-            getServer(this.queryData.isCer).then(res => {
-                if (res.data.responseStatus === 1) {
-                    this.$router.push({name: 'certificationNext'});
-                } else {
-                    // Toast(response[res.data.responseStatus]);
-                }
-            });
-        },
         //提交数据
         submitModification() {
             let reg = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/;
@@ -80,7 +72,10 @@ export default {
             }
             getServer(this.queryData.realNameCer).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.$router.push({name: "certificationNext"});
+                    Toast("修改成功");
+                    setTimeout(() => {
+                        this.$router.push({name: "mine"});
+                    }, 300);
                 } else {
                     Toast(response[res.data.responseStatus]);
                 }
@@ -88,7 +83,6 @@ export default {
         }
     },
     created() {
-        this.isCerFn();
     }
 };
 </script>

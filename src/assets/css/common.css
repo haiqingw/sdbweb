@@ -1,53 +1,58 @@
 @charset 'utf-8';
-html,body{
-  font-family:"黑体";
+html,
+body {
+  font-family: "黑体";
 }
 .body_bg {
   background: #f9f9f9;
 }
-.paddingBottom{
-  padding-bottom:70px;
+.paddingBottom {
+  padding-bottom: 70px;
 }
-.interval{
-  height:5px;
-  background:#f9f9f9;
+.interval {
+  height: 5px;
+  background: #f9f9f9;
 }
-img{
-  vertical-align:middle;
-  max-width:100%;
+img {
+  vertical-align: middle;
+  max-width: 100%;
 }
-.flex{
-  display:flex;
-  flex-direction:row;
+.flex {
+  display: flex;
+  flex-direction: row;
 }
-.ellipsis{
+.ellipsis {
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
-a.arrIcon{
+a.arrIcon {
   position: relative;
-  padding-right:10px;
+  padding-right: 10px;
 }
-a.arrIcon::after{
-  content:'';
+a.arrIcon::after {
+  content: "";
   display: block;
-  width:5px;
-  height:5px;
-  border-right:1px solid #ccc;
-  border-bottom:1px solid #ccc;
-  transform:rotate(-45deg);
-  -webkit-transform:rotate(-45deg);
+  width: 5px;
+  height: 5px;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
   position: absolute;
-  right:1px;
-  top:50%;
-  margin-top:-3px;
+  right: 1px;
+  top: 50%;
+  margin-top: -3px;
 }
 /*1像素 边框 开始*/
- .line_bottom {
+.line_bottom {
   background-color: #fff;
   border: none;
-  background-image: -webkit-linear-gradient(bottom, transparent 50%, #cccccc 50%);
+  background-image: -webkit-linear-gradient(
+    bottom,
+    transparent 50%,
+    #cccccc 50%
+  );
   background-size: 100% 1px;
   background-repeat: no-repeat;
   background-position: left bottom;
@@ -69,21 +74,34 @@ a.arrIcon::after{
 }
 .line_right {
   border: none;
-  background-image: -webkit-linear-gradient(right, transparent 50%, #cccccc 50%);
+  background-image: -webkit-linear-gradient(
+    right,
+    transparent 50%,
+    #cccccc 50%
+  );
   background-size: 1px 100%;
   background-repeat: no-repeat;
   background-position: right top;
 }
 .line_bottom_right {
   border: none;
-  background-image: -webkit-linear-gradient(bottom, transparent 50%, #cccccc 50%), -webkit-linear-gradient(right, transparent 50%, #cccccc 50%);
+  background-image: -webkit-linear-gradient(
+      bottom,
+      transparent 50%,
+      #cccccc 50%
+    ),
+    -webkit-linear-gradient(right, transparent 50%, #cccccc 50%);
   background-size: 100% 1px, 1px 100%;
   background-repeat: no-repeat, no-repeat;
   background-position: left bottom, right top;
 }
 .line_right_fff {
   border: none;
-  background-image: -webkit-linear-gradient(right, transparent 50%, #ffffff 50%);
+  background-image: -webkit-linear-gradient(
+    right,
+    transparent 50%,
+    #ffffff 50%
+  );
   background-size: 1px 100%;
   background-repeat: no-repeat;
   background-position: right top;
@@ -91,18 +109,22 @@ a.arrIcon::after{
 
 .line_bottom_fff {
   border: none;
-  background-image: -webkit-linear-gradient(bottom, transparent 50%, #ffffff 50%);
+  background-image: -webkit-linear-gradient(
+    bottom,
+    transparent 50%,
+    #ffffff 50%
+  );
   background-size: 100% 1px;
   background-repeat: no-repeat;
   background-position: left bottom;
-} 
+}
 /*1像素 边框 结束*/
-.ColorRed{
-  color:#f33;
+.ColorRed {
+  color: #f33;
 }
 /*头部 开始*/
-.bg_body{
-  background:#f9f9f9;
+.bg_body {
+  background: #f9f9f9;
 }
 .subPageHeader {
   line-height: 30px;
@@ -111,7 +133,7 @@ a.arrIcon::after{
 header {
   width: 100%;
   height: 40px;
-  line-height:42px;
+  line-height: 42px;
   box-sizing: border-box;
   position: fixed;
   left: 0;
@@ -119,7 +141,7 @@ header {
   z-index: 99;
   text-align: center;
   background: #fff;
-  overflow:hidden;
+  overflow: hidden;
 }
 header .searchDiv {
   width: 90%;
@@ -210,7 +232,7 @@ footer {
   width: 100%;
   left: 0;
   bottom: 0;
-  background:#f4f4f4;
+  background: #f4f4f4;
 }
 footer a {
   display: block;
@@ -240,27 +262,27 @@ footer a p {
   /* 新版本语法: Opera 12.1, Firefox 22+ */
 }
 /*弹性盒模型 结束*/
-.loadingMain{
-  height:40px;
-  line-height:40px;
-  text-align:center;
-  font-size:14px;
-  color:#666;
-  padding-bottom:10px;
+.loadingMain {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  padding-bottom: 10px;
 }
 /* 暂无数据 */
-.noDataMain{
-  padding-top:20%;
-  text-align:center;
+.noDataMain {
+  padding-top: 20%;
+  text-align: center;
 }
-.noDataMain img{
-  width:100px;
-  height:100px;
+.noDataMain img {
+  width: 100px;
+  height: 100px;
 }
-.noDataMain p{
-  height:60px;
-  line-height:60px;
-  font-size:16px;
+.noDataMain p {
+  height: 60px;
+  line-height: 60px;
+  font-size: 16px;
 }
 /* 数字字体 */
 /* @font-face {
@@ -270,8 +292,8 @@ footer a p {
        url("../font/myWebFont.ttf") format("truetype"),
        url("../font/myWebFont.svg") format("svg");
 } */
-.mint-header{
-  z-index:9999999 !important;
+.mint-header {
+  z-index: 9999999 !important;
 }
 .mint-loadmore-top {
   font-size: 14px;

@@ -30,13 +30,13 @@ export default {
             footer: {
                 index: {
                     title: "首页",
-                    img: require("@/assets/images/footer-index.png"),
-                    imgActive: require("@/assets/images/footer-index-active.png")
+                    img: require("@/assets/images/footer01.png"),
+                    imgActive: require("@/assets/images/footer01_active.png")
                 },
                 data: {
                     title: "数据",
-                    img: require("@/assets/images/footer-data.png"),
-                    imgActive: require("@/assets/images/footer-data-active.png")
+                    img: require("@/assets/images/footer02.png"),
+                    imgActive: require("@/assets/images/footer02_active.png")
                 },
                 share: {
                     title: "分享",
@@ -45,13 +45,13 @@ export default {
                 },
                 news: {
                     title: "消息",
-                    img: require("@/assets/images/footer-news.png"),
-                    imgActive: require("@/assets/images/footer-news-active.png")
+                    img: require("@/assets/images/footer03.png"),
+                    imgActive: require("@/assets/images/footer03_active.png")
                 },
                 my: {
                     title: "我的",
-                    img: require("@/assets/images/footer-my.png"),
-                    imgActive: require("@/assets/images/footer-my-active.png")
+                    img: require("@/assets/images/footer04.png"),
+                    imgActive: require("@/assets/images/footer04_active.png")
                 }
             }
         };
@@ -137,6 +137,7 @@ export default {
 .footerNavMain {
     justify-content: space-around;
     padding-bottom: 5px;
+    background: #f7f7f8;
 }
 .footerNavItem {
     font-size: 12px;
@@ -144,8 +145,9 @@ export default {
     padding-top:10px;
 }
 .footerNavItem img {
-    width: 20px;
-    height: 20px;
+    /* width: 20px;
+    height: 20px; */
+    width: .4rem;
     display: block;
     margin: 0 auto 7px;
 }

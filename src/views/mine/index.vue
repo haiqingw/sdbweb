@@ -66,7 +66,7 @@
                     <img src="@/assets/images/balanceIcon.png" alt="余额/提现">
                     <p>余额/提现</p>
                 </a>
-                <router-link to="/financialDetails" v-if="renderData.info.level == 2 ">
+                <router-link to="/financialDetails">
                     <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细">
                     <p>资金明细</p>
                 </router-link>

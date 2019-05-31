@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid', '/dataCenter', '/settings', '/modifyInfo']
+const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid', '/dataCenter', '/settings', '/modifyInfo', '/home']
 router.beforeEach((to, from, next) => {
     let islogin = store.state.user.islogin
     if (islogin) {

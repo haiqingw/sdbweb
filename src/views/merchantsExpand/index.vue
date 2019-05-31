@@ -58,7 +58,7 @@
                 </van-cell-group>
                 <!-- 新增 -->
                 <van-cell-group v-show="formWay">
-                    <van-field v-model="username" label="商户姓名" placeholder="请输入用户名"/>
+                    <van-field v-model="queryData.confirmInstallEquipment.busname" label="商户姓名" placeholder="请输入用户名"/>
                     <van-field
                         v-model="queryData.verificationCode.phone"
                         label="商户电话"
@@ -94,7 +94,7 @@
                 <!-- 支付押金 -->
                 <div class="payCashPledgeMain">
                     您需要支付：
-                    <span>0.00</span>元绑定冻结金额
+                    <span>{{money}}</span>元绑定冻结金额
                 </div>
                 <!-- 确认提交 -->
                 <div class="submitButtonMain">
@@ -156,13 +156,14 @@ export default {
             verificationCodeText: "发送验证码",
             columns: [],
             proName: "",
-            username: "",
             searchValue: "",
             merchantNamePhone: "",
             radio: "",
             verificationCodeVal: "",
             isData: true,
             subLabel: "新增：默认给用户注册刷多宝，登录密码请留意短信通知",
+            Verify: "",
+            money: "",
             queryData: {
                 sweepCode: {
                     requestType: "sharecode",
@@ -265,11 +266,12 @@ export default {
         selectType() {
             this.show = !this.show;
         },
-        onConfirm(obj, index) {   
+        onConfirm(obj, index) {
             this.proName = obj.productName;
             this.show = false;
             this.queryData.confirmInstallEquipment.productID = obj.id;
             this.queryData.subordinateMerchants.productID = obj.id;
+            this.money = obj.money
         },
         onCancel() {
             this.show = false;
@@ -369,7 +371,7 @@ export default {
                 Toast("请输入终端号");
                 return;
             }
-            if (this.username == "") {
+            if (this.queryData.confirmInstallEquipment.busname == "") {
                 Toast("请输入商户名称");
                 return;
             }
@@ -385,13 +387,33 @@ export default {
                 Toast("手机号格式有误！");
                 return;
             }
-            if (this.verificationCodeVal == "") {
-                Toast("请输入验证码");
-                return;
-            }
+            // if (this.verificationCodeVal == "") {
+            //     Toast("请输入验证码");
+            //     return;
+            // }
+            // if (this.verificationCodeVal != this.Verify) {
+            //     Toast("验证码有误！");
+            //     return;
+            // }
             // return new Promise( (resolve, reject) => {
             //     resolve()
             // })
+            getServer(this.queryData.confirmInstallEquipment).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.isPay == 1) {
+                        window.location.href = res.data.url;
+                    } else if (res.data.isPay == 2) {
+                        // console.log("直接帮")
+                        // alert("直接帮")
+                        Toast("绑定成功");
+                        setTimeout(() => {
+                            this.$router.push({ path: "/" });
+                        }, 300);
+                    }
+                } else {
+                    Toast(response[res.data.responseStatus]);
+                }
+            });
         },
         oldConfirmInstallEquipment() {
             if (this.proName == "") {

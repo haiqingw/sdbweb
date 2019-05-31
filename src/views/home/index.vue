@@ -84,17 +84,27 @@
                 <li>
                     <div class="img">
                         <router-link to="/bindingMplements">
-                            <img src="@/assets/images/index-list2-img1.png" alt>
+                            <img src="@/assets/images/indexBtn01.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
-                        <router-link to="/bindingMplements">绑定机具</router-link>
+                        <router-link to="/bindingMplements">自助绑机</router-link>
+                    </div>
+                </li>
+                <li>
+                    <div class="img">
+                        <router-link to="/merchantsExpand">
+                            <img src="@/assets/images/indexBtn05.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/merchantsExpand">商户拓展</router-link>
                     </div>
                 </li>
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/myTerminal">
-                            <img src="@/assets/images/index-list2-img2.png" alt>
+                            <img src="@/assets/images/indexBtn02.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
@@ -104,7 +114,7 @@
                 <li v-if="renderData.info.level != 2">
                     <div class="img">
                         <router-link to="/application-agent">
-                            <img src="@/assets/images/index-list2-img_applyAgent.png" alt>
+                            <img src="@/assets/images/indexBtn09.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
@@ -114,47 +124,37 @@
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/application-agent-To-examine">
-                            <img src="@/assets/images/index-list2-img_agentCheck.png" alt>
+                            <img src="@/assets/images/indexBtn03.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
                         <router-link to="/application-agent-To-examine">代理审核</router-link>
                     </div>
                 </li>
-                <li>
+                <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/dial-code">
-                            <img src="@/assets/images/index-list2-img3.png" alt>
+                            <img src="@/assets/images/indexBtn04.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
                 </li>
-                <li>
-                    <div class="img">
-                        <router-link to="/merchantsExpand">
-                            <img src="@/assets/images/index-list2-img3.png" alt>
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/merchantsExpand">商户拓展</router-link>
-                    </div>
-                </li>
                 <!-- <li>
                     <div class="img">
                         <router-link to="/mall">
-                            <img src="@/assets/images/index-list2-img5.png" alt>
+                            <img src="@/assets/images/indexBtn09.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
                         <router-link to="/mall">机具商城</router-link>
                     </div>
-                </li> -->
-                <li v-if="renderData.info.level == 2">
+                </li>-->
+                <li>
                     <div class="img">
                         <router-link to="/financialDetails">
-                            <img src="@/assets/images/index-list2-img6.png" alt>
+                            <img src="@/assets/images/indexBtn06.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
@@ -164,7 +164,7 @@
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/myMerchants">
-                            <img src="@/assets/images/organizationIcon.png" alt>
+                            <img src="@/assets/images/indexBtn07.png" alt>
                         </router-link>
                     </div>
                     <div class="text">

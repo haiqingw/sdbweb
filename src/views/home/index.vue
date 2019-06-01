@@ -1,7 +1,7 @@
 <template>
     <div class="index-home">
         <div class="isLogin">
-            <div class="index-capital-subsidiary-main flex" v-if="!islogin">
+            <div class="index-capital-subsidiary-main flex" v-if="islogin">
                 <div>
                     <img src="@/assets/images/indexTopBtn01.png" alt="钱包余额">
                     <h3>钱包余额</h3>
@@ -54,14 +54,14 @@
         </div>
         <!-- banner -->
         <div class="index-banner">
-            <!-- <van-swipe @change="onChange" :autoplay="3000">
+            <van-swipe @change="onChange" :autoplay="3000">
                 <van-swipe-item v-for="(item, index) in bannerListData" v-bind:item="item" v-bind:index="index" v-bind:key="item.id">
                     <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner">
                 </van-swipe-item>
                 <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{ bannerLength }}</div>
-            </van-swipe> -->
+            </van-swipe>
             <img class="bannerOverlazy" src="@/assets/images/bannerOverlazyImg.png" alt="bannerOverlazy">
-            <img src="@/assets/images/indexBannerTextImg.png" alt="banner">
+            <!-- <img src="@/assets/images/indexBannerTextImg.png" alt="banner"> -->
         </div>
         <!-- 首页菜单 -->
         <div class="index-list2">

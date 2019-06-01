@@ -1,34 +1,61 @@
 <template>
     <div class="index-home">
         <div class="isLogin">
-            <div class="index-capital-subsidiary-main flex" v-if="!islogin">
-                <div>
-                    <img src="@/assets/images/indexTopBtn01.png" alt="钱包余额">
-                    <h3>钱包余额</h3>
-                    <p>{{ renderData.listOneData.balance ? renderData.listOneData.balance : '0.00'}}</p>
-                </div>
-                <div>
-                    <img src="@/assets/images/indexTopBtn02.png" alt="当月赚钱">
-                    <h3>当月赚钱</h3>
-                    <p>{{ renderData.listOneData.curentmonth ? renderData.listOneData.curentmontha : '0.00' }}</p>
-                </div>
-                <div>
-                    <img src="@/assets/images/indexTopBtn03.png" alt="总赚钱">
-                    <h3>总赚钱</h3>
-                    <p>{{ renderData.listOneData.total ? renderData.listOneData.total : '0.00'}}</p>
-                </div>
-                <router-link :to="{ name: 'freezeprogress' }" tag="div">
-                    <img src="@/assets/images/indexTopBtn04.png" alt="待解冻">
-                    <h3>待解冻</h3>
-                    <p>{{ renderData.thaw ? renderData.thaw : '0.00' }}</p>
-                </router-link>
+            <div class="index-banner" v-if="islogin">
+                <van-swipe @change="onChange" :autoplay="3000">
+                    <van-swipe-item
+                        v-for="(item, index) in bannerListData"
+                        v-bind:item="item"
+                        v-bind:index="index"
+                        v-bind:key="item.id"
+                    >
+                        <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner">
+                    </van-swipe-item>
+                    <div
+                        class="custom-indicator"
+                        slot="indicator"
+                    >{{ current + 1 }}/{{ bannerLength }}</div>
+                </van-swipe>
             </div>
             <div class="login" v-else>
                 <router-link to="/login">立即登录</router-link>
             </div>
         </div>
         <div class="interval"></div>
-        <!-- 今日收益 -->
+        <div class="index-list1">
+            <ul>
+                <li>
+                    <div class="index-list1-img">
+                        <img src="@/assets/images/index-list1-1.png" alt>
+                    </div>
+                    <div class="index-list1-text">{{ renderData.listOneData.balance }}</div>
+                    <div class="index-list1-explain">钱包余额</div>
+                </li>
+                <li>
+                    <div class="index-list1-img">
+                        <img src="@/assets/images/index-list1-2.png" alt>
+                    </div>
+                    <div class="index-list1-text">{{ renderData.listOneData.curentmonth }}</div>
+                    <div class="index-list1-explain">当月赚钱</div>
+                </li>
+                <li>
+                    <div class="index-list1-img">
+                        <img src="@/assets/images/index-list1-3.png" alt>
+                    </div>
+                    <div class="index-list1-text">{{ renderData.listOneData.total }}</div>
+                    <div class="index-list1-explain">总赚钱</div>
+                </li>
+                <li>
+                    <router-link :to="{ name: 'freezeprogress' }">
+                        <div class="index-list1-img">
+                            <img src="@/assets/images/index-list1-4.png" alt>
+                        </div>
+                        <div class="index-list1-text">{{ renderData.thaw }}</div>
+                        <div class="index-list1-explain">待解冻</div>
+                    </router-link>
+                </li>
+            </ul>
+        </div>
         <div class="index-notice">
             <!-- <div class="index-notice-top">
         <h3>
@@ -52,18 +79,6 @@
                 </router-link>
             </div>
         </div>
-        <!-- banner -->
-        <div class="index-banner">
-            <!-- <van-swipe @change="onChange" :autoplay="3000">
-                <van-swipe-item v-for="(item, index) in bannerListData" v-bind:item="item" v-bind:index="index" v-bind:key="item.id">
-                    <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner">
-                </van-swipe-item>
-                <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{ bannerLength }}</div>
-            </van-swipe> -->
-            <img class="bannerOverlazy" src="@/assets/images/bannerOverlazyImg.png" alt="bannerOverlazy">
-            <img src="@/assets/images/indexBannerTextImg.png" alt="banner">
-        </div>
-        <!-- 首页菜单 -->
         <div class="index-list2">
             <ul>
                 <li>
@@ -311,7 +326,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style>
 html {
     background: #fff;
 }
@@ -328,64 +343,5 @@ html {
     color: #fff;
     background: rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-}
-.index-capital-subsidiary-main {
-    height: 3rem;
-    width: 100%;
-    background: url("../../assets/images/indexHeaderBg.jpg") no-repeat center
-        bottom;
-    background-size: 100% auto;
-    justify-content: space-around;
-    padding-top: 0.55rem;
-    box-sizing: border-box;
-    div {
-        width: 100%;
-        text-align: center;
-        line-height: 0.4rem;
-        img {
-            width: 0.6rem;
-            margin: 0 auto;
-        }
-        h3 {
-            font-size: 0.24rem;
-            color: #fff;
-            padding-top: 0.1rem;
-        }
-        p {
-            font-size: 0.36rem;
-            color: #fff;
-        }
-    }
-}
-.index-notice{
-    padding:.1rem .36rem .1rem .33rem;
-}
-.index-notice-profit h3 img{
-    width:0.75rem;
-}
-.index-notice-profit p{
-    padding-top:0.12rem;
-}
-.index-notice-profit p em{
-    margin-top: -0.055rem;
-}
-.index-notice-profit span{
-    margin-top: 0.21rem;
-}
-.index-banner{
-    margin-top:0.25rem;
-    position: relative;
-    img{
-        display:block;
-        height:2rem;
-    }
-    .bannerOverlazy{
-        width:100%;
-        height:100%;
-        position: absolute;
-        left:0;
-        top:0;
-        z-index:99;
-    }
 }
 </style>

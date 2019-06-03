@@ -25,7 +25,7 @@
                         label="终端编号"
                         placeholder="手动输入或扫一扫"
                         right-icon="scan"
-                        @click-right-icon="scanCode()"
+                        @click-right-icon="scanCode"
                     />
                 </van-cell-group>
                 <van-popup v-model="show" position="bottom" :overlay="true">
@@ -146,6 +146,7 @@ import { getServer } from "@/api/index";
 import { checkPhone } from "@/utils/verification.js";
 import { Toast } from "mint-ui";
 import response from "@/assets/js/response.js";
+import wx from "weixin-js-sdk"
 export default {
     data() {
         return {
@@ -176,7 +177,7 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    terminal: "K1020A71461",
+                    terminal: "",
                     productID: "",
                     types: "NEW",
                     busname: "",
@@ -316,7 +317,7 @@ export default {
                                     if (result.indexOf(",") >= 0) {
                                         var tempArray = result.split(",");
                                         var tempNum = tempArray[1];
-                                        $this.queryData.confirmBinding.terminal = tempNum;
+                                        $this.queryData.confirmInstallEquipment.terminal = tempNum;
                                     } else {
                                         Toast("获取失败");
                                     }
@@ -387,14 +388,14 @@ export default {
                 Toast("手机号格式有误！");
                 return;
             }
-            // if (this.verificationCodeVal == "") {
-            //     Toast("请输入验证码");
-            //     return;
-            // }
-            // if (this.verificationCodeVal != this.Verify) {
-            //     Toast("验证码有误！");
-            //     return;
-            // }
+            if (this.verificationCodeVal == "") {
+                Toast("请输入验证码");
+                return;
+            }
+            if (this.verificationCodeVal != this.Verify) {
+                Toast("验证码有误！");
+                return;
+            }
             // return new Promise( (resolve, reject) => {
             //     resolve()
             // })

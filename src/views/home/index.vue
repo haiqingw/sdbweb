@@ -36,7 +36,7 @@
                         <img src="@/assets/images/index-list1-2.png" alt>
                     </div>
                     <div class="index-list1-text">{{ renderData.listOneData.curentmonth }}</div>
-                    <div class="index-list1-explain">当月赚钱</div>
+                    <div class="index-list1-explain">当月收益</div>
                 </li>
                 <li>
                     <div class="index-list1-img">

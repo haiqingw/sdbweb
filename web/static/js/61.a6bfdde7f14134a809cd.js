@@ -1,2 +1,0 @@
-webpackJsonp([61],{UGnO:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r={render:function(){var e=this,t=e.$createElement,r=e._self._c||t;return r("div",{staticClass:"return"},[r("img",{attrs:{src:n("1Hd4"),alt:""},on:{click:function(t){return e.$router.go(-1)}}}),e._v(" "),r("span",[e._v("回拨记录")])])},staticRenderFns:[]},l=n("VU/8")(null,r,!1,null,null,null);t.default=l.exports}});
-//# sourceMappingURL=61.a6bfdde7f14134a809cd.js.map

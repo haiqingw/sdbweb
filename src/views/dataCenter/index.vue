@@ -211,7 +211,7 @@ export default {
             sunAndMoonSwitch: [
                 {
                     name: "日",
-                    isActive: false,
+                    isActive: true,
                     dateType: "days"
                 },
                 {
@@ -245,7 +245,7 @@ export default {
                 }
             ],
             colorDataStr: "#ffd274",
-            dataCenterStatus: true,
+            dataCenterStatus: false,
             colorData: ["#6eb6ff", "#ff6638", "#f3b32d"],
             realIndex1: 0,
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
@@ -534,7 +534,7 @@ export default {
         }
     },
     created() {
-        this.listProduct(); 
+        // this.listProduct(); 
         this.wayVal = this.wayList[0].name;
         // this.moneyData = [0, 0, 0, 0, 0, 0];
     }

@@ -94,7 +94,7 @@
                 <!-- 支付押金 -->
                 <div class="payCashPledgeMain">
                     您需要支付：
-                    <span>{{money}}</span>元绑定冻结金额
+                    <span>{{money?money:"0.00"}}</span>元绑定冻结金额
                 </div>
                 <!-- 确认提交 -->
                 <div class="submitButtonMain">
@@ -123,7 +123,7 @@
                         <van-cell
                             v-for="item in renderData.subordinateMerchantsList"
                             :key="item.id"
-                            :title="item.busname+(item.phone)"
+                            :title="item.busname + (item.phone)"
                             clickable
                         >
                             <van-radio :name="item.id"/>
@@ -162,7 +162,7 @@ export default {
             radio: "",
             verificationCodeVal: "",
             isData: true,
-            subLabel: "新增：默认给用户注册刷多宝，登录密码请留意短信通知",
+            subLabel: "新增：默认给用户注册账号，登录密码请留意短信通知",
             Verify: "",
             money: "",
             queryData: {
@@ -333,11 +333,11 @@ export default {
             if (index == 0 && title == "新增") {
                 this.queryData.confirmInstallEquipment.types = "NEW";
                 this.subLabel =
-                    "新增：默认给用户注册刷多宝，登录密码请留意短信通知";
+                    "新增：默认给用户注册账号，登录密码请留意短信通知";
                 this.formWay = true;
             } else if (index == 1 && title == "现有") {
                 this.queryData.confirmInstallEquipment.types = "OLD";
-                this.subLabel = "现有：请确保用户已经扫您的推广码，注册刷多宝";
+                this.subLabel = "现有：请确保用户已经扫您的推广码，注册账号";
                 this.formWay = false;
             }
         },
@@ -349,7 +349,9 @@ export default {
             this.popupShow = !this.popupShow;
             this.subordinateMerchants();
         },
-        onSearch() {},
+        onSearch() {
+            this.subordinateMerchants()
+        },
         confirmSelect() {
             if (this.radio === "") {
                 this.merchantNamePhone = "";

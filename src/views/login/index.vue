@@ -93,7 +93,7 @@ export default {
         },
         autoLogin() {
             this.$store
-                .dispatch("autoLogin", this.code)
+                .dispatch("autoLogin", this.code, this.$route.query.plat)
                 .then(res => {
                     this.$router.push({
                         path: "/",

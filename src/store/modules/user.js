@@ -87,7 +87,7 @@ const user = {
                 })
             })
         },
-        autoLogin({commit}, openid) {
+        autoLogin({commit}, openid, plat) {
             Indicator.open()
             window.sessionStorage.clear()
             const crodeUser = {
@@ -95,6 +95,7 @@ const user = {
                 requestKeywords:'crodeuser', 
                 openid: openid
             }
+            commit('SET_PLAT', plat)
             return new Promise( (resolve, reject) => {
                 getServer(crodeUser).then( res => {
                     Indicator.close();

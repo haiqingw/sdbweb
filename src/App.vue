@@ -1,35 +1,41 @@
 <template>
     <div id="app">
-        <router-view v-if="isRouterAlive" v-wechat-title='$store.state.merchant.title'></router-view>
+        <router-view v-if="isRouterAlive" v-wechat-title="$store.state.merchant.title"></router-view>
     </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
-    provide () {
+    name: "App",
+    provide() {
         return {
             reload: this.reload
-        }
+        };
     },
-    data () {
+    data() {
         return {
-            isRouterAlive: true 
-        }
+            isRouterAlive: true
+        };
     },
     methods: {
-        reload () {
-            this.isRouterAlive = false
-            this.$nextTick(function () {
-                this.isRouterAlive = true
-            })
-        },
+        reload() {
+            this.isRouterAlive = false;
+            this.$nextTick(function() {
+                this.isRouterAlive = true;
+            });
+        }
     },
-    created() {
-    }
-}
+    mounted() {
+        // window.onpopstate = () => {
+        //     if (!this.allowBack) {
+        //         //    这个allowBack 是存在vuex里面的变量
+        //         history.go(1);
+        //     }
+        // };
+    },
+    created() {}
+};
 </script>
 
 <style>
-
 </style>

@@ -87,15 +87,15 @@ const user = {
                 })
             })
         },
-        autoLogin({commit}, openid, plat) {
+        autoLogin({commit}, autoLoginData) {
             Indicator.open()
             window.sessionStorage.clear()
             const crodeUser = {
                 requestType: 'buslogin',
                 requestKeywords:'crodeuser', 
-                openid: openid
+                openid: autoLoginData.code
             }
-            commit('SET_PLAT', plat)
+            commit('SET_PLAT', autoLoginData.plat)
             return new Promise( (resolve, reject) => {
                 getServer(crodeUser).then( res => {
                     Indicator.close();

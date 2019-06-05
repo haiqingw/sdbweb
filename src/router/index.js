@@ -8,7 +8,7 @@ export default new Router({
         name: 'index',
         component: resolve => require(['@/views/home/index'], resolve),
         meta: {
-            requireAuth: true
+            requireAuth: true,
         },
         redirect: '/home'
     },

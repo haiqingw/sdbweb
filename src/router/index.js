@@ -354,6 +354,11 @@ export default new Router({
         path: '/modifyInfo', //修改个人信息
         name: 'modifyInfo',
         component: resolve => require(['@/views/modifyInfo'], resolve),
+    },
+    {
+        path: '/accountNumber-cancellation', //账号注销
+        name: 'accountNumber-cancellation',
+        component: resolve => require(['@/views/accountNumber-cancellation'], resolve),
     }
   ]
 })

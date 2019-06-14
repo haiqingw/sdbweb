@@ -14,7 +14,7 @@
                     <span>更换手机号</span>
                     <i></i>
                 </router-link>-->
-                 <router-link to="/modifyInfo" tag="li" class="line_bottom">
+                <router-link to="/modifyInfo" tag="li" class="line_bottom">
                     <img src="@/assets/images/certificationIcon.png" alt="修改个人信息">
                     <span>修改个人信息</span>
                     <i></i>
@@ -44,6 +44,11 @@
                     <span>意见反馈</span>
                     <i></i>
                 </router-link>
+                <li @click="cancellation" class="line_bottom">
+                    <img src="@/assets/images/cancellation.png" alt="退出登录">
+                    <span>账号注销</span>
+                    <i></i>
+                </li>
                 <li @click="logout" class="line_bottom">
                     <img src="@/assets/images/exitIcon.png" alt="退出登录">
                     <span>退出登录</span>
@@ -114,6 +119,11 @@ export default {
                         });
                 })
                 .catch(() => {});
+        },
+        cancellation() {
+            this.$router.push({
+                path: "/accountNumber-cancellation"
+            })
         },
         judgeRealNameAuth(url) {
             Indicator.open();

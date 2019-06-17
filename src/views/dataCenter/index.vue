@@ -49,7 +49,7 @@
                 <span>月</span>
             </div>
             <!-- 折线图 -->
-            <div class="chartMain" ref="pieEcharts" id="chartMain">
+            <div class="chartMain"  ref="pieEcharts" id="chartMain">
                 <div id='myChart0' style='width:100% !important;height:220px'></div>
             </div>
             <!-- 统计 -->

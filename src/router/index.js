@@ -354,6 +354,11 @@ export default new Router({
         path: '/modifyInfo', //修改个人信息
         name: 'modifyInfo',
         component: resolve => require(['@/views/modifyInfo'], resolve),
+    },
+    {
+        path: '/rank', //排行榜
+        name: 'rank',
+        component: resolve => require(['@/views/rank'], resolve),
     }
   ]
 })

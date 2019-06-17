@@ -61,6 +61,10 @@ export default {
             },
             renderData: {
                 merchantInfo: {}
+            },
+            autoLoginData: {
+                plat: this.$route.query.plat,
+                code: ""
             }
         };
     },
@@ -93,7 +97,7 @@ export default {
         },
         autoLogin() {
             this.$store
-                .dispatch("autoLogin", this.code)
+                .dispatch("autoLogin", this.autoLoginData)
                 .then(res => {
                     this.$router.push({
                         path: "/",
@@ -121,13 +125,13 @@ export default {
         merchantInfoTitle() {
             this.$store
                 .dispatch("merchantInfo", this.$route.query.plat)
-                .then(res => {
-                })
+                .then(res => {})
                 .catch(err => {});
         }
     },
     created() {
         this.code = this.$route.query.code;
+        this.autoLoginData.code = this.$route.query.code;
         if (this.code) {
             this.autoLogin();
         }
@@ -140,7 +144,7 @@ export default {
 
 <style lang = "scss">
 .logo {
-    margin-bottom: .8rem;
+    margin-bottom: 0.8rem;
 }
 /* .logo img {
     border-radius: 50%;

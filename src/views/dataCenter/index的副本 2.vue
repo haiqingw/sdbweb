@@ -29,38 +29,64 @@
                 </select>
             </div>
             <!-- 选择分类 -->
-            <div class="slide">
-                <div
-                    @click="changeSlide(item)"
-                    v-for="(item,index) in slideData"
-                    :key="item.name"
-                    :class="['classifyItem',{'classifyItem-active':item.state}]"
-                    :style="{'background':colorData[index]}"
-                >
-                    <p>{{item.con}}</p>
-                    <span>{{item.name}}</span>
+            <!-- <div class="selectClassifyMain">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="classifyItem" :style="{'background':colorData[0]}">
+                                <p>{{renderData.slideAgen}}</p>
+                                <span>代理</span>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="classifyItem" :style="{'background':colorData[1]}">
+                                <p>{{renderData.slideTeam}}</p>
+                                <span>商户</span>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="classifyItem" :style="{'background':colorData[2]}">
+                                <p>{{renderData.slideTerm}}</p>
+                                <span>终端</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </div>-->
+            <!-- <swiper
+                ref="mySwiper"
+                :options="swiperOption"
+                @someSwiperEvent="slideChangeTransitionEnd"
+            >
+                <swiper-slide>
+                    <div class="classifyItem" :style="{'background':colorData[0]}">
+                        <p>{{renderData.slideAgen}}</p>
+                        <span>代理</span>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="classifyItem" :style="{'background':colorData[1]}">
+                        <p>{{renderData.slideTeam}}</p>
+                        <span>商户</span>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="classifyItem" :style="{'background':colorData[2]}">
+                        <p>{{renderData.slideTerm}}</p>
+                        <span>终端</span>
+                    </div>
+                </swiper-slide>
+            </swiper> -->
+            <div class="swiper"></div>
             <!-- 日/月切换 -->
             <!--  -->
             <div class="dmTabMain" :style="{'border-color':colorDataStr,'background':colorDataStr}">
-                <!-- <span class="active">日</span>
-                <span>月</span>-->
-                <span
-                    @click="switchDayMonClass(item)"
-                    :class="{'active': !item.isActive}"
-                    v-for="item in sunAndMoonSwitch"
-                    :key="item.name"
-                >{{item.name}}</span>
+                <span class="active">日</span>
+                <span>月</span>
             </div>
             <!-- 折线图 -->
-<<<<<<< HEAD
-            <div class="chartMain"  ref="pieEcharts" id="chartMain">
-                <div id='myChart0' style='width:100% !important;height:220px'></div>
-=======
             <div class="chartMain" ref="pieEcharts" id="chartMain">
                 <div id="myChart0" style="width:100% !important;height:220px"></div>
->>>>>>> 462e8d149b1fbbd1d50afc54e7ed37dff92249fd
             </div>
             <!-- 统计 -->
             <div class="statisticalMain">
@@ -205,7 +231,9 @@
 </template>
 <script>
 import Footer from "@/components/footerNav/footer";
-
+import Swiper from "swiper";
+import "swiper/dist/css/swiper.min.css";
+// import { swiper, swiperSlide } from "vue-awesome-swiper";
 import { getServer } from "@/api/index";
 import { Indicator, Toast } from "mint-ui";
 // import func from '../../../vue-temp/vue-editor-bridge';
@@ -213,50 +241,27 @@ export default {
     data() {
         let vm = this;
         return {
-            sunAndMoonSwitch: [
-                {
-                    name: "日",
-                    isActive: true,
-                    dateType: "days"
-                },
-                {
-                    name: "月",
-                    isActive: true,
-                    dateType: "mons"
-                }
-            ],
             slideIndex: "",
-            slideData: [
-                {
-                    name: "终端",
-                    state: false,
-                    slideTerm: "",
-                    con: "0",
-                    types: "term"
-                },
-                {
-                    name: "团队",
-                    state: true,
-                    slideAgen: "",
-                    con: "0",
-                    types: "agen"
-                },
-                {
-                    name: "商户",
-                    state: false,
-                    slideTeam: "",
-                    con: "0",
-                    types: "team"
+            swiperOption: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+                centeredSlides: true,
+                loop: true,
+                slideToClickedSlide: true,
+                on: {
+                    click: function() {
+                        // const realIndex = this.realIndex;
+                        vm.slideIndex = this.realIndex;
+                        vm.slideChangeTransitionEnd(vm.slideIndex);
+                    }
                 }
-            ],
+            },
             colorDataStr: "#ffd274",
-            dataCenterStatus: false,
+            dataCenterStatus: true,
             colorData: ["#6eb6ff", "#ff6638", "#f3b32d"],
             realIndex1: 0,
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
             moneyData: [0, 0, 0, 0, 0, 0],
-            drawColumnMonthData: [],
-            drawColumnmoneyData: [],
             reallyIndex: 0,
             wayList: [
                 {
@@ -287,14 +292,14 @@ export default {
                 },
                 brokenLineDiagram: {
                     // 折线图
-                    requestType: "datacenter",
-                    requestKeywords: "curve",
-                    platformID: this.$store.state.user.pid,
-                    userID: this.$store.state.user.uid,
-                    userPhone: this.$store.state.user.uphone,
-                    dateType: "mons", //（days 日 mons 月）,
-                    productID: "",
-                    types: "agen"
+                   requestType: 'datacenter',
+                   requestKeywords: 'curve', 
+                   platformID: this.$store.state.user.pid,
+                   userID: this.$store.state.user.uid,
+                   userPhone: this.$store.state.user.uphone,
+                   dateType: "mons", //（days 日 mons 月）,
+                   productID: "",
+                   types: "agen"
                 },
                 listProduct: {
                     // 终端列表
@@ -303,11 +308,14 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
-                }
+                },
+             
             },
             renderData: {
-                listProduct: [],
-                brokenLineDiagram: []
+                slideTeam: "0",
+                slideAgen: "0",
+                slideTerm: "0",
+                listProduct: []
             }
         };
     },
@@ -315,8 +323,7 @@ export default {
         Footer
     },
     mounted() {
-        this.drawLine("myChart0", this.monthData, this.moneyData);
-        this.drawColumn("myChart1", this.monthData, this.moneyData);
+      
         // var that = this;
         // var mySwiper = new Swiper(".swiper-container", {
         //     slidesPerView: 3,
@@ -353,23 +360,39 @@ export default {
         // this.drawLine("myChart0", this.monthData, this.moneyData);
         // this.drawColumn("myChart1", this.monthData, this.moneyData);
     },
-    computed: {},
+    computed: {
+        swiper() {
+            return this.$refs.mySwiper.swiper;
+        }
+    },
     methods: {
-        switchDayMonClass(obj) {
-            this.sunAndMoonSwitch.forEach(item => {
-                item.isActive = false;
+        initSwiper() {
+            const _this = this;
+            var mySwiper = new Swiper(".swiper-container1", {
+                loop: true,
+                autoplay: true,
+                observer: true,
+                observeParents: true, //修改swiper的父元素时，自动初始化swiper
+                autoplay: {
+                    disableOnInteraction: false // 手动滑动后继续自动播放
+                },
+                // 如果需要分页器
+                pagination: {
+                    el: ".swiper-pagination"
+                }
             });
-            obj.isActive = true;
-            this.queryData.brokenLineDiagram.dateType = obj.dateType;
-            this.brokenLineDiagram();
         },
-        changeSlide(obj) {
-            this.slideData.forEach(item => {
-                item.state = false;
-            });
-            obj.state = true;
-            this.queryData.brokenLineDiagram.types = obj.types;
-            this.brokenLineDiagram();
+        slideChangeTransitionEnd(index) {
+            console.log("执行", index);
+            if (index == 0) {
+                this.renderData.slideAgen = 1;
+            } else if (index == 1) {
+                this.renderData.slideTeam = 2;
+                this.renderData.slideAgen = 10;
+            } else if (index == 2) {
+                this.renderData.slideTerm = 3;
+                this.renderData.slideAgen = 100;
+            }
         },
         // 折线图
         drawLine(selecter, monthData, moneyData) {
@@ -462,22 +485,14 @@ export default {
             this.popupVisible = !this.popupVisible;
         },
         listProduct() {
-            getServer(this.queryData.listProduct)
-                .then(res => {
-                    if (res.data.responseStatus === 1) {
-                        this.renderData.listProduct = res.data.data;
-                        this.proVal = res.data.data[0].productName;
-                        this.queryData.slideSum.productID = res.data.data[0].id;
-                        this.queryData.brokenLineDiagram.productID =
-                            res.data.data[0].id;
-                    }
-                })
-                .then(() => {
-                    this.slideTeam();
-                    this.slideAgen();
-                    this.slideTerm();
-                    this.brokenLineDiagram();
-                });
+            getServer(this.queryData.listProduct).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.listProduct = res.data.data;
+                    this.proVal = res.data.data[0].productName;
+                    this.queryData.slideSum.productID = res.data.data[0].id;
+                    this.slideSum();
+                }
+            });
         },
         changeProduct(name) {
             let newArr = this.renderData.listProduct.filter(
@@ -485,73 +500,35 @@ export default {
             );
             this.queryData.slideSum.productID = newArr[0].id;
             this.queryData.brokenLineDiagram.productID = newArr[0].id;
-            this.slideTeam();
-            this.slideAgen();
-            this.slideTerm();
-            this.brokenLineDiagram();
+            this.slideSum();
+            this.test()
         },
-        slideTeam() {
-            this.queryData.slideSum.types = "team";
+        slideSum() {
+            this.renderData.num = "0";
+            // return new Promise((resolve, reject) => {
             getServer(this.queryData.slideSum).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.slideData[1].con = res.data.con;
+                    this.renderData.num = res.data.con;
+                    alert(this.renderData.num);
                 } else {
                 }
             });
+            // });
         },
-        slideAgen() {
-            this.queryData.slideSum.types = "agen";
-            getServer(this.queryData.slideSum).then(res => {
-                if (res.data.responseStatus === 1) {
-                    this.slideData[0].con = res.data.con;
-                } else {
-                }
-            });
-        },
-        slideTerm() {
-            this.queryData.slideSum.types = "tear";
-            getServer(this.queryData.slideSum).then(res => {
-                if (res.data.responseStatus === 1) {
-                    this.slideData[2].con = res.data.con;
-                } else {
-                }
-            });
-        },
-        brokenLineDiagram() {
-            getServer(this.queryData.brokenLineDiagram).then(res => {
-                // alert(JSON.stringify(res.data.responseStatus));
-                alert(JSON.stringify(res.data.data));
-                if (res.data.responseStatus === 1) {
-                    if (res.data.data === null) {
-                        this.moneyData = [0, 0, 0, 0, 0];
-                        this.monthData = [0, 0, 0, 0, 0];
-                    } else {
-                        this.moneyData = [];
-                        this.monthData = [];
-                        for (var i in res.data.data) {
-                            this.moneyData.push(res.data.data[i].con);
-                            this.monthData.push(res.data.data[i].dates);
-                        }
-                    }
-                    this.drawLine("myChart0", this.monthData, this.moneyData);
-                }
-            });
+        test() {
+            getServer(this.queryData.brokenLineDiagram).then( res => {
+                alert(JSON.stringify(res))
+            })
         }
     },
     created() {
-        // this.listProduct(); 
         this.wayVal = this.wayList[0].name;
-        // this.moneyData = [0, 0, 0, 0, 0, 0];
+        this.moneyData = [100, 200, 120, 300, 500, 20];
+        this.listProduct();
     }
 };
 </script>
 <style lang="scss">
-.slide {
-    display: flex;
-    .classifyItem-active {
-        opacity: 0.2;
-    }
-}
 .swiper-slide {
     /* Center slide text vertically */
     display: -webkit-box;
@@ -698,7 +675,7 @@ export default {
 }
 .classifyItem {
     display: block;
-    width: 33%;
+    width: 100px;
     height: 81px;
     background: #f1f1f1;
     border-radius: 50%;
@@ -712,7 +689,6 @@ export default {
     // box-sizing: border-box;
     border-width: 5px;
     border-style: solid;
-
     p {
         font-size: 24px;
     }

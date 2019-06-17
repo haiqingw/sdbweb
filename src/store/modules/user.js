@@ -4,7 +4,7 @@
 import {getServer} from '@/api/index'
 import { resolve } from 'url';
 import response from '@/assets/js/response.js'
-import { Indicator, Toast } from 'mint-ui';
+import { Indicator, Toast, MessageBox } from 'mint-ui';
 
 const user = {
     state: {
@@ -87,14 +87,15 @@ const user = {
                 })
             })
         },
-        autoLogin({commit}, openid) {
+        autoLogin({commit}, autoLoginData) {
             Indicator.open()
             window.sessionStorage.clear()
             const crodeUser = {
                 requestType: 'buslogin',
                 requestKeywords:'crodeuser', 
-                openid: openid
+                openid: autoLoginData.code
             }
+            commit('SET_PLAT', autoLoginData.plat)
             return new Promise( (resolve, reject) => {
                 getServer(crodeUser).then( res => {
                     Indicator.close();
@@ -132,6 +133,23 @@ const user = {
                         resolve()
                     }
                 }); 
+            })
+        },
+        Cancellation({commit}, data) {
+            return new Promise( (resolve, reject) => {
+                getServer(data).then( res => {
+                    if (res.data.responseStatus === 1) {
+                        Toast('账号注销成功')
+                        window.localStorage.removeItem('pid');
+                        window.localStorage.removeItem('uname');
+                        window.localStorage.removeItem('uphone');
+                        commit('SET_ISLOGIN', false) 
+                        resolve()
+                    } else {
+                        Toast(response[res.data.responseStatus])
+                    }
+                })
+               
             })
         }
     }

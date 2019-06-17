@@ -1,61 +1,34 @@
 <template>
     <div class="index-home">
         <div class="isLogin">
-            <div class="index-banner" v-if="islogin">
-                <van-swipe @change="onChange" :autoplay="3000">
-                    <van-swipe-item
-                        v-for="(item, index) in bannerListData"
-                        v-bind:item="item"
-                        v-bind:index="index"
-                        v-bind:key="item.id"
-                    >
-                        <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner">
-                    </van-swipe-item>
-                    <div
-                        class="custom-indicator"
-                        slot="indicator"
-                    >{{ current + 1 }}/{{ bannerLength }}</div>
-                </van-swipe>
+            <div class="index-capital-subsidiary-main flex" v-if="islogin">
+                <div>
+                    <img src="@/assets/images/indexTopBtn01.png" alt="钱包余额">
+                    <h3>钱包余额</h3>
+                    <p>{{ renderData.listOneData.balance ? renderData.listOneData.balance : '0.00'}}</p>
+                </div>
+                <div>
+                    <img src="@/assets/images/indexTopBtn02.png" alt="当月赚钱">
+                    <h3>当月赚钱</h3>
+                    <p>{{ renderData.listOneData.curentmonth ? renderData.listOneData.curentmonth : '0.00'}}</p>
+                </div>
+                <div>
+                    <img src="@/assets/images/indexTopBtn03.png" alt="总赚钱">
+                    <h3>总赚钱</h3>
+                    <p>{{ renderData.listOneData.total ? renderData.listOneData.total : '0.00'}}</p>
+                </div>
+                <router-link :to="{ name: 'freezeprogress' }" tag="div">
+                    <img src="@/assets/images/indexTopBtn04.png" alt="待解冻">
+                    <h3>待解冻</h3>
+                    <p>{{ renderData.thaw ? renderData.thaw : '0.00' }}</p>
+                </router-link>
             </div>
             <div class="login" v-else>
                 <router-link to="/login">立即登录</router-link>
             </div>
         </div>
         <div class="interval"></div>
-        <div class="index-list1">
-            <ul>
-                <li>
-                    <div class="index-list1-img">
-                        <img src="@/assets/images/index-list1-1.png" alt>
-                    </div>
-                    <div class="index-list1-text">{{ renderData.listOneData.balance }}</div>
-                    <div class="index-list1-explain">钱包余额</div>
-                </li>
-                <li>
-                    <div class="index-list1-img">
-                        <img src="@/assets/images/index-list1-2.png" alt>
-                    </div>
-                    <div class="index-list1-text">{{ renderData.listOneData.curentmonth }}</div>
-                    <div class="index-list1-explain">当月收益</div>
-                </li>
-                <li>
-                    <div class="index-list1-img">
-                        <img src="@/assets/images/index-list1-3.png" alt>
-                    </div>
-                    <div class="index-list1-text">{{ renderData.listOneData.total }}</div>
-                    <div class="index-list1-explain">总赚钱</div>
-                </li>
-                <li>
-                    <router-link :to="{ name: 'freezeprogress' }">
-                        <div class="index-list1-img">
-                            <img src="@/assets/images/index-list1-4.png" alt>
-                        </div>
-                        <div class="index-list1-text">{{ renderData.thaw }}</div>
-                        <div class="index-list1-explain">待解冻</div>
-                    </router-link>
-                </li>
-            </ul>
-        </div>
+        <!-- 今日收益 -->
         <div class="index-notice">
             <!-- <div class="index-notice-top">
         <h3>
@@ -79,6 +52,18 @@
                 </router-link>
             </div>
         </div>
+        <!-- banner -->
+        <div class="index-banner">
+            <van-swipe @change="onChange" :autoplay="3000">
+                <van-swipe-item v-for="(item, index) in bannerListData" v-bind:item="item" v-bind:index="index" v-bind:key="item.id">
+                    <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner">
+                </van-swipe-item>
+                <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{ bannerLength }}</div>
+            </van-swipe>
+            <img class="bannerOverlazy" src="@/assets/images/bannerOverlazyImg.png" alt="bannerOverlazy">
+            <!-- <img src="@/assets/images/indexBannerTextImg.png" alt="banner"> -->
+        </div>
+        <!-- 首页菜单 -->
         <div class="index-list2">
             <ul>
                 <li>
@@ -202,7 +187,6 @@ import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
 import { Toast } from "mint-ui";
-import wx from 'weixin-js-sdk'
 export default {
     data() {
         return {
@@ -310,32 +294,6 @@ export default {
                     this.renderData.info = res.data.data;
                 }
             });
-        },
-        onBrowserBack() {
-            // 这里写点击返回键时候的事件
-            // 比如判断需求执行back()或者go(-2)或者PopupShow=false隐藏弹框
-            wx.closeWindow()
-        }
-    },
-    mounted() {
-        // 按需使用：A→B→C就需要页面一进来的时候，就添加一个历史记录
-        window.history.pushState(null, null, document.URL);
-        // 给window添加一个popstate事件，拦截返回键，执行this.onBrowserBack事件，addEventListener需要指向一个方法
-        window.addEventListener("popstate", this.onBrowserBack, false);
-    },
-    destroyed() {
-        // 当页面销毁必须要移除这个事件，vue不刷新页面，不移除会重复执行这个事件
-        window.removeEventListener("popstate", this.onBrowserBack, false);
-    },
-    watch: {
-        // 弹框监听，当弹框显示的时候，pushState添加一个历史，供返回键使用
-        PopupShow: {
-            handler(newVal, oldVal) {
-                if (newVal.Terms === true) {
-                    window.history.pushState(null, null, document.URL);
-                }
-            },
-            deep: true
         }
     },
     created() {
@@ -348,13 +306,12 @@ export default {
         // this.loginSuccess.openid = this.$route.query.opid
         // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {});
-        this.verify();
     }
 };
 </script>
 
 
-<style>
+<style lang="scss">
 html {
     background: #fff;
 }
@@ -371,5 +328,64 @@ html {
     color: #fff;
     background: rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+}
+.index-capital-subsidiary-main {
+    height: 3rem;
+    width: 100%;
+    background: url("../../assets/images/indexHeaderBg.jpg") no-repeat center
+        bottom;
+    background-size: 100% auto;
+    justify-content: space-around;
+    padding-top: 0.55rem;
+    box-sizing: border-box;
+    div {
+        width: 100%;
+        text-align: center;
+        line-height: 0.4rem;
+        img {
+            width: 0.6rem;
+            margin: 0 auto;
+        }
+        h3 {
+            font-size: 0.24rem;
+            color: #fff;
+            padding-top: 0.1rem;
+        }
+        p {
+            font-size: 0.36rem;
+            color: #fff;
+        }
+    }
+}
+.index-notice{
+    padding:.1rem .36rem .1rem .33rem;
+}
+.index-notice-profit h3 img{
+    width:0.75rem;
+}
+.index-notice-profit p{
+    padding-top:0.12rem;
+}
+.index-notice-profit p em{
+    margin-top: -0.055rem;
+}
+.index-notice-profit span{
+    margin-top: 0.21rem;
+}
+.index-banner{
+    margin-top:0.25rem;
+    position: relative;
+    img{
+        display:block;
+        height:2rem;
+    }
+    .bannerOverlazy{
+        width:100%;
+        height:100%;
+        position: absolute;
+        left:0;
+        top:0;
+        z-index:99;
+    }
 }
 </style>

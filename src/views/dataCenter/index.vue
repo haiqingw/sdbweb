@@ -54,13 +54,8 @@
                 >{{item.name}}</span>
             </div>
             <!-- 折线图 -->
-<<<<<<< HEAD
-            <div class="chartMain"  ref="pieEcharts" id="chartMain">
-                <div id='myChart0' style='width:100% !important;height:220px'></div>
-=======
             <div class="chartMain" ref="pieEcharts" id="chartMain">
                 <div id="myChart0" style="width:100% !important;height:220px"></div>
->>>>>>> 462e8d149b1fbbd1d50afc54e7ed37dff92249fd
             </div>
             <!-- 统计 -->
             <div class="statisticalMain">

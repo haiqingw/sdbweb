@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-<<<<<<< HEAD
+<<<<<<< 
 const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid', '/dataCenter', '/settings', '/modifyInfo', '/home','/mine','/rank']
 =======
 const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid','/accountNumber-cancellation']

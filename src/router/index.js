@@ -356,15 +356,9 @@ export default new Router({
         component: resolve => require(['@/views/modifyInfo'], resolve),
     },
     {
-<<<<<<< HEAD
-        path: '/rank', //排行榜
-        name: 'rank',
-        component: resolve => require(['@/views/rank'], resolve),
-=======
         path: '/accountNumber-cancellation', //账号注销
         name: 'accountNumber-cancellation',
         component: resolve => require(['@/views/accountNumber-cancellation'], resolve),
->>>>>>> 462e8d149b1fbbd1d50afc54e7ed37dff92249fd
     }
   ]
 })

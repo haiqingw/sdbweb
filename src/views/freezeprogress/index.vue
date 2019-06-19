@@ -83,11 +83,11 @@
                         </div>
                     </div>
                     <!-- 未激活机器状态  -->
-                    <div class="noPosDataStatus" v-if="noPosDataStatus">
+                    <!-- <div class="noPosDataStatus" v-if="noPosDataStatus">
                         <img src="../../assets/images/noPosDataIcon.png">
                         <span>您还没有领取机器，立即去领取</span>
                         <router-link to="/mall">机具商城</router-link>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

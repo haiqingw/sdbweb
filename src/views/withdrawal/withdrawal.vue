@@ -278,7 +278,7 @@ export default {
                                                 this.$router.push("/");
                                             }, 300);
                                         } else {
-                                            alert(res.data.responseStatus)
+                                            // alert(res.data.responseStatus)
                                             Toast(
                                                 response[
                                                     res.data.responseStatus

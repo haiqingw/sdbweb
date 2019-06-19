@@ -44,11 +44,11 @@
                     <span>意见反馈</span>
                     <i></i>
                 </router-link>
-                <li @click="cancellation" class="line_bottom">
+                <!-- <li @click="cancellation" class="line_bottom">
                     <img src="@/assets/images/cancellation.png" alt="退出登录">
                     <span>账号注销</span>
                     <i></i>
-                </li>
+                </li> -->
                 <li @click="logout" class="line_bottom">
                     <img src="@/assets/images/exitIcon.png" alt="退出登录">
                     <span>退出登录</span>

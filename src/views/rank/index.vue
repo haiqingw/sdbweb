@@ -3,7 +3,7 @@
         <section class="subPageSection">
             <!-- 头部 -->
             <div class="rankHeaderMain">
-                <a href="javascript:;" class="rankHeaderLeftBtn">返回</a>
+                <a href="javascript:;" class="rankHeaderLeftBtn"></a>
                 排行榜
                 <a href="javascript:;" class="rankHeaderRightBtn">激活</a>
                 <select name="" id="" @change="changeSelect">

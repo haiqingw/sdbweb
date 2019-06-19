@@ -359,6 +359,11 @@ export default new Router({
         path: '/accountNumber-cancellation', //账号注销
         name: 'accountNumber-cancellation',
         component: resolve => require(['@/views/accountNumber-cancellation'], resolve),
+    },
+    {
+        path: '/rank', //账号注销
+        name: 'rank',
+        component: resolve => require(['@/views/rank'], resolve),
     }
   ]
 })

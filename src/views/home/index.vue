@@ -172,13 +172,15 @@
                     </div>
                 </li>
                 <!-- <li>
-          <div class="img">
-            <img src="@/assets/images/index-list2-img8.png" alt="">
-          </div>
-          <div class="text">
-            <a href="">排行榜</a>
-          </div>
-                </li>-->
+                    <div class="img">
+                        <router-link to="/rank">
+                            <img src="@/assets/images/index-list2-img8.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/rank">排行榜</router-link>
+                    </div>
+                </li> -->
                 <!-- <li v-if="renderData.info.level == 2"> -->
                 <!-- <li v-if="renderData.info.level == 2">
                     <div class="img">
@@ -202,7 +204,7 @@ import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
 import { Toast } from "mint-ui";
-import wx from 'weixin-js-sdk'
+import wx from "weixin-js-sdk";
 export default {
     data() {
         return {
@@ -314,7 +316,7 @@ export default {
         onBrowserBack() {
             // 这里写点击返回键时候的事件
             // 比如判断需求执行back()或者go(-2)或者PopupShow=false隐藏弹框
-            wx.closeWindow()
+            wx.closeWindow();
         }
     },
     mounted() {

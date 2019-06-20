@@ -15,8 +15,8 @@
         <!-- body -->
         <div class="feedbackMain">
             <div class="feedbackTopMain">
-                <h3>客服热线：{{customerservicetelephone}}</h3>
-                <p>（周一到周五9:30-17:30）</p>
+                <h3>客服热线：{{customerservicetelephone.mobile}}或{{customerservicetelephone.landline}}</h3>
+                <p>（周一到周五{{customerservicetelephone.dates}}）</p>
             </div>
             <div class="interval"></div>
             <div class="feedbackSubMain">

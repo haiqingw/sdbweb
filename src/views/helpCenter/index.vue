@@ -19,12 +19,12 @@
                 <!-- <a :href="'tel:'+ renderData.top.mobile">立即咨询</a> -->
                 <!-- <a :href="'tel:'+ renderData.top.landline">立即咨询</a> -->
                 <p>
-                    座机：{{renderData.top.mobile}}
+                    电话：{{renderData.top.mobile}}
                     <a :href="'tel:'+ renderData.top.mobile">立即咨询</a>
                 </p>
                 <p>
-                    电话：{{renderData.top.landline}}
-                    <a :href="'tel:'+ renderData.top.mobile">立即咨询</a>
+                    座机：{{renderData.top.landline}}
+                    <a :href="'tel:'+ renderData.top.landline">立即咨询</a>
                 </p>
                 <p>人工服务时间：工作日{{renderData.top.dates}}</p>
             </div>
@@ -135,7 +135,7 @@ export default {
             padding-top: 10px;
             color: #fff;
             span {
-                margin-right: .1rem;
+                margin-right: 0.1rem;
             }
         }
         a {

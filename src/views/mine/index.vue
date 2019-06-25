@@ -4,10 +4,10 @@
         <div class="mineHeaderMain">
             <h3>个人中心</h3>
             <div class="mineHeaderBox">
-                    <router-link to="/settings" class="mineNoticeButton">
-                        <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
-                    </router-link>
-                    <!-- <i></i> -->
+                <router-link to="/settings" class="mineNoticeButton">
+                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
+                </router-link>
+                <!-- <i></i> -->
                 <div class="mineHeaderHeader">
                     <span>
                         <img src="@/assets/images/logoSmallImg.jpg" alt="头像">
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="mineBodyMain">
+        <!-- <div class="mineBodyMain">
             <div class="mineItemBox line_bottom">
                 <h3 class="mineTitle">我的订单</h3>
                 <div class="flex">
@@ -45,6 +45,22 @@
                     <router-link to="myOrder" class="arrIcon">查看所有订单</router-link>
                 </div>
             </div>
+        </div>-->
+        <div class="mine-banner">
+            <van-swipe :autoplay="3000">
+                <van-swipe-item>
+                    <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
+                    <img src="@/assets/images/hotPorPic.jpg" alt="">
+                </van-swipe-item>
+                <van-swipe-item>
+                    <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
+                    <img src="@/assets/images/hotPorPic.jpg" alt="">
+                </van-swipe-item>
+                <van-swipe-item>
+                    <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
+                    <img src="@/assets/images/hotPorPic.jpg" alt="">
+                </van-swipe-item>
+            </van-swipe>
         </div>
         <!-- 常用菜单 -->
         <div class="mineCommonMenuBox">
@@ -195,11 +211,19 @@ export default {
 };
 </script>
 <style lang="scss">
+.mine-banner {
+    padding: 0 .2rem;
+    height: 2rem;
+    .van-swipe {
+        height: 100%;
+    }
+}
 .mineHeaderMain {
     padding-bottom: 1.4rem;
     background: #fff;
     width: 100%;
-    background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center center;
+    background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center
+        center;
     background-size: 100% 100%;
     padding: 0 15px 20px;
     box-sizing: border-box;
@@ -210,7 +234,6 @@ export default {
         text-align: center;
     }
 }
-
 .mineHeaderBox {
     width: 100%;
     margin: 0 auto;
@@ -247,51 +270,51 @@ export default {
         box-shadow: 0 0 20px #ccc;
         position: relative;
     }
-  .mineNoticeButton {
-    display: block;
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    right: 10px;
-    top: 8px;
-    z-index: 9999999;
-    i {
-      display: block;
-      width: 10px;
-      height: 10px;
-      background: #f33;
-      position: absolute;
-      right: 1px;
-      top: 1px;
-      border-radius: 50%;
+    .mineNoticeButton {
+        display: block;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        z-index: 9999999;
+        i {
+            display: block;
+            width: 10px;
+            height: 10px;
+            background: #f33;
+            position: absolute;
+            right: 1px;
+            top: 1px;
+            border-radius: 50%;
+        }
     }
-  }
-  // > span {
-  //   display: block;
-  //   width: 70px;
-  //   height: 70px;
-  //   margin: 0 auto;
-  //   overflow: hidden;
-  //   border-radius: 50%;
-  //   border: 2px solid #f1f1f1;
-  //   box-sizing: border-box;
-  //   img {
-  //     width: 100%;
-  //     height: 100%;
-  //   }
-  // }
-  > p {
-    font-size: 16px;
-    color: #333;
-    text-align: left;
-    font-weight: bold;
-    line-height: 20px;
-  }
+    // > span {
+    //   display: block;
+    //   width: 70px;
+    //   height: 70px;
+    //   margin: 0 auto;
+    //   overflow: hidden;
+    //   border-radius: 50%;
+    //   border: 2px solid #f1f1f1;
+    //   box-sizing: border-box;
+    //   img {
+    //     width: 100%;
+    //     height: 100%;
+    //   }
+    // }
+    > p {
+        font-size: 16px;
+        color: #333;
+        text-align: left;
+        font-weight: bold;
+        line-height: 20px;
+    }
     &:first-of-type {
-      padding-top: 10px;
+        padding-top: 10px;
     }
     &:last-of-type {
-      padding-bottom: 15px;
+        padding-bottom: 15px;
     }
     // > span {
     //   display: block;
@@ -345,7 +368,7 @@ export default {
         }
         p {
             font-size: 12px;
-            padding-top:5px;
+            padding-top: 5px;
         }
     }
 }

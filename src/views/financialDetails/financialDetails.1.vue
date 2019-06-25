@@ -10,25 +10,26 @@
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
             <span>资金明细</span>
         </div>
-        <div class="financial-top">
-            <div class="financialDetails-banner-warp">
-                <div class="financialDetails-banner">
-                    <van-swipe :autoplay="3000">
-                        <van-swipe-item>
-                            <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                            <img src="@/assets/images/hotPorPic.jpg" alt>
-                        </van-swipe-item>
-                        <van-swipe-item>
-                            <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                            <img src="@/assets/images/hotPorPic.jpg" alt>
-                        </van-swipe-item>
-                        <van-swipe-item>
-                            <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                            <img src="@/assets/images/hotPorPic.jpg" alt>
-                        </van-swipe-item>
-                    </van-swipe>
-                </div>
+        <div class="financialDetails-banner-warp">
+            <div class="financialDetails-banner">
+                <van-swipe :autoplay="3000">
+                    <van-swipe-item>
+                        <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
+                        <img src="@/assets/images/hotPorPic.jpg" alt>
+                    </van-swipe-item>
+                    <van-swipe-item>
+                        <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
+                        <img src="@/assets/images/hotPorPic.jpg" alt>
+                    </van-swipe-item>
+                    <van-swipe-item>
+                        <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
+                        <img src="@/assets/images/hotPorPic.jpg" alt>
+                    </van-swipe-item>
+                </van-swipe>
             </div>
+        </div>
+        <!-- 列表 -->
+        <div class="financialDetailsMain">
             <!-- switchSacreeningMain -->
             <div class="time-choice">
                 <div class="block">
@@ -64,15 +65,10 @@
                     </div>-->
                 </div>
             </div>
-        </div>
-
-        <!-- 列表 -->
-        <div class="financialDetailsMain">
             <!-- 列表 -->
             <div class="financialDetailsList line_top" ref="financialDetailsList">
                 <!-- line_bottom -->
                 <div class="flex switchSacreeningMain">
-                    <!-- v-if="isData" -->
                     <div class="scroll-list-wrap" v-if="isData">
                         <cube-scroll
                             ref="scroll"
@@ -335,12 +331,13 @@ export default {
 };
 </script>
 <style lang="scss">
+
 .financialDetails-banner {
     // position: fixed;
     // left: 0;
     // top: 1rem;
     margin-top: 1rem;
-    padding: 0 0.2rem;
+    padding: 0 .2rem;
     height: 2rem;
     .van-swipe {
         height: 100%;
@@ -356,11 +353,8 @@ export default {
     font-size: 0.3rem;
 }
 .financial-details .scroll-list-wrap {
-    height: 7.9rem;
+    height: 11rem;
     overflow-y: scroll;
-    width: 100%;
-    padding-top: .2rem;
-    box-sizing: border-box;
     .item {
         padding: 10px 10px;
         &:nth-child(2n + 1) {
@@ -441,6 +435,9 @@ export default {
 }
 
 .time-choice {
+    position: fixed;
+    top: 2.8rem;
+    left: 0;
     width: 100%;
     z-index: 999;
     .block {
@@ -508,8 +505,11 @@ export default {
 }
 .financial-details {
     .choice {
+        position: fixed;
         width: 100%;
+        left: 0;
         // top: 2rem;
+        top: 3.5rem;
         background: #fff;
         z-index: 999;
         // overflow-x: auto;
@@ -557,7 +557,7 @@ export default {
 }
 .financialDetailsList {
     width: 100%;
-    // margin-top: 4.4rem;
+    margin-top: 4.4rem;
 }
 .loadingMore {
     line-height: 40px;
@@ -575,7 +575,7 @@ export default {
 }
 .financialDetailsMain {
     // margin-top: 3.3rem;
-    // margin-top: 1.5rem;
+    margin-top: 1.5rem;
     // position: fixed;
     // left:0;
     // top:160px;

@@ -6,7 +6,7 @@
                 <mt-button icon="back">返回</mt-button>
             </router-link>
         </mt-header> -->
-         <div class="return">
+        <div class="return">
             <img
                 src="@/assets/images/return.png" alt="" 
                 @click="$router.go(-1)"/>
@@ -15,7 +15,7 @@
         <!-- body -->
         <div class="feedbackMain">
             <div class="feedbackTopMain">
-                <h3>客服热线：{{customerservicetelephone.mobile}}或{{customerservicetelephone.landline}}</h3>
+                <h3>客服热线：{{customerservicetelephone.mobile}}-{{customerservicetelephone.landline}}</h3>
                 <p>（周一到周五{{customerservicetelephone.dates}}）</p>
             </div>
             <div class="interval"></div>
@@ -81,11 +81,11 @@ export default {
                     setTimeout(() => {
                         this.$router.go(-1);
                     }, 1000);
-                }else{
+                } else {
                     Toast(response[res.data.responseStatus]);
                 }
             });
-        }
+        },
     },
     created() {
         this.customerPhone();

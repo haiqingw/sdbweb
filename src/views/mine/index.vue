@@ -46,19 +46,11 @@
                 </div>
             </div>
         </div>-->
-        <div class="mine-banner">
+        <div class="mine-banner" v-if="isShowAdvertisementStatus">
             <van-swipe :autoplay="3000">
                 <van-swipe-item>
                     <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                    <img src="@/assets/images/hotPorPic.jpg" alt="">
-                </van-swipe-item>
-                <van-swipe-item>
-                    <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                    <img src="@/assets/images/hotPorPic.jpg" alt="">
-                </van-swipe-item>
-                <van-swipe-item>
-                    <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                    <img src="@/assets/images/hotPorPic.jpg" alt="">
+                    <img src="@/assets/images/mine-banner.jpg" alt>
                 </van-swipe-item>
             </van-swipe>
         </div>
@@ -112,6 +104,7 @@ import { getServer } from "@/api/index";
 export default {
     data() {
         return {
+            isShowAdvertisementStatus: null,
             renderData: {
                 thaw: "",
                 listOneData: {},
@@ -152,6 +145,11 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                isShowAdvertisement: {
+                    requestType: 'checke',
+                    requestKeywords:'advercheck', 
+                    platformID: this.$store.state.user.pid,
                 }
             }
         };
@@ -160,6 +158,17 @@ export default {
         Footer
     },
     methods: {
+        isShowAdvertisement() {
+            getServer(this.queryData.isShowAdvertisement).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    if( res.data.status == 1 ) {
+                        this.isShowAdvertisementStatus = true
+                    } else {
+                        this.isShowAdvertisementStatus = false
+                    }
+                }
+            })
+        },
         judgeRealNameAuth(url) {
             Indicator.open();
             getServer(this.queryData.checkcerData).then(res => {
@@ -207,15 +216,23 @@ export default {
         this.listOne();
         this.thaw();
         this.info();
+        this.isShowAdvertisement()
     }
 };
 </script>
 <style lang="scss">
 .mine-banner {
-    padding: 0 .2rem;
-    height: 2rem;
+    padding: 0 15px 20px;
+    // padding: 0 .2rem;
+    // height: 3rem;
+    width: 6rem;
+    width: 100%;
+    box-sizing: border-box;
     .van-swipe {
         height: 100%;
+    }
+    img {
+         border-radius: 10px;
     }
 }
 .mineHeaderMain {
@@ -377,7 +394,7 @@ export default {
 }
 .mineTitle {
     line-height: 30px;
-    padding: 5px 15px 0;
+    padding: 0px 15px 0;
     font-size: 18px;
     color: #333;
 }
@@ -390,7 +407,7 @@ export default {
     }
 }
 .mineCommonMenuBox {
-    padding-top: 10px;
+    // padding-top: 10px;
 }
 .mineCommonMenuList {
     padding: 0 15px;

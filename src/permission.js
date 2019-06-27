@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid', '/dataCenter', '/settings', '/modifyInfo', '/home','/mine','/rank', '/financialDetails']
+const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid','/financialDetails']
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css' // Progress 进度条样
 router.beforeEach((to, from, next) => {

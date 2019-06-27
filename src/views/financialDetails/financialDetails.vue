@@ -11,24 +11,15 @@
             <span>资金明细</span>
         </div>
         <div class="financial-top">
-            <div class="financialDetails-banner-warp">
+            <!-- <div class="financialDetails-banner-warp">
                 <div class="financialDetails-banner">
                     <van-swipe :autoplay="3000">
                         <van-swipe-item>
-                            <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                            <img src="@/assets/images/hotPorPic.jpg" alt>
-                        </van-swipe-item>
-                        <van-swipe-item>
-                            <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                            <img src="@/assets/images/hotPorPic.jpg" alt>
-                        </van-swipe-item>
-                        <van-swipe-item>
-                            <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                            <img src="@/assets/images/hotPorPic.jpg" alt>
+                            <img src="@/assets/images/mine-banner.jpg" alt>
                         </van-swipe-item>
                     </van-swipe>
                 </div>
-            </div>
+            </div> -->
             <!-- switchSacreeningMain -->
             <div class="time-choice">
                 <div class="block">
@@ -59,7 +50,7 @@
                         >
                             <el-button type="text">{{item.name}}</el-button>
                         </div>
-                    </div>
+                   </div>
                     <!-- <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
                     </div>-->
                 </div>
@@ -335,13 +326,16 @@ export default {
 };
 </script>
 <style lang="scss">
+.financial-top {
+    margin-top: .8rem;
+}
 .financialDetails-banner {
     // position: fixed;
     // left: 0;
     // top: 1rem;
     margin-top: 1rem;
     padding: 0 0.2rem;
-    height: 2rem;
+    // height: 3rem;
     .van-swipe {
         height: 100%;
     }

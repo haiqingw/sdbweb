@@ -3,7 +3,7 @@
         <section class="subPageSection">
             <!-- 头部 -->
             <div class="rankHeaderMain">
-                <a href="javascript:;" class="rankHeaderLeftBtn"></a>
+                <a href="javascript:;" class="rankHeaderLeftBtn" @click="$router.go(-1)"></a>
                 排行榜
                 <a href="javascript:;" class="rankHeaderRightBtn">激活</a>
                 <select name="" id="" @change="changeSelect">
@@ -156,7 +156,7 @@ export default {
     },
     methods: {
         changeSelect() {
-             this.drawLine(this.monthData, this.moneyData);
+            this.drawLine(this.monthData, this.moneyData);
         },
         drawLine(monthData, moneyData) {
             let $selecter = document.getElementById("myChart0");
@@ -205,6 +205,9 @@ export default {
     },
     created() {
         // this.drawLine(this.monthData, this.moneyData);
+    },
+    mounted() {
+        this.drawLine(this.monthData, this.moneyData);
     }
 };
 </script>

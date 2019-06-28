@@ -31,9 +31,9 @@
             </mt-popup>
         </div>
         <!-- 支付押金 -->
-        <div class="payDepositMain">
+        <div class="payDepositMain" v-if="deposit!=0">
             您需要支付：
-            <em>{{deposit}}</em>元绑定冻结金额
+            <em>{{deposit}}</em>元机具绑定金额
         </div>
         <!-- 押金说明 -->
         <!-- <div class="depositExplainMain">

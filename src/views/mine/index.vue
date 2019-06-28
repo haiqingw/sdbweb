@@ -14,7 +14,7 @@
                     </span>
                     <p>
                         {{ renderData.info.busname }}
-                        <em v-if="renderData.info.level == 2 ">股东</em>
+                        <em v-if="renderData.info.level == 2 ">{{renderData.info.nickname}}</em>
                     </p>
                     <p>{{ renderData.info.phone }}</p>
                 </div>

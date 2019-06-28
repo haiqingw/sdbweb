@@ -322,7 +322,9 @@ export default {
     //         }
     //     })
     // }
-    mounted() {}
+    mounted() {
+        this.scrollTo();
+    }
 };
 </script>
 <style lang="scss">
@@ -350,7 +352,9 @@ export default {
     font-size: 0.3rem;
 }
 .financial-details .scroll-list-wrap {
-    height: 7.9rem;
+    // height: 7.9rem;
+    height: 10rem;
+    // margin-top: .2rem;
     overflow-y: scroll;
     width: 100%;
     padding-top: .2rem;

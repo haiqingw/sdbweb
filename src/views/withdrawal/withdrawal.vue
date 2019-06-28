@@ -74,6 +74,7 @@
                         <p>3.提现银行卡可以在'我的'中更换;</p>
                         <!-- <p>4.结算方式为{{renderData.mattersNeedingAttention.methed}}。</p> -->
                         <p>4.提现税收为{{renderData.drawInfo.tax}}。</p>
+                        <!-- <p>5.提现税收为{{renderData.drawInfo.tax}}。</p> -->
                     </div>
                 </div>
             </div>

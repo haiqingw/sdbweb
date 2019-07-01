@@ -5,16 +5,18 @@
             <h3>个人中心</h3>
             <div class="mineHeaderBox">
                 <router-link to="/settings" class="mineNoticeButton">
-                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心">
+                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
                 </router-link>
                 <!-- <i></i> -->
                 <div class="mineHeaderHeader">
                     <span>
-                        <img src="@/assets/images/logoSmallImg.jpg" alt="头像">
+                        <img src="@/assets/images/logoSmallImg.jpg" alt="头像" />
                     </span>
                     <p>
                         {{ renderData.info.busname }}
-                        <em v-if="renderData.info.level == 2 ">{{renderData.info.nickname}}</em>
+                        <em
+                            v-if="renderData.info.level == 2 "
+                        >{{renderData.info.nickname}}</em>
                     </p>
                     <p>{{ renderData.info.phone }}</p>
                 </div>
@@ -50,7 +52,7 @@
             <van-swipe :autoplay="3000">
                 <van-swipe-item>
                     <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                    <img src="@/assets/images/mine-banner.jpg" alt>
+                    <img src="@/assets/images/mine-banner.jpg" alt />
                 </van-swipe-item>
             </van-swipe>
         </div>
@@ -59,23 +61,23 @@
             <h3 class="mineTitle">常用菜单</h3>
             <div class="mineCommonMenuList">
                 <a href="javascript:;" @click="judgeRealNameAuth('certificationComplete')">
-                    <img src="@/assets/images/certificationIcon.png" alt="实名认证">
+                    <img src="@/assets/images/certificationIcon.png" alt="实名认证" />
                     <p>实名认证</p>
                 </a>
                 <router-link to="/myTerminal" v-if="renderData.info.level == 2 ">
-                    <img src="@/assets/images/myTerminalIcon.png" alt="我的终端">
+                    <img src="@/assets/images/myTerminalIcon.png" alt="我的终端" />
                     <p>我的终端</p>
                 </router-link>
                 <router-link to="/affiliateTransactions" v-if="renderData.info.level == 2">
-                    <img src="@/assets/images/AffiliateTransactionsIcon.png" alt="下属交易">
+                    <img src="@/assets/images/AffiliateTransactionsIcon.png" alt="下属交易" />
                     <p>下属交易</p>
                 </router-link>
                 <a href="javascript:;" @click="judgeRealNameAuth('withdrawal')">
-                    <img src="@/assets/images/balanceIcon.png" alt="余额/提现">
+                    <img src="@/assets/images/balanceIcon.png" alt="余额/提现" />
                     <p>余额/提现</p>
                 </a>
                 <router-link to="/financialDetails">
-                    <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细">
+                    <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细" />
                     <p>资金明细</p>
                 </router-link>
                 <!-- <router-link to="/organization">
@@ -84,11 +86,11 @@
           <p>组织架构</p>
                 </router-link>-->
                 <router-link to="/helpCenter">
-                    <img src="@/assets/images/helpCenterIcon.png" alt="帮助中心">
+                    <img src="@/assets/images/helpCenterIcon.png" alt="帮助中心" />
                     <p>帮助中心</p>
                 </router-link>
                 <router-link to="/about">
-                    <img src="@/assets/images/aboutIcon.png" alt="关于我们">
+                    <img src="@/assets/images/aboutIcon.png" alt="关于我们" />
                     <p>关于我们</p>
                 </router-link>
             </div>
@@ -104,7 +106,9 @@ import { getServer } from "@/api/index";
 export default {
     data() {
         return {
+            isServerMoneyState: false,
             isShowAdvertisementStatus: null,
+            rechargeType: null,
             renderData: {
                 thaw: "",
                 listOneData: {},
@@ -147,9 +151,32 @@ export default {
                     userPhone: this.$store.state.user.uphone
                 },
                 isShowAdvertisement: {
-                    requestType: 'checke',
-                    requestKeywords:'advercheck', 
+                    requestType: "checke",
+                    requestKeywords: "advercheck",
+                    platformID: this.$store.state.user.pid
+                },
+                isServerMoneyState: {
+                    requestType: "servicefee",
+                    requestKeywords: "checkrertype",
                     platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                serverMoneyRecharge: {
+                    own: {
+                        // 自己
+                        requestType: "servicefee",
+                        requestKeywords: "rechargenotic",
+                        platformID: this.$store.state.user.pid,
+                        userID: this.$store.state.user.uid,
+                        userPhone: this.$store.state.user.uphone
+                    },
+                    company: {
+                        // 公司
+                        requestType: "servicefee",
+                        requestKeywords: "checkplatfee",
+                        platformID: this.$store.state.user.pid
+                    }
                 }
             }
         };
@@ -158,16 +185,48 @@ export default {
         Footer
     },
     methods: {
+        isServerMoneyStateFunc() {
+            getServer(this.queryData.isServerMoneyState).then(res => {
+                if (res.data.responseStatus == 1) {
+                    this.rechargeType = res.data.rerType;
+                    if (res.data.rerType == 1) {
+                        // 公司充值
+                        getServer(
+                            this.queryData.serverMoneyRecharge.company
+                        ).then(res => {
+                            if (res.data.responseStatus === 1) {
+                                this.isServerMoneyState = false;
+                            } else {
+                                this.isServerMoneyState = true;
+                            }
+                        });
+                    } else if (res.data.rerType == 2) {
+                        // 自己充值
+                        getServer(this.queryData.serverMoneyRecharge.own).then(
+                            res => {
+                                if (res.data.status == 1) {
+                                    this.isServerMoneyState = false;
+                                } else {
+                                    this.isServerMoneyState = true;
+                                }
+                            }
+                        );
+                    }
+                } else {
+                    // util.show(util.response[res.data.responseStatus]);
+                }
+            });
+        },
         isShowAdvertisement() {
-            getServer(this.queryData.isShowAdvertisement).then( res => {
-                if( res.data.responseStatus === 1 ) {
-                    if( res.data.status == 1 ) {
-                        this.isShowAdvertisementStatus = true
+            getServer(this.queryData.isShowAdvertisement).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status == 1) {
+                        this.isShowAdvertisementStatus = true;
                     } else {
-                        this.isShowAdvertisementStatus = false
+                        this.isShowAdvertisementStatus = false;
                     }
                 }
-            })
+            });
         },
         judgeRealNameAuth(url) {
             Indicator.open();
@@ -177,9 +236,23 @@ export default {
                     getServer(this.queryData.checkbankcardData).then(res => {
                         if (res.data.responseStatus === 1) {
                             Indicator.close();
-                            this.$router.push({
-                                name: url
-                            });
+                            if (
+                                this.isServerMoneyState &&
+                                this.rechargeType == 1
+                            ) {
+                                //跳转到公司续费页面
+                                alert("公司")
+                            } else if (
+                                this.isServerMoneyState &&
+                                this.rechargeType == 2
+                            ) {
+                                //跳转到自己续费页面
+                                alert("自己")
+                            } else {
+                                this.$router.push({
+                                    name: url
+                                });
+                            }
                         } else {
                             Indicator.close();
                             this.$router.push({
@@ -208,6 +281,12 @@ export default {
             getServer(this.queryData.info).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.renderData.info = res.data.data;
+                    if (res.data.data.level == "2") {
+                        this.isServerMoneyStateFunc();
+                    } else {
+                        this.isServerMoneyState = false;
+                        this.rechargeType = 0;
+                    }
                 }
             });
         }
@@ -216,7 +295,7 @@ export default {
         this.listOne();
         this.thaw();
         this.info();
-        this.isShowAdvertisement()
+        this.isShowAdvertisement();
     }
 };
 </script>
@@ -232,7 +311,7 @@ export default {
         height: 100%;
     }
     img {
-         border-radius: 10px;
+        border-radius: 10px;
     }
 }
 .mineHeaderMain {

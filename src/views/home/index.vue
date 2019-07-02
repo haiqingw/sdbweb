@@ -141,7 +141,7 @@
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
                 </li>
-                <li>
+                <!-- <li>
                     <div class="img">
                         <router-link to="/mall">
                             <img src="@/assets/images/indexBtn09.png" alt>
@@ -150,7 +150,7 @@
                     <div class="text">
                         <router-link to="/mall">机具商城</router-link>
                     </div>
-                </li>
+                </li> -->
                 <li>
                     <div class="img">
                         <router-link to="/financialDetails">

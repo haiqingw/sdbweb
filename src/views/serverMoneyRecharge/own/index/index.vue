@@ -1,13 +1,34 @@
 <template>
     <div class="serverMoneyRechargeOwn">
-        <span>立即续费</span>
+        <span @click="$router.push('/serverMoneyRechargeOwnRecharge')">立即续费</span>
         <em>充值记录</em>
     </div>
 </template>
 
 <script>
 export default {
-    
+    data() {
+        return {
+            renderData: {
+                info: {
+
+                }
+            },
+            queryData: {
+                info: {
+
+                }
+            }
+        }
+    },
+    methods: {
+        info() {
+
+        }
+    }, 
+    created() {
+
+    }
 }
 </script>
 

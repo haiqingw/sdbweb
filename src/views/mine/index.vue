@@ -241,13 +241,19 @@ export default {
                                 this.rechargeType == 1
                             ) {
                                 //跳转到公司续费页面
-                                alert("公司")
+                                // alert("公司")
+                                this.$router.push({
+                                    name: "serverMoneyRechargeCompany"
+                                })
                             } else if (
                                 this.isServerMoneyState &&
                                 this.rechargeType == 2
                             ) {
                                 //跳转到自己续费页面
-                                alert("自己")
+                                // alert("自己")
+                                this.$router.push({
+                                    name: "serverMoneyRechargeOwn"
+                                })
                             } else {
                                 this.$router.push({
                                     name: url

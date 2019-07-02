@@ -7,39 +7,68 @@
         <div class="content">
             <div class="top">
                 <span>请选择续费时长</span>
-                <a>充值记录</a>
+                <router-link to="/serverMoneyRechargeOwnList">充值记录</router-link>
             </div>
             <div class="list">
                 <ul>
-                    <li>
+                    <li v-for="(item, index) in renderData.list" :key="index">
                         <div class="left">
-                            <span>77天</span>
-                            <em>¥1000.00</em>
+                            <span>{{item.days}}天</span>
+                            <em>¥{{item.money}}.00</em>
                         </div>
                         <div class="right">
                             <van-radio-group v-model="radio">
-                                <van-radio name="2"></van-radio>
+                                <van-radio :name="item.money"></van-radio>
                             </van-radio-group>
                         </div>
                     </li>
                 </ul>
+            </div>
+            <div class="bottom">
+                <span>
+                    支付<em>{{radio}}¥</em>
+                </span>
+                <em @click="renew">立即续费</em>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import {getServer} from '@/api/index';
 export default {
     data() {
         return {
-            radio: "1",
+            radio: "",
             queryData: {
-
+                list: {
+                    requestType: 'servicefee', 
+                    requestKeywords: 'templatelist', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone
+                }
             },
             renderData: {
-
+                list: []
             },
         };
+    },
+    methods: {
+        list() {
+            getServer(this.queryData.list).then( res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.list = res.data.data
+                    this.radio = res.data.data[0].money
+                }
+            })
+        },
+        renew() {
+            alert("续费")
+        }
+    },
+    created() {
+        this.list()
     }
 };
 </script>
@@ -85,6 +114,30 @@ export default {
     float: right;
     border-left: 1px dashed #f1f1f1;
     padding-left: .2rem;
+}
+.serverMoneyRechargeOwnRecharge .bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    font-size: .28rem;
+    line-height: .8rem;
+    width: 100%;
+    background: #f1f1f1;
+    padding-left: .2rem;
+    box-sizing: border-box;
+}
+.serverMoneyRechargeOwnRecharge .bottom span {
+    float: left;
+}
+.serverMoneyRechargeOwnRecharge .bottom span em {
+    color: red;
+    margin-left: .1rem;
+}
+.serverMoneyRechargeOwnRecharge .bottom>em {
+    float: right;
+    background: #089cfe;
+    color: #fff;
+    padding: 0 .2rem;
 }
 </style>
 

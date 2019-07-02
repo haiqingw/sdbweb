@@ -371,12 +371,12 @@ export default new Router({
         component: resolve => require(['@/views/serverMoneyRecharge/own/index'], resolve),
     },
     {
-        path: '/serverMoneyRechargeOwnRecharge', //公司服务费充值
+        path: '/serverMoneyRechargeOwnRecharge',
         name: 'serverMoneyRechargeOwnRecharge',
         component: resolve => require(['@/views/serverMoneyRecharge/own/recharge'], resolve),
     },
     {
-        path: '/serverMoneyRechargeOwnList', //公司服务费充值列表
+        path: '/serverMoneyRechargeOwnList', 
         name: 'serverMoneyRechargeOwnList',
         component: resolve => require(['@/views/serverMoneyRecharge/own/list'], resolve),
     },

@@ -2,7 +2,7 @@
 <template>
     <div class="application-agent-To-examine">
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>代理审核</span>
         </div>
         <div class="agentCheckMain">
@@ -31,11 +31,11 @@
                                             联系方式：
                                             <i>{{item.phone}}</i>
                                         </span>
-                                        <a href="tel:13296905340">
+                                        <a :href="'tel:'+ item.phone">
                                             <img
                                                 src="@/assets/images/invitation-record-lis-telephone.png"
-                                                alt="一键拨  号"
-                                            >
+                                                alt="一键拨号"
+                                            />
                                         </a>
                                     </div>
                                     <!-- <span>申请产品：{{item.product}}</span> -->
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     <div class="no-data" v-else>
-                        <img src="@/assets/images/no-data.png" alt>
+                        <img src="@/assets/images/no-data.png" alt />
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="已审核" name="2">
@@ -88,11 +88,11 @@
                                             联系方式：
                                             <i>{{item.phone}}</i>
                                         </span>
-                                        <a href="tel:13296905340">
+                                        <a :href="'tel:'+ item.phone">
                                             <img
                                                 src="@/assets/images/invitation-record-lis-telephone.png"
-                                                alt="一键拨  号"
-                                            >
+                                                alt="一键拨号"
+                                            />
                                         </a>
                                     </div>
                                     <span class="product">申请产品：{{item.product}}</span>
@@ -121,7 +121,7 @@
                         </div>
                     </div>
                     <div class="no-data" v-else>
-                        <img src="@/assets/images/no-data.png" alt>
+                        <img src="@/assets/images/no-data.png" alt />
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -410,7 +410,7 @@ export default {
                 font-size: 16px;
                 color: #333;
                 display: block;
-                padding: .1rem 15px;
+                padding: 0.1rem 15px;
             }
         }
         .right {

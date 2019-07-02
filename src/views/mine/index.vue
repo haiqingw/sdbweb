@@ -254,7 +254,7 @@ export default {
                                 });
                             }
                         } else {
-                            Indicator.close();
+                            Indicator.close()
                             this.$router.push({
                                 name: "certificationNext"
                             });

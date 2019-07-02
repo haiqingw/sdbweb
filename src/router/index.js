@@ -364,6 +364,26 @@ export default new Router({
         path: '/rank', //账号注销
         name: 'rank',
         component: resolve => require(['@/views/rank'], resolve),
+    },
+    {
+        path: '/serverMoneyRechargeOwn', //个人服务费
+        name: 'serverMoneyRechargeOwn',
+        component: resolve => require(['@/views/serverMoneyRecharge/own/index'], resolve),
+    },
+    {
+        path: '/serverMoneyRechargeOwnRecharge', //公司服务费充值
+        name: 'serverMoneyRechargeOwnRecharge',
+        component: resolve => require(['@/views/serverMoneyRecharge/own/recharge'], resolve),
+    },
+    {
+        path: '/serverMoneyRechargeOwnList', //公司服务费充值列表
+        name: 'serverMoneyRechargeOwnList',
+        component: resolve => require(['@/views/serverMoneyRecharge/own/list'], resolve),
+    },
+    {
+        path: '/serverMoneyRechargeCompany', //公司服务费
+        name: 'serverMoneyRechargeCompany',
+        component: resolve => require(['@/views/serverMoneyRecharge/company'], resolve),
     }
   ]
 })

@@ -287,12 +287,12 @@ export default {
             getServer(this.queryData.info).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.renderData.info = res.data.data;
-                    if (res.data.data.level == "2") {
-                        this.isServerMoneyStateFunc();
-                    } else {
-                        this.isServerMoneyState = false;
-                        this.rechargeType = 0;
-                    }
+                    // if (res.data.data.level == "2") {
+                    //     this.isServerMoneyStateFunc();
+                    // } else {
+                    //     this.isServerMoneyState = false;
+                    //     this.rechargeType = 0;
+                    // }
                 }
             });
         }

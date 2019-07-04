@@ -2,11 +2,11 @@
 <template>
     <div class="application-agent">
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>申请代理</span>
         </div>
-        <div class="applyAgentMain">
-            <img src="@/assets/images/applyAgentImg.jpg" alt="申请代理">
+        <div class="applyAgentMain" v-html="renderData.bigImg">
+            <img :src="renderData.bigImg" alt="申请代理" />
         </div>
         <div class="applyAgentButtonMain">
             <a href="javascript:;" @click="applyAgent()">立即成为代理商</a>
@@ -15,15 +15,15 @@
 </template>
 <script>
 import { getServer } from "@/api/index";
-import response from '@/assets/js/response.js'
-import { Indicator, Toast } from 'mint-ui'
+import response from "@/assets/js/response.js";
+import { Indicator, Toast } from "mint-ui";
 export default {
     data() {
         return {
             queryData: {
                 applyAgent: {
-                    requestType: 'personal',
-                    requestKeywords: 'serviceprovider',
+                    requestType: "personal",
+                    requestKeywords: "serviceprovider",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -34,7 +34,16 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                bigImg: {
+                    requestType: "system",
+                    requestKeywords: "getsystem",
+                    platformID: this.$store.state.user.pid,
+                    type: "introduct"
                 }
+            },
+            renderData: {
+                bigImg: null
             }
         };
     },
@@ -43,20 +52,37 @@ export default {
             getServer(this.queryData.isAgent).then(res => {
                 if (res.data.responseStatus === 1) {
                     getServer(this.queryData.applyAgent).then(res => {
-                        if( res.data.responseStatus === 1) {
+                        if (res.data.responseStatus === 1) {
                             Toast("申请成功");
                             setTimeout(() => {
-                                this.$router.push({path: "/"})
+                                this.$router.push({ path: "/" });
                             }, 300);
                         } else {
                             Toast(response[res.data.responseStatus]);
                         }
-                    })
+                    });
                 } else {
                     Toast(response[res.data.responseStatus]);
                 }
             });
+        },
+        bigImg() {
+            getServer(this.queryData.bigImg).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.bigImg = res.data.content;
+                    // var re = /src=\"([^\"]*?)\"/i;
+                    // var arr = this.renderData.bigImg.match(re);
+                    this.renderData.bigImg = this.renderData.bigImg.replace(
+                        /(<img.*?)>/gi,
+                        "$1 />"
+                    );
+                    // alert(this.renderData.bigImg)
+                }
+            });
         }
+    },
+    created() {
+        this.bigImg();
     }
 };
 </script>

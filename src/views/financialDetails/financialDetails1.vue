@@ -10,24 +10,6 @@
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
             <span>资金明细</span>
         </div>
-        <div class="financialDetails-banner-warp">
-            <div class="financialDetails-banner">
-                <van-swipe :autoplay="3000">
-                    <van-swipe-item>
-                        <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                        <img src="@/assets/images/hotPorPic.jpg" alt>
-                    </van-swipe-item>
-                    <van-swipe-item>
-                        <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                        <img src="@/assets/images/hotPorPic.jpg" alt>
-                    </van-swipe-item>
-                    <van-swipe-item>
-                        <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                        <img src="@/assets/images/hotPorPic.jpg" alt>
-                    </van-swipe-item>
-                </van-swipe>
-            </div>
-        </div>
         <!-- 列表 -->
         <div class="financialDetailsMain">
             <!-- switchSacreeningMain -->

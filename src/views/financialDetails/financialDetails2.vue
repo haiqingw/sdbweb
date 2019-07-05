@@ -32,6 +32,13 @@
                 </div>
             </div>
             <div class="choice">
+                <!-- <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
+                    <swiper :options="swiperOption" ref="mySwiper" v-if="renderData.screen.length > 0">
+                        <swiper-slide  v-for="item in renderData.screen" :key="item.types">
+                            <el-radio-button :label="item.types">{{item.name}}</el-radio-button>
+                        </swiper-slide>
+                    </swiper>
+                </el-radio-group>-->
                 <div class="topic-list-inner">
                     <div class="nav" ref="nav">
                         <div
@@ -304,6 +311,20 @@ export default {
 .financial-top {
     margin-top: .8rem;
 }
+// .financialDetails-banner {
+//     // position: fixed;
+//     // left: 0;
+//     // top: 1rem;
+//     margin-top: 1rem;
+//     padding: 0 0.2rem;
+//     // height: 3rem;
+//     .van-swipe {
+//         height: 100%;
+//     }
+//     img {
+//         // height: 100%;
+//     }
+// }
 .financial-details {
     font-size: 0.3rem;
 }
@@ -464,53 +485,53 @@ export default {
     }
 }
 .financial-details {
-    // .choice {
-    //     width: 100%;
-    //     // top: 2rem;
-    //     background: #fff;
-    //     z-index: 999;
-    //     // overflow-x: auto;
-    //     overflow: auto;
-    //     line-height: 0.8rem;
-    //     height: 0.8rem;
-    //     .el-radio-group {
-    //         width: 100%;
-    //     }
-    //     label {
-    //         // width: 50%;
-    //         display: block;
-    //         float: left;
-    //         text-align: center;
-    //         border-left: none;
-    //         border: none;
-    //     }
-    //     label:hover {
-    //         border: none;
-    //     }
-    //     .el-radio-button__inner {
-    //         border: none;
-    //         border-bottom: 1px solid transparent;
-    //         width: 100%;
-    //         color: #606266;
-    //     }
-    //     .el-radio-button__inner:hover {
-    //         border-bottom: 1px solid transparent;
-    //     }
-    //     .el-radio-button__orig-radio:checked + .el-radio-button__inner {
-    //         border: none;
-    //         background: none;
-    //         color: #606266;
-    //         border-bottom: 1px solid #0096fe;
-    //         border-radius: 0;
-    //         box-shadow: 0 0 0 0 #fff;
-    //     }
-    //     .el-radio-button__inner:hover {
-    //         box-shadow: 0 0 0 0 #fff;
-    //     }
-    //     .el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
-    //         box-shadow: 0 0 0 0 #fff;
-    //     }
-    // }
+    .choice {
+        width: 100%;
+        // top: 2rem;
+        background: #fff;
+        z-index: 999;
+        // overflow-x: auto;
+        overflow: auto;
+        line-height: 0.8rem;
+        height: 0.8rem;
+        .el-radio-group {
+            width: 100%;
+        }
+        label {
+            // width: 50%;
+            display: block;
+            float: left;
+            text-align: center;
+            border-left: none;
+            border: none;
+        }
+        label:hover {
+            border: none;
+        }
+        .el-radio-button__inner {
+            border: none;
+            border-bottom: 1px solid transparent;
+            width: 100%;
+            color: #606266;
+        }
+        .el-radio-button__inner:hover {
+            border-bottom: 1px solid transparent;
+        }
+        .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+            border: none;
+            background: none;
+            color: #606266;
+            border-bottom: 1px solid #0096fe;
+            border-radius: 0;
+            box-shadow: 0 0 0 0 #fff;
+        }
+        .el-radio-button__inner:hover {
+            box-shadow: 0 0 0 0 #fff;
+        }
+        .el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
+            box-shadow: 0 0 0 0 #fff;
+        }
+    }
 }
 .financialDetailsList {
     width: 100%;
@@ -529,6 +550,18 @@ export default {
         margin-right: 5px;
         display: inline;
     }
+}
+.financialDetailsMain {
+    // margin-top: 3.3rem;
+    // margin-top: 1.5rem;
+    // position: fixed;
+    // left:0;
+    // top:160px;
+    // right:0;
+    // bottom:0;
+    // overflow-x: hidden;
+    // overflow: auto;
+    // height: 120%;
 }
 .timeScreeningMain {
     position: fixed;

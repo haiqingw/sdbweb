@@ -111,7 +111,7 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
-                <li v-if="renderData.info.level != 2">
+                <li v-if="renderData.info.level != 2 && renderData.isChecke == 1">
                     <div class="img">
                         <router-link to="/application-agent">
                             <img src="@/assets/images/indexBtn09.png" alt>
@@ -121,7 +121,7 @@
                         <router-link to="/application-agent">申请代理</router-link>
                     </div>
                 </li>
-                <li v-if="renderData.info.level == 2">
+                <li v-if="renderData.info.level == 2 && renderData.isChecke == 1">
                     <div class="img">
                         <router-link to="/application-agent-To-examine">
                             <img src="@/assets/images/indexBtn03.png" alt>
@@ -215,7 +215,8 @@ export default {
                 listOneData: {},
                 thaw: "",
                 info: {},
-                todayProfit: ""
+                todayProfit: "",
+                isChecke: 0
             },
             queryData: {
                 listOne: {
@@ -231,6 +232,11 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                isChecke: { //  返回 status 1 显示 2 关闭
+                    requestType: "checke",
+                    requestKeywords:'applycheck', 
+                    platformID: this.$store.state.user.pid
                 },
                 bannerData: {
                     requestType: "list",
@@ -271,6 +277,13 @@ export default {
         ...mapGetters(["islogin"])
     },
     methods: {
+        isChecke() {
+            getServer(this.queryData.isChecke).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.isChecke = res.data.status
+                }
+            })
+        },
         todayProfit() {
             getServer(this.queryData.todayProfit).then(res => {
                 if (res.data.responseStatus === 1) {
@@ -346,11 +359,12 @@ export default {
         // this.test1()
         this.bannerList();
         this.info();
+        this.isChecke()
         this.todayProfit();
         // this.loginSuccess.openid = this.$route.query.opid
         // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {});
-        this.verify();
+        // this.verify();
     }
 };
 </script>

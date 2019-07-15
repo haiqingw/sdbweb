@@ -141,7 +141,7 @@
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
                 </li>
-                <!-- <li>
+                <li v-if="this.$store.state.user.pid == 175">
                     <div class="img">
                         <router-link to="/mall">
                             <img src="@/assets/images/indexBtn09.png" alt>
@@ -150,7 +150,7 @@
                     <div class="text">
                         <router-link to="/mall">机具商城</router-link>
                     </div>
-                </li> -->
+                </li>
                 <li>
                     <div class="img">
                         <router-link to="/financialDetails">
@@ -181,8 +181,7 @@
                         <router-link to="/rank">排行榜</router-link>
                     </div>
                 </li> -->
-                <!-- <li v-if="renderData.info.level == 2"> -->
-                <!-- <li v-if="renderData.info.level == 2">
+                <li v-if="renderData.info.level == 2 && this.$store.state.user.pid == 175">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -191,7 +190,7 @@
                     <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
-                </li>-->
+                </li>
             </ul>
         </div>
         <Footer></Footer>

@@ -5,11 +5,9 @@
             <div class="rankHeaderMain">
                 <a href="javascript:;" class="rankHeaderLeftBtn" @click="$router.go(-1)"></a>
                 排行榜
-                <a href="javascript:;" class="rankHeaderRightBtn">激活</a>
-                <select name="" id="" @change="changeSelect">
-                    <option value="激活">激活</option>
-                    <option value="代理商">代理商</option>
-                    <option value="当月收益">当月收益</option>
+                <a href="javascript:;" class="rankHeaderRightBtn">{{selectItem}}</a>
+                <select v-model="selectItem" name="" id="" @change="changeSelect($event)">
+                    <option v-for="item in selectList" :key="item.id" :value="item.title">{{item.title}}</option>
                 </select>
             </div>
             <!-- 折线图 -->
@@ -60,80 +58,10 @@
                     <span>激活(个)</span>
                 </div>
                 <ul class="YRankListUl">
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
+                    <li class="line_bottom" v-for="(item, index) in renderData.list" :key="index">
+                        <b>{{item.rank}}</b>
+                        <em>{{item.name}}({{item.phone}})</em>
+                        <span>{{item.money}}</span>
                     </li>
                 </ul>
             </div>
@@ -147,16 +75,80 @@
     </div>
 </template>
 <script>
+import {getServer} from "@/api/index"
+import response from '@/assets/js/response.js'
+import { Indicator } from 'mint-ui';
 export default {
     data() {
         return {
+            selectItem: "",
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
-            moneyData: [324, 234, 532, 234, 435, 100]
+            moneyData: [324, 234, 532, 234, 435, 100],
+            selectList: [
+                {
+                    id: 1,
+                    title: "当月激活"
+                },
+                {
+                    id: 2,
+                    title: "当月收益"
+                }
+            ],
+            queryData: {
+                list: { // montranking 收益   actranking  激活
+                    requestType: 'list', 
+                    requestKeywords: 'actranking', 
+                    platformID: this.$store.state.user.pid, 
+                    userID: this.$store.state.user.uid, 
+                    userPhone: this.$store.state.user.uphone, 
+                    page: 1, 
+                    limit: 10
+                },
+                chart: {
+                    requestType: 'datamanage',
+                    requestKeywords:'incomeline', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                }
+            },
+            renderData: {
+                list: []
+            }
         };
     },
     methods: {
-        changeSelect() {
-            this.drawLine(this.monthData, this.moneyData);
+        list() {
+            Indicator.open()
+            getServer(this.queryData.list).then( res => {
+                Indicator.close()
+                // alert(response[res.data.responseStatus])
+                // alert(JSON.stringify(res.data.data))
+                if (res.data.responseStatus === 1) {
+                    this.renderData.list = res.data.data
+                }
+            })
+        },
+        chart() {
+            getServer(this.queryData.chart).then( res => {
+                // alert(response[res.data.responseStatus])
+                if (res.data.responseStatus === 1) {
+                    this.monthData = res.data.dates
+                    this.moneyData = res.data.sums
+                    this.drawLine(this.monthData, this.moneyData);
+                }
+            })
+        },
+        changeSelect(e) {
+            // this.drawLine(this.monthData, this.moneyData);
+            if( e.target.value === "当月激活" ) {
+                alert("激活")
+                this.queryData.list.requestKeywords = "actranking"
+            } else if( e.target.value === "当月收益" ) {
+                alert("收益")
+                this.queryData.list.requestKeywords = "montranking"
+            }
+
         },
         drawLine(monthData, moneyData) {
             let $selecter = document.getElementById("myChart0");
@@ -179,7 +171,7 @@ export default {
                             color: "#fff",
                             width: 2
                         }
-                    }
+                    },
                 },
                 yAxis: {
                     show: false,
@@ -205,9 +197,12 @@ export default {
     },
     created() {
         // this.drawLine(this.monthData, this.moneyData);
+        this.list()
+        this.chart()
     },
     mounted() {
         this.drawLine(this.monthData, this.moneyData);
+        this.selectItem = this.selectList[0].title
     }
 };
 </script>

@@ -171,7 +171,7 @@
                         <router-link to="/myMerchants">组织架构</router-link>
                     </div>
                 </li>
-                <!-- <li>
+                <li>
                     <div class="img">
                         <router-link to="/rank">
                             <img src="@/assets/images/index-list2-img8.png" alt>
@@ -180,7 +180,7 @@
                     <div class="text">
                         <router-link to="/rank">排行榜</router-link>
                     </div>
-                </li> -->
+                </li>
                 <li v-if="renderData.info.level == 2 && this.$store.state.user.pid == 175">
                     <div class="img">
                         <router-link to="/deliverGoods">

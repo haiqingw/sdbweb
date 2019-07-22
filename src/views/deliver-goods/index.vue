@@ -169,7 +169,6 @@ export default {
         },
         deliverGoodsList() {
             getServer(this.queryData.list).then(res => {
-                alert(JSON)
                 if (res.data.responseStatus === 1) {
                     this.isData = true;
                     res.data.data.forEach(item => {

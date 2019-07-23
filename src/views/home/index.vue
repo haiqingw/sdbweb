@@ -291,7 +291,7 @@ export default {
                         this.renderData.todayProfit = 0;
                     }
                 }
-            });
+            })
         },
         listOne() {
             getServer(this.queryData.listOne).then(res => {

@@ -141,7 +141,8 @@
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
                 </li>
-                <li v-if="this.$store.state.user.pid == 175">
+                <!-- v-if="this.$store.state.user.pid == 175" -->
+                <li>
                     <div class="img">
                         <router-link to="/mall">
                             <img src="@/assets/images/indexBtn09.png" alt>
@@ -360,6 +361,8 @@ export default {
         this.info();
         this.isChecke()
         this.todayProfit();
+        alert(this.$store.state.user.uid)
+        alert(this.$store.state.user.uphone)
         // this.loginSuccess.openid = this.$route.query.opid
         // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {});

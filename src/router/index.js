@@ -384,6 +384,28 @@ export default new Router({
         path: '/serverMoneyRechargeCompany', //公司服务费
         name: 'serverMoneyRechargeCompany',
         component: resolve => require(['@/views/serverMoneyRecharge/company'], resolve),
+    },
+    {
+        path: '/online-ordering', //在线订货
+        name: 'online-ordering',
+        component: resolve => require(['@/views/online-ordering/index'], resolve),
+    },
+    {
+        path: '/online-ordering-address', //在线订货地址
+        name: 'online-ordering-address',
+        component: resolve => require(['@/views/online-ordering/address'], resolve),
+    },
+    {
+        //path: '/online-ordering-detail/:id', //在线订货详细
+        path: "/online-ordering-detail",
+        name: 'online-ordering-detail',
+        component: resolve => require(['@/views/online-ordering/detail'], resolve),
+    },
+    {
+        //path: '/online-ordering-confirm/:id', //在线订货详细
+        path: "/online-ordering-confirm",
+        name: 'online-ordering-confirm',
+        component: resolve => require(['@/views/online-ordering/confirm'], resolve),
     }
   ]
 })

@@ -59,6 +59,9 @@ export default {
                     platformID: this.$store.state.user.pid, 
                     userID: this.$store.state.user.uid,  
                     userPhone: this.$store.state.user.uphone
+                    // platformID: "175",
+                    // userPhone: "MsTjMf3wMpDoQr3wNeTjEc5lNaTmglO0O0Om",
+                    // userID: "e2c0be24560d78c5e599c2a9c9d0bbd2"
                 },
                 deleteAddress: {
                     requestType: 'operating', 
@@ -71,6 +74,9 @@ export default {
                     platformID: this.$store.state.user.pid, 
                     userID: this.$store.state.user.uid, 
                     userPhone: this.$store.state.user.uphone,
+                    // platformID: "175",
+                    // userPhone: "MsTjMf3wMpDoQr3wNeTjEc5lNaTmglO0O0Om",
+                    // userID: "e2c0be24560d78c5e599c2a9c9d0bbd2",
                     id: ""
                 }
             },
@@ -81,7 +87,10 @@ export default {
     },
     methods: {
         addressList () {
+            console.log(this.queryData.addressList)
             getServer(this.queryData.addressList).then( res => {
+                console.log(response[res.data.responseStatus])
+                console.log(res)
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.addressList = res.data.data
                 } else if ( res.data.responseStatus === 300 ) {

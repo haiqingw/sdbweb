@@ -58,8 +58,8 @@ export default {
                 detail: {
                     requestType: 'orderpub',
                     requestKeywords:'onlinedetails', 
-                    // id: this.$route.params.id
-                    id: "1"
+                    id: this.$route.params.id
+                    // id: "1"
                 }
             },
             renderData: {

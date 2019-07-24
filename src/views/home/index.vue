@@ -154,6 +154,16 @@
                 </li>
                 <li>
                     <div class="img">
+                        <router-link to="/online-ordering">
+                            <img src="@/assets/images/indexBtn10.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/mall">在线订货</router-link>
+                    </div>
+                </li>
+                <li>
+                    <div class="img">
                         <router-link to="/financialDetails">
                             <img src="@/assets/images/indexBtn06.png" alt>
                         </router-link>
@@ -175,7 +185,7 @@
                 <li>
                     <div class="img">
                         <router-link to="/rank">
-                            <img src="@/assets/images/index-list2-img8.png" alt>
+                            <img src="@/assets/images/indexBtn11.png" alt>
                         </router-link>
                     </div>
                     <div class="text">
@@ -361,8 +371,6 @@ export default {
         this.info();
         this.isChecke()
         this.todayProfit();
-        alert(this.$store.state.user.uid)
-        alert(this.$store.state.user.uphone)
         // this.loginSuccess.openid = this.$route.query.opid
         // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {});

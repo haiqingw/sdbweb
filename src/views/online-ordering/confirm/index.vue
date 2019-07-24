@@ -28,10 +28,23 @@
             </router-link>
         </div>
         <div class="mallPayProMain">
-            <img :src="renderData.listDetail.imgPath" alt="产品">
+            <img :src="renderData.listDetail.imgPath" alt="产品" />
             <div>
                 <h3>{{ renderData.listDetail.title }}</h3>
                 <p>{{ renderData.listDetail.commodityRate }}</p>
+                <div style="margin-bottom: .2rem;">
+                    <van-stepper
+                        :value="num"
+                        integer
+                        :min="renderData.listDetail.commoditySets"
+                        max="10000000"
+                        step="1"
+                        disable-input	
+                        @plus="add"
+                        @minus="reduce"
+                        @overlimit="tips"
+                    />
+                </div>
                 <div>
                     <span style="font-size: .2rem; color: #333; margin-right: .1rem;">商品金额</span>
                     <em>￥</em>
@@ -45,16 +58,16 @@
                 <i>￥</i>
                 {{ queryData.confirmPayment.money }}
             </em>
-        </div> -->
+        </div>-->
         <div class="interval"></div>
         <div class="mallPayWechatMain">
             <div>
                 <img src="@/assets/images/weChatPayIcon.png" alt="微信支付" /> 微信支付
-            </div>
+            </div>         
             <!-- + parseFloat(renderData.listDetail.frozen) -->
             <em>
                 <i>￥</i>
-                {{ queryData.confirmPayment.money }}
+                {{ parseFloat(num) * renderData.listDetail.itemPrice }}
             </em>
         </div>
         <!-- 确认支付 -->
@@ -68,39 +81,38 @@ import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import { Indicator, Toast } from "mint-ui";
 export default {
-    name: "mall_pay",
     data() {
         return {
             isDefault: false || sessionStorage.getItem("isDefault"),
             isAddressInfo: true,
+            num: 1,
             queryData: {
                 confirmPayment: {
                     requestType: "orderpub",
                     requestKeywords: "onlineorder",
-                    platformID: "175",
-                    userID: "MsTjMf3wMpDoQr3wNeTjEc5LNaTmgLO0O0Om",
-                    userPhone: "e2c0be24560d78c5e599c2a9c9d0bbd2",
                     sid: "1", //x收获地址ID,
                     productID: 1,
-                    numbers: "15",
-                    money: "0"
+                    numbers: "",
+                    money: "0",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 },
-
                 addressInfo: {
                     requestType: "personal",
                     requestKeywords: "getshipping",
-                    // platformID: this.$store.state.user.pid,
-                    // userID: this.$store.state.user.uid,
-                    // userPhone: this.$store.state.user.uphone
-                    platformID: "175",
-                    userPhone: "MsTjMf3wMpDoQr3wNeTjEc5lNaTmglO0O0Om",
-                    userID: "e2c0be24560d78c5e599c2a9c9d0bbd2"
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    // platformID: "175",
+                    // userPhone: "MsTjMf3wMpDoQr3wNeTjEc5lNaTmglO0O0Om",
+                    // userID: "e2c0be24560d78c5e599c2a9c9d0bbd2"
                 },
                 listDetail: {
-                    requestType: 'orderpub',
-                    requestKeywords:'onlinedetails', 
-                    // id: this.$route.params.id
-                    id: "1"
+                    requestType: "orderpub",
+                    requestKeywords: "onlinedetails",
+                    id: this.$route.params.id
+                    // id: "1"
                 }
             },
             renderData: {
@@ -110,12 +122,24 @@ export default {
         };
     },
     methods: {
+        add() {
+            this.num++
+            this.queryData.confirmPayment.numbers = this.num
+        },
+        reduce() {
+            this.num--
+            this.queryData.confirmPayment.numbers = this.num
+        },
+        tips() {
+            Toast("不能在减了")
+        },
         mall_payListDetail() {
             getServer(this.queryData.listDetail).then(res => {
-                console.log(res)
                 // console.log(response[res.data.responseStatus])
                 if (res.data.responseStatus === 1) {
                     this.renderData.listDetail = res.data.data;
+                    this.num = res.data.data.commoditySets
+                    this.queryData.confirmPayment.numbers = this.num
                 }
                 // console.log(this.renderData.listDetail)
             });
@@ -150,18 +174,16 @@ export default {
                 Toast("请选择收货地址");
                 return;
             }
+            this.queryData.confirmPayment.money = parseFloat(this.num) * this.renderData.listDetail.itemPrice
             getServer(this.queryData.confirmPayment).then(res => {
                 if (res.data.responseStatus === 1) {
                     if (res.data.isPay == 1) {
                         window.location.href = res.data.url;
                     } else if (res.data.isPay == 2) {
-                        Toast("领取成功");
-                        setTimeout(() => {
-                            this.$router.go(-1);
-                        }, 800);
+                        Toast("isPay2");
                     }
                 } else {
-                    Toast(response[mall_payListDetail.data.responseStatus]);
+                    Toast(response[res.data.responseStatus]);
                 }
             });
         }

@@ -396,14 +396,14 @@ export default new Router({
         component: resolve => require(['@/views/online-ordering/address'], resolve),
     },
     {
-        //path: '/online-ordering-detail/:id', //在线订货详细
-        path: "/online-ordering-detail",
+        path: '/online-ordering-detail/:id', //在线订货详细
+        // path: "/online-ordering-detail",
         name: 'online-ordering-detail',
         component: resolve => require(['@/views/online-ordering/detail'], resolve),
     },
     {
         //path: '/online-ordering-confirm/:id', //在线订货详细
-        path: "/online-ordering-confirm",
+        path: "/online-ordering-confirm/:id",
         name: 'online-ordering-confirm',
         component: resolve => require(['@/views/online-ordering/confirm'], resolve),
     }

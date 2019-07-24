@@ -45,7 +45,8 @@ export default {
                 list: {
                     requestType: "orderpub",
                     requestKeywords: "productlists",
-                    platformID: "175"
+                    // platformID: "175",
+                    platformID: this.$store.state.user.pid
                 }
             },
             renderData: {

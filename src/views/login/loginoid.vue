@@ -14,19 +14,20 @@ export default {
     methods: {},
     created() {
         // let plat = this.$route.query.plat;
-        // // window.location.href = "http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid?plat=" + plat;
+        // window.location.href = "http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid?plat=" + plat;
         // alert(plat)
         // window.location.href = 'http://ttsplus.xylrcs.cn/index.php/App/Wchacf/getOpenid?plat=' + plat
     },
     mounted() {
-        let plat = this.$route.query.plat || this.$store.state.user.plat;
-        window.location.href =
-            "http://ttsplus.xylrcs.cn/index.php/App/Wchacf/getOpenid?plat=" +
-            plat;
-        // let plat = this.$route.query.plat || 1;
+        // let plat = this.$route.query.plat || this.$store.state.user.plat;
         // window.location.href =
-        //     "http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid?plat=" +
+        //     "http://ttsplus.xylrcs.cn/index.php/App/Wchacf/getOpenid?plat=" +
         //     plat;
+        let plat = this.$route.query.plat || 1;
+        // // let plat = this.$route.query.plat || 220;
+        window.location.href =
+            "http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid?plat=" +
+            plat;
     }
 };
 </script>

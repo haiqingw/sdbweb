@@ -5,13 +5,21 @@
             <router-link to="/" slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
-        </mt-header> -->
+        </mt-header>-->
         <div class="return">
-            <img src="@/assets/images/return.png" alt="" @click="$router.go(-1)" />
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
             <span>资金明细</span>
         </div>
-        <!-- 列表 -->
-        <div class="financialDetailsMain">
+        <div class="financial-top">
+            <!-- <div class="financialDetails-banner-warp">
+                <div class="financialDetails-banner">
+                    <van-swipe :autoplay="3000">
+                        <van-swipe-item>
+                            <img src="@/assets/images/mine-banner.jpg" alt>
+                        </van-swipe-item>
+                    </van-swipe>
+                </div>
+            </div> -->
             <!-- switchSacreeningMain -->
             <div class="time-choice">
                 <div class="block">
@@ -20,106 +28,111 @@
                         type="month"
                         placeholder="请选择日期"
                         @change="changeMonth"
-                    >
-                    </el-date-picker>
+                    ></el-date-picker>
                 </div>
             </div>
             <div class="choice">
-                <!-- <el-radio-group v-model="queryData.list.stypes" @change="handleClick" :disabled="isDisabled" >
-                    <swiper :options="swiperOption" ref="mySwiper" v-if="renderData.screen.length > 0">
-                        <swiper-slide  v-for="item in renderData.screen" :key="item.types">
-                            <el-radio-button :label="item.types">{{item.name}}</el-radio-button>
-                        </swiper-slide>
-                    </swiper>
-                </el-radio-group> -->
                 <div class="topic-list-inner">
                     <div class="nav" ref="nav">
-                        <div class="box"  :class="{active:navActiveIndex==index}"  v-for="(item,index) in renderData.screen" :key="item.types" @click="queryTopic(item, index, item.types)">
-                            <el-button type="text" >{{item.name}}</el-button>
+                        <div
+                            class="box"
+                            :class="{active:navActiveIndex==index}"
+                            v-for="(item,index) in renderData.screen"
+                            :key="item.types"
+                            @click="queryTopic(item, index, item.types)"
+                        >
+                            <el-button type="text">{{item.name}}</el-button>
                         </div>
-                    </div>
+                   </div>
                     <!-- <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
-                    </div> -->
+                    </div>-->
                 </div>
             </div>
+        </div>
+
+        <!-- 列表 -->
+        <div class="financialDetailsMain">
             <!-- 列表 -->
             <div class="financialDetailsList line_top" ref="financialDetailsList">
-            <!-- line_bottom -->
+                <!-- line_bottom -->
                 <div class="flex switchSacreeningMain">
-                    <div class="financialDetailsList scroll-list-wrap" v-if="isData">
-                            <cube-scroll 
-                                ref="scroll" 
-                                :data="renderData.odlListData"
-                                @pulling-down="onPullingDown"
-                                @pulling-up="onPullingUp"
-                                :options="options"
-                            >
-                                    <ul class="financialDetailsListUl">
-                                        <li class="line_bottom" v-for="(item, index) in renderData.odlListData" :key="index">
-                                            <div class="top">
-                                                <div class="title">
-                                                    <span class="s" v-if="item.product">{{item.product}}</span>
-                                                    <h3>{{item.storageName}}</h3>
-                                                </div>
-                                                <h3 class="money">+{{item.changeAmount}}</h3>
-                                            </div>
-                                            <div class="bottom">
-                                                <p class="p1">
-                                                    {{item.remark}}
-                                                </p>
-                                                <p class="p2">{{item.createTime}}</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </cube-scroll>
-                        </div>
-                        <div class="no-data" v-else>
-                            <img src="@/assets/images/no-data.png" />
-                        </div>
+                    <!-- v-if="isData" -->
+                    <div class="scroll-list-wrap" v-if="isData">
+                        <cube-scroll
+                            ref="scroll"
+                            :data="renderData.odlListData"
+                            @pulling-down="onPullingDown"
+                            @pulling-up="onPullingUp"
+                            :options="options"
+                        >
+                            <ul class="financialDetailsListUl">
+                                <li
+                                    class="line_bottom"
+                                    v-for="(item, index) in renderData.odlListData"
+                                    :key="index"
+                                >
+                                    <div class="top">
+                                        <div class="title">
+                                            <span class="s" v-if="item.product">{{item.product}}</span>
+                                            <h3>{{item.storageName}}</h3>
+                                        </div>
+                                        <h3 class="money">+{{item.changeAmount}}</h3>
+                                    </div>
+                                    <div class="bottom">
+                                        <p class="p1">{{item.remark}}</p>
+                                        <p class="p2">{{item.createTime}}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </cube-scroll>
+                    </div>
+                    <div class="no-data" v-else>
+                        <img src="@/assets/images/no-data.png">
+                    </div>
                 </div>
             </div>
             <!-- 列表 -->
             <!-- :bottom-method="loadBottom" -->
         </div>
-
     </div>
 </template>
 <script>
-import {getServer} from '@/api/index'
-import { Indicator } from 'mint-ui'
-import Swiper from 'swiper';
-import 'swiper/dist/css/swiper.min.css';
+import { getServer } from "@/api/index";
+import { Indicator } from "mint-ui";
+import Swiper from "swiper";
+import "swiper/dist/css/swiper.min.css";
 // import autoScrollInstance from '@/assets/js/autoScroll'
-import AutoScroll from '@/assets/js/autoScroll'
-import { parseTime, timeFormate } from '@/utils/index'
-let autoScrollInstance = null 
+import AutoScroll from "@/assets/js/autoScroll";
+import { parseTime, timeFormate } from "@/utils/index";
+let autoScrollInstance = null;
 export default {
     // components: {
     //     'modal-tag': modalTag,  //组件
     // },
     data() {
         return {
+            islogin: this.$store.state.user.islogin,
             options: {
                 pullDownRefresh: {
                     threshold: 90,
                     stop: 40,
-                    txt: '刷新成功'
-                },                                // 配置下拉刷新 
+                    txt: "刷新成功"
+                }, // 配置下拉刷新
                 pullUpLoad: {
                     threshold: 0,
                     txt: {
-                        more: '上拉加载更多',
-                        noMore: '没有更多数据'
+                        more: "上拉加载更多",
+                        noMore: "没有更多数据"
                     }
-                }                                 // 配置上拉加载，若要关闭可直接 pullUpLoad：false
+                } // 配置上拉加载，若要关闭可直接 pullUpLoad：false
             },
             isServer: false,
             navActiveIndex: 0, //当前高亮的tab选项卡index
             showModal: false, //是否显示modal
-            selectTag: null,   //传递个子组件（modal）的数据的
-            isDownLoading: false,//下拉刷新
-            isUpLoading: false,//上拉加载
-            upFinished: false,//上拉加载完毕
+            selectTag: null, //传递个子组件（modal）的数据的
+            isDownLoading: false, //下拉刷新
+            isUpLoading: false, //上拉加载
+            upFinished: false, //上拉加载完毕
             offset: 10, //滚动条与底部距离小于 offset 时触发load事件
             isData: true,
             isDisabled: true,
@@ -135,20 +148,20 @@ export default {
             },
             queryData: {
                 list: {
-                    requestType: 'spendinginto',
-                    requestKeywords:'earnings',
+                    requestType: "spendinginto",
+                    requestKeywords: "earnings",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 1,
                     limit: 15,
-                    types: 'Z',
-                    stypes: 'JY', // (JY 交易  JH 激活)
+                    types: "Z",
+                    stypes: "JY", // (JY 交易  JH 激活)
                     dates: timeFormate(new Date()).substring(0, 7)
                 },
                 screen: {
-                    requestType: 'spendinginto',
-                    requestKeywords:'earingsclass',
+                    requestType: "spendinginto",
+                    requestKeywords: "earingsclass",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -156,14 +169,14 @@ export default {
             },
             swiperOption: {
                 // init: false,
-                loop: true,//设置 active slide 居中后，会有左右留白现象，添加此会让未尾的导航补齐前后空白
-                slideToClickedSlide: true,//设置为true则点击slide会过渡到这个slide。
+                loop: true, //设置 active slide 居中后，会有左右留白现象，添加此会让未尾的导航补齐前后空白
+                slideToClickedSlide: true, //设置为true则点击slide会过渡到这个slide。
                 slidesPerView: 3,
-                centeredSlides: true,//设定为true时，active slide会居中，而不是默认状态下的居左。
+                centeredSlides: true, //设定为true时，active slide会居中，而不是默认状态下的居左。
                 freeMode: true,
-                initialSlide: 1,//默认第二个
-                observer: true,//修改swiper自己或子元素时，自动初始化swiper
-                observeParents: true,//修改swiper的父元素时，自动初始化swiper
+                initialSlide: 1, //默认第二个
+                observer: true, //修改swiper自己或子元素时，自动初始化swiper
+                observeParents: true //修改swiper的父元素时，自动初始化swiper
             }
         };
     },
@@ -172,7 +185,7 @@ export default {
             return this.$refs.mySwiper.swiper;
         }
     },
-    
+
     methods: {
         scrollTo() {
             this.$refs.scroll.scrollTo(
@@ -181,13 +194,13 @@ export default {
                 // this.scrollToY,
                 // this.scrollToTime,
                 // this.scrollToEasing
-            )
+            );
         },
         onPullingDown() {
             // console.log("下拉刷新");
-            this.renderData.odlListData = []
-            this.queryData.list.page = 1
-            this.profitList()
+            this.renderData.odlListData = [];
+            this.queryData.list.page = 1;
+            this.profitList();
         },
         // 触发上拉加载
         onPullingUp() {
@@ -205,106 +218,112 @@ export default {
             //         this.$refs.scroll.forceUpdate();
             //     }
             // }, 1000);
-            this.queryData.list.page++
-            this.profitList()
-           
+            this.queryData.list.page++;
+            this.profitList();
         },
-        changeMonth () {
-            this.queryData.list.page = 1
-            this.renderData.odlListData = []
-            this.queryData.list.dates = parseTime(this.queryData.list.dates).substring(0, 7)
-            this.profitList()
+        changeMonth() {
+            this.queryData.list.page = 1;
+            this.renderData.odlListData = [];
+            this.queryData.list.dates = parseTime(
+                this.queryData.list.dates
+            ).substring(0, 7);
+            this.profitList();
         },
         queryTopic(data, index, type) {
-            if(this.isData) {
-                this.scrollTo()
+            if (this.isData) {
+                this.scrollTo();
             }
-            this.queryData.list.stypes = type
-            this.upFinished = false
-            this.queryData.list.page = 1
-            this.renderData.odlListData = []
+            this.queryData.list.stypes = type;
+            this.upFinished = false;
+            this.queryData.list.page = 1;
+            this.renderData.odlListData = [];
             // this.isDownLoading = true
-            if ( this.isServer ) {
-                this.profitList()
+            if (this.isServer) {
+                this.profitList();
             }
             //点击谁，谁就高亮 ，定一个变量，click事件的赋值使其相等，而在:class 中 判断是否相等，即可
             this.navActiveIndex = index;
             //插件的调取方法
-            if (autoScrollInstance) { //确保的插件加载成功
-                autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index])
+            if (autoScrollInstance) {
+                //确保的插件加载成功
+                autoScrollInstance.scrollTo(this.$refs.nav.childNodes[index]);
             }
         },
         // activationOnLoadList () {
         //     this.queryData.list.page++
         //     this.profitList()
         // },
-        profitList () {
-            this.isServer = false
+        profitList() {
+            this.isServer = false;
             Indicator.open();
-            getServer(this.queryData.list).then( res => {
-                this.isServer = true
+            getServer(this.queryData.list).then(res => {
+                this.isServer = true;
                 Indicator.close();
-                if( res.data.responseStatus === 1 ) {
+                if (res.data.responseStatus === 1) {
                     this.isData = true;
-                    this.renderData.listData = res.data.data
-                    this.renderData.listData.forEach( item => {
-                        this.renderData.odlListData.push(item)
-                    })
-                   
-                } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
+                    this.renderData.listData = res.data.data;
+                    this.renderData.listData.forEach(item => {
+                        this.renderData.odlListData.push(item);
+                    });
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page !== 1
+                ) {
                     this.$refs.scroll.forceUpdate();
-                } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page === 1
+                ) {
                     this.isData = false;
                 }
-            })
+            });
         },
         screen() {
-            getServer(this.queryData.screen).then( res => {
+            getServer(this.queryData.screen).then(res => {
                 // console.log(res)
-                if( res.data.responseStatus === 1 ) {
-                    this.renderData.screen = res.data.data
-                    autoScrollInstance = new AutoScroll(this.$refs.nav, {spaceBetween: 0})//节点 nav
+                if (res.data.responseStatus === 1) {
+                    this.renderData.screen = res.data.data;
+                    autoScrollInstance = new AutoScroll(this.$refs.nav, {
+                        spaceBetween: 0
+                    }); //节点 nav
                 }
-            })
-        },
+            });
+        }
     },
-    created () {
-        this.profitList()
-        this.screen()
+    created() {
+        this.profitList();
+        this.screen();
+        this.scrollTo();
     },
-    // updated() {
-    //     if ( this.renderData.screen.length > 1 ) {
-    //         this.swiper.init();
-    //     }
-    // },
-    // updated () {    // 切换不同模块时触发
-    //     this.$nextTick(()=>{    
-    //         if(this.$refs.financialDetailsListUl){    // 滚动元素跳转到顶部
-    //             this.$refs.financialDetailsList.scrollTop = 0;
-    //             console.log(this.$refs.financialDetailsList.scrollTo)
-    //         }
-    //     })
-    // }
     mounted() {
-    },
+        this.scrollTo();
+    }
 };
 </script>
 <style lang="scss">
+.financial-top {
+    margin-top: .8rem;
+}
 .financial-details {
-    font-size: .3rem;
+    font-size: 0.3rem;
 }
 .financial-details .before-trigger {
-    font-size: .3rem;
+    font-size: 0.3rem;
 }
-.financial-details .scroll-list-wrap{
-        height: 11rem;
-        overflow-y: scroll;
-        .item{
-            padding: 10px 10px;
-            &:nth-child(2n+1){
-                background: #ccc;
-            }
+.financial-details .scroll-list-wrap {
+    // height: 7.9rem;
+    height: 10rem;
+    // margin-top: .2rem;
+    overflow-y: scroll;
+    width: 100%;
+    padding-top: .2rem;
+    box-sizing: border-box;
+    .item {
+        padding: 10px 10px;
+        &:nth-child(2n + 1) {
+            background: #ccc;
         }
+    }
 }
 .mint-indicator-wrapper {
     z-index: 99999;
@@ -319,50 +338,50 @@ export default {
 }
 .financialDetailsListUl {
     li {
-        padding: .15rem 0;
+        padding: 0.15rem 0;
     }
     div {
         overflow: hidden;
-        font-size: .3rem;
-        padding: 0 .2rem;
+        font-size: 0.3rem;
+        padding: 0 0.2rem;
         box-sizing: border-box;
     }
     .top {
         width: 100%;
-        margin-bottom: .14rem;
+        margin-bottom: 0.14rem;
         .title {
             float: left;
             padding: 0;
             span {
                 float: left;
-                background-color: rgba(64,158,255,.1);
+                background-color: rgba(64, 158, 255, 0.1);
                 display: inline-block;
-                font-size: .2rem;
+                font-size: 0.2rem;
                 color: #409eff;
                 border-radius: 4px;
                 box-sizing: border-box;
-                border: 1px solid rgba(64,158,255,.2);
+                border: 1px solid rgba(64, 158, 255, 0.2);
                 white-space: nowrap;
-                margin-right: .2rem;
-                width: .8rem;
+                margin-right: 0.2rem;
+                width: 0.8rem;
                 text-align: center;
-                line-height: .38rem;
+                line-height: 0.38rem;
             }
             h3 {
                 float: left;
-                font-size: .28rem;
+                font-size: 0.28rem;
                 color: #333;
-                margin-top: .05rem;
+                margin-top: 0.05rem;
             }
         }
         .money {
             float: right;
-            color:#f33;
+            color: #f33;
         }
     }
     .bottom {
         width: 100%;
-        font-size: .26rem;
+        font-size: 0.26rem;
         .p1 {
             float: left;
         }
@@ -379,14 +398,11 @@ export default {
 }
 
 .time-choice {
-    position: fixed;
-    top: .8rem;
-    left: 0;
     width: 100%;
     z-index: 999;
     .block {
         background: #fff;
-        padding: 0 .2rem;
+        padding: 0 0.2rem;
         .el-input {
             display: block;
             width: 100%;
@@ -399,32 +415,31 @@ export default {
 .topic-list-inner {
     width: 100%;
     background: #fff;
-  }
-  .nav {
+}
+.nav {
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
     .box {
-      white-space: nowrap;
-      font-size: 0.3rem;
-      padding: 0 0.5rem;
-      height: 1rem;
-      line-height: 0.9rem;
-      color: #333333;
-      .item {
-        height: 100%;
-        &.active {
-          color: #0096fe;
-        //   border-bottom: .01rem solid #0096fe;
+        white-space: nowrap;
+        font-size: 0.3rem;
+        padding: 0 0.5rem;
+        height: 1rem;
+        line-height: 0.9rem;
+        color: #333333;
+        .item {
+            height: 100%;
+            &.active {
+                color: #0096fe;
+                //   border-bottom: .01rem solid #0096fe;
+            }
         }
-      }
     }
     .active .el-button {
         color: #0096fe;
     }
-  }
-
-  .nav-right-arrow {
+}
+.nav-right-arrow {
     position: fixed;
     right: 0;
     top: 0;
@@ -438,71 +453,68 @@ export default {
     justify-content: center;
 
     .drop-down {
-      width: 0.22rem;
-      /*padding-top: 0.35rem;*/
-      /*margin-left: 0.22rem;*/
-      transform: rotate(0deg);
-      transition: all 0.5s;
-      &.reverse {
-        transform: rotate(-180deg);
-      }
-    }
-  }
-.financial-details {
-    .choice {
-        position: fixed;
-        width: 100%;
-        left: 0;
-        // top: 2rem;
-        top: 1.5rem;
-        background: #fff;
-        z-index: 999;
-        // overflow-x: auto;
-        overflow: auto;
-        line-height: .8rem;
-        height: .8rem;
-        .el-radio-group {
-            width: 100%;
-        }
-        label {
-            // width: 50%;
-            display: block;
-            float: left;
-            text-align: center;
-            border-left: none;
-            border: none;
-        }
-        label:hover {
-            border: none;
-        }
-        .el-radio-button__inner {
-            border: none;
-            border-bottom: 1px solid transparent;
-            width: 100%;
-            color: #606266;
-        }
-        .el-radio-button__inner:hover {
-            border-bottom: 1px solid transparent;
-        }
-        .el-radio-button__orig-radio:checked+.el-radio-button__inner {
-            border: none;
-            background: none;
-            color: #606266;
-            border-bottom: 1px solid #0096fe;
-            border-radius: 0;
-            box-shadow: 0 0 0 0 #fff;
-        }
-        .el-radio-button__inner:hover {
-            box-shadow: 0 0 0 0 #fff;
-        }
-        .el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
-            box-shadow: 0 0 0 0 #fff;
+        width: 0.22rem;
+        /*padding-top: 0.35rem;*/
+        /*margin-left: 0.22rem;*/
+        transform: rotate(0deg);
+        transition: all 0.5s;
+        &.reverse {
+            transform: rotate(-180deg);
         }
     }
 }
+.financial-details {
+    // .choice {
+    //     width: 100%;
+    //     // top: 2rem;
+    //     background: #fff;
+    //     z-index: 999;
+    //     // overflow-x: auto;
+    //     overflow: auto;
+    //     line-height: 0.8rem;
+    //     height: 0.8rem;
+    //     .el-radio-group {
+    //         width: 100%;
+    //     }
+    //     label {
+    //         // width: 50%;
+    //         display: block;
+    //         float: left;
+    //         text-align: center;
+    //         border-left: none;
+    //         border: none;
+    //     }
+    //     label:hover {
+    //         border: none;
+    //     }
+    //     .el-radio-button__inner {
+    //         border: none;
+    //         border-bottom: 1px solid transparent;
+    //         width: 100%;
+    //         color: #606266;
+    //     }
+    //     .el-radio-button__inner:hover {
+    //         border-bottom: 1px solid transparent;
+    //     }
+    //     .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+    //         border: none;
+    //         background: none;
+    //         color: #606266;
+    //         border-bottom: 1px solid #0096fe;
+    //         border-radius: 0;
+    //         box-shadow: 0 0 0 0 #fff;
+    //     }
+    //     .el-radio-button__inner:hover {
+    //         box-shadow: 0 0 0 0 #fff;
+    //     }
+    //     .el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
+    //         box-shadow: 0 0 0 0 #fff;
+    //     }
+    // }
+}
 .financialDetailsList {
     width: 100%;
-    margin-top:0.2rem;
+    // margin-top: 4.4rem;
 }
 .loadingMore {
     line-height: 40px;
@@ -517,18 +529,6 @@ export default {
         margin-right: 5px;
         display: inline;
     }
-}
-.financialDetailsMain {
-    // margin-top: 3.3rem;
-    margin-top: 2.3rem;
-    // position: fixed;
-    // left:0;
-    // top:160px;
-    // right:0;
-    // bottom:0;
-    // overflow-x: hidden;
-    // overflow: auto;
-    // height: 120%;
 }
 .timeScreeningMain {
     position: fixed;
@@ -612,7 +612,7 @@ export default {
 .mint-loadmore-top {
     font-size: 14px;
 }
-.financial-details .choice .el-radio-group{
-    border-bottom:1px solid #f1f1f1;
+.financial-details .choice .el-radio-group {
+    border-bottom: 1px solid #f1f1f1;
 }
 </style>

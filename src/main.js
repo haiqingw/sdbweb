@@ -22,6 +22,7 @@ import '@/icons'
 import '@/assets/css/reset.css'
 import '@/assets/css/common.css'
 import '@/assets/css/xiaoyu.css'
+import '@/assets/css/online-ordering.css'
 
 import Vue2OrgTree from 'vue2-org-tree'
 

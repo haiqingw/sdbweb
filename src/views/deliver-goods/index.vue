@@ -200,7 +200,7 @@ export default {
 
 <style lang="scss">
 .deliver-goods .scroll-list-wrap {
-    height: 12rem;
+    height: 11rem;
     overflow: auto;
     .item {
         padding: 10px 10px;

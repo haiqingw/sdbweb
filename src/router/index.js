@@ -361,9 +361,57 @@ export default new Router({
         component: resolve => require(['@/views/accountNumber-cancellation'], resolve),
     },
     {
+<<<<<<< HEAD
         path: '/bookOrderList', //在线订货订单列表
         name: 'bookOrderList',
         component: resolve => require(['@/views/bookOrderList'], resolve),
+=======
+        path: '/rank', //账号注销
+        name: 'rank',
+        component: resolve => require(['@/views/rank'], resolve),
+    },
+    {
+        path: '/serverMoneyRechargeOwn', //个人服务费
+        name: 'serverMoneyRechargeOwn',
+        component: resolve => require(['@/views/serverMoneyRecharge/own/index'], resolve),
+    },
+    {
+        path: '/serverMoneyRechargeOwnRecharge',
+        name: 'serverMoneyRechargeOwnRecharge',
+        component: resolve => require(['@/views/serverMoneyRecharge/own/recharge'], resolve),
+    },
+    {
+        path: '/serverMoneyRechargeOwnList', 
+        name: 'serverMoneyRechargeOwnList',
+        component: resolve => require(['@/views/serverMoneyRecharge/own/list'], resolve),
+    },
+    {
+        path: '/serverMoneyRechargeCompany', //公司服务费
+        name: 'serverMoneyRechargeCompany',
+        component: resolve => require(['@/views/serverMoneyRecharge/company'], resolve),
+    },
+    {
+        path: '/online-ordering', //在线订货
+        name: 'online-ordering',
+        component: resolve => require(['@/views/online-ordering/index'], resolve),
+    },
+    {
+        path: '/online-ordering-address', //在线订货地址
+        name: 'online-ordering-address',
+        component: resolve => require(['@/views/online-ordering/address'], resolve),
+    },
+    {
+        path: '/online-ordering-detail/:id', //在线订货详细
+        // path: "/online-ordering-detail",
+        name: 'online-ordering-detail',
+        component: resolve => require(['@/views/online-ordering/detail'], resolve),
+    },
+    {
+        //path: '/online-ordering-confirm/:id', //在线订货详细
+        path: "/online-ordering-confirm/:id",
+        name: 'online-ordering-confirm',
+        component: resolve => require(['@/views/online-ordering/confirm'], resolve),
+>>>>>>> 3efd9d4a175b8d038dc71a139941c750473681c0
     }
   ]
 })

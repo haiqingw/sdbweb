@@ -38,10 +38,11 @@
                         </div>
                     </div> -->
                     <div class="withdrawalRecordItem" v-for="item in renderData.oldList" :key="item.id">
-                        <em class="active" v-if="item.reviewStatus == 1">{{item.reStatus}}</em>
-                        <em class="active" v-if="item.reviewStatus == 2">{{item.reStatus}}</em>
-                        <em class="active" v-if="item.reviewStatus == 3">{{item.reStatus}}</em>
-                        <em v-if="item.reviewStatus == 4">{{item.reStatus}}</em>
+                        <em class="active" v-if="item.reviewStatus == 1 && item.drawStatus !== '作废'">{{item.reStatus}}</em>
+                        <em class="active" v-if="item.reviewStatus == 2 && item.drawStatus !== '作废'">{{item.reStatus}}</em>
+                        <em class="active" v-if="item.reviewStatus == 3 && item.drawStatus !== '作废'">{{item.reStatus}}</em>
+                        <em v-if="item.reviewStatus == 4 && item.drawStatus !== '作废'">{{item.reStatus}}</em>
+                        <em v-if="item.drawStatus == '作废'">已作废</em>
                         <div class="withdrawalRecordHeader flex line_bottom">
                             <div>
                                 <h3>{{item.arviAmount}}</h3>

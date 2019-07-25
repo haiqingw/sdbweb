@@ -1,162 +1,290 @@
 <template>
-    <div>
+    <div class="rank">
         <section class="subPageSection">
             <!-- 头部 -->
             <div class="rankHeaderMain">
-                <a href="javascript:;" class="rankHeaderLeftBtn">返回</a>
+                <a href="javascript:;" class="rankHeaderLeftBtn" @click="$router.go(-1)"></a>
                 排行榜
-                <a href="javascript:;" class="rankHeaderRightBtn">激活</a>
-                <select name="" id="" @change="changeSelect">
-                    <option value="激活">激活</option>
-                    <option value="代理商">代理商</option>
-                    <option value="当月收益">当月收益</option>
+                <a href="javascript:;" class="rankHeaderRightBtn">{{selectItem}}</a>
+                <select v-model="selectItem" name id @change="changeSelect($event)">
+                    <option
+                        v-for="item in selectList"
+                        :key="item.id"
+                        :value="item.title"
+                    >{{item.title}}</option>
                 </select>
             </div>
             <!-- 折线图 -->
-            <div class="chartsMain">
-                <h2>往月收益对比<em>单位：元</em></h2>
-                <div class="chartMain">
-                    <div id='myChart0' style='width:100% !important;height:220px'></div>
-                </div>
-            </div>
-            <!-- 前三甲 -->
-            <div class="YRankHeaderMain">
-                <div>
-                    <img src="@/assets/images/twoIcon.png" alt="第二名">
-                    <p>
-                        <span>清晨五点半</span>
-                        <span>132****5340</span>
-                    </p>
-                    <em>激活2个</em>
-                </div>
-                <div>
-                    <img src="@/assets/images/oneIcon.png" alt="第一名">
-                    <p>
-                        <span>清晨五点半</span>
-                        <span>132****5340</span>
-                    </p>
-                    <em>激活2个</em>
-                    <b class="leftArrBg">
-                        <img src="@/assets/images/leftArrBg.png">
-                    </b>
-                    <b class="rightArrBg">
-                        <img src="@/assets/images/rightArrBg.png">
-                    </b>
-                </div>
-                <div>
-                    <img src="@/assets/images/threeIcon.png" alt="第三名">
-                    <p>
-                        <span>清晨五点半</span>
-                        <span>132****5340</span>
-                    </p>
-                    <em>激活2个</em>
-                </div>
-            </div>
-            <!-- 排行列表 -->
-            <div class="YRankListMain">
-                <div>
-                    <b>排行</b>
-                    <em>姓名</em>
-                    <span>激活(个)</span>
-                </div>
-                <ul class="YRankListUl">
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                    <li class="line_bottom">
-                        <b>4</b>
-                        <em>郝佳(132****5340)</em>
-                        <span>100</span>
-                    </li>
-                </ul>
-            </div>
-            <!-- 个人排行榜 -->
-            <div class="myRankDiv">
-                <b>15</b>
-                <em>任勇强(13296905340)</em>
-                <span>10</span>
+            <div class="scroll-list-wrap">
+                <cube-scroll
+                    ref="scroll"
+                    :data="renderData.list"
+                    @pulling-down="onPullingDown"
+                    @pulling-up="onPullingUp"
+                    :options="options"
+                >
+                    <div class="chartsMain">
+                        <h2 v-if="changeState">
+                            激活对比
+                            <em>单位：个</em>
+                        </h2>
+                        <h2 v-else>
+                            收益对比
+                            <em>单位：元</em>
+                        </h2>
+                        <div class="chartMain">
+                            <div id="myChart0" style="width:100% !important;height:220px"></div>
+                        </div>
+                    </div>
+                    <!-- 前三甲 -->
+                    <div class="YRankHeaderMain">
+                        <div>
+                            <img src="@/assets/images/twoIcon.png" alt="第二名" />
+                            <p>
+                                <span>{{renderData.theFirstThree[1].busName}}</span>
+                                <span>{{renderData.theFirstThree[1].phone}}</span>
+                            </p>
+                            <em>激活{{renderData.theFirstThree[1].money}}个</em>
+                            <!-- <em>激活</em> -->
+                        </div>
+                        <div>
+                            <img src="@/assets/images/oneIcon.png" alt="第一名" />
+                            <p>
+                                <span>{{renderData.theFirstThree[0].busName}}</span>
+                                <span>{{renderData.theFirstThree[0].phone}}</span>
+                            </p>
+                            <em>激活{{renderData.theFirstThree[0].money}}个</em>
+                            <b class="leftArrBg">
+                                <img src="@/assets/images/leftArrBg.png" />
+                            </b>
+                            <b class="rightArrBg">
+                                <img src="@/assets/images/rightArrBg.png" />
+                            </b>
+                        </div>
+                        <div>
+                            <img src="@/assets/images/threeIcon.png" alt="第三名" />
+                            <p>
+                                <span>{{renderData.theFirstThree[2].busName}}</span>
+                                <span>{{renderData.theFirstThree[2].phone}}</span>
+                            </p>
+                            <em>激活{{renderData.theFirstThree[2].money}}个</em>
+                        </div>
+                    </div>
+                    <!-- 排行列表 -->
+                    <div class="YRankListMain" v-if="isData">
+                        <div>
+                            <b>排行</b>
+                            <em>姓名</em>
+                            <span v-if="changeState">激活(个)</span>
+                            <span v-else>收益(元)</span>
+                        </div>
+                        <ul class="YRankListUl">
+                            <li
+                                class="line_bottom"
+                                v-for="(item, index) in renderData.list"
+                                :key="index"
+                            >
+                                <b>{{item.rank}}</b>
+                                <em>{{item.busName}}({{item.phone}})</em>
+                                <span>{{item.money}}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="no-data" v-else>
+                        <img src="@/assets/images/no-data.png" alt />
+                    </div>
+                </cube-scroll>
             </div>
         </section>
+        <!-- 个人排行榜 -->
+        <div class="myRankDiv" v-if="isData">
+            <b>{{renderData.own.rank}}</b>
+            <em>{{renderData.own.busName}}({{renderData.own.phone}})</em>
+            <span>{{renderData.own.money}}</span>
+        </div>
     </div>
 </template>
 <script>
+import { getServer } from "@/api/index";
+import response from "@/assets/js/response.js";
+import { Indicator } from "mint-ui";
 export default {
     data() {
         return {
+            options: {
+                pullDownRefresh: {
+                    threshold: 90,
+                    stop: 40,
+                    txt: "刷新成功"
+                }, // 配置下拉刷新
+                pullUpLoad: {
+                    threshold: 0,
+                    txt: {
+                        more: "上拉加载更多",
+                        noMore: "没有更多数据"
+                    }
+                } // 配置上拉加载，若要关闭可直接 pullUpLoad：false
+            },
+            changeState: true,
+            isData: true,
+            selectItem: "",
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
-            moneyData: [324, 234, 532, 234, 435, 100]
+            moneyData: [0, 0, 0, 0, 0, 0],
+            selectList: [
+                {
+                    id: 1,
+                    title: "当月激活"
+                },
+                {
+                    id: 2,
+                    title: "当月收益"
+                }
+            ],
+            queryData: {
+                list: {
+                    // montranking 收益   actranking  激活
+                    // requestType: 'list',
+                    // requestKeywords: 'actranking',
+                    // platformID: this.$store.state.user.pid,
+                    // userID: this.$store.state.user.uid,
+                    // userPhone: this.$store.state.user.uphone,
+                    // page: 1,
+                    // limit: 10
+
+                    requestType: "datamanage",
+                    requestKeywords: "actranking",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    page: 1,
+                    limit: 10
+                    // types: "" //选填 全部 传All 当月 不传
+                },
+                chart: {
+                    requestType: "datamanage",
+                    requestKeywords: "incomeline",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                own: {
+                    requestType: "datamanage",
+                    requestKeywords: "perranking",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                }
+            },
+            renderData: {
+                list: [],
+                own: {
+                    rank: "0",
+                    busName: "**",
+                    phone: "*********",
+                    money: "0"
+                },
+                theFirstThree: []
+            }
         };
     },
     methods: {
-        changeSelect() {
-             this.drawLine(this.monthData, this.moneyData);
+        scrollTo() {
+            this.$refs.scroll.scrollTo(0, 0);
+        },
+        onPullingDown() {
+            // console.log("下拉刷新");
+            this.renderData.list = [];
+            this.queryData.list.page = 1;
+            this.list();
+            this.chart()
+        },
+        // 触发上拉加载
+        onPullingUp() {
+            this.queryData.list.page++;
+            this.list();
+        },
+        list() {
+            Indicator.open();
+            getServer(this.queryData.list).then(res => {
+                // alert(JSON.stringify(res.data.responseStatus))
+                Indicator.close();
+                // alert(response[res.data.responseStatus])
+                // alert(JSON.stringify(res.data.data))
+                this.isServer = false;
+                Indicator.close();
+                // console.log(res.data.data.constructor === Array);
+                if (res.data.responseStatus === 1) {
+                    this.isData = true;
+                    // this.renderData.list = res.data.data;
+                    res.data.data.forEach(item => {
+                        this.renderData.list.push(item);
+                    });
+                    this.renderData.theFirstThree = res.data.data.slice(0, 3);
+                    // alert(JSON.stringify(this.renderData.theFirstThree))
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page !== 1
+                ) {
+                    this.$refs.scroll.forceUpdate();
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page === 1
+                ) {
+                    this.isData = false;
+                    this.ATurnover = "0.00";
+                }
+            });
+            if (this.changeState) {
+                // alert("个人激活")
+                this.queryData.own.requestKeywords = "peractranking";
+            } else {
+                // alert("个人收益")
+                this.queryData.own.requestKeywords = "perranking";
+            }
+            getServer(this.queryData.own).then(res => {
+                if (res.data.responseStatus === 1) {
+                    // alert(JSON.stringify(res.data.data))
+                    this.renderData.own = res.data.data[0];
+                }
+            });
+        },
+        chart() {
+            if( this.changeState ) {
+                this.queryData.chart.requestKeywords = "activeline"
+            } else {
+                this.queryData.chart.requestKeywords = "incomeline"
+            }
+            getServer(this.queryData.chart).then(res => {
+                // alert(response[res.data.responseStatus])
+                if (res.data.responseStatus === 1) {
+                    this.monthData = res.data.dates;
+                    this.moneyData = res.data.sums;
+                    this.drawLine(this.monthData, this.moneyData);
+                } else {
+                    this.drawLine(this.monthData, this.moneyData);
+                }
+            });
+        },
+        changeSelect(e) {
+            this.renderData.list = []
+            this.queryData.list.page = 1
+            // this.drawLine(this.monthData, this.moneyData);
+            if (e.target.value === "当月激活") {
+                this.changeState = true;
+                // alert("激活")
+                this.queryData.list.requestKeywords = "actranking";
+                this.list();
+                this.chart()
+                this.scrollTo9
+            } else if (e.target.value === "当月收益") {
+                this.changeState = false;
+                // alert("收益")
+                this.queryData.list.requestKeywords = "montranking";
+                this.list();
+                this.chart()
+                this.scrollTo()
+            }
         },
         drawLine(monthData, moneyData) {
             let $selecter = document.getElementById("myChart0");
@@ -194,7 +322,7 @@ export default {
                                 label: { show: true },
                                 color: "#fff",
                                 lineStyle: {
-                                    color:"#fff" 
+                                    color: "#fff"
                                 }
                             }
                         }
@@ -205,10 +333,35 @@ export default {
     },
     created() {
         // this.drawLine(this.monthData, this.moneyData);
+        this.list();
+        this.chart();
+    },
+    mounted() {
+        this.selectItem = this.selectList[0].title;
+        // this.drawLine(this.monthData, this.moneyData);
     }
 };
 </script>
 <style lang="scss">
+.mint-indicator-mask {
+     z-index: 99999;
+}
+.mint-indicator-wrapper {
+    z-index: 999999;
+}
+.rank {
+    font-size: 0.3rem;
+}
+.rank .scroll-list-wrap {
+    height: 11rem;
+    overflow: auto;
+    .item {
+        padding: 10px 10px;
+        &:nth-child(2n + 1) {
+            background: #ccc;
+        }
+    }
+}
 .subPageSection {
     padding-bottom: 50px;
     padding-top: 50px;
@@ -290,6 +443,9 @@ b.rightArrBg {
 //     top: 289px;
 //     overflow-x: hidden;
 // }
+.YRankListMain {
+    padding-bottom: .2rem;
+}
 .YRankListMain > div {
     background: #f1f1f1;
 }
@@ -329,14 +485,16 @@ b.rightArrBg {
 }
 .myRankDiv {
     position: fixed;
+    z-index: 99;
     width: 100%;
     height: 50px;
     line-height: 50px;
     left: 0;
-    bottom: 0;
+    bottom: 0rem;
     box-shadow: 0 0 3px #ccc;
     background: #fff;
     font-size: 16px;
+    opacity: 1;
     b {
         display: block;
         float: left;
@@ -428,15 +586,15 @@ b.rightArrBg {
         opacity: 0;
     }
 }
-.chartsMain{
-    background:#089cfe;
-    h2{
-        text-align:center;
-        font-size:16px;
-        color:#fff;
-        em{
-            font-size:12px;
-            padding-left:10px;
+.chartsMain {
+    background: #089cfe;
+    h2 {
+        text-align: center;
+        font-size: 16px;
+        color: #fff;
+        em {
+            font-size: 12px;
+            padding-left: 10px;
         }
     }
 }

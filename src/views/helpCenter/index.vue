@@ -15,8 +15,18 @@
             <img src="@/assets/images/helpCenterHeaderImg.jpg" alt="在线客服">
             <div>
                 <h3>在线客服</h3>
-                <p>人工服务时间：工作日9:30 - 17:30</p>
-                <a :href="'tel:'+ renderData.phone">立即咨询</a>
+                <!-- {{renderData.top}} -->
+                <!-- <a :href="'tel:'+ renderData.top.mobile">立即咨询</a> -->
+                <!-- <a :href="'tel:'+ renderData.top.landline">立即咨询</a> -->
+                <p>
+                    电话：{{renderData.top.mobile}}
+                    <a :href="'tel:'+ renderData.top.mobile">立即咨询</a>
+                </p>
+                <p>
+                    座机：{{renderData.top.landline}}
+                    <a :href="'tel:'+ renderData.top.landline">立即咨询</a>
+                </p>
+                <p>人工服务时间：工作日{{renderData.top.dates}}</p>
             </div>
         </div>
         <div class="helpCenterBodyMain" v-if="isData">
@@ -68,7 +78,9 @@ export default {
             },
             renderData: {
                 phone: "",
-                list: []
+                list: [],
+                dates: "",
+                top: ""
             }
         };
     },
@@ -76,7 +88,7 @@ export default {
         top() {
             getServer(this.queryData.top).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.phone = res.data.content;
+                    this.renderData.top = res.data.content;
                 }
             });
         },
@@ -101,7 +113,8 @@ export default {
 .helpCenterHeaderMain {
     //   margin-top: 40px;
     margin-top: 0.8rem;
-    height: 150px;
+    // height: 150px;
+    height: 3.2rem;
     position: relative;
     img {
         height: 100%;
@@ -121,9 +134,13 @@ export default {
             font-size: 14px;
             padding-top: 10px;
             color: #fff;
+            span {
+                margin-right: 0.1rem;
+            }
         }
         a {
-            display: block;
+            // display: block;
+            padding: 0.04rem 0.1rem;
             width: 100px;
             height: 30px;
             line-height: 29px;

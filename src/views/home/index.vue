@@ -111,7 +111,7 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
-                <li v-if="renderData.info.level != 2">
+                <li v-if="renderData.info.level != 2 && renderData.isChecke == 1">
                     <div class="img">
                         <router-link to="/application-agent">
                             <img src="@/assets/images/indexBtn09.png" alt>
@@ -121,7 +121,7 @@
                         <router-link to="/application-agent">申请代理</router-link>
                     </div>
                 </li>
-                <li v-if="renderData.info.level == 2">
+                <li v-if="renderData.info.level == 2 && renderData.isChecke == 1">
                     <div class="img">
                         <router-link to="/application-agent-To-examine">
                             <img src="@/assets/images/indexBtn03.png" alt>
@@ -141,7 +141,8 @@
                         <router-link to="/dial-code">拨码</router-link>
                     </div>
                 </li>
-                <!-- <li>
+                <!-- v-if="this.$store.state.user.pid == 175" -->
+                <li v-if="this.$store.state.user.pid == 175">
                     <div class="img">
                         <router-link to="/mall">
                             <img src="@/assets/images/indexBtn09.png" alt>
@@ -150,7 +151,17 @@
                     <div class="text">
                         <router-link to="/mall">机具商城</router-link>
                     </div>
-                </li>-->
+                </li>
+                <li v-if="this.$store.state.user.pid == 175">
+                    <div class="img">
+                        <router-link to="/online-ordering">
+                            <img src="@/assets/images/indexBtn10.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/mall">在线订货</router-link>
+                    </div>
+                </li>
                 <li>
                     <div class="img">
                         <router-link to="/financialDetails">
@@ -171,25 +182,26 @@
                         <router-link to="/myMerchants">组织架构</router-link>
                     </div>
                 </li>
-                <!-- <li>
-          <div class="img">
-            <img src="@/assets/images/index-list2-img8.png" alt="">
-          </div>
-          <div class="text">
-            <a href="">排行榜</a>
-          </div>
-                </li>-->
-                <!-- <li v-if="renderData.info.level == 2"> -->
-                <!-- <li v-if="renderData.info.level == 2">
+                <li v-if="renderData.info.level == 2">
+                    <div class="img">
+                        <router-link to="/rank">
+                            <img src="@/assets/images/indexBtn11.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/rank">排行榜</router-link>
+                    </div>
+                </li>
+                <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
                         </router-link>
                     </div>
-                    <div class="text">
+                   <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
-                </li>-->
+                </li>
             </ul>
         </div>
         <Footer></Footer>
@@ -202,7 +214,7 @@ import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
 import { Toast } from "mint-ui";
-import wx from 'weixin-js-sdk'
+import wx from "weixin-js-sdk";
 export default {
     data() {
         return {
@@ -213,7 +225,8 @@ export default {
                 listOneData: {},
                 thaw: "",
                 info: {},
-                todayProfit: ""
+                todayProfit: "",
+                isChecke: 0
             },
             queryData: {
                 listOne: {
@@ -229,6 +242,11 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                isChecke: { //  返回 status 1 显示 2 关闭
+                    requestType: "checke",
+                    requestKeywords:'applycheck', 
+                    platformID: this.$store.state.user.pid
                 },
                 bannerData: {
                     requestType: "list",
@@ -269,6 +287,13 @@ export default {
         ...mapGetters(["islogin"])
     },
     methods: {
+        isChecke() {
+            getServer(this.queryData.isChecke).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.isChecke = res.data.status
+                }
+            })
+        },
         todayProfit() {
             getServer(this.queryData.todayProfit).then(res => {
                 if (res.data.responseStatus === 1) {
@@ -277,7 +302,7 @@ export default {
                         this.renderData.todayProfit = 0;
                     }
                 }
-            });
+            })
         },
         listOne() {
             getServer(this.queryData.listOne).then(res => {
@@ -314,7 +339,7 @@ export default {
         onBrowserBack() {
             // 这里写点击返回键时候的事件
             // 比如判断需求执行back()或者go(-2)或者PopupShow=false隐藏弹框
-            wx.closeWindow()
+            wx.closeWindow();
         }
     },
     mounted() {
@@ -344,11 +369,12 @@ export default {
         // this.test1()
         this.bannerList();
         this.info();
+        this.isChecke()
         this.todayProfit();
         // this.loginSuccess.openid = this.$route.query.opid
         // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {});
-        this.verify();
+        // this.verify();
     }
 };
 </script>

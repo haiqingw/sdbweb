@@ -11,10 +11,12 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
+        "babel-polyfill": "^6.26.0",
         "cube-ui": "^1.12.16",
         "echarts": "^4.2.1",
         "element-ui": "^2.6.1",
         "mint-ui": "^2.2.13",
+        "nprogress": "^0.2.0",
         "qs": "^6.6.0",
         "save": "^2.3.3",
         "scss": "^0.2.4",

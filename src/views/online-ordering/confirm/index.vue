@@ -34,7 +34,7 @@
                 <p>{{ renderData.listDetail.commodityRate }}</p>
                 <div style="margin-bottom: .2rem;">
                     <van-stepper
-                        :value="num"
+                        :value="renderData.listDetail.commoditySets"
                         integer
                         :min="renderData.listDetail.commoditySets"
                         max="10000000"
@@ -63,13 +63,16 @@
         <div class="mallPayWechatMain">
             <div>
                 <img src="@/assets/images/weChatPayIcon.png" alt="微信支付" /> 微信支付
-            </div>         
+            </div>     
             <!-- + parseFloat(renderData.listDetail.frozen) -->
             <em>
                 <i>￥</i>
-                {{ parseFloat(num) * renderData.listDetail.itemPrice }}
+                {{ parseFloat(renderData.listDetail.totalPrice) + num * renderData.listDetail.itemPrice }}
             </em>
         </div>
+        <!-- <div>{{num}}</div>
+        <div>{{renderData.listDetail.totalPrice}}</div>
+        {{renderData.listDetail.itemPrice}} -->
         <!-- 确认支付 -->
         <div class="submitPayBtn">
             <a href="javascript:;" @click="confirmPayment">确认支付</a>
@@ -85,7 +88,7 @@ export default {
         return {
             isDefault: false || sessionStorage.getItem("isDefault"),
             isAddressInfo: true,
-            num: 1,
+            num: 0,
             queryData: {
                 confirmPayment: {
                     requestType: "orderpub",
@@ -127,7 +130,7 @@ export default {
             this.queryData.confirmPayment.numbers = this.num
         },
         reduce() {
-            this.num--
+            this.num-- 
             this.queryData.confirmPayment.numbers = this.num
         },
         tips() {
@@ -138,7 +141,7 @@ export default {
                 // console.log(response[res.data.responseStatus])
                 if (res.data.responseStatus === 1) {
                     this.renderData.listDetail = res.data.data;
-                    this.num = res.data.data.commoditySets
+                    // this.num = res.data.data.commoditySets
                     this.queryData.confirmPayment.numbers = this.num
                 }
                 // console.log(this.renderData.listDetail)
@@ -174,7 +177,8 @@ export default {
                 Toast("请选择收货地址");
                 return;
             }
-            this.queryData.confirmPayment.money = parseFloat(this.num) * this.renderData.listDetail.itemPrice
+            this.queryData.confirmPayment.money = parseFloat(this.renderData.listDetail.totalPrice) + this.num * this.renderData.listDetail.itemPrice
+            this.queryData.confirmPayment.numbers = parseInt(this.num) + parseInt(this.renderData.listDetail.commoditySets)
             getServer(this.queryData.confirmPayment).then(res => {
                 if (res.data.responseStatus === 1) {
                     if (res.data.isPay == 1) {

@@ -24,11 +24,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="no-data" v-else>
+                    <img src="@/assets/images/no-data.png">
+                </div>
                 <!-- 暂无数据 -->
-                <div class="listNoDataMain" v-else>
+                <!-- <div class="listNoDataMain" v-else>
                     <img src="@/assets/images/uploadIcon.png" alt="暂无数据" />
                     <p>更多优质POS机正在上架中</p>
-                </div>
+                </div> -->
             </div>
         </section>
     </div>
@@ -60,8 +63,8 @@ export default {
                 if (res.data.responseStatus === 1) {
                     this.isData = true;
                     this.renderData.list = res.data.data;
-                    console.log(this.renderData.list)
                 } else if (res.data.responseStatus === 300) {
+                    // alert(13)
                     this.isData = false;
                 }
             });

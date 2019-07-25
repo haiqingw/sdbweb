@@ -72,7 +72,6 @@ export default {
             getServer(this.queryData.detail).then( res => {
                 if( res.data.responseStatus === 1 ) {
                     this.renderData.detail = res.data.data
-                    console.log(this.renderData.detail)
                 }
             })
         },

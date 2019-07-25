@@ -21,10 +21,10 @@ export default {
     mounted() {
         // let plat = this.$route.query.plat || this.$store.state.user.plat;
         // window.location.href =
-            // "http://ttsplus.xylrcs.cn/index.php/App/Wchacf/getOpenid?plat=" +
-            // plat;
+        //     "http://ttsplus.xylrcs.cn/index.php/App/Wchacf/getOpenid?plat=" +
+        //     plat;
         let plat = this.$route.query.plat || 1;
-        // let plat = this.$route.query.plat || 220;
+        // // let plat = this.$route.query.plat || 220;
         window.location.href =
             "http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid?plat=" +
             plat;

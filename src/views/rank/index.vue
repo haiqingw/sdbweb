@@ -207,6 +207,7 @@ export default {
         list() {
             Indicator.open();
             getServer(this.queryData.list).then(res => {
+                // alert(JSON.stringify(res.data.responseStatus))
                 Indicator.close();
                 // alert(response[res.data.responseStatus])
                 // alert(JSON.stringify(res.data.data))
@@ -337,7 +338,7 @@ export default {
     },
     mounted() {
         this.selectItem = this.selectList[0].title;
-        this.drawLine(this.monthData, this.moneyData);
+        // this.drawLine(this.monthData, this.moneyData);
     }
 };
 </script>

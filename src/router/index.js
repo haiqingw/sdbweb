@@ -359,6 +359,11 @@ export default new Router({
         path: '/accountNumber-cancellation', //账号注销
         name: 'accountNumber-cancellation',
         component: resolve => require(['@/views/accountNumber-cancellation'], resolve),
+    },
+    {
+        path: '/bookOrderList', //在线订货订单列表
+        name: 'bookOrderList',
+        component: resolve => require(['@/views/bookOrderList'], resolve),
     }
   ]
 })

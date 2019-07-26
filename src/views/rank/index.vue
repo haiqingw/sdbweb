@@ -40,20 +40,30 @@
                     <div class="YRankHeaderMain">
                         <div>
                             <img src="@/assets/images/twoIcon.png" alt="第二名" />
-                            <p>
-                                <span>{{renderData.theFirstThree[1].busName}}</span>
-                                <span>{{renderData.theFirstThree[1].phone}}</span>
-                            </p>
-                            <em>激活{{renderData.theFirstThree[1].money}}个</em>
+                            <div v-if="isTheFirstThreeData">
+                                <p>
+                                    <span>{{renderData.theFirstThree[1].busName}}</span>
+                                    <span>{{renderData.theFirstThree[1].phone}}</span>
+                                </p>
+                                <em>激活{{renderData.theFirstThree[1].money}}个</em>
+                            </div>
+                            <div v-else>
+                                <em>暂无</em>
+                            </div>
                             <!-- <em>激活</em> -->
                         </div>
                         <div>
                             <img src="@/assets/images/oneIcon.png" alt="第一名" />
-                            <p>
-                                <span>{{renderData.theFirstThree[0].busName}}</span>
-                                <span>{{renderData.theFirstThree[0].phone}}</span>
-                            </p>
-                            <em>激活{{renderData.theFirstThree[0].money}}个</em>
+                            <div v-if="isTheFirstThreeData">
+                                <p>
+                                    <span>{{renderData.theFirstThree[0].busName}}</span>
+                                    <span>{{renderData.theFirstThree[0].phone}}</span>
+                                    <em>激活{{renderData.theFirstThree[0].money}}个</em>
+                                </p>
+                            </div>
+                            <div v-else>
+                                <em>暂无</em>
+                            </div>
                             <b class="leftArrBg">
                                 <img src="@/assets/images/leftArrBg.png" />
                             </b>
@@ -63,11 +73,16 @@
                         </div>
                         <div>
                             <img src="@/assets/images/threeIcon.png" alt="第三名" />
-                            <p>
-                                <span>{{renderData.theFirstThree[2].busName}}</span>
-                                <span>{{renderData.theFirstThree[2].phone}}</span>
-                            </p>
-                            <em>激活{{renderData.theFirstThree[2].money}}个</em>
+                            <div v-if="isTheFirstThreeData">
+                                <p>
+                                    <span>{{renderData.theFirstThree[2].busName}}</span>
+                                    <span>{{renderData.theFirstThree[2].phone}}</span>
+                                </p>
+                                <em>激活{{renderData.theFirstThree[2].money}}个</em>
+                            </div>
+                            <div v-else>
+                                <em>暂无</em>
+                            </div>
                         </div>
                     </div>
                     <!-- 排行列表 -->
@@ -128,6 +143,7 @@ export default {
             },
             changeState: true,
             isData: true,
+            isTheFirstThreeData: true,
             selectItem: "",
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
             moneyData: [0, 0, 0, 0, 0, 0],
@@ -151,7 +167,6 @@ export default {
                     // userPhone: this.$store.state.user.uphone,
                     // page: 1,
                     // limit: 10
-
                     requestType: "datamanage",
                     requestKeywords: "actranking",
                     platformID: this.$store.state.user.pid,
@@ -184,7 +199,17 @@ export default {
                     phone: "*********",
                     money: "0"
                 },
-                theFirstThree: []
+                theFirstThree: [
+                    {
+                        busName: "**"
+                    },
+                    {
+                        busName: "**"
+                    },
+                    {
+                        busName: "**"
+                    }
+                ]
             }
         };
     },
@@ -197,7 +222,7 @@ export default {
             this.renderData.list = [];
             this.queryData.list.page = 1;
             this.list();
-            this.chart()
+            this.chart();
         },
         // 触发上拉加载
         onPullingUp() {
@@ -216,6 +241,7 @@ export default {
                 // console.log(res.data.data.constructor === Array);
                 if (res.data.responseStatus === 1) {
                     this.isData = true;
+                    this.isTheFirstThreeData = true;
                     // this.renderData.list = res.data.data;
                     res.data.data.forEach(item => {
                         this.renderData.list.push(item);
@@ -232,6 +258,7 @@ export default {
                     this.queryData.list.page === 1
                 ) {
                     this.isData = false;
+                    this.isTheFirstThreeData = false;
                     this.ATurnover = "0.00";
                 }
             });
@@ -250,10 +277,10 @@ export default {
             });
         },
         chart() {
-            if( this.changeState ) {
-                this.queryData.chart.requestKeywords = "activeline"
+            if (this.changeState) {
+                this.queryData.chart.requestKeywords = "activeline";
             } else {
-                this.queryData.chart.requestKeywords = "incomeline"
+                this.queryData.chart.requestKeywords = "incomeline";
             }
             getServer(this.queryData.chart).then(res => {
                 // alert(response[res.data.responseStatus])
@@ -267,23 +294,23 @@ export default {
             });
         },
         changeSelect(e) {
-            this.renderData.list = []
-            this.queryData.list.page = 1
+            this.renderData.list = [];
+            this.queryData.list.page = 1;
             // this.drawLine(this.monthData, this.moneyData);
             if (e.target.value === "当月激活") {
                 this.changeState = true;
                 // alert("激活")
                 this.queryData.list.requestKeywords = "actranking";
                 this.list();
-                this.chart()
-                this.scrollTo9
+                this.chart();
+                this.scrollTo9;
             } else if (e.target.value === "当月收益") {
                 this.changeState = false;
                 // alert("收益")
                 this.queryData.list.requestKeywords = "montranking";
                 this.list();
-                this.chart()
-                this.scrollTo()
+                this.chart();
+                this.scrollTo();
             }
         },
         drawLine(monthData, moneyData) {
@@ -334,17 +361,20 @@ export default {
     created() {
         // this.drawLine(this.monthData, this.moneyData);
         this.list();
-        this.chart();
     },
     mounted() {
+        this.chart();
         this.selectItem = this.selectList[0].title;
-        // this.drawLine(this.monthData, this.moneyData);
+        this.drawLine(this.monthData, this.moneyData);
     }
 };
 </script>
 <style lang="scss">
+.rank .no-data {
+    margin-top: 1.5rem;
+}
 .mint-indicator-mask {
-     z-index: 99999;
+    z-index: 99999;
 }
 .mint-indicator-wrapper {
     z-index: 999999;
@@ -444,7 +474,7 @@ b.rightArrBg {
 //     overflow-x: hidden;
 // }
 .YRankListMain {
-    padding-bottom: .2rem;
+    padding-bottom: 0.2rem;
 }
 .YRankListMain > div {
     background: #f1f1f1;

@@ -142,7 +142,7 @@
                     </div>
                 </li>
                 <!-- v-if="this.$store.state.user.pid == 175" -->
-                <li v-if="this.$store.state.user.pid == 175">
+                <li v-if="this.$store.state.user.pid == 215">
                     <div class="img">
                         <router-link to="/mall">
                             <img src="@/assets/images/indexBtn09.png" alt>
@@ -152,7 +152,7 @@
                         <router-link to="/mall">机具商城</router-link>
                     </div>
                 </li>
-                <li v-if="this.$store.state.user.pid == 175">
+                <li v-if="this.$store.state.user.pid == 215">
                     <div class="img">
                         <router-link to="/online-ordering">
                             <img src="@/assets/images/indexBtn10.png" alt>
@@ -192,7 +192,7 @@
                         <router-link to="/rank">排行榜</router-link>
                     </div>
                 </li>
-                <li v-if="renderData.info.level == 2">
+                <li v-if="renderData.info.level == 2 && this.$store.state.user.pid == 215">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -200,6 +200,16 @@
                     </div>
                    <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
+                    </div>
+                </li>
+                <li v-if="this.$store.state.user.pid == 215">
+                    <div class="img">
+                        <router-link to="/bookOrderList">
+                            <img src="@/assets/images/indexBtn12.png" alt>
+                        </router-link>
+                    </div>
+                   <div class="text">
+                        <router-link to="/bookOrderList">订货订单</router-link>
                     </div>
                 </li>
             </ul>

@@ -361,11 +361,6 @@ export default new Router({
         component: resolve => require(['@/views/accountNumber-cancellation'], resolve),
     },
     {
-<<<<<<< HEAD
-        path: '/bookOrderList', //在线订货订单列表
-        name: 'bookOrderList',
-        component: resolve => require(['@/views/bookOrderList'], resolve),
-=======
         path: '/rank', //账号注销
         name: 'rank',
         component: resolve => require(['@/views/rank'], resolve),
@@ -411,7 +406,12 @@ export default new Router({
         path: "/online-ordering-confirm/:id",
         name: 'online-ordering-confirm',
         component: resolve => require(['@/views/online-ordering/confirm'], resolve),
->>>>>>> 3efd9d4a175b8d038dc71a139941c750473681c0
+    },
+    {
+        //path: '/online-ordering-confirm/:id', //在线订货详细
+        path: "/bookOrderList",
+        name: 'bookOrderList',
+        component: resolve => require(['@/views/bookOrderList'], resolve),
     }
   ]
 })

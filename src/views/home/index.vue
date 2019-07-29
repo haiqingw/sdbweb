@@ -142,7 +142,7 @@
                     </div>
                 </li>
                 <!-- v-if="this.$store.state.user.pid == 175" -->
-                <li v-if="this.$store.state.user.pid == 215">
+                <!-- <li v-if="this.$store.state.user.pid == 215">
                     <div class="img">
                         <router-link to="/mall">
                             <img src="@/assets/images/indexBtn09.png" alt>
@@ -151,8 +151,8 @@
                     <div class="text">
                         <router-link to="/mall">机具商城</router-link>
                     </div>
-                </li>
-                <li v-if="this.$store.state.user.pid == 215">
+                </li> -->
+                <li v-if="onlineCheckStatus">
                     <div class="img">
                         <router-link to="/online-ordering">
                             <img src="@/assets/images/indexBtn10.png" alt>
@@ -192,7 +192,7 @@
                         <router-link to="/rank">排行榜</router-link>
                     </div>
                 </li>
-                <li v-if="renderData.info.level == 2 && this.$store.state.user.pid == 215">
+                <!-- <li v-if="renderData.info.level == 2 && this.$store.state.user.pid == 215">
                     <div class="img">
                         <router-link to="/deliverGoods">
                             <img src="@/assets/images/index-list2-img4.png" alt>
@@ -201,8 +201,8 @@
                    <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
-                </li>
-                <li v-if="this.$store.state.user.pid == 215">
+                </li> -->
+                <li v-if="onlineCheckStatus">
                     <div class="img">
                         <router-link to="/bookOrderList">
                             <img src="@/assets/images/indexBtn12.png" alt>
@@ -236,7 +236,8 @@ export default {
                 thaw: "",
                 info: {},
                 todayProfit: "",
-                isChecke: 0
+                isChecke: 0,
+                onlineCheckStatus:false
             },
             queryData: {
                 listOne: {
@@ -286,6 +287,13 @@ export default {
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     openid: this.$route.query.opid
+                },
+                onlineCheck:{
+                    requestType:"checke",
+                    requestKeywords:"onlinecheck",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             }
         };
@@ -350,6 +358,18 @@ export default {
             // 这里写点击返回键时候的事件
             // 比如判断需求执行back()或者go(-2)或者PopupShow=false隐藏弹框
             wx.closeWindow();
+        },
+        //APP平台在线订货显示开关
+        onlineCheck(){
+            getServer(this.queryData.onlineCheck).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if(res.status == 1){
+                        this.onlineCheckStatus = true;
+                    }else if(res.status == 2){
+                        this.onlineCheckStatus = false;
+                    }
+                }
+            });
         }
     },
     mounted() {
@@ -385,6 +405,7 @@ export default {
         // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {});
         // this.verify();
+        this.onlineCheck();
     }
 };
 </script>

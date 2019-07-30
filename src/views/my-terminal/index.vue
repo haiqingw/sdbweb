@@ -11,6 +11,7 @@
                 href="javascript:;"
                 style="color:#fff;"
             >退码列表</a>-->
+            <a href="javascript:;" v-if="renderData.keyacceptcheckStatus" @click="keyAcceptFn" class="returnRightBtn">一键接收</a>
         </div>
         <div class="my-terminal-choice line_bottom">
             <el-select v-model="byProduct.value" @change="byProductChange">
@@ -189,9 +190,26 @@ export default {
                     childID: "", //（下级商户ID）,
                     machineID: "", // 终端列表ID（接口输出的ID）,
                     terminal: "" //终端号
+                },
+                //一键接收 开关
+                keyAcceptCheck:{
+                    requestType: "checke",
+                    requestKeywords:"keyacceptcheck",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                //一键接收 操作
+                keyAcceptPara:{
+                    requestType:"terminalmanage",
+                    requestKeywords:"keytoaccept",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone 
                 }
             },
             renderData: {
+                keyacceptcheckStatus:false,
                 list: []
             }
         };
@@ -308,9 +326,38 @@ export default {
                     this.isData = false;
                 }
             });
-        }
+        },
+        // 一键接收 开关
+        keyAcceptCheck(){
+          getServer(this.queryData.keyAcceptCheck).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if(res.data.status == 1){
+                        this.renderData.keyacceptcheckStatus = true;
+                    }else if(res.data.status == 2){
+                        this.renderData.keyacceptcheckStatus = false;
+                    }
+                }
+          })   
+        },
+        // 一键接收 操作
+       keyAcceptFn(){ 
+            if(isNaN(this.byProduct.value)){
+             this.queryData.keyAcceptPara.productID = this.byProduct.options[0].id; 
+            }else{
+             this.queryData.keyAcceptPara.productID = this.byProduct.value;
+            }
+            getServer(this.queryData.keyAcceptPara).then(res => {
+                    if (res.data.responseStatus === 1) {
+                        Toast('接收成功'); 
+                        this.terminalList();
+                    }else{
+                        Toast(response[res.data.responseStatus]);
+                    }
+            })    
+       }
     },
     created() {
+        this.keyAcceptCheck();
         this.choiceProduct();
         this.choiceBatch();
     }
@@ -452,6 +499,21 @@ export default {
 }
 .my-terminal-list ul li .time-batch .right {
     float: right;
+}
+.returnRightBtn{
+    overflow:hidden;
+    width:1.5rem;
+    height:0.52rem;
+    line-height:0.53rem;
+    background:#fff;
+    color:#089cfe;
+    font-size:0.28rem;
+    text-align:center;
+    position: absolute;
+    right:0.2rem;
+    top:50%;
+    margin-top:-0.26rem;
+    border-radius:0.1rem;
 }
 </style>
 

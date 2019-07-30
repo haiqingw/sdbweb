@@ -152,16 +152,6 @@
                         <router-link to="/mall">机具商城</router-link>
                     </div>
                 </li> -->
-                <li v-if="onlineCheckStatus">
-                    <div class="img">
-                        <router-link to="/online-ordering">
-                            <img src="@/assets/images/indexBtn10.png" alt>
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/mall">在线订货</router-link>
-                    </div>
-                </li>
                 <li>
                     <div class="img">
                         <router-link to="/financialDetails">
@@ -202,7 +192,17 @@
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
                 </li> -->
-                <li v-if="onlineCheckStatus">
+                  <li v-if="renderData.onlineCheckStatus">
+                    <div class="img">
+                        <router-link to="/online-ordering">
+                            <img src="@/assets/images/indexBtn10.png" alt>
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/mall">在线订货</router-link>
+                    </div>
+                </li>
+                <li v-if="renderData.onlineCheckStatus">
                     <div class="img">
                         <router-link to="/bookOrderList">
                             <img src="@/assets/images/indexBtn12.png" alt>
@@ -288,7 +288,7 @@ export default {
                     userPhone: this.$store.state.user.uphone,
                     openid: this.$route.query.opid
                 },
-                onlineCheck:{
+                onlineCheck:{   //返回 status 1 显示 2 关闭
                     requestType:"checke",
                     requestKeywords:"onlinecheck",
                     platformID: this.$store.state.user.pid,
@@ -363,10 +363,10 @@ export default {
         onlineCheck(){
             getServer(this.queryData.onlineCheck).then(res => {
                 if (res.data.responseStatus === 1) {
-                    if(res.status == 1){
-                        this.onlineCheckStatus = true;
-                    }else if(res.status == 2){
-                        this.onlineCheckStatus = false;
+                    if(res.data.status == 1){
+                        this.renderData.onlineCheckStatus = true;
+                    }else if(res.data.status == 2){
+                        this.renderData.onlineCheckStatus = false;
                     }
                 }
             });
@@ -404,8 +404,8 @@ export default {
         // this.loginSuccess.openid = this.$route.query.opid
         // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {});
-        // this.verify();
-        this.onlineCheck();
+        // this.verify();;
+        this.onlineCheck()
     }
 };
 </script>

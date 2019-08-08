@@ -9,7 +9,7 @@
                         v-bind:index="index"
                         v-bind:key="item.id"
                     >
-                        <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner">
+                        <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner" />
                     </van-swipe-item>
                     <div
                         class="custom-indicator"
@@ -26,21 +26,21 @@
             <ul>
                 <li>
                     <div class="index-list1-img">
-                        <img src="@/assets/images/index-list1-1.png" alt>
+                        <img src="@/assets/images/index-list1-1.png" alt />
                     </div>
                     <div class="index-list1-text">{{ renderData.listOneData.balance }}</div>
                     <div class="index-list1-explain">钱包余额</div>
                 </li>
                 <li>
                     <div class="index-list1-img">
-                        <img src="@/assets/images/index-list1-2.png" alt>
+                        <img src="@/assets/images/index-list1-2.png" alt />
                     </div>
                     <div class="index-list1-text">{{ renderData.listOneData.curentmonth }}</div>
                     <div class="index-list1-explain">当月收益</div>
                 </li>
                 <li>
                     <div class="index-list1-img">
-                        <img src="@/assets/images/index-list1-3.png" alt>
+                        <img src="@/assets/images/index-list1-3.png" alt />
                     </div>
                     <div class="index-list1-text">{{ renderData.listOneData.total }}</div>
                     <div class="index-list1-explain">总赚钱</div>
@@ -48,7 +48,7 @@
                 <li>
                     <router-link :to="{ name: 'freezeprogress' }">
                         <div class="index-list1-img">
-                            <img src="@/assets/images/index-list1-4.png" alt>
+                            <img src="@/assets/images/index-list1-4.png" alt />
                         </div>
                         <div class="index-list1-text">{{ renderData.thaw }}</div>
                         <div class="index-list1-explain">待解冻</div>
@@ -69,7 +69,7 @@
             <div class="index-notice-profit">
                 <router-link to="/financialDetails" style="display:block;">
                     <h3>
-                        <img src="@/assets/images/index-notice-profit-img.png" alt>
+                        <img src="@/assets/images/index-notice-profit-img.png" alt />
                     </h3>
                     <p>
                         今日收益
@@ -84,7 +84,7 @@
                 <li>
                     <div class="img">
                         <router-link to="/bindingMplements">
-                            <img src="@/assets/images/indexBtn01.png" alt>
+                            <img src="@/assets/images/indexBtn01.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -94,7 +94,7 @@
                 <li>
                     <div class="img">
                         <router-link to="/merchantsExpand">
-                            <img src="@/assets/images/indexBtn05.png" alt>
+                            <img src="@/assets/images/indexBtn05.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -104,7 +104,7 @@
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/myTerminal">
-                            <img src="@/assets/images/indexBtn02.png" alt>
+                            <img src="@/assets/images/indexBtn02.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -114,7 +114,7 @@
                 <li v-if="renderData.info.level != 2 && renderData.isChecke == 1">
                     <div class="img">
                         <router-link to="/application-agent">
-                            <img src="@/assets/images/indexBtn09.png" alt>
+                            <img src="@/assets/images/indexBtn09.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -124,7 +124,7 @@
                 <li v-if="renderData.info.level == 2 && renderData.isChecke == 1">
                     <div class="img">
                         <router-link to="/application-agent-To-examine">
-                            <img src="@/assets/images/indexBtn03.png" alt>
+                            <img src="@/assets/images/indexBtn03.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -134,7 +134,7 @@
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/dial-code">
-                            <img src="@/assets/images/indexBtn04.png" alt>
+                            <img src="@/assets/images/indexBtn04.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -151,11 +151,11 @@
                     <div class="text">
                         <router-link to="/mall">机具商城</router-link>
                     </div>
-                </li> -->
+                </li>-->
                 <li>
                     <div class="img">
                         <router-link to="/financialDetails">
-                            <img src="@/assets/images/indexBtn06.png" alt>
+                            <img src="@/assets/images/indexBtn06.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -165,7 +165,7 @@
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/myMerchants">
-                            <img src="@/assets/images/indexBtn07.png" alt>
+                            <img src="@/assets/images/indexBtn07.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -175,7 +175,7 @@
                 <li v-if="renderData.info.level == 2">
                     <div class="img">
                         <router-link to="/rank">
-                            <img src="@/assets/images/indexBtn11.png" alt>
+                            <img src="@/assets/images/indexBtn11.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -191,11 +191,11 @@
                    <div class="text">
                         <router-link to="/deliverGoods">订单管理</router-link>
                     </div>
-                </li> -->
-                  <li v-if="renderData.onlineCheckStatus">
+                </li>-->
+                <li v-if="renderData.onlineCheckStatus">
                     <div class="img">
                         <router-link to="/online-ordering">
-                            <img src="@/assets/images/indexBtn10.png" alt>
+                            <img src="@/assets/images/indexBtn10.png" alt />
                         </router-link>
                     </div>
                     <div class="text">
@@ -205,27 +205,27 @@
                 <li v-if="renderData.onlineCheckStatus">
                     <div class="img">
                         <router-link to="/bookOrderList">
-                            <img src="@/assets/images/indexBtn12.png" alt>
+                            <img src="@/assets/images/indexBtn12.png" alt />
                         </router-link>
                     </div>
-                   <div class="text">
+                    <div class="text">
                         <router-link to="/bookOrderList">订货订单</router-link>
-                    </div>
-                </li>
-                <li v-if="likeStatus" @click="loanHref">
-                    <div class="img">
-                        <img src="@/assets/images/indexBtn12.png" alt>
-                    </div>
-                   <div class="text">
-                        <a href="javascript:;">在线贷款</a>
                     </div>
                 </li>
                 <li v-if="likeStatus" @click="cardHref">
                     <div class="img">
-                        <img src="@/assets/images/indexBtn12.png" alt>
+                        <img src="@/assets/images/indexBtn12.png" alt />
                     </div>
-                   <div class="text">
+                    <div class="text">
                         <a href="javascript:;">在线办卡</a>
+                    </div>
+                </li>
+                <li v-if="likeStatus" @click="loanHref">
+                    <div class="img">
+                        <img src="@/assets/images/indexBtn12.png" alt />
+                    </div>
+                    <div class="text">
+                        <a href="javascript:;">在线贷款</a>
                     </div>
                 </li>
             </ul>
@@ -254,12 +254,12 @@ export default {
                 info: {},
                 todayProfit: "",
                 isChecke: 0,
-                onlineCheckStatus:false
+                onlineCheckStatus: false
             },
             queryData: {
                 likeStatus: {
                     requestType: "checke",
-                    requestKeywords:'linkdisplaycheck', 
+                    requestKeywords: "linkdisplaycheck",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -278,9 +278,10 @@ export default {
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
-                isChecke: { //  返回 status 1 显示 2 关闭
+                isChecke: {
+                    //  返回 status 1 显示 2 关闭
                     requestType: "checke",
-                    requestKeywords:'applycheck', 
+                    requestKeywords: "applycheck",
                     platformID: this.$store.state.user.pid
                 },
                 bannerData: {
@@ -312,9 +313,10 @@ export default {
                     userPhone: this.$store.state.user.uphone,
                     openid: this.$route.query.opid
                 },
-                onlineCheck:{   //返回 status 1 显示 2 关闭
-                    requestType:"checke",
-                    requestKeywords:"onlinecheck",
+                onlineCheck: {
+                    //返回 status 1 显示 2 关闭
+                    requestType: "checke",
+                    requestKeywords: "onlinecheck",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -330,17 +332,19 @@ export default {
     },
     methods: {
         loanHref() {
-            window.location.href = "https://m.hhrcard.com/credit/miniprogram/copartner/bankList?invitecode=12443774&oas=1&city_name=%E5%91%BC%E5%92%8C%E6%B5%A9%E7%89%B9%E5%B8%82"
+            window.location.href =
+                "https://m.rong360.com/hehuoren/wechat/hhrtpl/applyNew?partner_id=12443774&wx_user_id=1235632&spread=p_list&utm_source=wxgzh&utm_medium=hehuoren&_js_r=%2523%252Fproductlist&_js_r_r=1#/productlist";
         },
         cardHref() {
-            window.location.href = "https://m.rong360.com/hehuoren/wechat/hhrtpl/applyNew?partner_id=12443774&wx_user_id=1235632&spread=p_list&utm_source=wxgzh&utm_medium=hehuoren&_js_r=%2523%252Fproductlist&_js_r_r=1#/productlist"
+            window.location.href =
+                "https://m.hhrcard.com/credit/miniprogram/copartner/bankList?invitecode=12443774&oas=1&city_name=%E5%91%BC%E5%92%8C%E6%B5%A9%E7%89%B9%E5%B8%82";
         },
         isChecke() {
-            getServer(this.queryData.isChecke).then( res => {
-                if( res.data.responseStatus === 1 ) {
-                    this.renderData.isChecke = res.data.status
+            getServer(this.queryData.isChecke).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.isChecke = res.data.status;
                 }
-            })
+            });
         },
         todayProfit() {
             getServer(this.queryData.todayProfit).then(res => {
@@ -350,7 +354,7 @@ export default {
                         this.renderData.todayProfit = 0;
                     }
                 }
-            })
+            });
         },
         listOne() {
             getServer(this.queryData.listOne).then(res => {
@@ -390,27 +394,27 @@ export default {
             wx.closeWindow();
         },
         //APP平台在线订货显示开关
-        onlineCheck(){
+        onlineCheck() {
             getServer(this.queryData.onlineCheck).then(res => {
                 if (res.data.responseStatus === 1) {
-                    if(res.data.status == 1){
+                    if (res.data.status == 1) {
                         this.renderData.onlineCheckStatus = true;
-                    }else if(res.data.status == 2){
+                    } else if (res.data.status == 2) {
                         this.renderData.onlineCheckStatus = false;
                     }
                 }
             });
         },
         likeStatusFunc() {
-            getServer(this.queryData.likeStatus).then( res => {
-                if( res.data.responseStatus === 1 ) {
-                    if( res.data.status == 1 ) {
-                        this.likeStatus = true
+            getServer(this.queryData.likeStatus).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status == 1) {
+                        this.likeStatus = true;
                     } else {
-                        this.likeStatus = false
+                        this.likeStatus = false;
                     }
                 }
-            })
+            });
         }
     },
     mounted() {
@@ -440,14 +444,14 @@ export default {
         // this.test1()
         this.bannerList();
         this.info();
-        this.isChecke()
+        this.isChecke();
         this.todayProfit();
         // this.loginSuccess.openid = this.$route.query.opid
         // alert(this.queryData.loginSuccess.openid)
         getServer(this.queryData.loginSuccess).then(res => {});
         // this.verify();;
-        this.onlineCheck()
-        this.likeStatusFunc()
+        this.onlineCheck();
+        this.likeStatusFunc();
     }
 };
 </script>

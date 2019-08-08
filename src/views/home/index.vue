@@ -212,6 +212,22 @@
                         <router-link to="/bookOrderList">订货订单</router-link>
                     </div>
                 </li>
+                <li v-if="likeStatus" @click="loanHref">
+                    <div class="img">
+                        <img src="@/assets/images/indexBtn12.png" alt>
+                    </div>
+                   <div class="text">
+                        <a href="javascript:;">在线贷款</a>
+                    </div>
+                </li>
+                <li v-if="likeStatus" @click="cardHref">
+                    <div class="img">
+                        <img src="@/assets/images/indexBtn12.png" alt>
+                    </div>
+                   <div class="text">
+                        <a href="javascript:;">在线办卡</a>
+                    </div>
+                </li>
             </ul>
         </div>
         <Footer></Footer>
@@ -228,6 +244,7 @@ import wx from "weixin-js-sdk";
 export default {
     data() {
         return {
+            likeStatus: false,
             current: 0,
             bannerLength: 0,
             bannerListData: {},
@@ -240,6 +257,13 @@ export default {
                 onlineCheckStatus:false
             },
             queryData: {
+                likeStatus: {
+                    requestType: "checke",
+                    requestKeywords:'linkdisplaycheck', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 listOne: {
                     requestType: "personal",
                     requestKeywords: "busincome",
@@ -305,6 +329,12 @@ export default {
         ...mapGetters(["islogin"])
     },
     methods: {
+        loanHref() {
+            window.location.href = "https://m.hhrcard.com/credit/miniprogram/copartner/bankList?invitecode=12443774&oas=1&city_name=%E5%91%BC%E5%92%8C%E6%B5%A9%E7%89%B9%E5%B8%82"
+        },
+        cardHref() {
+            window.location.href = "https://m.rong360.com/hehuoren/wechat/hhrtpl/applyNew?partner_id=12443774&wx_user_id=1235632&spread=p_list&utm_source=wxgzh&utm_medium=hehuoren&_js_r=%2523%252Fproductlist&_js_r_r=1#/productlist"
+        },
         isChecke() {
             getServer(this.queryData.isChecke).then( res => {
                 if( res.data.responseStatus === 1 ) {
@@ -370,6 +400,17 @@ export default {
                     }
                 }
             });
+        },
+        likeStatusFunc() {
+            getServer(this.queryData.likeStatus).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    if( res.data.status == 1 ) {
+                        this.likeStatus = true
+                    } else {
+                        this.likeStatus = false
+                    }
+                }
+            })
         }
     },
     mounted() {
@@ -406,6 +447,7 @@ export default {
         getServer(this.queryData.loginSuccess).then(res => {});
         // this.verify();;
         this.onlineCheck()
+        this.likeStatusFunc()
     }
 };
 </script>

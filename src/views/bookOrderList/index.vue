@@ -2,7 +2,7 @@
     <div class="bookOrderListContainer">
         <!-- header -->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>订货订单</span>
         </div>
         <div class="myOrderListMain">
@@ -13,10 +13,14 @@
                     @pulling-down="onPullingDown"
                     @pulling-up="onPullingUp"
                     :options="options"
+                    @scroll="onScroll"
                 >
                     <ul class="myOrderListUl">
                         <li v-for="item in renderData.list" :key="item.id">
-                            <em :class="[item.between == 1?'subordinate':'personal']" class="distinguish"></em>
+                            <em
+                                :class="[item.between == 1?'subordinate':'personal']"
+                                class="distinguish"
+                            ></em>
                             <div class="myOrderListHeader line_bottom">
                                 <!-- <span>{{item.productname}}</span> -->
                                 <span style="margin-left: 15px;">{{item.nickname}}</span>
@@ -53,34 +57,60 @@
                             <div class="myOrderListOtherInfoMain line_bottom">
                                 <h3>其他信息</h3>
                                 <div>
-                                    <p>订单编号：
+                                    <p>
+                                        订单编号：
                                         <span>{{item.ordernum}}</span>
                                     </p>
-                                    <p>下单时间：
+                                    <p>
+                                        下单时间：
                                         <span>{{item.orderTime}}</span>
                                     </p>
-                                    <p v-if="item.payTime">支付时间：
+                                    <p v-if="item.payTime">
+                                        支付时间：
                                         <span>{{item.payTime}}</span>
                                     </p>
-                                    <p style="display: inline-block; margin-right: .2rem;">订单状态：
-                                        <span v-if="item.status == 1" style="color: #00CC33">{{item.isnick}}</span>
+                                    <p style="display: inline-block; margin-right: .2rem;">
+                                        订单状态：
+                                        <span
+                                            v-if="item.status == 1"
+                                            style="color: #00CC33"
+                                        >{{item.isnick}}</span>
                                         <span v-else style="color: #CC0000">{{item.isnick}}</span>
                                     </p>
-                                    <p style="display: inline-block; margin-right: .2rem;">支付状态：
-                                         <span v-if="item.isPay == 2" style="color: #00CC33">
-                                            {{item.isPaynick}}</span>
-                                            <span v-else style="color: #CC0000">{{item.isPaynick}}</span>
+                                    <p style="display: inline-block; margin-right: .2rem;">
+                                        支付状态：
+                                        <span
+                                            v-if="item.isPay == 2"
+                                            style="color: #00CC33"
+                                        >{{item.isPaynick}}</span>
+                                        <span v-else style="color: #CC0000">{{item.isPaynick}}</span>
                                     </p>
-                                    <p style="display: inline-block">发货状态：
-                                        <span v-if="item.isDelivery == 2" style="color: #00CC33">{{item.isDeliverynick}}</span>
+                                    <p style="display: inline-block">
+                                        发货状态：
+                                        <span
+                                            v-if="item.isDelivery == 2"
+                                            style="color: #00CC33"
+                                        >{{item.isDeliverynick}}</span>
                                         <span v-else style="color: #CC0000">{{item.isDeliverynick}}</span>
                                     </p>
                                 </div>
                             </div>
                             <div class="myOrderListFooter" v-if="item.between == 1">
-                                <a v-if="item.isPay == 2" href="javascript:;" @click="refund(item.id)">退款</a>
-                                <a v-if="item.isDelivery == 1 && item.status == 1" href="javascript:;" @click="deliverGoods(item.id)">发货</a>
-                                <a v-if="item.isDelivery == 1 && item.status == 1" href="javascript:;" @click="cancelOrder(item.id)">取消</a>
+                                <a
+                                    v-if="item.isPay == 2"
+                                    href="javascript:;"
+                                    @click="refund(item.id)"
+                                >退款</a>
+                                <a
+                                    v-if="item.isDelivery == 1 && item.status == 1"
+                                    href="javascript:;"
+                                    @click="deliverGoods(item.id)"
+                                >发货</a>
+                                <a
+                                    v-if="item.isDelivery == 1 && item.status == 1"
+                                    href="javascript:;"
+                                    @click="cancelOrder(item.id)"
+                                >取消</a>
                             </div>
                         </li>
                     </ul>
@@ -94,8 +124,8 @@
 </template>
 <script>
 import { getServer } from "@/api/index";
-import { Indicator, Toast, MessageBox } from 'mint-ui';
-import response from '@/assets/js/response.js'
+import { Indicator, Toast, MessageBox } from "mint-ui";
+import response from "@/assets/js/response.js";
 export default {
     data() {
         return {
@@ -125,24 +155,24 @@ export default {
                     limit: 10
                 },
                 cancelOrder: {
-                    requestType: 'orderpub',
-                    requestKeywords:'cancelorder', 
+                    requestType: "orderpub",
+                    requestKeywords: "cancelorder",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     id: ""
                 },
                 refund: {
-                    requestType: 'orderpub',
-                    requestKeywords:'orderrefund', 
+                    requestType: "orderpub",
+                    requestKeywords: "orderrefund",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     id: ""
                 },
                 deliverGoods: {
-                    requestType: 'orderpub',
-                    requestKeywords:'todelivery', 
+                    requestType: "orderpub",
+                    requestKeywords: "todelivery",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
@@ -190,86 +220,99 @@ export default {
             });
         },
         cancelOrder(id) {
-            this.queryData.cancelOrder.id = id
+            this.queryData.cancelOrder.id = id;
             MessageBox.confirm("您确定要取消订单吗?", "取消订单")
                 .then(action => {
-                    getServer(this.queryData.cancelOrder).then( res => {
-                        if( res.data.responseStatus === 1 ) {
-                            Toast("取消成功")
+                    getServer(this.queryData.cancelOrder).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            Toast("取消成功");
                         } else {
-                            Toast(response[res.data.responseStatus])
+                            Toast(response[res.data.responseStatus]);
                         }
-                    })
+                    });
                 })
                 .catch(() => {});
         },
         refund(id) {
-            this.queryData.refund.id = id
+            this.queryData.refund.id = id;
             MessageBox.confirm("您确定要退款吗?", "退款")
                 .then(action => {
-                    getServer(this.queryData.refund).then( res => {
-                        if( res.data.responseStatus === 1 ) {
-                            Toast("退款成功")
+                    getServer(this.queryData.refund).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            Toast("退款成功");
                         } else {
-                            Toast(response[res.data.responseStatus])
+                            Toast(response[res.data.responseStatus]);
                         }
-                    })
+                    });
                 })
                 .catch(() => {});
         },
         deliverGoods(id) {
-            this.queryData.deliverGoods.id = id
-                MessageBox.confirm("您确定要发货吗?", "发货")
+            this.queryData.deliverGoods.id = id;
+            MessageBox.confirm("您确定要发货吗?", "发货")
                 .then(action => {
-                    getServer(this.queryData.deliverGoods).then( res => {
-                        if( res.data.responseStatus === 1 ) {
-                            Toast("发货成功")
+                    getServer(this.queryData.deliverGoods).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            Toast("发货成功");
                         } else {
-                            Toast(response[res.data.responseStatus])
+                            Toast(response[res.data.responseStatus]);
                         }
-                    })
+                    });
                 })
                 .catch(() => {});
-        }
+        },
+        onScroll(pos) {
+            if (pos.y < -150) {
+                // this.showWhiteTitle = true;
+                // alert(1)
+            } else {
+                // this.showWhiteTitle = false;
+                // alert(2)
+            }
+        },
     },
     created() {
-        this.list()
+        this.list();
     }
 };
 </script>
 <style lang="scss">
 .bookOrderListContainer .personal {
-    border-left: 10px solid #6666FF;
+    border-left: 10px solid #6666ff;
 }
 .bookOrderListContainer .subordinate {
     border-left: 10px solid #339999;
-} 
-.myOrderListUl li  .distinguish {
+}
+.myOrderListUl li .distinguish {
     position: absolute;
     left: 10px;
     top: 10px;
     width: 0;
     height: 0;
-    border-right: 10px solid  rgba(0,0,0,0);
-    border-bottom: 10px solid rgba(0,0,0,0);
-    border-top: 10px solid  rgba(0,0,0,0);
+    border-right: 10px solid rgba(0, 0, 0, 0);
+    border-bottom: 10px solid rgba(0, 0, 0, 0);
+    border-top: 10px solid rgba(0, 0, 0, 0);
 }
-.bookOrderListContainer { 
-    font-size: .3rem;
+.bookOrderListContainer {
+    font-size: 0.3rem;
 }
 .bookOrderListContainer .scroll-list-wrap {
-    height: 11rem;
+    height: 100%;
     overflow: auto;
     .item {
         padding: 10px 10px;
-
         &:nth-child(2n + 1) {
             background: #ccc;
         }
     }
 }
 .myOrderListMain {
-    padding-top: 0.8rem;
+    // padding-top: 0.8rem;
+    // padding-bottom: 2rem;
+    // margin-top: .8rem;
+    position: fixed;
+    top: .8rem;
+    height: 100%;
 }
 .myOrderListUl li {
     background: #fff;

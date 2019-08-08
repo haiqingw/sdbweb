@@ -198,9 +198,10 @@
         <Footer></Footer>
     </div>
 </template>
+
+
 <script>
 import Footer from "@/components/footerNav/footer";
-
 import { getServer } from "@/api/index";
 import { Indicator, Toast } from "mint-ui";
 // import func from '../../../vue-temp/vue-editor-bridge';
@@ -216,7 +217,7 @@ export default {
                 },
                 {
                     name: "月",
-                    isActive: true,
+                    isActive: false,
                     dateType: "mons"
                 }
             ],
@@ -245,7 +246,7 @@ export default {
                 }
             ],
             colorDataStr: "#ffd274",
-            dataCenterStatus: false,
+            dataCenterStatus: true,
             colorData: ["#6eb6ff", "#ff6638", "#f3b32d"],
             realIndex1: 0,
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
@@ -515,7 +516,7 @@ export default {
         brokenLineDiagram() {
             getServer(this.queryData.brokenLineDiagram).then(res => {
                 // alert(JSON.stringify(res.data.responseStatus));
-                alert(JSON.stringify(res.data.data));
+                alert(JSON.stringify(res.data));
                 if (res.data.responseStatus === 1) {
                     if (res.data.data === null) {
                         this.moneyData = [0, 0, 0, 0, 0];
@@ -540,6 +541,8 @@ export default {
     }
 };
 </script>
+
+
 <style lang="scss">
 .slide {
     display: flex;

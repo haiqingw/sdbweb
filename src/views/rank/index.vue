@@ -383,7 +383,7 @@ export default {
     font-size: 0.3rem;
 }
 .rank .scroll-list-wrap {
-    height: 11rem;
+    height: 95%;
     overflow: auto;
     .item {
         padding: 10px 10px;
@@ -393,8 +393,12 @@ export default {
     }
 }
 .subPageSection {
-    padding-bottom: 50px;
+    // padding-bottom: 1000px;
     padding-top: 50px;
+    position: fixed;
+    // top: 1rem;
+    height: 100%;
+    width: 100%;
 }
 .YRankHeaderMain {
     overflow: hidden;

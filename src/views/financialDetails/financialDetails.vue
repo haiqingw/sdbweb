@@ -310,9 +310,15 @@ export default {
 .financial-details .before-trigger {
     font-size: 0.3rem;
 }
+.switchSacreeningMain {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
 .financial-details .scroll-list-wrap {
     // height: 7.9rem;
-    height: 10rem;
+    // height: 10rem;
+    height: 100%;
     // margin-top: .2rem;
     overflow-y: scroll;
     width: 100%;

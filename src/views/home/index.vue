@@ -131,7 +131,7 @@
                         <router-link to="/application-agent-To-examine">代理审核</router-link>
                     </div>
                 </li>
-                <li v-if="renderData.info.level == 2">
+                <li v-if="renderData.info.level == 2 && dialCodeStatus">
                     <div class="img">
                         <router-link to="/dial-code">
                             <img src="@/assets/images/indexBtn04.png" alt />
@@ -248,6 +248,7 @@ export default {
             current: 0,
             bannerLength: 0,
             bannerListData: {},
+            dialCodeStatus: false,
             renderData: {
                 listOneData: {},
                 thaw: "",
@@ -257,6 +258,13 @@ export default {
                 onlineCheckStatus: false
             },
             queryData: {
+                dialCodeStatus: {
+                    requestType: "checke",
+                    requestKeywords: 'dialcodecheck', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone //APP拨码显示开关 返回 status 1 显示 2 关
+                },
                 likeStatus: {
                     requestType: "checke",
                     requestKeywords: "linkdisplaycheck",
@@ -415,6 +423,17 @@ export default {
                     }
                 }
             });
+        },
+        dialCodeStatusFunc() {
+            getServer(this.queryData.dialCodeStatus).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status == 1) {
+                        this.dialCodeStatus = true;
+                    } else {
+                        this.dialCodeStatus = false;
+                    }
+                }
+            });
         }
     },
     mounted() {
@@ -452,6 +471,7 @@ export default {
         // this.verify();;
         this.onlineCheck();
         this.likeStatusFunc();
+        this.dialCodeStatusFunc()
     }
 };
 </script>

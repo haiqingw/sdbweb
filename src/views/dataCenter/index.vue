@@ -246,7 +246,7 @@ export default {
                 }
             ],
             colorDataStr: "#ffd274",
-            dataCenterStatus: true,
+            dataCenterStatus: false,
             colorData: ["#6eb6ff", "#ff6638", "#f3b32d"],
             realIndex1: 0,
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],

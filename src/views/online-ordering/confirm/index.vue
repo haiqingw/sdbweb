@@ -94,7 +94,7 @@ export default {
                     requestType: "orderpub",
                     requestKeywords: "onlineorder",
                     sid: "1", //x收获地址ID,
-                    productID: 1,
+                    productID: this.$route.params.id,
                     numbers: "",
                     money: "0",
                     platformID: this.$store.state.user.pid,
@@ -163,7 +163,7 @@ export default {
         },
         confirmPayment() {
             this.queryData.confirmPayment.sid = this.renderData.addressInfo.id;
-            this.queryData.confirmPayment.proid = this.renderData.listDetail.id;
+            // this.queryData.confirmPayment.proid = this.renderData.listDetail.id;
             if (this.renderData.listDetail.deposit != 0.0) {
                 this.queryData.confirmPayment.deposit = this.renderData.listDetail.deposit;
             }

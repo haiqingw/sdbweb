@@ -214,7 +214,7 @@
                 </li>
                 <li v-if="likeStatus" @click="cardHref">
                     <div class="img">
-                        <img src="@/assets/images/indexBtn12.png" alt />
+                        <img src="@/assets/images/indexBtn13.png" alt />
                     </div>
                     <div class="text">
                         <a href="javascript:;">在线办卡</a>
@@ -222,7 +222,7 @@
                 </li>
                 <li v-if="likeStatus" @click="loanHref">
                     <div class="img">
-                        <img src="@/assets/images/indexBtn12.png" alt />
+                        <img src="@/assets/images/indexBtn14.png" alt />
                     </div>
                     <div class="text">
                         <a href="javascript:;">在线贷款</a>

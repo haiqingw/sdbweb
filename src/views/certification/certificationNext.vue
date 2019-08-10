@@ -175,7 +175,7 @@ export default {
         }
     },
     created() {
-        this.isBindCard();
+        // this.isBindCard();
         this.getRealName();
     }
 };

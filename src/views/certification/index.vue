@@ -73,9 +73,9 @@ export default {
             }
             getServer(this.queryData.realNameCer).then(res => {
                 if (res.data.responseStatus === 1) {
-                    Toast("修改成功");
+                    Toast("实名认证成功");
                     setTimeout(() => {
-                        this.$router.push({name: "mine"});
+                        this.$router.push({name: "certificationNext"});
                     }, 300);
                 } else {
                     Toast(response[res.data.responseStatus]);

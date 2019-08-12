@@ -30,6 +30,7 @@
                 <em @click="getVerify">{{time}}{{time==="重新获取"?'':'s'}}</em>
             </div>
         </div>
+     
     </div>
 </template>
 <script>
@@ -113,6 +114,7 @@ export default {
                 } else {
                     Toast("验证码有误！")
                 }
+                alert("验证码为：" + this.code);
             }
         }
     },
@@ -187,4 +189,5 @@ export default {
         color: #f33;
     }
 }
+
 </style>

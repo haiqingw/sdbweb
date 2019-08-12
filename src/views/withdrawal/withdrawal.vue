@@ -588,6 +588,7 @@ export default {
     bottom: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.5);
+    z-index:999;
 }
 .puponVerifyMain {
     position: fixed;
@@ -600,6 +601,7 @@ export default {
     box-sizing: border-box;
     padding-bottom:0.4rem;
     border-radius:0.1rem;
+    z-index:9999;
     .closeBtn{
         width:0.4rem;
         height:0.4rem;

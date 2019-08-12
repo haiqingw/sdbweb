@@ -13,7 +13,7 @@
                 <br />请输入发送到以下电话号码的验证码：
             </p>
             <p class="phoneMain">
-                <b>132****5340</b>
+                <b>{{renderData.info.phone}}</b>
             </p>
             <div class="verificationCodeMain">
                 <div class="verificationCodeBox flex">
@@ -21,8 +21,10 @@
                     <div class="inputCodeItem" :class="code[1]?'active':''">{{code[1]}}</div>
                     <div class="inputCodeItem" :class="code[2]?'active':''">{{code[2]}}</div>
                     <div class="inputCodeItem" :class="code[3]?'active':''">{{code[3]}}</div>
+                    <div class="inputCodeItem" :class="code[3]?'active':''">{{code[4]}}</div>
+                    <div class="inputCodeItem" :class="code[3]?'active':''">{{code[5]}}</div>
                 </div>
-                <input v-model="code" maxlength="4" type="tel" autofocus="true" />
+                <input v-model="code" maxlength="6" type="tel" autofocus="true" />
             </div>
             <div class="tipMain" @click="showModelTip">没有收到验证码？</div>
             <div class="timerMain">
@@ -30,7 +32,6 @@
                 <em @click="getVerify">{{time}}{{time==="重新获取"?'':'s'}}</em>
             </div>
         </div>
-     
     </div>
 </template>
 <script>
@@ -53,15 +54,53 @@ export default {
                     userPhone: this.$store.state.user.uphone,
                     name: "",
                     idcard: ""
+                },
+                info: {
+                    requestType: "personal",
+                    requestKeywords: "getbusinfo",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                sendCode: {
+                    requestType: "smsmanage",
+                    requestKeywords: "realnameauth",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                bindCardCer: {
+                    requestType: "operating",
+                    requestKeywords: "addbankcard",
+                    userID: this.$store.state.user.uid,
+                    platformID: this.$store.state.user.pid,
+                    userPhone: this.$store.state.user.uphone,
+                    cardNum: "",
+                    phone: "",
+                    bankName: ""
                 }
             },
             renderData: {
-                code: "1111"
+                code: "",
+                info: {
+                    phone: ""
+                }
             }
         };
     },
     methods: {
+        sendCode() {
+            getServer(this.queryData.sendCode).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.code = res.data.verify;
+                } else {
+                    Toast(response[res.data.responseStatus]);
+                }
+            });
+        },
         submitModification() {
+            this.submitModification();
+            return
             getServer(this.queryData.realNameCer).then(res => {
                 if (res.data.responseStatus === 1) {
                     Toast("实名认证成功");
@@ -73,8 +112,14 @@ export default {
                 }
             });
         },
-        getCode() {
-            return this.code;
+        submitModificationCer() {
+            getServer(this.queryData.bindCardCer).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.$router.push({ name: "certificationComplete" });
+                } else {
+                    Toast(response[res.data.responseStatus]);
+                }
+            });
         },
         showModelTip() {
             Dialog.alert({
@@ -103,32 +148,53 @@ export default {
                 this.timerFn();
             }
             this.flag = false;
+        },
+        info() {
+            getServer(this.queryData.info).then(res => {
+                if (res.data.responseStatus === 1) {
+                    const reg = /^(\d{3})\d{4}(\d{4})$/;
+                    this.renderData.info.phone = res.data.data.phone.replace(
+                        reg,
+                        "$1****$2"
+                    );
+                }
+            });
         }
     },
     watch: {
         code: function() {
-            if (this.code.length == 4) {
-                if( parseInt(this.code) === parseInt(this.renderData.code) ) {
-                    // this.submitModification()
-                    alert("验证码正确")
+            if (this.code.length == 6) {
+                if (parseInt(this.code) === parseInt(this.renderData.code)) {
+                    this.submitModification();
                 } else {
-                    Toast("验证码有误！")
+                    Toast("验证码有误！");
                 }
-                alert("验证码为：" + this.code);
+                // alert("验证码为：" + this.code);
             }
         }
     },
     created() {
         if (this.$route.params.state === "add") {
-            alert(1);
             this.queryData.realNameCer.name = JSON.parse(
                 sessionStorage.getItem("name")
             );
             this.queryData.realNameCer.idcard = JSON.parse(
                 sessionStorage.getItem("idcard")
             );
+        } else if (this.$route.params.state === "bindCer") {
+            this.queryData.bindCardCer.phone = JSON.parse(
+                sessionStorage.getItem("phone")
+            );
+            this.queryData.bindCardCer.cardNum = JSON.parse(
+                sessionStorage.getItem("cardNum")
+            );
+            this.queryData.bindCardCer.bankName = JSON.parse(
+                sessionStorage.getItem("bankName")
+            );
         }
         this.timerFn();
+        this.info();
+        this.sendCode();
     }
 };
 </script>
@@ -189,5 +255,4 @@ export default {
         color: #f33;
     }
 }
-
 </style>

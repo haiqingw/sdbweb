@@ -8,7 +8,7 @@
             <mt-button><router-link to="/withdrawalRecord" style="color:#fff;">提现记录</router-link></mt-button>
         </mt-header>-->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>提现</span>
             <router-link class="withdrawalRecord" to="/withdrawalRecord" style="color:#fff;">提现记录</router-link>
         </div>
@@ -16,8 +16,8 @@
         <div class="withdrawalMain">
             <div class="withdrawalHeader">
                 <div class="withdrawalTip">
-                    <img src="../../assets/images/pointLeftIcon.png">左右滑动切换提现方式
-                    <img src="../../assets/images/pointRightIcon.png">
+                    <img src="../../assets/images/pointLeftIcon.png" />左右滑动切换提现方式
+                    <img src="../../assets/images/pointRightIcon.png" />
                 </div>
                 <mt-swipe :auto="0" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in renderData.balanceList" :key="index">
@@ -54,7 +54,7 @@
                             v-model="queryData.cashWithdrawal.money"
                             type="tel"
                             placeholder="请输入提现金额"
-                        >
+                        />
                     </div>
                 </div>
                 <!-- 提现账户信息 -->
@@ -81,7 +81,8 @@
         </div>
         <!-- 确认提现 -->
         <div class="footerBtnMain">
-            <mt-button type="primary" @click="confirmCashWithdrawal">{{confirm}}</mt-button>
+            <!-- <mt-button type="primary" @click="confirmCashWithdrawal">{{confirm}}</mt-button> -->
+            <mt-button type="primary" @click="confirmCashWithdrawalCode">{{confirm}}</mt-button>
         </div>
     </div>
 </template>
@@ -94,13 +95,20 @@ export default {
         return {
             confirm: "确认提现",
             isBinding: true,
+            confirmCashWithdrawalCodeStatus: false,
+            confirmCashWithdrawalCodeNum: "",
+            confirmCashWithdrawalCodeMax: 4,
             renderData: {
                 balanceList: [],
                 drawInfo: {},
                 bankInfo: {},
-                mattersNeedingAttention: {}
+                mattersNeedingAttention: {},
+                confirmCashWithdrawalCode: {
+                    code: ""
+                }
             },
             queryData: {
+                confirmCashWithdrawalCode: {},
                 balanceList: {
                     requestType: "spendinginto",
                     requestKeywords: "cashbalance",
@@ -297,6 +305,16 @@ export default {
                 this.$router.push("/changeCard");
             }
         },
+        confirmCashWithdrawalCode() {
+            alert("提现");
+            getServer(this.queryData.confirmCashWithdrawalCode).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.confirmCashWithdrawalCodeStatus = true
+                } else {
+                    Toast(response[res.data.responseStatus]);
+                }
+            });
+        },
         inpVerification() {
             this.queryData.cashWithdrawal.money = this.queryData.cashWithdrawal.money.replace(
                 /[^\d.]/g,
@@ -322,6 +340,14 @@ export default {
                 /^(\-)*(\d+)\.(\d\d).*$/,
                 "$1$2.$3"
             );
+        },
+        changeCode() {
+            if( parseInt(this.confirmCashWithdrawalCodeNum.length) >= parseInt(this.confirmCashWithdrawalCodeMax) ) {
+                this.confirmCashWithdrawalCodeStatus = false
+                if( parseInt(this.renderData.confirmCashWithdrawalCode) !== parseInt(this.confirmCashWithdrawalCodeNum) ) {
+                    Toast("验证码输入有误！")
+                }
+            }
         }
     },
     created() {

@@ -3,29 +3,66 @@
 <template>
     <div class="footerNavbar">
         <div class="footerNavMain flex line_top">
-            <div class="footerNavItem" :class="{'active': selected === '/home'}" @click="switchTo('/home')">
-               <img :src="selected == '/home' ? footer.index.imgActive : footer.index.img"> {{footer.index.title}}
+            <div
+                class="footerNavItem"
+                :class="{'active': selected === '/home'}"
+                @click="switchTo('/home')"
+            >
+                <img :src="selected == '/home' ? footer.index.imgActive : footer.index.img" />
+                {{footer.index.title}}
             </div>
-            <div class="footerNavItem" :class="{'active': selected === '/dataCenter'}" @click="switchTo('/dataCenter')">
-                <img :src="selected == '/dataCenter' ? footer.data.imgActive : footer.data.img"> {{footer.data.title}}
+            <div
+                class="footerNavItem"
+                :class="{'active': selected === '/dataCenter'}"
+                @click="switchTo('/dataCenter')"
+            >
+                <img :src="selected == '/dataCenter' ? footer.data.imgActive : footer.data.img" />
+                {{footer.data.title}}
             </div>
-            <div class="footerNavItem" id="share" :class="{'active': selected === '/share'}" @click="switchTo('/share')">
-                <img :src="footer.share.imgActive"> {{footer.share.title}}
+            <div
+                class="footerNavItem"
+                id="share"
+                :class="{'active': selected === '/share'}"
+                @click="switchTo('/share')"
+            >
+                <img :src="footer.share.imgActive" />
+                {{footer.share.title}}
             </div>
-            <div class="footerNavItem" :class="{'active': selected === '/message'}" @click="switchTo('/message')">
-                <img :src="selected == '/message' ? footer.news.imgActive : footer.news.img"> {{footer.news.title}}
+
+            <div
+                class="footerNavItem"
+                :class="{'active': selected === '/message'}"
+                @click="switchTo('/message')"
+            >
+                <el-badge
+                    :value="renderData.rnum"
+                    :hidden="renderData.rnum == 0"
+                    :max="99"
+                    class="item"
+                >
+                    <img :src="selected == '/message' ? footer.news.imgActive : footer.news.img" />
+                    {{footer.news.title}}
+                </el-badge>
             </div>
-            <div class="footerNavItem" :class="{'active': selected === '/mine'}" @click="switchTo('/mine')">
-                <img :src="selected == '/mine' ? footer.my.imgActive : footer.my.img"> {{footer.my.title}}
+
+            <div
+                class="footerNavItem"
+                :class="{'active': selected === '/mine'}"
+                @click="switchTo('/mine')"
+            >
+                <img :src="selected == '/mine' ? footer.my.imgActive : footer.my.img" />
+                {{footer.my.title}}
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { getServer } from "@/api/index";
 export default {
     data() {
         return {
+            msgStatus: true,
             selected: this.$route.path,
             footer: {
                 index: {
@@ -53,16 +90,35 @@ export default {
                     img: require("@/assets/images/footer04.png"),
                     imgActive: require("@/assets/images/footer04_active.png")
                 }
+            },
+            queryData: {
+                msg: {
+                    requestType: "messagemanage",
+                    requestKeywords: "totalnotnum",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                }
+            },
+            renderData: {
+                rnum: 0
             }
         };
     },
-    components: {
-        
-    },
+    components: {},
     methods: {
+        msg() {
+            this.$store
+            .dispatch("getMsgNum", this.queryData.msg)
+            .then(() => {
+                // location.reload();
+                this.renderData.rnum = this.$store.state.msg.msgNum
+                this.msgStatus = false
+            });
+        },
         switchTo(path) {
             // this.$set(this.selected, path);
-            this.selected = path
+            this.selected = path;
             this.$router.replace(path);
         }
     },
@@ -74,23 +130,26 @@ export default {
         //     deep: true,
         // }
     },
-    created() {},
-   
+    created() {
+        if(this.msgStatus) {
+           this.msg();
+        }
+    }
 };
 </script>
 
 <style>
-.footerNavbar{
+.footerNavbar {
     padding-top: 0.28rem;
     position: fixed;
     width: 100%;
     left: 0;
     bottom: 0;
     background: #fff;
-    z-index:999999;
+    z-index: 999999;
 }
 .active {
-    color:#089cfe;
+    color: #089cfe;
 }
 .bp16 {
     padding-bottom: 1.6rem;
@@ -142,12 +201,12 @@ export default {
 .footerNavItem {
     font-size: 12px;
     text-align: center;
-    padding-top:10px;
+    padding-top: 10px;
 }
 .footerNavItem img {
     /* width: 20px;
     height: 20px; */
-    width: .4rem;
+    width: 0.4rem;
     display: block;
     margin: 0 auto 7px;
 }

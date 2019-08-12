@@ -50,7 +50,7 @@ export default {
                     userPhone: this.$store.state.user.uphone,
                     name: "",
                     idcard: ""
-                }
+                },
             }
         };
     },
@@ -71,16 +71,22 @@ export default {
                Toast('身份证号格式不规范');
                return;
             }
-            getServer(this.queryData.realNameCer).then(res => {
-                if (res.data.responseStatus === 1) {
-                    Toast("实名认证成功");
-                    setTimeout(() => {
-                        this.$router.push({name: "certificationNext"});
-                    }, 300);
-                } else {
-                    Toast(response[res.data.responseStatus]);
-                }
-            });
+            sessionStorage.setItem('name', JSON.stringify(this.queryData.realNameCer.name))
+            sessionStorage.setItem('idcard', JSON.stringify(this.queryData.realNameCer.idcard))
+             this.$router.push({ 
+                name: "smsVerification",
+                params: {state: "add" }
+            })
+            // getServer(this.queryData.realNameCer).then(res => {
+            //     if (res.data.responseStatus === 1) {
+            //         Toast("实名认证成功");
+            //         setTimeout(() => {
+            //             this.$router.push({name: "certificationNext"});
+            //         }, 300);
+            //     } else {
+            //         Toast(response[res.data.responseStatus]);
+            //     }
+            // });
         }
     },
     created() {

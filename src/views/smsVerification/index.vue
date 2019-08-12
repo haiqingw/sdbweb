@@ -29,6 +29,7 @@
                 <em @click="getVerify">{{time}}{{time==="重新获取"?'':'s'}}</em>
             </div>
         </div>
+     
     </div>
 </template>
 <script>
@@ -37,8 +38,8 @@ export default {
     data() {
         return {
             code: "",
-            time:60,
-            flag:false
+            time: 60,
+            flag: false
         };
     },
     methods: {
@@ -48,39 +49,40 @@ export default {
         showModelTip() {
             Dialog.alert({
                 title: "提示",
-                message: "短信收不到，请在倒计时结束后点击下方重新获取，或者返回重新操作！"
+                message:
+                    "短信收不到，请在倒计时结束后点击下方重新获取，或者返回重新操作！"
             }).then(() => {
                 // on close
             });
         },
-        timerFn(){
-           var timer = setInterval(()=>{
-               this.time--;
-               if(this.time == 0){
-                   clearInterval(timer);
-                   this.time = "重新获取"
-                   this.flag = true
-               }
-           },1000)
+        timerFn() {
+            var timer = setInterval(() => {
+                this.time--;
+                if (this.time == 0) {
+                    clearInterval(timer);
+                    this.time = "重新获取";
+                    this.flag = true;
+                }
+            }, 1000);
         },
         //重新获取验证码
-        getVerify(){
-          if(this.flag){
-              this.time=60;
-              
-              this.timerFn();
-          }
-          this.flag = false
+        getVerify() {
+            if (this.flag) {
+                this.time = 60;
+
+                this.timerFn();
+            }
+            this.flag = false;
         }
     },
-    watch:{
-      code:function(){
-          if(this.code.length==4){
-              alert('验证码为：'+ this.code);
-          }
-      }  
+    watch: {
+        code: function() {
+            if (this.code.length == 4) {
+                alert("验证码为：" + this.code);
+            }
+        }
     },
-    created(){
+    created() {
         this.timerFn();
     }
 };
@@ -142,4 +144,5 @@ export default {
         color: #f33;
     }
 }
+
 </style>

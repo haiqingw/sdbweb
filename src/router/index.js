@@ -417,6 +417,11 @@ export default new Router({
         path: "/smsVerification",
         name: 'smsVerification',
         component: resolve => require(['@/views/smsVerification'], resolve),
+    },
+    {
+      path: "/puponVerify",  //安全验证弹窗
+      name: 'puponVerify',
+      component: resolve => require(['@/views/puponVerify'], resolve),
     }
   ]
 })

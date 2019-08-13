@@ -91,8 +91,8 @@ export default {
     },
     methods: {
         sendCode() {
-            clearInterval(this.clearIntervalStatus)
-            this.timerFn()
+            clearInterval(this.clearIntervalStatus);
+            this.timerFn();
             getServer(this.queryData.sendCode).then(res => {
                 if (res.data.responseStatus === 1) {
                     this.renderData.code = res.data.verify;
@@ -148,8 +148,8 @@ export default {
         },
         //重新获取验证码
         getVerify() {
-            this.sendCode();
             if (this.time == "重新获取") {
+                this.sendCode();
                 this.flag = true;
                 if (this.flag) {
                     this.time = 60;
@@ -174,12 +174,11 @@ export default {
         code: function() {
             if (this.code.length == 6) {
                 if (parseInt(this.code) === parseInt(this.renderData.code)) {
-                    if(this.$route.params.state === "add") {
+                    if (this.$route.params.state === "add") {
                         this.submitModification();
-                    } else if(this.$route.params.state === "bindCer") {
-                        this.submitModificationCer()
+                    } else if (this.$route.params.state === "bindCer") {
+                        this.submitModificationCer();
                     }
-                   
                 } else {
                     Toast("验证码有误！");
                 }

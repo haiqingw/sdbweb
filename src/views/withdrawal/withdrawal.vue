@@ -290,7 +290,7 @@ export default {
         },
         confirmCashWithdrawal() {
             this.time = 60;
-            clearInterval(this.clearIntervalStatus)
+            clearInterval(this.clearIntervalStatus);
             if (this.confirm === "确认提现") {
                 getServer(this.queryData.balanceList)
                     .then(res => {
@@ -437,8 +437,8 @@ export default {
         },
         //重新获取验证码
         getVerify() {
-            this.getVerifyCodeFn();
             if (this.time == "重新获取") {
+                this.getVerifyCodeFn();
                 this.flag = true;
                 if (this.flag) {
                     this.time = 60;

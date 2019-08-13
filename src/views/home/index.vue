@@ -341,7 +341,9 @@ export default {
     },
     methods: {
         clickBanner(url){
-            
+            if(url) {
+                window.location.href = url
+            }
         },
         loanHref() {
             window.location.href =

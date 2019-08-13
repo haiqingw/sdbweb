@@ -255,12 +255,12 @@ export default {
                                     name: "serverMoneyRechargeOwn"
                                 });
                             } else {
-                                // this.$router.push({
-                                //     name: url
-                                // });
                                 this.$router.push({
-                                    name: "certificationNext"
+                                    name: url
                                 });
+                                // this.$router.push({
+                                //     name: "certification"
+                                // });
                             }
                         } else {
                             Indicator.close();

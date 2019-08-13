@@ -422,6 +422,16 @@ export default new Router({
       path: "/puponVerify",  //安全验证弹窗
       name: 'puponVerify',
       component: resolve => require(['@/views/puponVerify'], resolve),
+    },
+    {
+        path: "/myBusiness",  //我的商户
+        name: 'myBusiness',
+        component: resolve => require(['@/views/myBusiness'], resolve),
+    }, 
+    {
+      path: "/adDetail", //广告位详情
+      name: 'adDetail',
+      component: resolve => require(['@/views/adDetail'], resolve),
     }
   ]
 })

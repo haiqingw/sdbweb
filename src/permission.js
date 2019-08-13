@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid', '/accountNumber-cancellation', '/puponVerify']
+const whiteList = ['/login', '/forgetPassword', '/forgetPasswordNext', '/loginoid', '/accountNumber-cancellation']
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 

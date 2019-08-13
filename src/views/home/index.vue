@@ -112,6 +112,16 @@
                         <router-link to="/myTerminal">我的终端</router-link>
                     </div>
                 </li>
+                  <li>
+                    <div class="img">
+                        <router-link to="/myBusiness">
+                            <img src="@/assets/images/indexBtn15.png" alt />
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/myBusiness">我的商户</router-link>
+                    </div>
+                </li>
                 <li v-if="renderData.info.level != 2 && renderData.isChecke == 1">
                     <div class="img">
                         <router-link to="/application-agent">
@@ -229,6 +239,7 @@
                         <a href="javascript:;">在线贷款</a>
                     </div>
                 </li>
+               
             </ul>
         </div>
         <Footer></Footer>
@@ -380,7 +391,6 @@ export default {
         },
         bannerList() {
             getServer(this.queryData.bannerData).then(res => {
-                alert(JSON.stringify(res.data.data))
                 // console.log(res);
                 this.bannerLength = res.data.data.length;
                 this.bannerListData = res.data.data;

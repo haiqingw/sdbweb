@@ -298,3 +298,27 @@ footer a p {
 .mint-loadmore-top {
   font-size: 14px;
 }
+/* flex布局 */
+.ren-flex,
+.ren-flex-sb,
+.ren-flex-sa,
+.ren-flex-ac,
+.ren-flex-ce {
+  display: flex;
+}
+
+.ren-flex-sb {
+  justify-content: space-between;
+}
+
+.ren-flex-sa {
+  justify-content: space-around;
+}
+
+.ren-flex-ce {
+  justify-content: center;
+}
+
+.ren-flex-ac {
+  align-items: center;
+}

@@ -8,6 +8,7 @@
                         v-bind:item="item"
                         v-bind:index="index"
                         v-bind:key="item.id"
+                        @click="clickBanner(item.picUrl)"
                     >
                         <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner" />
                     </van-swipe-item>
@@ -339,6 +340,9 @@ export default {
         ...mapGetters(["islogin"])
     },
     methods: {
+        clickBanner(url){
+            
+        },
         loanHref() {
             window.location.href =
                 "https://m.rong360.com/hehuoren/wechat/hhrtpl/applyNew?partner_id=12443774&wx_user_id=1235632&spread=p_list&utm_source=wxgzh&utm_medium=hehuoren&_js_r=%2523%252Fproductlist&_js_r_r=1#/productlist";
@@ -376,6 +380,7 @@ export default {
         },
         bannerList() {
             getServer(this.queryData.bannerData).then(res => {
+                alert(JSON.stringify(res.data.data))
                 // console.log(res);
                 this.bannerLength = res.data.data.length;
                 this.bannerListData = res.data.data;

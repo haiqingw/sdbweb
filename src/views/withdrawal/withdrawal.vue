@@ -147,6 +147,7 @@ export default {
             flag: false,
             serverVerifyCode: "4567",
             btnClassStatus: false,
+            clearIntervalStatus: null,
             renderData: {
                 balanceList: [],
                 drawInfo: {},
@@ -288,6 +289,8 @@ export default {
             }
         },
         confirmCashWithdrawal() {
+            this.time = 60;
+            clearInterval(this.clearIntervalStatus)
             if (this.confirm === "确认提现") {
                 getServer(this.queryData.balanceList)
                     .then(res => {
@@ -337,7 +340,7 @@ export default {
                             return;
                         }
                         this.showPupon();
-                        this.info()
+                        this.info();
                     });
             } else if (this.confirm === "绑定银行卡") {
                 this.$router.push("/changeCard");
@@ -366,6 +369,9 @@ export default {
                     this.serverVerifyCode = res.data.verify;
                 } else {
                     Toast(response[res.data.responseStatus]);
+                    clearInterval(this.clearIntervalStatus);
+                    this.time = "重新获取";
+                    this.flag = false;
                 }
             });
         },
@@ -382,7 +388,7 @@ export default {
                 return;
             }
             //询问是否提现
-            this.puponShow = false
+            this.puponShow = false;
             MessageBox.confirm("你确定要提现吗?", "提现")
                 .then(action => {
                     getServer(this.queryData.cashWithdrawal).then(res => {
@@ -404,6 +410,9 @@ export default {
         },
         closePuponFn() {
             this.puponShow = false;
+            this.time = 60;
+            clearInterval(this.clearIntervalStatus);
+            this.code = "";
         },
         showModelTip() {
             Dialog.alert({
@@ -415,10 +424,12 @@ export default {
             });
         },
         timerFn() {
-            var timer = setInterval(() => {
-                this.time--;
+            this.clearIntervalStatus = setInterval(() => {
+                if (this.time !== "重新获取") {
+                    this.time--;
+                }
                 if (this.time == 0) {
-                    clearInterval(timer);
+                    clearInterval(this.clearIntervalStatus);
                     this.time = "重新获取";
                     this.flag = true;
                 }
@@ -426,11 +437,15 @@ export default {
         },
         //重新获取验证码
         getVerify() {
-            if (this.flag) {
-                this.time = 60;
-
-                this.timerFn();
+            this.getVerifyCodeFn();
+            if (this.time == "重新获取") {
+                this.flag = true;
+                if (this.flag) {
+                    this.time = 60;
+                    this.timerFn();
+                }
             }
+
             this.flag = false;
         },
         inpVerification() {

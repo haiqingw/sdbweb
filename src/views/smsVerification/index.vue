@@ -45,6 +45,7 @@ export default {
             code: "",
             time: 60,
             flag: false,
+            clearIntervalStatus: null,
             queryData: {
                 realNameCer: {
                     requestType: "operating",
@@ -90,17 +91,20 @@ export default {
     },
     methods: {
         sendCode() {
+            clearInterval(this.clearIntervalStatus)
+            this.timerFn()
             getServer(this.queryData.sendCode).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.code = res.data.verify;
+                    this.renderData.code = res.data.verify;
                 } else {
                     Toast(response[res.data.responseStatus]);
+                    clearInterval(this.clearIntervalStatus);
+                    this.time = "重新获取";
+                    this.flag = false;
                 }
             });
         },
         submitModification() {
-            this.submitModification();
-            return
             getServer(this.queryData.realNameCer).then(res => {
                 if (res.data.responseStatus === 1) {
                     Toast("实名认证成功");
@@ -131,10 +135,12 @@ export default {
             });
         },
         timerFn() {
-            var timer = setInterval(() => {
-                this.time--;
+            this.clearIntervalStatus = setInterval(() => {
+                if (this.time !== "重新获取") {
+                    this.time--;
+                }
                 if (this.time == 0) {
-                    clearInterval(timer);
+                    clearInterval(this.clearIntervalStatus);
                     this.time = "重新获取";
                     this.flag = true;
                 }
@@ -142,10 +148,13 @@ export default {
         },
         //重新获取验证码
         getVerify() {
-            if (this.flag) {
-                this.time = 60;
-
-                this.timerFn();
+            this.sendCode();
+            if (this.time == "重新获取") {
+                this.flag = true;
+                if (this.flag) {
+                    this.time = 60;
+                    this.timerFn();
+                }
             }
             this.flag = false;
         },
@@ -165,7 +174,12 @@ export default {
         code: function() {
             if (this.code.length == 6) {
                 if (parseInt(this.code) === parseInt(this.renderData.code)) {
-                    this.submitModification();
+                    if(this.$route.params.state === "add") {
+                        this.submitModification();
+                    } else if(this.$route.params.state === "bindCer") {
+                        this.submitModificationCer()
+                    }
+                   
                 } else {
                     Toast("验证码有误！");
                 }
@@ -192,7 +206,6 @@ export default {
                 sessionStorage.getItem("bankName")
             );
         }
-        this.timerFn();
         this.info();
         this.sendCode();
     }

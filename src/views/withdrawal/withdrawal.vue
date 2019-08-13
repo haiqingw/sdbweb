@@ -8,7 +8,7 @@
             <mt-button><router-link to="/withdrawalRecord" style="color:#fff;">提现记录</router-link></mt-button>
         </mt-header>-->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>提现</span>
             <router-link class="withdrawalRecord" to="/withdrawalRecord" style="color:#fff;">提现记录</router-link>
         </div>
@@ -16,8 +16,8 @@
         <div class="withdrawalMain">
             <div class="withdrawalHeader">
                 <div class="withdrawalTip">
-                    <img src="../../assets/images/pointLeftIcon.png">左右滑动切换提现方式
-                    <img src="../../assets/images/pointRightIcon.png">
+                    <img src="../../assets/images/pointLeftIcon.png" />左右滑动切换提现方式
+                    <img src="../../assets/images/pointRightIcon.png" />
                 </div>
                 <mt-swipe :auto="0" @change="handleChange">
                     <mt-swipe-item v-for="(item,index) in renderData.balanceList" :key="index">
@@ -34,7 +34,11 @@
                                 </span>
                                 <em>结算方式：{{item.method}}</em>
                             </div>
-                            <a href="javascript:;" v-if="isBinding" @click="allWithdrawal(item.ktx)">全部提现</a>
+                            <a
+                                href="javascript:;"
+                                v-if="isBinding"
+                                @click="allWithdrawal(item.ktx)"
+                            >全部提现</a>
                         </div>
                     </mt-swipe-item>
                 </mt-swipe>
@@ -45,7 +49,12 @@
                 <div class="withdrawalMoney">
                     <h3 class="withdrawalTitle">提现金额</h3>
                     <div class="line_bottom">
-                        <input @blur="inpVerification" v-model="queryData.cashWithdrawal.money" type="tel" placeholder="请输入提现金额">
+                        <input
+                            @blur="inpVerification"
+                            v-model="queryData.cashWithdrawal.money"
+                            type="tel"
+                            placeholder="请输入提现金额"
+                        />
                     </div>
                 </div>
                 <!-- 提现账户信息 -->
@@ -72,25 +81,30 @@
         </div>
         <!-- 确认提现 -->
         <div class="footerBtnMain">
+            <!-- <mt-button type="primary" @click="confirmCashWithdrawal">{{confirm}}</mt-button> -->
             <mt-button type="primary" @click="confirmCashWithdrawal">{{confirm}}</mt-button>
         </div>
         <!-- 弹窗验证 -->
         <div class="overlazyR" v-if="puponShow"></div>
         <div class="puponVerifyMain" v-if="puponShow">
             <a href="javascript:;" class="closeBtn" @click="closePuponFn">
-                <img src="@/assets/images/closeBtnIcon.png" alt="关闭">
+                <img src="@/assets/images/closeBtnIcon.png" alt="关闭" />
             </a>
             <h3>安全验证</h3>
             <div class="bankInfoMain">
-                <h4><img src="@/assets/images/rightArrIcon.png" />{{renderData.bankInfo.names}}</h4>
+                <h4>
+                    <img src="@/assets/images/rightArrIcon.png" />
+                    {{renderData.bankInfo.names}}
+                </h4>
                 <h4>{{renderData.bankInfo.bankName}}(尾号{{renderData.bankInfo.cardNum}})</h4>
             </div>
             <div class="moneyNumMain">
-                <em>￥</em>{{this.queryData.cashWithdrawal.money}}
+                <em>￥</em>
+                {{this.queryData.cashWithdrawal.money}}
             </div>
             <div class="pvPhoneBox">
                 为了您的资金安全，请输入发送到以下电话号码的验证码：
-                <span>132****5340</span>
+                <span>{{renderData.info.phone}}</span>
             </div>
             <div class="pvInputBox">
                 <div class="verificationCodeBox flex">
@@ -101,17 +115,19 @@
                     <div class="inputCodeItem" :class="code[4]?'active':''">{{code[4]}}</div>
                     <div class="inputCodeItem" :class="code[5]?'active':''">{{code[5]}}</div>
                 </div>
-                <input v-model="code" maxlength="6" type="tel" autofocus="true">
+                <input v-model="code" maxlength="6" type="tel" autofocus="true" />
             </div>
-            <div class="tipMain" @click="showModelTip">
-                没有收到验证码？
-            </div>
+            <div class="tipMain" @click="showModelTip">没有收到验证码？</div>
             <div class="timerMain">
                 请稍后：
                 <em @click="getVerify">{{time}}{{time==="重新获取"?'':'s'}}</em>
             </div>
             <div class="confirmWithdrawMain">
-                <a href="javascript:;" :class="btnClassStatus ? 'active' : ''" @click="confirmWithdrawFn">确认提现</a>
+                <a
+                    href="javascript:;"
+                    :class="btnClassStatus ? 'active' : ''"
+                    @click="confirmWithdrawFn"
+                >确认提现</a>
             </div>
         </div>
     </div>
@@ -129,13 +145,16 @@ export default {
             code: "",
             time: 60,
             flag: false,
-            serverVerifyCode:'4567',
-            btnClassStatus:false,
+            serverVerifyCode: "4567",
+            btnClassStatus: false,
             renderData: {
                 balanceList: [],
                 drawInfo: {},
                 bankInfo: {},
-                mattersNeedingAttention: {}
+                mattersNeedingAttention: {},
+                info: {
+                    phone: ""
+                }
             },
             queryData: {
                 balanceList: {
@@ -172,6 +191,20 @@ export default {
                 mattersNeedingAttention: {
                     requestType: "personal",
                     requestKeywords: "getassets",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                getVerifyCodeFn: {
+                    requestType: "smsmanage",
+                    requestKeywords: "drawverifi",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                info: {
+                    requestType: "personal",
+                    requestKeywords: "getbusinfo",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -303,27 +336,53 @@ export default {
                             );
                             return;
                         }
-                        if (reg.test(this.queryData.cashWithdrawal.money)) {
-                            //短信验证
-                            this.puponShow = true;
-                            this.getVerifyCodeFn();  //获取验证码
-                        }
+                        this.showPupon();
+                        this.info()
                     });
             } else if (this.confirm === "绑定银行卡") {
                 this.$router.push("/changeCard");
             }
         },
-        confirmWithdrawFn(){
+        showPupon() {
+            this.puponShow = true;
+            this.getVerifyCodeFn(); //获取验证码
+        },
+        info() {
+            getServer(this.queryData.info).then(res => {
+                if (res.data.responseStatus === 1) {
+                    const reg = /^(\d{3})\d{4}(\d{4})$/;
+                    this.renderData.info.phone = res.data.data.phone.replace(
+                        reg,
+                        "$1****$2"
+                    );
+                }
+            });
+        },
+        getVerifyCodeFn() {
+            this.timerFn();
+            getServer(this.queryData.getVerifyCodeFn).then(res => {
+                if (res.data.responseStatus === 1) {
+                    // alert(JSON.stringify(res.data.verify))
+                    this.serverVerifyCode = res.data.verify;
+                } else {
+                    Toast(response[res.data.responseStatus]);
+                }
+            });
+        },
+        confirmWithdrawFn() {
+            // alert("执行")
             var inputCode = this.code.trim();
-            if(inputCode==''){
-              Toast("请输入验证码");
-              return; 
+            // alert(inputCode)
+            if (inputCode == "") {
+                Toast("请输入验证码");
+                return;
             }
-            if(inputCode != this.serverVerifyCode){
-              Toast("验证码不正确");
-              return;  
+            if (inputCode != this.serverVerifyCode) {
+                Toast("验证码不正确");
+                return;
             }
             //询问是否提现
+            this.puponShow = false
             MessageBox.confirm("你确定要提现吗?", "提现")
                 .then(action => {
                     getServer(this.queryData.cashWithdrawal).then(res => {
@@ -343,8 +402,8 @@ export default {
                     // this.reload()
                 });
         },
-        closePuponFn(){
-            this.puponShow = false
+        closePuponFn() {
+            this.puponShow = false;
         },
         showModelTip() {
             Dialog.alert({
@@ -401,13 +460,13 @@ export default {
             );
         }
     },
-     watch: {
+    watch: {
         code: function() {
             var inputCode = this.code.trim();
-            if (inputCode.length == 4) {
-              this.btnClassStatus = true  
-            }else{
-              this.btnClassStatus = false
+            if (inputCode.length == 6) {
+                this.btnClassStatus = true;
+            } else {
+                this.btnClassStatus = false;
             }
         }
     },
@@ -428,6 +487,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.mint-toast.is-placemiddle {
+    z-index: 999999999;
+}
 .withdrawalMain {
     padding: 40px 0;
 }
@@ -556,7 +618,7 @@ export default {
     bottom: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index:999;
+    z-index: 999;
 }
 .puponVerifyMain {
     position: fixed;
@@ -567,16 +629,16 @@ export default {
     background: #fff;
     padding: 0 0.3rem;
     box-sizing: border-box;
-    padding-bottom:0.4rem;
-    border-radius:0.1rem;
-    z-index:9999;
-    .closeBtn{
-        width:0.4rem;
-        height:0.4rem;
+    padding-bottom: 0.4rem;
+    border-radius: 0.1rem;
+    z-index: 9999;
+    .closeBtn {
+        width: 0.4rem;
+        height: 0.4rem;
         display: block;
-        position:absolute;
-        right:0.3rem;
-        top:0.3rem;
+        position: absolute;
+        right: 0.3rem;
+        top: 0.3rem;
     }
     > h3 {
         font-size: 0.4rem;
@@ -587,8 +649,8 @@ export default {
         font-size: 0.28rem;
         line-height: 0.4rem;
         padding-top: 0.3rem;
-        span{
-            font-weight:bold;
+        span {
+            font-weight: bold;
         }
     }
     .inputCodeItem {
@@ -616,35 +678,35 @@ export default {
             z-index: 999;
             opacity: 0;
         }
-        .verificationCodeBox{
-            justify-content:space-around;
+        .verificationCodeBox {
+            justify-content: space-around;
         }
     }
 }
-.bankInfoMain{
-    padding-top:0.3rem;
-    h4{
+.bankInfoMain {
+    padding-top: 0.3rem;
+    h4 {
         font-size: 0.28rem;
         line-height: 0.4rem;
         overflow: hidden;
-        img{
-            width:0.4rem;
-            height:0.4rem;
-            float:left;
-            margin-right:0.1rem;
+        img {
+            width: 0.4rem;
+            height: 0.4rem;
+            float: left;
+            margin-right: 0.1rem;
         }
-        &:last-of-type{
-            text-indent:0.5rem;
+        &:last-of-type {
+            text-indent: 0.5rem;
         }
     }
 }
-.moneyNumMain{
-    font-size:0.8rem;
-    padding-top:0.32rem;
-    text-align:center;
-    font-weight:bold;
-    em{
-        font-size:0.5rem;
+.moneyNumMain {
+    font-size: 0.8rem;
+    padding-top: 0.32rem;
+    text-align: center;
+    font-weight: bold;
+    em {
+        font-size: 0.5rem;
     }
 }
 .tipMain {
@@ -658,20 +720,20 @@ export default {
         color: #f33;
     }
 }
-.confirmWithdrawMain{
-    padding-top:0.4rem;
-    a{
-        height:0.8rem;
-        line-height:0.8rem;
-        text-align:center;
-        font-size:0.32rem;
-        border:1px solid #ccc;
-        display:block;
-        border-radius:0.8rem;
-        color:#ccc;
-        &.active{
-            color:#089cfe;
-            border-color:#089cfe;
+.confirmWithdrawMain {
+    padding-top: 0.4rem;
+    a {
+        height: 0.8rem;
+        line-height: 0.8rem;
+        text-align: center;
+        font-size: 0.32rem;
+        border: 1px solid #ccc;
+        display: block;
+        border-radius: 0.8rem;
+        color: #ccc;
+        &.active {
+            color: #089cfe;
+            border-color: #089cfe;
         }
     }
 }

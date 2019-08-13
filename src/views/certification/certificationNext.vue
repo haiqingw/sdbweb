@@ -164,14 +164,22 @@ export default {
             } else {
                 this.queryData.bindCardCer.bankName = this.$refs.bankName.value;
             }
-            // 提交数据
-            getServer(this.queryData.bindCardCer).then(res => {
-                if (res.data.responseStatus === 1) {
-                    this.$router.push({ name: "certificationComplete" });
-                } else {
-                    Toast(response[res.data.responseStatus]);
-                }
-            });
+            sessionStorage.setItem(
+                "bankName",
+                JSON.stringify(this.queryData.bindCardCer.bankName)
+            );
+            sessionStorage.setItem(
+                "cardNum",
+                JSON.stringify(this.queryData.bindCardCer.cardNum)
+            );
+            sessionStorage.setItem(
+                "phone",
+                JSON.stringify(this.queryData.bindCardCer.phone)
+            );
+            this.$router.push({ 
+                name: "smsVerification",
+                params: {state: "bindCer" }
+            })
         }
     },
     created() {

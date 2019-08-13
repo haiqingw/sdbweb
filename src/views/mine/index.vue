@@ -244,7 +244,7 @@ export default {
                                 // alert("公司")
                                 this.$router.push({
                                     name: "serverMoneyRechargeCompany"
-                                })
+                                });
                             } else if (
                                 this.isServerMoneyState &&
                                 this.rechargeType == 2
@@ -253,14 +253,17 @@ export default {
                                 // alert("自己")
                                 this.$router.push({
                                     name: "serverMoneyRechargeOwn"
-                                })
+                                });
                             } else {
+                                // this.$router.push({
+                                //     name: url
+                                // });
                                 this.$router.push({
-                                    name: url
+                                    name: "certificationNext"
                                 });
                             }
                         } else {
-                            Indicator.close()
+                            Indicator.close();
                             this.$router.push({
                                 name: "certificationNext"
                             });

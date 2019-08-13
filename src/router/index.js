@@ -414,7 +414,7 @@ export default new Router({
         component: resolve => require(['@/views/bookOrderList'], resolve),
     },
     {
-        path: "/smsVerification",
+        path: "/smsVerification/:state",
         name: 'smsVerification',
         component: resolve => require(['@/views/smsVerification'], resolve),
     },

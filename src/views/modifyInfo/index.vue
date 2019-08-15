@@ -3,7 +3,7 @@
         <!-- header -->
         <div class="return">
             <router-link to="/mine">
-                <img src="@/assets/images/return.png" alt>
+                <img src="@/assets/images/return.png" alt />
             </router-link>
             <span>修改个人信息</span>
         </div>
@@ -18,7 +18,7 @@
                         type="text"
                         placeholder="请填写您本人的真实姓名"
                         v-model="queryData.realNameCer.name"
-                    >
+                    />
                 </div>
             </div>
             <div class="itemTopTextMain">
@@ -28,7 +28,7 @@
                         type="text"
                         placeholder="请填写您本人的身份证号"
                         v-model="queryData.realNameCer.idcard"
-                    >
+                    />
                 </div>
             </div>
             <div class="submitBtnMain">
@@ -52,10 +52,8 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userPhone: this.$store.state.user.uphone
                 },
-                info: {
-                    
-                }
-            },
+                info: {}
+            }
         };
     },
     methods: {
@@ -80,20 +78,21 @@ export default {
                 Toast("身份证号格式不规范");
                 return;
             }
-            getServer(this.queryData.realNameCer).then(res => {
-                if (res.data.responseStatus === 1) {
-                    Toast("修改成功");
-                    setTimeout(() => {
-                        this.$router.push({ name: "mine" });
-                    }, 1000);
-                } else {
-                    Toast(response[res.data.responseStatus]);
-                }
+            sessionStorage.setItem(
+                "modifyName",
+                JSON.stringify(this.queryData.realNameCer.name)
+            );
+            sessionStorage.setItem(
+                "modifyidcard",
+                JSON.stringify(this.queryData.realNameCer.idcard)
+            );
+            this.$router.push({
+                name: "smsVerification",
+                params: { state: "modify" }
             });
         }
     },
-    created() {
-    }
+    created() {}
 };
 </script>
 <style lang="scss">

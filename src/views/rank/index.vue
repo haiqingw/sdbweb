@@ -6,7 +6,7 @@
                 <a href="javascript:;" class="rankHeaderLeftBtn" @click="$router.go(-1)"></a>
                 排行榜
                 <a href="javascript:;" class="rankHeaderRightBtn">{{selectItem}}</a>
-                <select v-model="byProduct.value" name id @change="changeSelect($event)">
+                <select v-model="selectItem" name id @change="changeSelect($event)">
                     <option
                         v-for="item in selectList"
                         :key="item.id"
@@ -256,7 +256,6 @@ export default {
                 // alert(JSON.stringify(res.data.data))
                 this.isServer = false;
                 Indicator.close();
-                // console.log(res.data.data.constructor === Array);
                 if (res.data.responseStatus === 1) {
                     this.isData = true;
                     this.isTheFirstThreeData = true;
@@ -264,7 +263,7 @@ export default {
                     res.data.data.forEach(item => {
                         this.renderData.list.push(item);
                     });
-                    this.renderData.theFirstThree = res.data.data.slice(0, 3);
+                    this.renderData.theFirstThree = this.renderData.list.slice(0, 3);
                     // alert(JSON.stringify(this.renderData.theFirstThree))
                 } else if (
                     res.data.responseStatus === 300 &&

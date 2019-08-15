@@ -168,6 +168,18 @@ export default {
                     );
                 }
             });
+        },
+        modify() {
+            getServer(this.queryData.realNameCer).then(res => {
+                if (res.data.responseStatus === 1) {
+                    Toast("修改成功");
+                    setTimeout(() => {
+                        this.$router.push({ name: "mine" });
+                    }, 1000);
+                } else {
+                    Toast(response[res.data.responseStatus]);
+                }
+            });
         }
     },
     watch: {
@@ -178,6 +190,8 @@ export default {
                         this.submitModification();
                     } else if (this.$route.params.state === "bindCer") {
                         this.submitModificationCer();
+                    }else if ( this.$route.params.state === "modify" ) {
+                        this.modify()
                     }
                 } else {
                     Toast("验证码有误！");
@@ -203,6 +217,13 @@ export default {
             );
             this.queryData.bindCardCer.bankName = JSON.parse(
                 sessionStorage.getItem("bankName")
+            );
+        } else if ( this.$route.params.state === "modify" ) {
+             this.queryData.realNameCer.name = JSON.parse(
+                sessionStorage.getItem("modifyName")
+            );
+            this.queryData.realNameCer.idcard = JSON.parse(
+                sessionStorage.getItem("modifyidcard")
             );
         }
         this.info();

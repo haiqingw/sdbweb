@@ -6,7 +6,7 @@
                 <a href="javascript:;" class="rankHeaderLeftBtn" @click="$router.go(-1)"></a>
                 排行榜
                 <a href="javascript:;" class="rankHeaderRightBtn">{{selectItem}}</a>
-                <select v-model="selectItem" name id @change="changeSelect($event)">
+                <select v-model="byProduct.value" name id @change="changeSelect($event)">
                     <option
                         v-for="item in selectList"
                         :key="item.id"
@@ -24,18 +24,31 @@
                     :options="options"
                 >
                     <div class="chartsMain">
-                        <h2 v-if="changeState">
-                            激活对比
-                            <em>单位：个</em>
-                        </h2>
-                        <h2 v-else>
-                            收益对比
-                            <em>单位：元</em>
-                        </h2>
+                        <div class="chartsMain-choice">
+                            <h2 v-if="changeState">
+                                激活对比
+                                <em>单位：个</em>
+                            </h2>
+                            <h2 v-else>
+                                收益对比
+                                <em>单位：元</em>
+                            </h2>
+                            <div class="rank-choice">
+                                <el-select v-model="byProduct.value" @change="changeSelectProduct">
+                                    <el-option
+                                        v-for="item in byProduct.options"
+                                        :key="item.proid"
+                                        :label="item.proname"
+                                        :value="item.proid"
+                                    ></el-option>
+                                </el-select>
+                            </div>
+                        </div>
                         <div class="chartMain">
                             <div id="myChart0" style="width:100% !important;height:220px"></div>
                         </div>
                     </div>
+
                     <!-- 前三甲 -->
                     <div class="YRankHeaderMain">
                         <div>
@@ -45,7 +58,8 @@
                                     <span>{{renderData.theFirstThree[1].busName}}</span>
                                     <span>{{renderData.theFirstThree[1].phone}}</span>
                                 </p>
-                                <em>激活{{renderData.theFirstThree[1].money}}个</em>
+                                <em v-if="changeState">激活{{renderData.theFirstThree[1].money}}个</em>
+                                <em v-else>收益{{renderData.theFirstThree[1].money}}元</em>
                             </div>
                             <div v-else>
                                 <em>暂无</em>
@@ -58,7 +72,8 @@
                                 <p>
                                     <span>{{renderData.theFirstThree[0].busName}}</span>
                                     <span>{{renderData.theFirstThree[0].phone}}</span>
-                                    <em>激活{{renderData.theFirstThree[0].money}}个</em>
+                                    <em v-if="changeState">激活{{renderData.theFirstThree[0].money}}个</em>
+                                    <em v-else>收益{{renderData.theFirstThree[1].money}}元</em>
                                 </p>
                             </div>
                             <div v-else>
@@ -78,7 +93,8 @@
                                     <span>{{renderData.theFirstThree[2].busName}}</span>
                                     <span>{{renderData.theFirstThree[2].phone}}</span>
                                 </p>
-                                <em>激活{{renderData.theFirstThree[2].money}}个</em>
+                                <em v-if="changeState">激活{{renderData.theFirstThree[2].money}}个</em>
+                                <em v-else>收益{{renderData.theFirstThree[1].money}}元</em>
                             </div>
                             <div v-else>
                                 <em>暂无</em>
@@ -105,7 +121,6 @@
                             </li>
                         </ul>
                     </div>
-
                     <div class="no-data" v-else>
                         <img src="@/assets/images/no-data.png" alt />
                     </div>
@@ -127,6 +142,10 @@ import { Indicator } from "mint-ui";
 export default {
     data() {
         return {
+            byProduct: {
+                options: [],
+                value: ""
+            },
             options: {
                 pullDownRefresh: {
                     threshold: 90,
@@ -159,21 +178,14 @@ export default {
             ],
             queryData: {
                 list: {
-                    // montranking 收益   actranking  激活
-                    // requestType: 'list',
-                    // requestKeywords: 'actranking',
-                    // platformID: this.$store.state.user.pid,
-                    // userID: this.$store.state.user.uid,
-                    // userPhone: this.$store.state.user.uphone,
-                    // page: 1,
-                    // limit: 10
                     requestType: "datamanage",
                     requestKeywords: "actranking",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 1,
-                    limit: 10
+                    limit: 10,
+                    productID: ""
                     // types: "" //选填 全部 传All 当月 不传
                 },
                 chart: {
@@ -181,7 +193,8 @@ export default {
                     requestKeywords: "incomeline",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
-                    userPhone: this.$store.state.user.uphone
+                    userPhone: this.$store.state.user.uphone,
+                    productID: ""
                 },
                 own: {
                     requestType: "datamanage",
@@ -189,6 +202,11 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                productList: {
+                    requestType: "Datamanage",
+                    requestKeywords: "productlist",
+                    platformID: this.$store.state.user.pid
                 }
             },
             renderData: {
@@ -303,7 +321,7 @@ export default {
                 this.queryData.list.requestKeywords = "actranking";
                 this.list();
                 this.chart();
-                this.scrollTo9;
+                this.scrollTo();
             } else if (e.target.value === "当月收益") {
                 this.changeState = false;
                 // alert("收益")
@@ -312,6 +330,17 @@ export default {
                 this.chart();
                 this.scrollTo();
             }
+        },
+        changeSelectProduct() {
+            if (this.isData) {
+                this.scrollTo();
+            }
+            this.queryData.list.productID = this.byProduct.value;
+            this.queryData.chart.productID = this.byProduct.value;
+            this.renderData.list = [];
+            this.queryData.list.page = 1;
+            this.list();
+            this.chart();
         },
         drawLine(monthData, moneyData) {
             let $selecter = document.getElementById("myChart0");
@@ -356,20 +385,66 @@ export default {
                     }
                 ]
             });
+        },
+        productlist() {
+            getServer(this.queryData.productList).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.byProduct.options = res.data.data;
+                    this.byProduct.value = res.data.data[0].proname;
+                    this.queryData.chart.productID = res.data.data[0].proid;
+                    this.queryData.list.productID = res.data.data[0].proid;
+                    this.chart();
+                    this.drawLine(this.monthData, this.moneyData);
+                    this.list();
+                }
+            });
         }
     },
     created() {
         // this.drawLine(this.monthData, this.moneyData);
-        this.list();
     },
     mounted() {
-        this.chart();
         this.selectItem = this.selectList[0].title;
-        this.drawLine(this.monthData, this.moneyData);
+        this.productlist();
     }
 };
 </script>
 <style lang="scss">
+.chartsMain-choice {
+    overflow: hidden;
+}
+.chartsMain {
+    background: #089cfe;
+    h2 {
+        margin-left: 0.2rem;
+        padding-top: 0.23rem;
+        text-align: center;
+        font-size: 16px;
+        color: #fff;
+        float: left;
+        em {
+            font-size: 12px;
+            padding-left: 10px;
+        }
+    }
+}
+.rank-choice {
+    background: none;
+    color: #fff;
+    width: 3.5rem;
+    float: right;
+}
+.rank-choice .el-input input {
+    color: #fff;
+}
+.rank-choice .el-input--suffix .el-input__inner {
+    background: none;
+    border: none;
+    color: #fff;
+}
+.rank-choice .el-select .el-input .el-select__caret {
+    color: #fff;
+}
 .rank .no-data {
     margin-top: 1.5rem;
 }
@@ -618,18 +693,6 @@ b.rightArrBg {
         width: 100px;
         z-index: 999;
         opacity: 0;
-    }
-}
-.chartsMain {
-    background: #089cfe;
-    h2 {
-        text-align: center;
-        font-size: 16px;
-        color: #fff;
-        em {
-            font-size: 12px;
-            padding-left: 10px;
-        }
     }
 }
 </style>

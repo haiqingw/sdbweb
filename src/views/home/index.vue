@@ -213,6 +213,16 @@
                         <router-link to="/bookOrderList">订货订单</router-link>
                     </div>
                 </li>
+                 <li>
+                    <div class="img">
+                        <router-link to="/myBusiness">
+                            <img src="@/assets/images/indexBtn15.png" alt />
+                        </router-link>
+                    </div>
+                    <div class="text">
+                        <router-link to="/bookOrderList">我的商户</router-link>
+                    </div>
+                </li>
                 <li v-if="likeStatus" @click="cardHref">
                     <div class="img">
                         <img src="@/assets/images/indexBtn13.png" alt />

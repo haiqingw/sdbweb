@@ -53,7 +53,7 @@
                     <div class="YRankHeaderMain">
                         <div>
                             <img src="@/assets/images/twoIcon.png" alt="第二名" />
-                            <div v-if="isTheFirstThreeData">
+                            <div v-if="isTheFirstThreeData && renderData.list.length >= 2">
                                 <p>
                                     <span>{{renderData.theFirstThree[1].busName}}</span>
                                     <span>{{renderData.theFirstThree[1].phone}}</span>
@@ -68,7 +68,7 @@
                         </div>
                         <div>
                             <img src="@/assets/images/oneIcon.png" alt="第一名" />
-                            <div v-if="isTheFirstThreeData">
+                            <div v-if="isTheFirstThreeData && renderData.list.length >= 1">
                                 <p>
                                     <span>{{renderData.theFirstThree[0].busName}}</span>
                                     <span>{{renderData.theFirstThree[0].phone}}</span>
@@ -88,7 +88,7 @@
                         </div>
                         <div>
                             <img src="@/assets/images/threeIcon.png" alt="第三名" />
-                            <div v-if="isTheFirstThreeData">
+                            <div v-if="isTheFirstThreeData && renderData.list.length >= 3">
                                 <p>
                                     <span>{{renderData.theFirstThree[2].busName}}</span>
                                     <span>{{renderData.theFirstThree[2].phone}}</span>
@@ -180,9 +180,12 @@ export default {
                 list: {
                     requestType: "datamanage",
                     requestKeywords: "actranking",
-                    platformID: this.$store.state.user.pid,
-                    userID: this.$store.state.user.uid,
-                    userPhone: this.$store.state.user.uphone,
+                    // platformID: this.$store.state.user.pid,
+                    // userID: this.$store.state.user.uid,
+                    // userPhone: this.$store.state.user.uphone,
+                    platformID: "215",
+                    userID: "82c915bca7537ef11265aa134511f272",
+                    userPhone: "MsTjgf3wNpDogrxwMeDjYc3lOaTmglO0O0Om",
                     page: 1,
                     limit: 10,
                     productID: ""
@@ -206,7 +209,8 @@ export default {
                 productList: {
                     requestType: "Datamanage",
                     requestKeywords: "productlist",
-                    platformID: this.$store.state.user.pid
+                    // platformID: this.$store.state.user.pid
+                    platformID: "215",
                 }
             },
             renderData: {
@@ -250,21 +254,23 @@ export default {
         list() {
             Indicator.open();
             getServer(this.queryData.list).then(res => {
-                // alert(JSON.stringify(res.data.responseStatus))
                 Indicator.close();
-                // alert(response[res.data.responseStatus])
-                // alert(JSON.stringify(res.data.data))
                 this.isServer = false;
                 Indicator.close();
                 if (res.data.responseStatus === 1) {
                     this.isData = true;
                     this.isTheFirstThreeData = true;
-                    // this.renderData.list = res.data.data;
                     res.data.data.forEach(item => {
                         this.renderData.list.push(item);
                     });
-                    this.renderData.theFirstThree = this.renderData.list.slice(0, 3);
-                    // alert(JSON.stringify(this.renderData.theFirstThree))
+                    // JSON.stringify(this.renderData.list)
+                    if( this.renderData.list.length === 1 ) {
+                        this.renderData.theFirstThree = this.renderData.list.slice(0, 3);
+                    } else if( this.renderData.list.length === 2 ) {
+                        this.renderData.theFirstThree = this.renderData.list.slice(0, 2);
+                    } else {
+                        this.renderData.theFirstThree = this.renderData.list.slice(0, 3);
+                    }
                 } else if (
                     res.data.responseStatus === 300 &&
                     this.queryData.list.page !== 1
@@ -300,7 +306,6 @@ export default {
                 this.queryData.chart.requestKeywords = "incomeline";
             }
             getServer(this.queryData.chart).then(res => {
-                // alert(response[res.data.responseStatus])
                 if (res.data.responseStatus === 1) {
                     this.monthData = res.data.dates;
                     this.moneyData = res.data.sums;

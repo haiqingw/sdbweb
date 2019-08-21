@@ -3,7 +3,7 @@
     <div>
         <div class="logo">
             <!-- <img src="@/assets/images/logo.png" alt=""> -->
-            <img :src="renderData.merchantInfo.qrcodeLogeUrl" alt>
+            <img :src="renderData.merchantInfo.qrcodeLogeUrl" alt />
         </div>
         <div class="login-from">
             <el-form :model="formData" :rules="loginRules" ref="loginForm" class="demo-ruleForm">
@@ -137,7 +137,7 @@ export default {
         }
         this.merchantInfo();
         this.merchantInfoTitle();
-    }
+    },
 };
 </script>
 

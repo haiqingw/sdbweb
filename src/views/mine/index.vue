@@ -305,7 +305,7 @@ export default {
         this.thaw();
         this.info();
         this.isShowAdvertisement();
-    }
+    },
 };
 </script>
 <style lang="scss">

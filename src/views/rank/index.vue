@@ -73,7 +73,7 @@
                                     <span>{{renderData.theFirstThree[0].busName}}</span>
                                     <span>{{renderData.theFirstThree[0].phone}}</span>
                                     <em v-if="changeState">激活{{renderData.theFirstThree[0].money}}个</em>
-                                    <em v-else>收益{{renderData.theFirstThree[1].money}}元</em>
+                                    <em v-else>收益{{renderData.theFirstThree[0].money}}元</em>
                                 </p>
                             </div>
                             <div v-else>
@@ -94,7 +94,7 @@
                                     <span>{{renderData.theFirstThree[2].phone}}</span>
                                 </p>
                                 <em v-if="changeState">激活{{renderData.theFirstThree[2].money}}个</em>
-                                <em v-else>收益{{renderData.theFirstThree[1].money}}元</em>
+                                <em v-else>收益{{renderData.theFirstThree[2].money}}元</em>
                             </div>
                             <div v-else>
                                 <em>暂无</em>
@@ -180,12 +180,9 @@ export default {
                 list: {
                     requestType: "datamanage",
                     requestKeywords: "actranking",
-                    // platformID: this.$store.state.user.pid,
-                    // userID: this.$store.state.user.uid,
-                    // userPhone: this.$store.state.user.uphone,
-                    platformID: "215",
-                    userID: "82c915bca7537ef11265aa134511f272",
-                    userPhone: "MsTjgf3wNpDogrxwMeDjYc3lOaTmglO0O0Om",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
                     page: 1,
                     limit: 10,
                     productID: ""
@@ -210,7 +207,7 @@ export default {
                     requestType: "Datamanage",
                     requestKeywords: "productlist",
                     // platformID: this.$store.state.user.pid
-                    platformID: "215",
+                    platformID: this.$store.state.user.pid,
                 }
             },
             renderData: {
@@ -341,6 +338,7 @@ export default {
             }
             this.queryData.list.productID = this.byProduct.value;
             this.queryData.chart.productID = this.byProduct.value;
+            this.queryData.own.productID = this.byProduct.value;
             this.renderData.list = [];
             this.queryData.list.page = 1;
             this.list();
@@ -397,6 +395,7 @@ export default {
                     this.byProduct.value = res.data.data[0].proname;
                     this.queryData.chart.productID = res.data.data[0].proid;
                     this.queryData.list.productID = res.data.data[0].proid;
+                    this.queryData.own.productID = res.data.data[0].proid;
                     this.chart();
                     this.drawLine(this.monthData, this.moneyData);
                     this.list();

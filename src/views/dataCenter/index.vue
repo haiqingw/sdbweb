@@ -4,7 +4,7 @@
         <!-- <mt-header fixed title="数据中心" :style="{'background':colorDataStr}"></mt-header> -->
         <!-- dataCenter -->
         <div class="dataCenterStopMain" v-if="!dataCenterStatus">
-            <img src="@/assets/images/stopImg.png" alt="建设中">
+            <img src="@/assets/images/stopImg.png" alt="建设中" />
             <h3>数据中心正在建设中</h3>
             <p>敬请期待</p>
         </div>
@@ -18,14 +18,14 @@
                 <span>请先选择产品</span>
                 <em>
                     {{proVal}}
-                    <img src="@/assets/images/arrRightWriteIcon.png" alt="右箭头">
+                    <img src="@/assets/images/arrRightWriteIcon.png" alt="右箭头" />
                 </em>
                 <select @change="changeProduct(proVal)" v-model="proVal">
                     <option
-                        :value="val.productName"
+                        :value="val.proname"
                         v-for="(val,index) in renderData.listProduct"
                         :key="index"
-                    >{{val.productName}}</option>
+                    >{{val.proname}}</option>
                 </select>
             </div>
             <!-- 选择分类 -->
@@ -37,7 +37,7 @@
                     :class="['classifyItem',{'classifyItem-active':item.state}]"
                     :style="{'background':colorData[index]}"
                 >
-                    <p>{{item.con}}</p>
+                    <p>{{item.sums}}</p>
                     <span>{{item.name}}</span>
                 </div>
             </div>
@@ -63,15 +63,15 @@
                 <div class="statisticalItem" v-show="reallyIndex == 1">
                     <div class="flex">
                         <div class="line_right">
-                            <p>0</p>
+                            <p>{{newAdd}}</p>
                             <h3>新增总数</h3>
                         </div>
                         <div class="line_right">
-                            <p>0</p>
+                            <p>{{teamNewAdd}}</p>
                             <h3>团队新增</h3>
                         </div>
                         <div>
-                            <p>0</p>
+                            <p>{{directNewAdd}}</p>
                             <h3>直营新增</h3>
                         </div>
                     </div>
@@ -112,15 +112,15 @@
                 <div class="statisticalItem" v-show="reallyIndex == 0">
                     <div class="flex">
                         <div class="line_right">
-                            <p>0</p>
+                            <p>{{newAdd}}</p>
                             <h3>新增总数</h3>
                         </div>
                         <div class="line_right">
-                            <p>0</p>
+                            <p>{{teamNewAdd}}</p>
                             <h3>团队新增</h3>
                         </div>
                         <div>
-                            <p>0</p>
+                            <p>{{directNewAdd}}</p>
                             <h3>直营新增</h3>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                 <span>交易/收益</span>
                 <em>
                     {{wayVal}}
-                    <img src="@/assets/images/arrRightIcon.png" alt="右箭头">
+                    <img src="@/assets/images/arrRightIcon.png" alt="右箭头" />
                 </em>
                 <select name id v-model="wayVal">
                     <option
@@ -204,11 +204,15 @@
 import Footer from "@/components/footerNav/footer";
 import { getServer } from "@/api/index";
 import { Indicator, Toast } from "mint-ui";
+import response from "@/assets/js/response.js";
 // import func from '../../../vue-temp/vue-editor-bridge';
 export default {
     data() {
         let vm = this;
         return {
+            newAdd: "", // 新增总数
+            teamNewAdd: "", // 团队新增
+            directNewAdd: "", // 直营新增
             sunAndMoonSwitch: [
                 {
                     name: "日",
@@ -222,29 +226,7 @@ export default {
                 }
             ],
             slideIndex: "",
-            slideData: [
-                {
-                    name: "终端",
-                    state: false,
-                    slideTerm: "",
-                    con: "0",
-                    types: "term"
-                },
-                {
-                    name: "团队",
-                    state: true,
-                    slideAgen: "",
-                    con: "0",
-                    types: "agen"
-                },
-                {
-                    name: "商户",
-                    state: false,
-                    slideTeam: "",
-                    con: "0",
-                    types: "team"
-                }
-            ],
+            slideData: [],
             colorDataStr: "#ffd274",
             dataCenterStatus: true,
             colorData: ["#6eb6ff", "#ff6638", "#f3b32d"],
@@ -271,15 +253,14 @@ export default {
             proVal: "",
             wayVal: "",
             queryData: {
-                slideSum: {
+                pieChart: {
                     // 切换
                     requestType: "datacenter",
                     requestKeywords: "statistical",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    productID: "",
-                    types: "agen" //（team 商户 agen 代理 term 终端）
+                    productID: ""
                 },
                 brokenLineDiagram: {
                     // 折线图
@@ -288,17 +269,16 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    dateType: "mons", //（days 日 mons 月）,
+                    dateType: "", //（days 日  mons 月）,
                     productID: "",
-                    types: "agen"
+                    types: "" //（team 商户  agen 代理   term 终端）
                 },
                 listProduct: {
                     // 终端列表
-                    requestType: "personal",
-                    requestKeywords: "agentproduct",
-                    platformID: this.$store.state.user.pid,
-                    userID: this.$store.state.user.uid,
-                    userPhone: this.$store.state.user.uphone
+                    requestType: "Datamanage",
+                    requestKeywords: "productlist",
+                    // platformID: this.$store.state.user.pid
+                    platformID: this.$store.state.user.pid
                 }
             },
             renderData: {
@@ -313,45 +293,10 @@ export default {
     mounted() {
         this.drawLine("myChart0", this.monthData, this.moneyData);
         this.drawColumn("myChart1", this.monthData, this.moneyData);
-        // var that = this;
-        // var mySwiper = new Swiper(".swiper-container", {
-        //     slidesPerView: 3,
-        //     spaceBetween: 30,
-        //     centeredSlides: true,
-        //     loop: true,
-        //     slideToClickedSlide: true,
-        //     on: {
-        //         slideChangeTransitionEnd: function() {
-        //             that.reallyIndex = this.realIndex;
-        //             if (that.reallyIndex == 0) {
-        //                 that.queryData.slideSum.types = "agen";
-        //                 setTimeout(() => {
-        //                     that.$set(that.renderData, "slideAgen", 1);
-        //                 }, 300);
-        //             } else if (that.reallyIndex == 1) {
-        //                 that.queryData.slideSum.types = "team";
-        //                 setTimeout(() => {
-        //                     that.$set(that.renderData, "slideTeam", 2);
-        //                 }, 300);
-        //             } else if (that.reallyIndex == 2) {
-        //                 that.queryData.slideSum.types = "term";
-        //                 setTimeout(() => {
-        //                     that.$set(that.renderData, "slideTerm", 3);
-        //                 }, 300);
-        //             }
-        //             //console.log(that.colorData[this.realIndex])
-        //             that.colorDataStr = that.colorData[that.reallyIndex];
-        //             that.drawLine("myChart0", that.monthData, that.moneyData);
-        //             that.drawColumn("myChart1", that.monthData, that.moneyData);
-        //         }
-        //     }
-        // });
-        // this.drawLine("myChart0", this.monthData, this.moneyData);
-        // this.drawColumn("myChart1", this.monthData, this.moneyData);
     },
     computed: {},
     methods: {
-        switchDayMonClass(obj) {
+        switchDayMonClass(obj) { // 日月切换
             this.sunAndMoonSwitch.forEach(item => {
                 item.isActive = false;
             });
@@ -462,72 +407,69 @@ export default {
                 .then(res => {
                     if (res.data.responseStatus === 1) {
                         this.renderData.listProduct = res.data.data;
-                        this.proVal = res.data.data[0].productName;
-                        this.queryData.slideSum.productID = res.data.data[0].id;
+                        this.proVal = res.data.data[0].proname;
+                        this.queryData.pieChart.productID =
+                            res.data.data[0].proid;
                         this.queryData.brokenLineDiagram.productID =
-                            res.data.data[0].id;
+                            res.data.data[0].proid;
                     }
                 })
                 .then(() => {
-                    this.slideTeam();
-                    this.slideAgen();
-                    this.slideTerm();
-                    this.brokenLineDiagram();
+                    this.pieChart();
                 });
         },
         changeProduct(name) {
+            this.proVal = name;
             let newArr = this.renderData.listProduct.filter(
-                item => item.productName == name
+                item => item.proname == name
             );
-            this.queryData.slideSum.productID = newArr[0].id;
-            this.queryData.brokenLineDiagram.productID = newArr[0].id;
-            this.slideTeam();
-            this.slideAgen();
-            this.slideTerm();
-            this.brokenLineDiagram();
+            this.queryData.pieChart.productID = newArr[0].proid;
+            this.queryData.brokenLineDiagram.productID = newArr[0].proid;
+            this.pieChart()
         },
-        slideTeam() {
-            this.queryData.slideSum.types = "team";
-            getServer(this.queryData.slideSum).then(res => {
-                if (res.data.responseStatus === 1) {
-                    this.slideData[1].con = res.data.con;
-                } else {
-                }
-            });
-        },
-        slideAgen() {
-            this.queryData.slideSum.types = "agen";
-            getServer(this.queryData.slideSum).then(res => {
-                if (res.data.responseStatus === 1) {
-                    this.slideData[0].con = res.data.con;
-                } else {
-                }
-            });
-        },
-        slideTerm() {
-            this.queryData.slideSum.types = "tear";
-            getServer(this.queryData.slideSum).then(res => {
-                if (res.data.responseStatus === 1) {
-                    this.slideData[2].con = res.data.con;
-                } else {
-                }
-            });
+        pieChart() {
+            // 饼图
+            getServer(this.queryData.pieChart)
+                .then(res => {
+                    // alert(response[res.data.responseStatus])
+                    if (res.data.responseStatus === 1) {
+                        res.data.data.forEach(item => {
+                            item.state = false;
+                        });
+                        res.data.data[1].state = true;
+                        this.slideData = res.data.data;
+                    }
+                })
+                .then(() => {
+                    this.brokenLineDiagram();
+                });
         },
         brokenLineDiagram() {
+            this.sunAndMoonSwitch.forEach(item => {
+                if (item.isActive) {
+                    this.queryData.brokenLineDiagram.dateType = item.dateType;
+                }
+            });
+            this.slideData.forEach(item => {
+                if (item.state) {
+                    this.queryData.brokenLineDiagram.types = item.id;
+                }
+            });
+            // alert(JSON.stringify(this.queryData.brokenLineDiagram))
             getServer(this.queryData.brokenLineDiagram).then(res => {
-                // alert(JSON.stringify(res.data.responseStatus));
-                alert(JSON.stringify(res.data));
+                // alert(JSON.stringify(res.data.data.newAdd))
                 if (res.data.responseStatus === 1) {
                     if (res.data.data === null) {
                         this.moneyData = [0, 0, 0, 0, 0];
                         this.monthData = [0, 0, 0, 0, 0];
                     } else {
-                        this.moneyData = [];
-                        this.monthData = [];
-                        for (var i in res.data.data) {
-                            this.moneyData.push(res.data.data[i].con);
-                            this.monthData.push(res.data.data[i].dates);
-                        }
+                        this.moneyData = res.data.data.line.sums
+                        this.monthData = res.data.data.line.dates
+                        this.newAdd = res.data.data.newAdd.total
+                        this.teamNewAdd = res.data.data.newAdd.team
+                        this.directNewAdd = res.data.data.newAdd.direct
+                        // alert(JSON.stringify(this.moneyData))
+                        // alert(JSON.stringify(this.monthData))
                     }
                     this.drawLine("myChart0", this.monthData, this.moneyData);
                 }
@@ -535,7 +477,7 @@ export default {
         }
     },
     created() {
-        // this.listProduct(); 
+        this.listProduct();
         this.wayVal = this.wayList[0].name;
         // this.moneyData = [0, 0, 0, 0, 0, 0];
     }

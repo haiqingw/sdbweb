@@ -24,7 +24,6 @@ export default {
         //     "http://ttsplus.xylrcs.cn/index.php/App/Wchacf/getOpenid?plat=" +
         //     plat;
         let plat = this.$route.query.plat || 1;
-        // // let plat = this.$route.query.plat || 220;
         window.location.href =
             "http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid?plat=" +
             plat;

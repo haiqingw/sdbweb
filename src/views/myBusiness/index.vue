@@ -80,7 +80,8 @@ export default {
                     requestKeywords:'mymerchant', 
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
-                    userPhone: this.$store.state.user.uphone
+                    userPhone: this.$store.state.user.uphone,
+                    page: 1,
                 }
             } 
         }
@@ -103,18 +104,18 @@ export default {
         },
         getList(){
             getServer(this.queryData.listProp).then(res =>{
-                 if (res.data.responseStatus === 1) {
+                if (res.data.responseStatus == 1) {
                     this.isData = true;
                     res.data.data.forEach(item => {
                         this.items.push(item);
                     });
                 } else if (
-                    res.data.responseStatus === 300 &&
+                    res.data.responseStatus == 300 &&
                     this.queryData.listProp.page !== 1
                 ) {
                     this.$refs.scroll.forceUpdate();
                 } else if (
-                    res.data.responseStatus === 300 &&
+                    res.data.responseStatus == 300 &&
                     this.queryData.listProp.page === 1
                 ) {
                     this.isData = false;

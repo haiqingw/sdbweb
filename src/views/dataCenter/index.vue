@@ -106,7 +106,7 @@
                             <h3>直营激活</h3>
                         </div>
                     </div>
-                    <p>终端总激活数量0个</p>
+                    <p>终端总激活数量<b>0</b>个</p>
                 </div>
                 <!-- 商户 -->
                 <div class="statisticalItem" v-show="reallyIndex == 0">
@@ -706,8 +706,11 @@ export default {
     }
     > p {
         text-align: center;
-        font-size: 14px;
+        font-size:18px;
         padding: 5px 0 10px;
+        b{
+            padding:0 3px;
+        }
     }
 }
 .myEarningMain {

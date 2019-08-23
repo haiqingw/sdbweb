@@ -432,6 +432,11 @@ export default new Router({
       path: "/adDetail", //广告位详情
       name: 'adDetail',
       component: resolve => require(['@/views/adDetail'], resolve),
-    }
+        },
+        {
+            path: "/myBill", //我的账单
+            name: 'myBill',
+            component: resolve => require(['@/views/myBill'], resolve),
+        }
   ]
 })

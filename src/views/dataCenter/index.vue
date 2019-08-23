@@ -12,7 +12,7 @@
             <!-- 选择产品 -->
             <div
                 class="selectProMain"
-                :style="{'background':colorDataStr}"
+                :style="{'background':colorData[reallyIndex]}"
                 @click="popupVisibleStatus()"
             >
                 <span>请先选择产品</span>
@@ -31,7 +31,7 @@
             <!-- 选择分类 -->
             <div class="slide">
                 <div
-                    @click="changeSlide(item)"
+                    @click="changeSlide(item,index)"
                     v-for="(item,index) in slideData"
                     :key="item.name"
                     :class="['classifyItem',{'classifyItem-active':item.state}]"
@@ -43,7 +43,7 @@
             </div>
             <!-- 日/月切换 -->
             <!--  -->
-            <div class="dmTabMain" :style="{'border-color':colorDataStr,'background':colorDataStr}">
+            <div class="dmTabMain" :style="{'border-color':colorData[reallyIndex],'background':colorData[reallyIndex]}">
                 <!-- <span class="active">日</span>
                 <span>月</span>-->
                 <span
@@ -146,10 +146,10 @@
             </div>
             <div class="myEarningBox">
                 <div class="myEarningTop">
-                    <span>共交易0笔，合计(万元)</span>
+                    <span>共交易<b>0</b>笔，合计(万元)</span>
                     <div
                         class="flex"
-                        :style="{'border-color':colorDataStr,'background':colorDataStr}"
+                        :style="{'border-color':colorData[reallyIndex],'background':colorData[reallyIndex]}"
                     >
                         <em class="active">日</em>
                         <em>月</em>
@@ -235,7 +235,7 @@ export default {
             moneyData: [0, 0, 0, 0, 0, 0],
             drawColumnMonthData: [],
             drawColumnmoneyData: [],
-            reallyIndex: 0,
+            reallyIndex: 1,
             wayList: [
                 {
                     id: 1,
@@ -304,10 +304,11 @@ export default {
             this.queryData.brokenLineDiagram.dateType = obj.dateType;
             this.brokenLineDiagram();
         },
-        changeSlide(obj) {
+        changeSlide(obj,index) {
             this.slideData.forEach(item => {
                 item.state = false;
             });
+            this.reallyIndex = index;
             obj.state = true;
             this.queryData.brokenLineDiagram.types = obj.types;
             this.brokenLineDiagram();
@@ -489,7 +490,9 @@ export default {
 .slide {
     display: flex;
     .classifyItem-active {
-        opacity: 0.2;
+      transform: scale(1.2);  
+      opacity:1;
+      z-index:9999;
     }
 }
 .swiper-slide {
@@ -603,7 +606,7 @@ export default {
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 9999;
+    z-index: 9999999;
     font-weight: bold;
     width: 100%;
     box-sizing: border-box;
@@ -641,7 +644,7 @@ export default {
     width: 33%;
     height: 81px;
     background: #f1f1f1;
-    border-radius: 50%;
+    // border-radius: 50%;
     font-size: 20px;
     text-align: center;
     line-height: 30px;
@@ -652,9 +655,11 @@ export default {
     // box-sizing: border-box;
     border-width: 5px;
     border-style: solid;
+    opacity:0.8;
 
     p {
-        font-size: 24px;
+        font-size:30px;
+        font-family:"numberFont";
     }
 }
 .swiper-slide:not(.swiper-slide-active) {
@@ -665,7 +670,7 @@ export default {
     overflow: hidden;
     border: 1px solid #f1f1f1;
     border-radius: 5px;
-    margin: 15px auto 30px;
+    margin: 30px auto 30px;
     span {
         display: block;
         width: 50px;
@@ -690,7 +695,8 @@ export default {
             margin-bottom: 15px;
             padding: 5px 0;
             p {
-                font-size: 16px;
+                font-size:26px;
+                font-family:"numberFont"
             }
             h3 {
                 font-size: 14px;
@@ -770,8 +776,9 @@ export default {
 }
 .myEarningMoney {
     h3 {
-        font-size: 34px;
+        font-size: 40px;
         padding-bottom: 10px;
+        font-family:"numberFont"
     }
     p {
         font-size: 14px;
@@ -785,7 +792,8 @@ export default {
         font-size: 14px;
         text-align: center;
         p {
-            font-size: 16px;
+            font-size:26px;
+            font-family:"numberFont"
         }
         h3 {
             font-size: 14px;
@@ -825,7 +833,8 @@ export default {
         font-size: 14px;
         text-align: center;
         p {
-            font-size: 16px;
+            font-size:26px;
+            font-family:"numberFont"
         }
         h3 {
             font-size: 14px;

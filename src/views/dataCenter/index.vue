@@ -43,7 +43,10 @@
             </div>
             <!-- 日/月切换 -->
             <!--  -->
-            <div class="dmTabMain" :style="{'border-color':colorData[reallyIndex],'background':colorData[reallyIndex]}">
+            <div
+                class="dmTabMain"
+                :style="{'border-color':colorData[reallyIndex],'background':colorData[reallyIndex]}"
+            >
                 <!-- <span class="active">日</span>
                 <span>月</span>-->
                 <span
@@ -80,33 +83,18 @@
                 <div class="statisticalItem" v-show="reallyIndex == 2">
                     <div class="flex">
                         <div class="line_right">
-                            <p>0</p>
+                            <p>{{newAdd}}</p>
                             <h3>新增总数</h3>
                         </div>
                         <div class="line_right">
-                            <p>0</p>
+                            <p>{{teamNewAdd}}</p>
                             <h3>团队新增</h3>
                         </div>
                         <div>
-                            <p>0</p>
+                            <p>{{directNewAdd}}</p>
                             <h3>直营新增</h3>
                         </div>
                     </div>
-                    <div class="flex">
-                        <div class="line_right">
-                            <p>0</p>
-                            <h3>新增激活</h3>
-                        </div>
-                        <div class="line_right">
-                            <p>0</p>
-                            <h3>团队新增</h3>
-                        </div>
-                        <div>
-                            <p>0</p>
-                            <h3>直营激活</h3>
-                        </div>
-                    </div>
-                    <p>终端总激活数量<b>0</b>个</p>
                 </div>
                 <!-- 商户 -->
                 <div class="statisticalItem" v-show="reallyIndex == 0">
@@ -131,12 +119,13 @@
         <!-- 我的收益 -->
         <div v-if="dataCenterStatus" class="myEarningMain">
             <div class="myEarningTitleMain">
-                <span>交易/收益</span>
+                <span v-if="queryData.tptrade.types === 'active'">激活</span>
+                <span v-else>交易</span>
                 <em>
                     {{wayVal}}
                     <img src="@/assets/images/arrRightIcon.png" alt="右箭头" />
                 </em>
-                <select name id v-model="wayVal">
+                <select @change="changeProductTwo(wayVal)" v-model="wayVal">
                     <option
                         :value="val.name"
                         v-for="(val,index) in wayList"
@@ -146,29 +135,50 @@
             </div>
             <div class="myEarningBox">
                 <div class="myEarningTop">
-                    <span>共交易<b>0</b>笔，合计(万元)</span>
+                    <span v-if="queryData.tptrade.types === 'active'">
+                        共激活
+                        <b>{{tCnt}}</b>台
+                    </span>
+                    <span v-else>
+                        共交易
+                        <b>{{tCnt}}</b>笔，合计(万元)
+                    </span>
                     <div
                         class="flex"
                         :style="{'border-color':colorData[reallyIndex],'background':colorData[reallyIndex]}"
                     >
-                        <em class="active">日</em>
-                        <em>月</em>
+                        <em
+                            @click="switchTowSunAndMoonSwitch(item)"
+                            :class="{'active': !item.isActive}"
+                            v-for="item in towSunAndMoonSwitch"
+                            :key="item.name"
+                        >{{item.name}}</em>
                     </div>
                 </div>
                 <div class="myEarningMoney">
-                    <h3>0.00</h3>
-                    <p>环比增长0%</p>
+                    <h3>{{tAnt}}</h3>
+                    <p>环比增长{{percent}}%</p>
                 </div>
                 <div class="myEarningChart">
                     <div id="myChart1" style="width:100% !important;height:220px"></div>
                 </div>
-                <div class="myEarningStatisticalMain flex">
+                <div class="myEarningStatisticalMain flex" v-if="queryData.tptrade.types === 'active'">
                     <div class="line_right">
-                        <p>0.00</p>
+                        <p>{{team}}</p>
+                        <h3>团队合计(台)</h3>
+                    </div>
+                    <div>
+                        <p>{{direct}}</p>
+                        <h3>直营合计(台)</h3>
+                    </div>
+                </div>
+                <div class="myEarningStatisticalMain flex" v-else>
+                    <div class="line_right">
+                        <p>{{team}}</p>
                         <h3>团队合计(万元)</h3>
                     </div>
                     <div>
-                        <p>0.00</p>
+                        <p>{{direct}}</p>
                         <h3>直营合计(万元)</h3>
                     </div>
                 </div>
@@ -179,15 +189,15 @@
                     </h3>
                     <div class="myEarningBoxFlex flex">
                         <div>
-                            <p>0.00</p>
+                            <p>{{income}}</p>
                             <h3>我的收益(元)</h3>
                         </div>
                         <div>
-                            <p>--</p>
+                            <p>{{defPercent}}%</p>
                             <h3>击败同等级</h3>
                         </div>
                         <div>
-                            <p>0%</p>
+                            <p>{{rrgPercent}}%</p>
                             <h3>环比增长</h3>
                         </div>
                     </div>
@@ -225,6 +235,18 @@ export default {
                     dateType: "mons"
                 }
             ],
+            towSunAndMoonSwitch: [
+                {
+                    name: "日",
+                    isActive: true,
+                    dateType: "days"
+                },
+                {
+                    name: "月",
+                    isActive: false,
+                    dateType: "mons"
+                }
+            ],
             slideIndex: "",
             slideData: [],
             colorDataStr: "#ffd274",
@@ -233,21 +255,27 @@ export default {
             realIndex1: 0,
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
             moneyData: [0, 0, 0, 0, 0, 0],
+            profitMonthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
+            profitMoneyData: [0, 0, 0, 0, 0, 0],
             drawColumnMonthData: [],
             drawColumnmoneyData: [],
             reallyIndex: 1,
+            tAnt: "",
+            tCnt: "",
+            percent: "",
+            team: "",
+            direct: "",
+            income: "",
+            defPercent: "",
+            rrgPercent: "",
             wayList: [
                 {
-                    id: 1,
-                    name: "全部"
-                },
-                {
-                    id: 2,
-                    name: "交易"
-                },
-                {
-                    id: 3,
+                    type: "active",
                     name: "激活"
+                },
+                {
+                    type: "trade",
+                    name: "交易"
                 }
             ],
             proVal: "",
@@ -279,6 +307,39 @@ export default {
                     requestKeywords: "productlist",
                     // platformID: this.$store.state.user.pid
                     platformID: this.$store.state.user.pid
+                },
+                profitBrokenLineDiagram: {
+                    // 收益折线图
+                    requestType: "datacenter",
+                    requestKeywords: "tpline",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    dateType: "", //（days 日  mons 月）,
+                    productID: "",
+                    types: "" //（trade 交易  income 收益）
+                },
+                tptrade: {
+                    // 交易数据
+                    requestType: "datacenter",
+                    requestKeywords: "tptrade",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    dateType: "", //（days 日  mons 月）,
+                    productID: "",
+                    types: "" // （trade 交易  income 收益）
+                },
+                tpincome: {
+                    // 收益数据
+                    requestType: "datacenter",
+                    requestKeywords: "tpincome",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    dateType: "", //（days 日  mons 月）,
+                    productID: "",
+                    types: "" // （trade 交易  income 收益）
                 }
             },
             renderData: {
@@ -292,11 +353,12 @@ export default {
     },
     mounted() {
         this.drawLine("myChart0", this.monthData, this.moneyData);
-        this.drawColumn("myChart1", this.monthData, this.moneyData);
+        this.drawColumn("myChart1", this.profitMonthData, this.profitMoneyData);
     },
     computed: {},
     methods: {
-        switchDayMonClass(obj) { // 日月切换
+        switchDayMonClass(obj) {
+            // 日月切换
             this.sunAndMoonSwitch.forEach(item => {
                 item.isActive = false;
             });
@@ -304,7 +366,19 @@ export default {
             this.queryData.brokenLineDiagram.dateType = obj.dateType;
             this.brokenLineDiagram();
         },
-        changeSlide(obj,index) {
+        switchTowSunAndMoonSwitch(obj) {
+            this.towSunAndMoonSwitch.forEach(item => {
+                item.isActive = false;
+            });
+            obj.isActive = true;
+            this.queryData.profitBrokenLineDiagram.dateType = obj.type;
+            this.queryData.tptrade.dateType = obj.type;
+            this.queryData.tpincome.dateType = obj.type;
+            this.profitBrokenLineDiagram();
+            this.tptrade();
+            this.tpincome();
+        },
+        changeSlide(obj, index) {
             this.slideData.forEach(item => {
                 item.state = false;
             });
@@ -312,6 +386,7 @@ export default {
             obj.state = true;
             this.queryData.brokenLineDiagram.types = obj.types;
             this.brokenLineDiagram();
+            this.profitBrokenLineDiagram();
         },
         // 折线图
         drawLine(selecter, monthData, moneyData) {
@@ -413,10 +488,19 @@ export default {
                             res.data.data[0].proid;
                         this.queryData.brokenLineDiagram.productID =
                             res.data.data[0].proid;
+                        this.queryData.profitBrokenLineDiagram.productID =
+                            res.data.data[0].proid;
+                        this.queryData.tptrade.productID =
+                            res.data.data[0].proid;
+                        this.queryData.tpincome.productID =
+                            res.data.data[0].proid;
                     }
                 })
                 .then(() => {
                     this.pieChart();
+                    this.profitBrokenLineDiagram();
+                    this.tptrade();
+                    this.tpincome();
                 });
         },
         changeProduct(name) {
@@ -426,7 +510,22 @@ export default {
             );
             this.queryData.pieChart.productID = newArr[0].proid;
             this.queryData.brokenLineDiagram.productID = newArr[0].proid;
-            this.pieChart()
+            this.queryData.profitBrokenLineDiagram.productID = newArr[0].proid;
+            this.queryData.tpincome.productID = newArr[0].proid;
+            this.queryData.tptrade.productID = newArr[0].proid;
+            this.pieChart();
+            this.profitBrokenLineDiagram();
+            this.tptrade()
+            this.tpincome()
+        },
+        changeProductTwo(name) {
+            let newArr = this.wayList.filter(item => item.name == name);
+            this.queryData.profitBrokenLineDiagram.types = newArr[0].type;
+            this.queryData.tptrade.types = newArr[0].type;
+            this.queryData.tpincome.types = newArr[0].type;
+            this.profitBrokenLineDiagram();
+            this.tptrade();
+            this.tpincome()
         },
         pieChart() {
             // 饼图
@@ -446,6 +545,7 @@ export default {
                 });
         },
         brokenLineDiagram() {
+            Indicator.open();
             this.sunAndMoonSwitch.forEach(item => {
                 if (item.isActive) {
                     this.queryData.brokenLineDiagram.dateType = item.dateType;
@@ -458,21 +558,84 @@ export default {
             });
             // alert(JSON.stringify(this.queryData.brokenLineDiagram))
             getServer(this.queryData.brokenLineDiagram).then(res => {
+                Indicator.close();
                 // alert(JSON.stringify(res.data.data.newAdd))
                 if (res.data.responseStatus === 1) {
                     if (res.data.data === null) {
                         this.moneyData = [0, 0, 0, 0, 0];
                         this.monthData = [0, 0, 0, 0, 0];
                     } else {
-                        this.moneyData = res.data.data.line.sums
-                        this.monthData = res.data.data.line.dates
-                        this.newAdd = res.data.data.newAdd.total
-                        this.teamNewAdd = res.data.data.newAdd.team
-                        this.directNewAdd = res.data.data.newAdd.direct
+                        this.moneyData = res.data.data.line.sums;
+                        this.monthData = res.data.data.line.dates;
+                        this.newAdd = res.data.data.newAdd.total;
+                        this.teamNewAdd = res.data.data.newAdd.team;
+                        this.directNewAdd = res.data.data.newAdd.direct;
                         // alert(JSON.stringify(this.moneyData))
                         // alert(JSON.stringify(this.monthData))
                     }
                     this.drawLine("myChart0", this.monthData, this.moneyData);
+                }
+            });
+        },
+        profitBrokenLineDiagram() {
+            Indicator.open();
+            this.towSunAndMoonSwitch.map(item => {
+                if (item.isActive) {
+                    this.queryData.profitBrokenLineDiagram.dateType =
+                        item.dateType;
+                }
+            });
+            this.wayList.map(item => {
+                if (item.name === this.wayVal) {
+                    this.queryData.profitBrokenLineDiagram.types = item.type;
+                }
+            });
+            getServer(this.queryData.profitBrokenLineDiagram).then(res => {
+                Indicator.close();
+                if (res.data.responseStatus === 1) {
+                    this.profitMonthData = res.data.data.dates;
+                    this.profitMoneyData = res.data.data.sums;
+                    this.drawColumn("myChart1", this.profitMonthData, this.profitMoneyData);
+                }
+            });
+        },
+        tptrade() {
+            this.towSunAndMoonSwitch.map(item => {
+                if (item.isActive) {
+                    this.queryData.tptrade.dateType = item.dateType;
+                }
+            });
+            this.wayList.map(item => {
+                if (item.name === this.wayVal) {
+                    this.queryData.tptrade.types = item.type;
+                }
+            });
+            getServer(this.queryData.tptrade).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.tAnt = res.data.data.tAnt; // 交易金额
+                    this.tCnt = res.data.data.tCnt; // 数量
+                    this.percent = res.data.data.percent; // %
+                    this.team = res.data.data.team; // 团队
+                    this.direct = res.data.data.direct; // 直营
+                }
+            });
+        },
+        tpincome() {
+            this.towSunAndMoonSwitch.map(item => {
+                if (item.isActive) {
+                    this.queryData.tpincome.dateType = item.dateType;
+                }
+            });
+            this.wayList.map(item => {
+                if (item.name === this.wayVal) {
+                    this.queryData.tpincome.types = item.type;
+                }
+            });
+            getServer(this.queryData.tpincome).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.income = res.data.data.income;
+                    this.defPercent = res.data.data.defPercent;
+                    this.rrgPercent = res.data.data.rrgPercent;
                 }
             });
         }
@@ -490,9 +653,9 @@ export default {
 .slide {
     display: flex;
     .classifyItem-active {
-      transform: scale(1.2);  
-      opacity:1;
-      z-index:9999;
+        transform: scale(1.2);
+        opacity: 1;
+        z-index: 9999;
     }
 }
 .swiper-slide {
@@ -655,11 +818,11 @@ export default {
     // box-sizing: border-box;
     border-width: 5px;
     border-style: solid;
-    opacity:0.8;
+    opacity: 0.8;
 
     p {
-        font-size:30px;
-        font-family:"numberFont";
+        font-size: 30px;
+        font-family: "numberFont";
     }
 }
 .swiper-slide:not(.swiper-slide-active) {
@@ -695,8 +858,8 @@ export default {
             margin-bottom: 15px;
             padding: 5px 0;
             p {
-                font-size:26px;
-                font-family:"numberFont"
+                font-size: 26px;
+                font-family: "numberFont";
             }
             h3 {
                 font-size: 14px;
@@ -706,10 +869,10 @@ export default {
     }
     > p {
         text-align: center;
-        font-size:18px;
+        font-size: 18px;
         padding: 5px 0 10px;
-        b{
-            padding:0 3px;
+        b {
+            padding: 0 3px;
         }
     }
 }
@@ -781,7 +944,7 @@ export default {
     h3 {
         font-size: 40px;
         padding-bottom: 10px;
-        font-family:"numberFont"
+        font-family: "numberFont";
     }
     p {
         font-size: 14px;
@@ -795,8 +958,8 @@ export default {
         font-size: 14px;
         text-align: center;
         p {
-            font-size:26px;
-            font-family:"numberFont"
+            font-size: 26px;
+            font-family: "numberFont";
         }
         h3 {
             font-size: 14px;
@@ -836,8 +999,8 @@ export default {
         font-size: 14px;
         text-align: center;
         p {
-            font-size:26px;
-            font-family:"numberFont"
+            font-size: 26px;
+            font-family: "numberFont";
         }
         h3 {
             font-size: 14px;

@@ -156,7 +156,7 @@
                     </div>
                 </div>
                 <div class="myEarningMoney">
-                    <h3>{{tAnt}}</h3>
+                    <h3 v-if="queryData.tptrade.types === 'trade'">{{tAnt}}</h3>
                     <p>环比增长{{percent}}%</p>
                 </div>
                 <div class="myEarningChart">
@@ -189,15 +189,15 @@
                     </h3>
                     <div class="myEarningBoxFlex flex">
                         <div>
-                            <p>{{income}}</p>
+                            <p :ref="'sy' + income">{{income}}</p>
                             <h3>我的收益(元)</h3>
                         </div>
                         <div>
-                            <p>{{defPercent}}%</p>
+                            <p :ref="'jb' + defPercent">{{defPercent}}%</p>
                             <h3>击败同等级</h3>
                         </div>
                         <div>
-                            <p>{{rrgPercent}}%</p>
+                            <p :ref="'zz' + rrgPercent">{{rrgPercent}}%</p>
                             <h3>环比增长</h3>
                         </div>
                     </div>

@@ -21,8 +21,8 @@
                     <div class="inputCodeItem" :class="code[1]?'active':''">{{code[1]}}</div>
                     <div class="inputCodeItem" :class="code[2]?'active':''">{{code[2]}}</div>
                     <div class="inputCodeItem" :class="code[3]?'active':''">{{code[3]}}</div>
-                    <div class="inputCodeItem" :class="code[3]?'active':''">{{code[4]}}</div>
-                    <div class="inputCodeItem" :class="code[3]?'active':''">{{code[5]}}</div>
+                    <div class="inputCodeItem" :class="code[4]?'active':''">{{code[4]}}</div>
+                    <div class="inputCodeItem" :class="code[5]?'active':''">{{code[5]}}</div>
                 </div>
                 <input v-model="code" maxlength="6" type="tel" autofocus="true" />
             </div>
@@ -180,6 +180,9 @@ export default {
                     Toast(response[res.data.responseStatus]);
                 }
             });
+        },
+        remanufacturePwdFunc() {
+            this.$router.push({ name: "setPwd" });
         }
     },
     watch: {
@@ -190,8 +193,10 @@ export default {
                         this.submitModification();
                     } else if (this.$route.params.state === "bindCer") {
                         this.submitModificationCer();
-                    }else if ( this.$route.params.state === "modify" ) {
-                        this.modify()
+                    } else if (this.$route.params.state === "modify") {
+                        this.modify();
+                    } else if (this.$route.params.state === "forgetPwd") {
+                        this.remanufacturePwdFunc();
                     }
                 } else {
                     Toast("验证码有误！");
@@ -218,13 +223,14 @@ export default {
             this.queryData.bindCardCer.bankName = JSON.parse(
                 sessionStorage.getItem("bankName")
             );
-        } else if ( this.$route.params.state === "modify" ) {
-             this.queryData.realNameCer.name = JSON.parse(
+        } else if (this.$route.params.state === "modify") {
+            this.queryData.realNameCer.name = JSON.parse(
                 sessionStorage.getItem("modifyName")
             );
             this.queryData.realNameCer.idcard = JSON.parse(
                 sessionStorage.getItem("modifyidcard")
             );
+        } else if (this.$route.params.state === "forgetPwd") {
         }
         this.info();
         this.sendCode();
@@ -232,6 +238,15 @@ export default {
 };
 </script>
 <style lang="scss">
+.remanufacturePwd {
+    position: fixed;
+    top: 0.8rem;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+}
 .verificationContainer {
     padding: 30px 20px;
 }

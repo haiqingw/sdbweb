@@ -131,8 +131,8 @@
             </div>
         </div>
         <div class="isPwd" v-if="ispwd">
-            <van-password-input style="margin-top: 2rem;" :value="value" info="密码为 6 位数字" @focus="showKeyboard = true" />
-
+            <van-password-input style="margin-top: 2rem;" :value="value" info="为了您的安全请您输入密码" @focus="showKeyboard = true" />
+            <span @click="forgetPwd" class="forget-pwd">忘记密码</span>
             <!-- 数字键盘 -->
             <van-number-keyboard
                 :show="showKeyboard"
@@ -240,6 +240,13 @@ export default {
         onDelete() {
             this.value = this.value.slice(0, this.value.length - 1);
         },
+        forgetPwd() { // 忘记支付密码
+            this.ispwd = false
+            this.$router.push({
+                name: "smsVerification",
+                params: { state: "forgetPwd" }
+            });
+        },
         handleChange(index) {
             this.renderData.balanceList.forEach((item, i) => {
                 if (index == i) {
@@ -314,6 +321,7 @@ export default {
             }
         },
         confirmCashWithdrawal() {
+            this.value = ""
             this.time = 60;
             clearInterval(this.clearIntervalStatus);
             if (this.confirm === "确认提现") {
@@ -526,6 +534,14 @@ export default {
 };
 </script>
 <style lang="scss">
+.forget-pwd {
+    font-size: .28rem;
+    text-align: right;
+    display: block;
+    margin-right: .2rem;
+    margin-top: .1rem;
+    color: #4395ff;
+}
 .isPwd {
     position: fixed;
     top: 0.8rem;

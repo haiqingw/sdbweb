@@ -376,7 +376,7 @@ export default new Router({
         component: resolve => require(['@/views/serverMoneyRecharge/own/recharge'], resolve),
     },
     {
-        path: '/serverMoneyRechargeOwnList', 
+        path: '/serverMoneyRechargeOwnList',
         name: 'serverMoneyRechargeOwnList',
         component: resolve => require(['@/views/serverMoneyRecharge/own/list'], resolve),
     },
@@ -419,24 +419,29 @@ export default new Router({
         component: resolve => require(['@/views/smsVerification'], resolve),
     },
     {
-      path: "/puponVerify",  //安全验证弹窗
-      name: 'puponVerify',
-      component: resolve => require(['@/views/puponVerify'], resolve),
+        path: "/puponVerify",  //安全验证弹窗
+        name: 'puponVerify',
+        component: resolve => require(['@/views/puponVerify'], resolve),
     },
     {
         path: "/myBusiness",  //我的商户
         name: 'myBusiness',
         component: resolve => require(['@/views/myBusiness'], resolve),
-    }, 
+    },
     {
-      path: "/adDetail", //广告位详情
-      name: 'adDetail',
-      component: resolve => require(['@/views/adDetail'], resolve),
-        },
-        {
-            path: "/myBill", //我的账单
-            name: 'myBill',
-            component: resolve => require(['@/views/myBill'], resolve),
-        }
-  ]
+        path: "/adDetail", //广告位详情
+        name: 'adDetail',
+        component: resolve => require(['@/views/adDetail'], resolve),
+    },
+    {
+        path: "/myBill", //我的账单
+        name: 'myBill',
+        component: resolve => require(['@/views/myBill'], resolve),
+    },
+    {
+        path: "/setPwd",  //我的商户
+        name: 'setPwd',
+        component: resolve => require(['@/views/set-pwd'], resolve),
+    }, 
+    ]
 })

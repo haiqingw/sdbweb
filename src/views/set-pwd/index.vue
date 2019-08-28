@@ -3,7 +3,7 @@
 <template>
     <div>
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
+            <!-- <img src="@/assets/images/return.png" alt @click="$router.go(-1)" /> -->
             <span>设置提现密码</span>
         </div>
         <div class="remanufacturePwd" v-if="remanufacturePwd">
@@ -57,13 +57,22 @@ export default {
             value2: "",
             showKeyboard: true,
             showKeyboard2: true,
-            queryData: {},
+            queryData: {
+                setPwd: {
+                    requestType: "securitycode",
+                    requestKeywords: "setdrawpass",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    password: ""
+                }
+            },
             renderData: {}
         };
     },
     methods: {
         onInput(key) {
-            this.value = (this.value + key).slice(0, 6);
+            this.value = (this.value + key).slice(0, 6); 
             if (this.value.length === 6) {
                 this.remanufacturePwdOne = false;
                 this.remanufacturePwdTwo = true;
@@ -76,13 +85,20 @@ export default {
             this.value2 = (this.value2 + key).slice(0, 6);
             if (this.value2.length === 6) {
                 if (this.value === this.value2) {
-                    Toast("设置密码成功");
-                    setTimeout(() => {
-                        this.$router.push({
-                            // path: "/loginoid",
-                            path: "/home"
-                        });
-                    }, 500);
+                    this.queryData.setPwd.password = this.value2;
+                    getServer(this.queryData.setPwd).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            Toast("设置密码成功");
+                            setTimeout(() => {
+                                this.$router.push({
+                                    // path: "/loginoid",
+                                    path: "/home"
+                                });
+                            }, 500);
+                        } else {
+                            Toast(response[res.data.responseStatus]);
+                        }
+                    });
                 } else {
                     Toast("俩次输入不一致");
                     this.remanufacturePwdTwo = false;

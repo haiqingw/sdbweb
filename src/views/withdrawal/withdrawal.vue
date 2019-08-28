@@ -131,7 +131,12 @@
             </div>
         </div>
         <div class="isPwd" v-if="ispwd">
-            <van-password-input style="margin-top: 2rem;" :value="value" info="为了您的安全请您输入密码" @focus="showKeyboard = true" />
+            <van-password-input
+                style="margin-top: 2rem;"
+                :value="value"
+                info="为了您的安全请您输入密码"
+                @focus="showKeyboard = true"
+            />
             <span @click="forgetPwd" class="forget-pwd">忘记密码</span>
             <!-- 数字键盘 -->
             <van-number-keyboard
@@ -223,6 +228,13 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                isSetPwd: {
+                    requestType: "checke",
+                    requestKeywords: "securitycheck",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             }
         };
@@ -232,7 +244,7 @@ export default {
         onInput(key) {
             this.value = (this.value + key).slice(0, 6);
             if (this.value.length === 6) {
-                this.ispwd = false
+                this.ispwd = false;
                 // this.showPupon();
                 // this.info();
             }
@@ -240,8 +252,9 @@ export default {
         onDelete() {
             this.value = this.value.slice(0, this.value.length - 1);
         },
-        forgetPwd() { // 忘记支付密码
-            this.ispwd = false
+        forgetPwd() {
+            // 忘记支付密码
+            this.ispwd = false;
             this.$router.push({
                 name: "smsVerification",
                 params: { state: "forgetPwd" }
@@ -321,7 +334,7 @@ export default {
             }
         },
         confirmCashWithdrawal() {
-            this.value = ""
+            this.value = "";
             this.time = 60;
             clearInterval(this.clearIntervalStatus);
             if (this.confirm === "确认提现") {
@@ -505,6 +518,18 @@ export default {
                 /^(\-)*(\d+)\.(\d\d).*$/,
                 "$1$2.$3"
             );
+        },
+        isSetPwd() {
+            // 是否设置密码
+            getServer(this.queryData.isSetPwd).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status == 0) {
+                        this.$router.push({
+                            path: "/setPwd"
+                        });
+                    }
+                }
+            });
         }
     },
     watch: {
@@ -521,6 +546,7 @@ export default {
         this.bankInfo();
         this.mattersNeedingAttention();
         this.balanceList();
+        this.isSetPwd();
         // this.drawInfo()
     }
     // beforeUpdate() {
@@ -535,11 +561,11 @@ export default {
 </script>
 <style lang="scss">
 .forget-pwd {
-    font-size: .28rem;
+    font-size: 0.28rem;
     text-align: right;
     display: block;
-    margin-right: .2rem;
-    margin-top: .1rem;
+    margin-right: 0.2rem;
+    margin-top: 0.1rem;
     color: #4395ff;
 }
 .isPwd {

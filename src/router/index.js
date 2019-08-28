@@ -439,9 +439,14 @@ export default new Router({
         component: resolve => require(['@/views/myBill'], resolve),
     },
     {
-        path: "/setPwd",  //我的商户
+        path: "/setPwd",  //设置提现密码
         name: 'setPwd',
         component: resolve => require(['@/views/set-pwd'], resolve),
+    }, 
+    {
+        path: "/agreement",  // 协议
+        name: 'agreement',
+        component: resolve => require(['@/views/agreement'], resolve),
     }, 
     ]
 })

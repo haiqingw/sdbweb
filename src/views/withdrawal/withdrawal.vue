@@ -130,6 +130,17 @@
                 >确认提现</a>
             </div>
         </div>
+        <div class="isPwd" v-if="ispwd">
+            <van-password-input style="margin-top: 2rem;" :value="value" info="密码为 6 位数字" @focus="showKeyboard = true" />
+
+            <!-- 数字键盘 -->
+            <van-number-keyboard
+                :show="showKeyboard"
+                @input="onInput"
+                @delete="onDelete"
+                @blur="showKeyboard = false"
+            />
+        </div>
     </div>
 </template>
 <script>
@@ -139,6 +150,9 @@ import response from "@/assets/js/response.js";
 export default {
     data() {
         return {
+            ispwd: false,
+            value: "",
+            showKeyboard: true,
             confirm: "确认提现",
             isBinding: true,
             puponShow: false,
@@ -215,6 +229,17 @@ export default {
     },
     inject: ["reload"],
     methods: {
+        onInput(key) {
+            this.value = (this.value + key).slice(0, 6);
+            if (this.value.length === 6) {
+                this.ispwd = false
+                // this.showPupon();
+                // this.info();
+            }
+        },
+        onDelete() {
+            this.value = this.value.slice(0, this.value.length - 1);
+        },
         handleChange(index) {
             this.renderData.balanceList.forEach((item, i) => {
                 if (index == i) {
@@ -339,8 +364,7 @@ export default {
                             );
                             return;
                         }
-                        this.showPupon();
-                        this.info();
+                        this.ispwd = true;
                     });
             } else if (this.confirm === "绑定银行卡") {
                 this.$router.push("/changeCard");
@@ -502,6 +526,15 @@ export default {
 };
 </script>
 <style lang="scss">
+.isPwd {
+    position: fixed;
+    top: 0.8rem;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+}
 .mint-toast.is-placemiddle {
     z-index: 999999999;
 }

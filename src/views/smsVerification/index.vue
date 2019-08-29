@@ -7,7 +7,7 @@
         </div>
         <!-- body -->
         <div class="verificationContainer">
-            <h3 class="titleMain">安全验证</h3>
+            <h3 class="titleMain">设置提现密码</h3>
             <p class="subTitleMain">
                 为了您的账户安全，
                 <br />请输入发送到以下电话号码的验证码：
@@ -29,7 +29,8 @@
             <div class="tipMain" @click="showModelTip">没有收到验证码？</div>
             <div class="timerMain">
                 请稍后：
-                <em @click="getVerify">{{time}}{{time==="重新获取"?'':'s'}}</em>
+                <!-- @click="getVerify" -->
+                <em >{{time}}{{time==="重新获取"?'':'s'}}</em>
             </div>
         </div>
     </div>
@@ -65,7 +66,9 @@ export default {
                 },
                 sendCode: {
                     requestType: "smsmanage",
-                    requestKeywords: "realnameauth",
+                    requestKeywords: "drawverifi",
+                    // requestType: "smsmanage",
+                    // requestKeywords: "realnameauth",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone

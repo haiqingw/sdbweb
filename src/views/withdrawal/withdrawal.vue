@@ -87,7 +87,8 @@
         <!-- 弹窗验证 -->
         <div class="overlazyR" v-if="puponShow"></div>
         <div class="puponVerifyMain" v-if="puponShow">
-            <a href="javascript:;" class="closeBtn" @click="closePuponFn">
+            <!-- @click="closePuponFn" -->
+            <a href="javascript:;" class="closeBtn">
                 <img src="@/assets/images/closeBtnIcon.png" alt="关闭" />
             </a>
             <h3>安全验证</h3>
@@ -117,10 +118,12 @@
                 </div>
                 <input v-model="code" maxlength="6" type="tel" autofocus="true" />
             </div>
-            <div class="tipMain" @click="showModelTip">没有收到验证码？</div>
+            <!-- @click="showModelTip" -->
+            <div class="tipMain">没有收到验证码？</div>
             <div class="timerMain">
                 请稍后：
-                <em @click="getVerify">{{time}}{{time==="重新获取"?'':'s'}}</em>
+                <!-- @click="getVerify" -->
+                <em>{{time}}{{time==="重新获取"?'':'s'}}</em>
             </div>
             <div class="confirmWithdrawMain">
                 <a
@@ -131,13 +134,11 @@
             </div>
         </div>
         <div class="isPwd" v-if="ispwd">
-            <van-password-input
-                style="margin-top: 2rem;"
-                :value="value"
-                info="为了您的安全请您输入密码"
-                @focus="showKeyboard = true"
-            />
-            <span @click="forgetPwd" class="forget-pwd">忘记密码</span>
+            <span class="be-careful">{{msgPwd}}</span>
+            <van-password-input :value="value" info="为了您的安全请您输入密码" @focus="showKeyboard = true" />
+            <span class="forget-pwd">
+                <span @click="forgetPwd">忘记密码</span>
+            </span>
             <!-- 数字键盘 -->
             <van-number-keyboard
                 :show="showKeyboard"
@@ -155,6 +156,8 @@ import response from "@/assets/js/response.js";
 export default {
     data() {
         return {
+            state: true,
+            msgPwd: "",
             ispwd: false,
             value: "",
             showKeyboard: true,
@@ -174,7 +177,8 @@ export default {
                 mattersNeedingAttention: {},
                 info: {
                     phone: ""
-                }
+                },
+                pwd: ""
             },
             queryData: {
                 balanceList: {
@@ -235,6 +239,35 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                getPwd: {
+                    requestType: "securitycode",
+                    requestKeywords: "checksetdrawpass",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    password: ""
+                },
+                inpPwdNum: {
+                    requestType: "securitycode",
+                    requestKeywords: "drawerrorcord",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                msgPwd: {
+                    requestType: "securitycode",
+                    requestKeywords: "drawerrornums",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                cleanTime: {
+                    requestType: "securitycode",
+                    requestKeywords: "cleardrawerrorcord",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             }
         };
@@ -244,10 +277,35 @@ export default {
         onInput(key) {
             this.value = (this.value + key).slice(0, 6);
             if (this.value.length === 6) {
-                this.ispwd = false;
                 // this.showPupon();
                 // this.info();
+                if (this.state) {
+                    this.state = false;
+                    this.queryData.getPwd.password = this.value;
+                    this.getPwd();
+                }
             }
+        },
+        inpPwdNum() {
+            getServer(this.queryData.inpPwdNum).then(res => {});
+        },
+        getPwd() {
+            getServer(this.queryData.getPwd).then(res => {
+                this.state = true;
+                if (res.data.responseStatus === 1) {
+                    this.ispwd = false;
+                    this.confirmWithdrawFn();
+                } else if (res.data.responseStatus === 609) {
+                    Toast(response[res.data.responseStatus]);
+                    setTimeout(() => {
+                        this.value = "";
+                    }, 500);
+                    this.inpPwdNum();
+                    this.msgPwdFunc();
+                } else {
+                    Toast(response[res.data.responseStatus]);
+                }
+            });
         },
         onDelete() {
             this.value = this.value.slice(0, this.value.length - 1);
@@ -333,9 +391,14 @@ export default {
                 this.queryData.cashWithdrawal.money = money;
             }
         },
+        cleanTime() {
+            // 清除12小时
+            getServer(this.queryData.cleanTime);
+        },
         confirmCashWithdrawal() {
             this.value = "";
             this.time = 60;
+            this.msgPwd = "";
             clearInterval(this.clearIntervalStatus);
             if (this.confirm === "确认提现") {
                 getServer(this.queryData.balanceList)
@@ -385,6 +448,8 @@ export default {
                             );
                             return;
                         }
+                        this.cleanTime();
+                        this.msgPwdFunc();
                         this.ispwd = true;
                     });
             } else if (this.confirm === "绑定银行卡") {
@@ -422,18 +487,18 @@ export default {
         },
         confirmWithdrawFn() {
             // alert("执行")
-            var inputCode = this.code.trim();
+            // var inputCode = this.code.trim();
             // alert(inputCode)
-            if (inputCode == "") {
-                Toast("请输入验证码");
-                return;
-            }
-            if (inputCode != this.serverVerifyCode) {
-                Toast("验证码不正确");
-                return;
-            }
+            // if (inputCode == "") {
+            //     Toast("请输入验证码");
+            //     return;
+            // }
+            // if (inputCode != this.serverVerifyCode) {
+            //     Toast("验证码不正确");
+            //     return;
+            // }
             //询问是否提现
-            this.puponShow = false;
+            // this.puponShow = false;
             MessageBox.confirm("你确定要提现吗?", "提现")
                 .then(action => {
                     getServer(this.queryData.cashWithdrawal).then(res => {
@@ -524,10 +589,28 @@ export default {
             getServer(this.queryData.isSetPwd).then(res => {
                 if (res.data.responseStatus === 1) {
                     if (res.data.status == 0) {
-                        this.$router.push({
-                            path: "/setPwd"
-                        });
+                        MessageBox.confirm(
+                            "为了您的安全考虑建议您去设置提现密码",
+                            "设置提现密码"
+                        )
+                            .then(action => {
+                                this.$router.push({
+                                    name: "smsVerification",
+                                    params: { state: "forgetPwd" }
+                                });
+                            })
+                            .catch(() => {
+                                // this.reload()
+                            });
                     }
+                }
+            });
+        },
+        msgPwdFunc() {
+            // 密码消息
+            getServer(this.queryData.msgPwd).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.msgPwd = res.data.msg;
                 }
             });
         }
@@ -560,6 +643,14 @@ export default {
 };
 </script>
 <style lang="scss">
+.be-careful {
+    margin-top: 2rem;
+    font-size: 0.3rem;
+    text-align: center;
+    display: block;
+    width: 100%;
+    line-height: 1rem;
+}
 .forget-pwd {
     font-size: 0.28rem;
     text-align: right;
@@ -568,6 +659,7 @@ export default {
     margin-top: 0.1rem;
     color: #4395ff;
 }
+
 .isPwd {
     position: fixed;
     top: 0.8rem;

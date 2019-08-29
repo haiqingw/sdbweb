@@ -8,7 +8,7 @@
                 <!-- v-bind="{to: '/notice' + item.id}" -->
                 <router-link tag="li" :to="{name: 'notice', params: {id: item.id}}" v-for="item in renderData.msgClassification" :key="item.id">
                     <!-- <el-badge is-dot class="item"></el-badge> -->
-                    <el-badge :value="item.rnum" :hidden="item.rnum == 0" :max="99" class="item">
+                    <el-badge :value="item.rnum" :hidden="item.rnum <= 0" :max="99" class="item">
                         <div class="notice-ico ico">
                             <img :src="item.picUrl" alt="">
                         </div>

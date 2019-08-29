@@ -444,7 +444,7 @@ export default new Router({
         component: resolve => require(['@/views/set-pwd'], resolve),
     }, 
     {
-        path: "/agreement",  // 协议
+        path: "/agreement/:state",  // 协议
         name: 'agreement',
         component: resolve => require(['@/views/agreement'], resolve),
     }, 

@@ -259,7 +259,8 @@ export default {
                                     name: url
                                 });
                                 // this.$router.push({
-                                //     name: "certification"
+                                //     name: "agreement",
+                                //     params: { state: "add" }
                                 // });
                             }
                         } else {
@@ -270,8 +271,12 @@ export default {
                         }
                     });
                 } else {
+                    // this.$router.push({
+                    //     name: "certification"
+                    // });
                     this.$router.push({
-                        name: "certification"
+                        name: "agreement",
+                        params: { state: "add" }
                     });
                 }
             });
@@ -305,7 +310,7 @@ export default {
         this.thaw();
         this.info();
         this.isShowAdvertisement();
-    },
+    }
 };
 </script>
 <style lang="scss">

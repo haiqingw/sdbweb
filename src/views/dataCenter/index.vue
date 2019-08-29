@@ -46,6 +46,7 @@
             <div
                 class="dmTabMain"
                 :style="{'border-color':colorData[reallyIndex],'background':colorData[reallyIndex]}"
+                style="margin-bottom: 1rem;"
             >
                 <!-- <span class="active">日</span>
                 <span>月</span>-->
@@ -162,7 +163,10 @@
                 <div class="myEarningChart">
                     <div id="myChart1" style="width:100% !important;height:220px"></div>
                 </div>
-                <div class="myEarningStatisticalMain flex" v-if="queryData.tptrade.types === 'active'">
+                <div
+                    class="myEarningStatisticalMain flex"
+                    v-if="queryData.tptrade.types === 'active'"
+                >
                     <div class="line_right">
                         <p>{{team}}</p>
                         <h3>团队合计(台)</h3>
@@ -226,24 +230,24 @@ export default {
             sunAndMoonSwitch: [
                 {
                     name: "日",
-                    isActive: true,
+                    isActive: false,
                     dateType: "days"
                 },
                 {
                     name: "月",
-                    isActive: false,
+                    isActive: true,
                     dateType: "mons"
                 }
             ],
             towSunAndMoonSwitch: [
                 {
                     name: "日",
-                    isActive: true,
+                    isActive: false,
                     dateType: "days"
                 },
                 {
                     name: "月",
-                    isActive: false,
+                    isActive: true,
                     dateType: "mons"
                 }
             ],
@@ -255,8 +259,10 @@ export default {
             realIndex1: 0,
             monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
             moneyData: [0, 0, 0, 0, 0, 0],
+            moneyData2: [0, 0, 0, 0, 0, 0],
             profitMonthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
             profitMoneyData: [0, 0, 0, 0, 0, 0],
+            profitMoneyData2: [0, 0, 0, 0, 0, 0],
             drawColumnMonthData: [],
             drawColumnmoneyData: [],
             reallyIndex: 1,
@@ -352,8 +358,13 @@ export default {
         Footer
     },
     mounted() {
-        this.drawLine("myChart0", this.monthData, this.moneyData);
-        this.drawColumn("myChart1", this.profitMonthData, this.profitMoneyData);
+        this.drawLine(
+            "myChart0",
+            this.monthData,
+            this.moneyData,
+            this.moneyData2
+        );
+        this.drawColumn("myChart1", this.profitMonthData, this.profitMoneyData, this.profitMoneyData2);
     },
     computed: {},
     methods: {
@@ -389,35 +400,45 @@ export default {
             this.profitBrokenLineDiagram();
         },
         // 折线图
-        drawLine(selecter, monthData, moneyData) {
+        drawLine(selecter, monthData, moneyData, moneyData2) {
             let $selecter = document.getElementById(selecter);
             // 基于准备好的dom，初始化echarts实例
             let myChart = this.$echarts.init($selecter);
             // 绘制图表
             myChart.setOption({
                 tooltip: {},
-                xAxis: {
-                    type: "category",
-                    data: monthData,
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: this.colorData[this.reallyIndex]
+                legend: {
+                    data: ["直营", "团队"]
+                },
+                grid: {
+                    top: 70,
+                    bottom: 50
+                },
+                xAxis: [
+                    {
+                        type: "category",
+                        data: monthData,
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: this.colorData[this.reallyIndex]
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: this.colorData[this.reallyIndex],
+                                width: 2
+                            }
                         }
                     },
-                    axisLine: {
-                        lineStyle: {
-                            color: this.colorData[this.reallyIndex],
-                            width: 2
-                        }
-                    }
-                },
+                ],
                 yAxis: {
                     show: false,
                     type: "value"
                 },
                 series: [
                     {
+                        name: "直营",
                         data: moneyData,
                         type: "line",
                         itemStyle: {
@@ -429,18 +450,35 @@ export default {
                                 }
                             }
                         }
+                    },
+                    {
+                        name: "团队",
+                        data: moneyData2,
+                        type: "line",
+                        itemStyle: {
+                            normal: {
+                                label: { show: true },
+                                color: "#99CCCC",
+                                lineStyle: {
+                                    color: "#99CCCC"
+                                }
+                            }
+                        }
                     }
                 ]
             });
         },
         // 柱状图
-        drawColumn(selecter, monthData, moneyData) {
+        drawColumn(selecter, monthData, moneyData, moneyData2) {
             let $selecter = document.getElementById(selecter);
             // 基于准备好的dom，初始化echarts实例
             let myChart = this.$echarts.init($selecter);
             // 绘制图表
             myChart.setOption({
                 tooltip: {},
+                 legend: {
+                    data: ["直营", "团队"]
+                },
                 xAxis: {
                     type: "category",
                     data: monthData,
@@ -463,12 +501,27 @@ export default {
                 },
                 series: [
                     {
+                        name: "直营",
                         data: moneyData,
                         type: "bar",
                         itemStyle: {
                             normal: {
                                 label: { show: true },
                                 color: this.colorData[this.reallyIndex]
+                            }
+                        }
+                    },
+                    {
+                        name: "团队",
+                        data: moneyData2,
+                        type: "bar",
+                        itemStyle: {
+                            normal: {
+                                label: { show: true },
+                                color: "#99CCCC",
+                                lineStyle: {
+                                    color: "#99CCCC"
+                                }
                             }
                         }
                     }
@@ -515,8 +568,8 @@ export default {
             this.queryData.tptrade.productID = newArr[0].proid;
             this.pieChart();
             this.profitBrokenLineDiagram();
-            this.tptrade()
-            this.tpincome()
+            this.tptrade();
+            this.tpincome();
         },
         changeProductTwo(name) {
             let newArr = this.wayList.filter(item => item.name == name);
@@ -525,7 +578,7 @@ export default {
             this.queryData.tpincome.types = newArr[0].type;
             this.profitBrokenLineDiagram();
             this.tptrade();
-            this.tpincome()
+            this.tpincome();
         },
         pieChart() {
             // 饼图
@@ -564,8 +617,10 @@ export default {
                     if (res.data.data === null) {
                         this.moneyData = [0, 0, 0, 0, 0];
                         this.monthData = [0, 0, 0, 0, 0];
+                        this.monthData2 = [0, 0, 0, 0, 0];
                     } else {
-                        this.moneyData = res.data.data.line.sums;
+                        this.moneyData = res.data.data.line.direct;
+                        this.moneyData2 = res.data.data.line.team;
                         this.monthData = res.data.data.line.dates;
                         this.newAdd = res.data.data.newAdd.total;
                         this.teamNewAdd = res.data.data.newAdd.team;
@@ -573,7 +628,12 @@ export default {
                         // alert(JSON.stringify(this.moneyData))
                         // alert(JSON.stringify(this.monthData))
                     }
-                    this.drawLine("myChart0", this.monthData, this.moneyData);
+                    this.drawLine(
+                        "myChart0",
+                        this.monthData,
+                        this.moneyData,
+                        this.moneyData2
+                    );
                 }
             });
         },
@@ -594,8 +654,14 @@ export default {
                 Indicator.close();
                 if (res.data.responseStatus === 1) {
                     this.profitMonthData = res.data.data.dates;
-                    this.profitMoneyData = res.data.data.sums;
-                    this.drawColumn("myChart1", this.profitMonthData, this.profitMoneyData);
+                    this.profitMoneyData = res.data.data.line.direct;
+                    this.profitMoneyData2 = res.data.data.line.team;
+                    this.drawColumn(
+                        "myChart1",
+                        this.profitMonthData,
+                        this.profitMoneyData,
+                        this.profitMoneyData2
+                    );
                 }
             });
         },

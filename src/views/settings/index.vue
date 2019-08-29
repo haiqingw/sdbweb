@@ -14,11 +14,11 @@
                     <span>更换手机号</span>
                     <i></i>
                 </router-link>-->
-                <router-link to="/modifyInfo" tag="li" class="line_bottom">
+                <li @click="modifyAuthentication">
                     <img src="@/assets/images/certificationIcon.png" alt="修改个人信息">
                     <span>修改个人信息</span>
                     <i></i>
-                </router-link>
+                </li>
                 <li class="line_bottom" @click="judgeRealNameAuth('changeCard')">
                     <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡">
                     <span>更换结算卡</span>
@@ -144,7 +144,8 @@ export default {
         },
         modifyAuthentication() {
             this.$router.push({
-                name: "modifyInfo"
+                name: "agreement",
+                params: { state: "modify" }
             });
         },
         isCerFn() {

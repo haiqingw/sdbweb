@@ -102,7 +102,7 @@ export default {
                 if (res.data.responseStatus === 1) {
                     Toast("实名认证成功");
                     setTimeout(() => {
-                        this.$router.push({name: "certificationNext"});
+                        this.$router.push({ name: "certificationNext" });
                     }, 300);
                 } else {
                     Toast(response[res.data.responseStatus]);

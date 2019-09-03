@@ -7,7 +7,8 @@
         </div>
         <!-- body -->
         <div class="verificationContainer">
-            <h3 class="titleMain">设置提现密码</h3>
+            <h3 class="titleMain" v-if="$route.params.state === 'modify' || $route.params.state === 'add'">实名认证</h3>
+            <h3 class="titleMain" v-else-if="$route.params.state === 'forgetPwd'">设置提现密码</h3>
             <p class="subTitleMain">
                 为了您的账户安全，
                 <br />请输入发送到以下电话号码的验证码：
@@ -30,7 +31,7 @@
             <div class="timerMain">
                 请稍后：
                 <!-- @click="getVerify" -->
-                <em >{{time}}{{time==="重新获取"?'':'s'}}</em>
+                <em>{{time}}{{time==="重新获取"?'':'s'}}</em>
             </div>
         </div>
     </div>
@@ -193,11 +194,17 @@ export default {
             if (this.code.length == 6) {
                 if (parseInt(this.code) === parseInt(this.renderData.code)) {
                     if (this.$route.params.state === "add") {
-                        this.submitModification();
+                        // this.submitModification();
+                        this.$router.push({
+                            name: "certification"
+                        });
                     } else if (this.$route.params.state === "bindCer") {
                         this.submitModificationCer();
                     } else if (this.$route.params.state === "modify") {
-                        this.modify();
+                        // this.modify();
+                        this.$router.push({
+                            name: "modifyInfo"
+                        });
                     } else if (this.$route.params.state === "forgetPwd") {
                         this.remanufacturePwdFunc();
                     }
@@ -210,12 +217,13 @@ export default {
     },
     created() {
         if (this.$route.params.state === "add") {
-            this.queryData.realNameCer.name = JSON.parse(
-                sessionStorage.getItem("name")
-            );
-            this.queryData.realNameCer.idcard = JSON.parse(
-                sessionStorage.getItem("idcard")
-            );
+            // this.queryData.realNameCer.name = JSON.parse(
+            //     sessionStorage.getItem("name")
+            // );
+            // this.queryData.realNameCer.idcard = JSON.parse(
+            //     sessionStorage.getItem("idcard")
+            // );
+            this.queryData.sendCode.requestKeywords = "realnameauth";
         } else if (this.$route.params.state === "bindCer") {
             this.queryData.bindCardCer.phone = JSON.parse(
                 sessionStorage.getItem("phone")
@@ -227,12 +235,13 @@ export default {
                 sessionStorage.getItem("bankName")
             );
         } else if (this.$route.params.state === "modify") {
-            this.queryData.realNameCer.name = JSON.parse(
-                sessionStorage.getItem("modifyName")
-            );
-            this.queryData.realNameCer.idcard = JSON.parse(
-                sessionStorage.getItem("modifyidcard")
-            );
+            // this.queryData.realNameCer.name = JSON.parse(
+            //     sessionStorage.getItem("modifyName")
+            // );
+            // this.queryData.realNameCer.idcard = JSON.parse(
+            //     sessionStorage.getItem("modifyidcard")
+            // );
+            this.queryData.sendCode.requestKeywords = "realnameauth";
         } else if (this.$route.params.state === "forgetPwd") {
         }
         this.info();

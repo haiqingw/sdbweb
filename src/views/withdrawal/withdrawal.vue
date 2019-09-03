@@ -287,7 +287,9 @@ export default {
             }
         },
         inpPwdNum() {
-            getServer(this.queryData.inpPwdNum).then(res => {});
+            getServer(this.queryData.inpPwdNum).then(res => {
+                this.msgPwdFunc();
+            });
         },
         getPwd() {
             getServer(this.queryData.getPwd).then(res => {
@@ -301,7 +303,6 @@ export default {
                         this.value = "";
                     }, 500);
                     this.inpPwdNum();
-                    this.msgPwdFunc();
                 } else {
                     Toast(response[res.data.responseStatus]);
                 }
@@ -594,13 +595,19 @@ export default {
                             "设置提现密码"
                         )
                             .then(action => {
-                                this.$router.push({
-                                    name: "smsVerification",
-                                    params: { state: "forgetPwd" }
-                                });
+                                if (action == "confirm") {
+                                    this.$router.push({
+                                        name: "smsVerification",
+                                        params: { state: "forgetPwd" }
+                                    });
+                                } 
                             })
-                            .catch(() => {
+                            .catch(err => {
+                                this.$router.go(-1);
                                 // this.reload()
+                                // this.$router.push({
+                                //     name: "mine"
+                                // });
                             });
                     }
                 }

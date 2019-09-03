@@ -2,22 +2,25 @@
     <div class="index-home">
         <div class="isLogin">
             <div class="index-banner" v-if="islogin">
-                <van-swipe @change="onChange" :autoplay="3000">
-                    <van-swipe-item
-                        v-for="(item, index) in bannerListData"
-                        v-bind:item="item"
-                        v-bind:index="index"
-                        v-bind:key="item.id"
-                        @click="clickBanner(item.picUrl)"
-                    >
-                        <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner" />
-                    </van-swipe-item>
-                    <div
-                        class="custom-indicator"
-                        slot="indicator"
-                    >{{ current + 1 }}/{{ bannerLength }}</div>
-                </van-swipe>
+                <!-- <vue-element-loading :active="showCustomizeLoader"> -->
+                    <van-swipe @change="onChange" :autoplay="3000">
+                        <van-swipe-item
+                            v-for="(item, index) in bannerListData"
+                            v-bind:item="item"
+                            v-bind:index="index"
+                            v-bind:key="item.id"
+                            @click="clickBanner(item.picUrl)"
+                        >
+                            <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner" />
+                        </van-swipe-item>
+                        <div
+                            class="custom-indicator"
+                            slot="indicator"
+                        >{{ current + 1 }}/{{ bannerLength }}</div>
+                    </van-swipe>
+                <!-- </vue-element-loading> -->
             </div>
+
             <div class="login" v-else>
                 <router-link to="/login">立即登录</router-link>
             </div>
@@ -213,7 +216,7 @@
                         <router-link to="/bookOrderList">订货订单</router-link>
                     </div>
                 </li>
-                 <li>
+                <li>
                     <div class="img">
                         <router-link to="/myBusiness">
                             <img src="@/assets/images/indexBtn15.png" alt />
@@ -252,9 +255,12 @@ import response from "@/assets/js/response.js";
 import Footer from "@/components/footerNav/footer";
 import { Toast } from "mint-ui";
 import wx from "weixin-js-sdk";
+
+import VueElementLoading from "vue-element-loading";
 export default {
     data() {
         return {
+            showCustomizeLoader: true,
             likeStatus: false,
             current: 0,
             bannerLength: 0,
@@ -271,7 +277,7 @@ export default {
             queryData: {
                 dialCodeStatus: {
                     requestType: "checke",
-                    requestKeywords: 'dialcodecheck', 
+                    requestKeywords: "dialcodecheck",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone //APP拨码显示开关 返回 status 1 显示 2 关
@@ -344,15 +350,16 @@ export default {
         };
     },
     components: {
-        Footer
+        Footer,
+        VueElementLoading
     },
     computed: {
         ...mapGetters(["islogin"])
     },
     methods: {
-        clickBanner(url){
-            if(url) {
-                window.location.href = url
+        clickBanner(url) {
+            if (url) {
+                window.location.href = url;
             }
         },
         loanHref() {
@@ -395,6 +402,7 @@ export default {
                 // console.log(res);
                 this.bannerLength = res.data.data.length;
                 this.bannerListData = res.data.data;
+                this.showCustomizeLoader = false;
             });
         },
         //banner图详情页
@@ -487,7 +495,7 @@ export default {
         // this.verify();;
         this.onlineCheck();
         this.likeStatusFunc();
-        this.dialCodeStatusFunc()
+        this.dialCodeStatusFunc();
     }
 };
 </script>

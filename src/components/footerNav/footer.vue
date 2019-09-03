@@ -36,7 +36,7 @@
             >
                 <el-badge
                     :value="renderData.rnum"
-                    :hidden="renderData.rnum == 0"
+                    :hidden="renderData.rnum <= 0"
                     :max="99"
                     class="item"
                 >

@@ -42,35 +42,35 @@ Vue.use(Vue2OrgTree)
 Vue.use(Cube)
 // Vue.use(Axios)
 // Vue.prototype.$http = axios
- 
+
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  store,
-  // components: { App },
-  // template: '<App/>',
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    // components: { App },
+    // template: '<App/>',
+    render: h => h(App)
 });
 //兼容性：字体大小，全局尺寸(rem)
 !(function (doc, win) {
-  var docEl = doc.documentElement,
-      resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-      recalc = function (e) {
-          e.preventDefault();
-          var clientWidth = docEl.clientWidth;
-          if (!clientWidth) return;
-          if(clientWidth>=750){
-              docEl.style.fontSize = '100px';
-          }else{
-              var fontSize = 50 * (clientWidth / 375);
-              window.xPixelRatio = 100 / fontSize;
-              docEl.style.fontSize = fontSize + 'px';
-          }
-      };
+    var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function (e) {
+            e.preventDefault();
+            var clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            if (clientWidth >= 750) {
+                docEl.style.fontSize = '100px';
+            } else {
+                var fontSize = 50 * (clientWidth / 375);
+                window.xPixelRatio = 100 / fontSize;
+                docEl.style.fontSize = fontSize + 'px';
+            }
+        };
 
-  // Abort if browser does not support addEventListener
-  if (!doc.addEventListener) return;
-  win.addEventListener(resizeEvt, recalc, false);
-  doc.addEventListener('DOMContentLoaded', recalc, false);
+    // Abort if browser does not support addEventListener
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
 })(document, window)

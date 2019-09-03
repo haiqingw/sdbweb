@@ -5,11 +5,7 @@
             <!-- <img src="@/assets/images/return.png" alt @click="$router.go(-1)" /> -->
             <span>用户协议</span>
         </div>
-        <div
-            class="content"
-            id="content"
-            v-html="content"
-        ></div>
+        <div class="content" id="content" v-html="content"></div>
         <div class="btn" :class="{ 'active': state }">
             <el-button type="primary" @click="agree" :disabled="!state">
                 我已阅读并同意
@@ -44,19 +40,28 @@ export default {
             if (this.state) {
                 if (this.$route.params.state === "modify") {
                     this.$router.push({
-                        name: "modifyInfo"
+                        name: "smsVerification",
+                        params: {
+                            state: "modify"
+                        }
                     });
                 } else if (this.$route.params.state === "add") {
+                    // this.$router.push({
+                    //     name: "certification"
+                    // });
                     this.$router.push({
-                        name: "certification"
+                        name: "smsVerification",
+                        params: {
+                            state: "add"
+                        }
                     });
                 }
             }
         },
         getData() {
             getServer(this.queryData.getData).then(res => {
-                if( res.data.responseStatus === 1 ) {
-                    this.content = res.data.content
+                if (res.data.responseStatus === 1) {
+                    this.content = res.data.content;
                 }
             });
         },
@@ -74,7 +79,7 @@ export default {
     mounted() {},
     created() {
         this.timeFunc();
-        this.getData()
+        this.getData();
     }
 };
 </script>

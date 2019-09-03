@@ -654,8 +654,8 @@ export default {
                 Indicator.close();
                 if (res.data.responseStatus === 1) {
                     this.profitMonthData = res.data.data.dates;
-                    this.profitMoneyData = res.data.data.line.direct;
-                    this.profitMoneyData2 = res.data.data.line.team;
+                    this.profitMoneyData = res.data.data.direct;
+                    this.profitMoneyData2 = res.data.data.team;
                     this.drawColumn(
                         "myChart1",
                         this.profitMonthData,

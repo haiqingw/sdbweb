@@ -121,6 +121,7 @@ export default {
         },
         onValuesChange(picker, values) {
             this.deposit = values[0].frozen;
+            this.queryData.confirmBinding.productID = String(values[0].id)
             this.choiceBrandVal = String(values[0].name);
         },
         sys_click() {
@@ -182,6 +183,7 @@ export default {
         brand() {
             getServer(this.queryData.brand).then(res => {
                 this.slots[0].values = res.data.data;
+                this.queryData.confirmBinding.productID = res.data.data[0].id
             });
         },
         confirmBinding() {
@@ -215,7 +217,6 @@ export default {
                 // console.log(response[res.data.responseStatus])
                 if (res.data.responseStatus === 1) {
                     this.queryData.confirmBinding.childID = res.data.data[0].id;
-                    console.log(this.queryData.confirmBinding.childID);
                 }
             });
         }

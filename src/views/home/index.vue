@@ -3,21 +3,21 @@
         <div class="isLogin">
             <div class="index-banner" v-if="islogin">
                 <!-- <vue-element-loading :active="showCustomizeLoader"> -->
-                    <van-swipe @change="onChange" :autoplay="3000">
-                        <van-swipe-item
-                            v-for="(item, index) in bannerListData"
-                            v-bind:item="item"
-                            v-bind:index="index"
-                            v-bind:key="item.id"
-                            @click="clickBanner(item.picUrl)"
-                        >
-                            <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner" />
-                        </van-swipe-item>
-                        <div
-                            class="custom-indicator"
-                            slot="indicator"
-                        >{{ current + 1 }}/{{ bannerLength }}</div>
-                    </van-swipe>
+                <van-swipe @change="onChange" :autoplay="3000">
+                    <van-swipe-item
+                        v-for="(item, index) in bannerListData"
+                        v-bind:item="item"
+                        v-bind:index="index"
+                        v-bind:key="item.id"
+                        @click="clickBanner(item.picUrl)"
+                    >
+                        <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner" />
+                    </van-swipe-item>
+                    <div
+                        class="custom-indicator"
+                        slot="indicator"
+                    >{{ current + 1 }}/{{ bannerLength }}</div>
+                </van-swipe>
                 <!-- </vue-element-loading> -->
             </div>
 
@@ -82,6 +82,11 @@
                     <span></span>
                 </router-link>
             </div>
+        </div>
+        <div class="etc-img">
+            <router-link to="/etc">
+                <img src="@/assets/images/home-etc.jpg" alt />
+            </router-link>
         </div>
         <div class="index-list2">
             <ul>
@@ -226,7 +231,7 @@
                         <router-link to="/bookOrderList">我的商户</router-link>
                     </div>
                 </li>
-                <li v-if="likeStatus" @click="cardHref">
+                <!-- <li v-if="likeStatus" @click="cardHref">
                     <div class="img">
                         <img src="@/assets/images/indexBtn13.png" alt />
                     </div>
@@ -241,7 +246,51 @@
                     <div class="text">
                         <a href="javascript:;">在线贷款</a>
                     </div>
+                </li>-->
+                <!-- <li
+                    v-if="likeStatus"
+                    @click="ETC('http://brksh5.payhc.cn/pages/homepage/applyandsignin.html?appuuid=58e0131e3d674041978e76f49b29d1c3&authorization=1974172_3ad2aa7e38ce44398ec67b9bb4c0d38c&bankId=200013&bankCardId=705693&authflag=authflag')"
+                >
+                    <div class="img">
+                        <img src="@/assets/images/indexBtn13.png" alt />
+                    </div>
+                    <div class="text">
+                        <a href="javascript:;">农业银行ETC</a>
+                    </div>
                 </li>
+                <li
+                    v-if="likeStatus"
+                    @click="ETC('http://brksh5.payhc.cn/pages/homepage/applyandsignin.html?appuuid=58e0131e3d674041978e76f49b29d1c3&authorization=1974172_3ad2aa7e38ce44398ec67b9bb4c0d38c&bankId=200013&bankCardId=809064&authflag=authflag')"
+                >
+                    <div class="img">
+                        <img src="@/assets/images/indexBtn13.png" alt />
+                    </div>
+                    <div class="text">
+                        <a href="javascript:;">交通银行ETC</a>
+                    </div>
+                </li>
+                <li
+                    v-if="likeStatus"
+                    @click="ETC('https://m.hhrcard.com/credit/miniprogram/copartner/cardlist?invitecode=12443774&bank_id=1019&oas=1&platform_id=1002')"
+                >
+                    <div class="img">
+                        <img src="@/assets/images/indexBtn13.png" alt />
+                    </div>
+                    <div class="text">
+                        <a href="javascript:;">建设银行ETC</a>
+                    </div>
+                </li>
+                <li
+                    v-if="likeStatus"
+                    @click="ETC('https://m.hhrcard.com/credit/miniprogram/copartner/cardlist?invitecode=12443774&bank_id=1019&oas=1&platform_id=1002')"
+                >
+                    <div class="img">
+                        <img src="@/assets/images/indexBtn13.png" alt />
+                    </div>
+                    <div class="text">
+                        <a href="javascript:;">工商银行ETC</a>
+                    </div>
+                </li> -->
             </ul>
         </div>
         <Footer></Footer>
@@ -504,6 +553,10 @@ export default {
 <style>
 html {
     background: #fff;
+}
+.index-home .etc-img {
+    margin-top: 0.2rem;
+    padding: 0 0.2rem;
 }
 .index-home {
     padding-bottom: 1.4rem;

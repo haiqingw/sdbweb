@@ -448,5 +448,10 @@ export default new Router({
         name: 'agreement',
         component: resolve => require(['@/views/agreement'], resolve),
     }, 
+    {
+        path: "/etc",  // 协议
+        name: 'etc',
+        component: resolve => require(['@/views/etc'], resolve),
+    }, 
     ]
 })

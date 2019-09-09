@@ -83,7 +83,7 @@
                 </router-link>
             </div>
         </div>
-        <div class="etc-img">
+        <div class="etc-img" v-if="likeStatus">
             <router-link to="/etc">
                 <img src="@/assets/images/home-etc.jpg" alt />
             </router-link>
@@ -555,8 +555,8 @@ html {
     background: #fff;
 }
 .index-home .etc-img {
-    margin-top: 0.2rem;
-    padding: 0 0.2rem;
+    /* margin-top: 0.2rem; */
+    /* padding: 0 0.2rem; */
 }
 .index-home {
     padding-bottom: 1.4rem;

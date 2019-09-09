@@ -52,7 +52,9 @@
             <van-swipe :autoplay="3000">
                 <van-swipe-item>
                     <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
-                    <img src="@/assets/images/mine-banner.jpg" alt />
+                    <router-link to="/advertisement">
+                        <img src="@/assets/images/mine-banner2.jpg" alt />
+                    </router-link>
                 </van-swipe-item>
             </van-swipe>
         </div>

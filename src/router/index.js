@@ -453,5 +453,10 @@ export default new Router({
         name: 'etc',
         component: resolve => require(['@/views/etc'], resolve),
     }, 
+    {
+        path: "/advertisement",  // 广告
+        name: 'advertisement',
+        component: resolve => require(['@/views/advertisement'], resolve),
+    }, 
     ]
 })

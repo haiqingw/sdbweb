@@ -90,207 +90,16 @@
         </div>
         <div class="index-list2">
             <ul>
-                <li>
+                <li v-for="item in renderData.navList" :key="item.jumpPageLink">
                     <div class="img">
-                        <router-link to="/bindingMplements">
-                            <img src="@/assets/images/indexBtn01.png" alt />
+                        <router-link :to="item.jumpPageLink">
+                            <img :src="item.iconUrl" alt />
                         </router-link>
                     </div>
                     <div class="text">
-                        <router-link to="/bindingMplements">自助绑机</router-link>
+                        <router-link :to="item.jumpPageLink">{{item.moduleName}}</router-link>
                     </div>
                 </li>
-                <li>
-                    <div class="img">
-                        <router-link to="/merchantsExpand">
-                            <img src="@/assets/images/indexBtn05.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/merchantsExpand">商户拓展</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.info.level == 2">
-                    <div class="img">
-                        <router-link to="/myTerminal">
-                            <img src="@/assets/images/indexBtn02.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/myTerminal">我的终端</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.info.level != 2 && renderData.isChecke == 1">
-                    <div class="img">
-                        <router-link to="/application-agent">
-                            <img src="@/assets/images/indexBtn09.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/application-agent">申请代理</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.info.level == 2 && renderData.isChecke == 1">
-                    <div class="img">
-                        <router-link to="/application-agent-To-examine">
-                            <img src="@/assets/images/indexBtn03.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/application-agent-To-examine">代理审核</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.info.level == 2 && dialCodeStatus">
-                    <div class="img">
-                        <router-link to="/dial-code">
-                            <img src="@/assets/images/indexBtn04.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/dial-code">拨码</router-link>
-                    </div>
-                </li>
-                <!-- v-if="this.$store.state.user.pid == 175" -->
-                <!-- <li v-if="this.$store.state.user.pid == 215">
-                    <div class="img">
-                        <router-link to="/mall">
-                            <img src="@/assets/images/indexBtn09.png" alt>
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/mall">机具商城</router-link>
-                    </div>
-                </li>-->
-                <li>
-                    <div class="img">
-                        <router-link to="/financialDetails">
-                            <img src="@/assets/images/indexBtn06.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/financialDetails">收益明细</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.info.level == 2">
-                    <div class="img">
-                        <router-link to="/myMerchants">
-                            <img src="@/assets/images/indexBtn07.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/myMerchants">组织架构</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.info.level == 2">
-                    <div class="img">
-                        <router-link to="/rank">
-                            <img src="@/assets/images/indexBtn11.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/rank">排行榜</router-link>
-                    </div>
-                </li>
-                <!-- <li v-if="renderData.info.level == 2 && this.$store.state.user.pid == 215">
-                    <div class="img">
-                        <router-link to="/deliverGoods">
-                            <img src="@/assets/images/index-list2-img4.png" alt>
-                        </router-link>
-                    </div>
-                   <div class="text">
-                        <router-link to="/deliverGoods">订单管理</router-link>
-                    </div>
-                </li>-->
-                <li v-if="renderData.onlineCheckStatus">
-                    <div class="img">
-                        <router-link to="/online-ordering">
-                            <img src="@/assets/images/indexBtn10.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/mall">在线订货</router-link>
-                    </div>
-                </li>
-                <li v-if="renderData.onlineCheckStatus">
-                    <div class="img">
-                        <router-link to="/bookOrderList">
-                            <img src="@/assets/images/indexBtn12.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/bookOrderList">订货订单</router-link>
-                    </div>
-                </li>
-                <li>
-                    <div class="img">
-                        <router-link to="/myBusiness">
-                            <img src="@/assets/images/indexBtn15.png" alt />
-                        </router-link>
-                    </div>
-                    <div class="text">
-                        <router-link to="/bookOrderList">我的商户</router-link>
-                    </div>
-                </li>
-                <!-- <li v-if="likeStatus" @click="cardHref">
-                    <div class="img">
-                        <img src="@/assets/images/indexBtn13.png" alt />
-                    </div>
-                    <div class="text">
-                        <a href="javascript:;">在线办卡</a>
-                    </div>
-                </li>
-                <li v-if="likeStatus" @click="loanHref">
-                    <div class="img">
-                        <img src="@/assets/images/indexBtn14.png" alt />
-                    </div>
-                    <div class="text">
-                        <a href="javascript:;">在线贷款</a>
-                    </div>
-                </li>-->
-                <!-- <li
-                    v-if="likeStatus"
-                    @click="ETC('http://brksh5.payhc.cn/pages/homepage/applyandsignin.html?appuuid=58e0131e3d674041978e76f49b29d1c3&authorization=1974172_3ad2aa7e38ce44398ec67b9bb4c0d38c&bankId=200013&bankCardId=705693&authflag=authflag')"
-                >
-                    <div class="img">
-                        <img src="@/assets/images/indexBtn13.png" alt />
-                    </div>
-                    <div class="text">
-                        <a href="javascript:;">农业银行ETC</a>
-                    </div>
-                </li>
-                <li
-                    v-if="likeStatus"
-                    @click="ETC('http://brksh5.payhc.cn/pages/homepage/applyandsignin.html?appuuid=58e0131e3d674041978e76f49b29d1c3&authorization=1974172_3ad2aa7e38ce44398ec67b9bb4c0d38c&bankId=200013&bankCardId=809064&authflag=authflag')"
-                >
-                    <div class="img">
-                        <img src="@/assets/images/indexBtn13.png" alt />
-                    </div>
-                    <div class="text">
-                        <a href="javascript:;">交通银行ETC</a>
-                    </div>
-                </li>
-                <li
-                    v-if="likeStatus"
-                    @click="ETC('https://m.hhrcard.com/credit/miniprogram/copartner/cardlist?invitecode=12443774&bank_id=1019&oas=1&platform_id=1002')"
-                >
-                    <div class="img">
-                        <img src="@/assets/images/indexBtn13.png" alt />
-                    </div>
-                    <div class="text">
-                        <a href="javascript:;">建设银行ETC</a>
-                    </div>
-                </li>
-                <li
-                    v-if="likeStatus"
-                    @click="ETC('https://m.hhrcard.com/credit/miniprogram/copartner/cardlist?invitecode=12443774&bank_id=1019&oas=1&platform_id=1002')"
-                >
-                    <div class="img">
-                        <img src="@/assets/images/indexBtn13.png" alt />
-                    </div>
-                    <div class="text">
-                        <a href="javascript:;">工商银行ETC</a>
-                    </div>
-                </li> -->
             </ul>
         </div>
         <Footer></Footer>
@@ -321,7 +130,8 @@ export default {
                 info: {},
                 todayProfit: "",
                 isChecke: 0,
-                onlineCheckStatus: false
+                onlineCheckStatus: false,
+                navList: []
             },
             queryData: {
                 dialCodeStatus: {
@@ -394,6 +204,14 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                navList: {
+                    requestType: "usermodule",
+                    requestKeywords: "lists",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    classType: "SY"
                 }
             }
         };
@@ -507,6 +325,14 @@ export default {
                     }
                 }
             });
+        },
+        navList() {
+            getServer(this.queryData.navList).then( res => {
+                if( res.data.responseStatus === 1 ) { 
+                    this.renderData.navList = res.data.data
+                }else {
+                }
+            })
         }
     },
     mounted() {
@@ -533,6 +359,7 @@ export default {
     created() {
         this.listOne();
         this.thaw();
+        this.navList()
         // this.test1()
         this.bannerList();
         this.info();

@@ -62,7 +62,16 @@
         <div class="mineCommonMenuBox">
             <h3 class="mineTitle">常用菜单</h3>
             <div class="mineCommonMenuList">
-                <a href="javascript:;" @click="judgeRealNameAuth('certificationComplete')">
+                <a
+                    href="javascript:;"
+                    @click="judgeRealNameAuth(item.jumpPageLink)"
+                    v-for="item in renderData.navList"
+                    :key="item.jumpPageLink"
+                >
+                    <img :src="item.iconUrl" alt="实名认证" />
+                    <p>{{item.moduleName}}</p>
+                </a>
+                <!-- <a href="javascript:;" @click="judgeRealNameAuth('certificationComplete')">
                     <img src="@/assets/images/certificationIcon.png" alt="实名认证" />
                     <p>实名认证</p>
                 </a>
@@ -82,11 +91,6 @@
                     <img src="@/assets/images/CapitalSubsidiaryIcon.png" alt="资金明细" />
                     <p>资金明细</p>
                 </router-link>
-                <!-- <router-link to="/organization">
-        <router-link to="/organization" v-if="renderData.info.level == 2">
-          <img src="@/assets/images/InvitedRecordIcon.png" alt="组织架构" />
-          <p>组织架构</p>
-                </router-link>-->
                 <router-link to="/helpCenter">
                     <img src="@/assets/images/helpCenterIcon.png" alt="帮助中心" />
                     <p>帮助中心</p>
@@ -94,7 +98,7 @@
                 <router-link to="/about">
                     <img src="@/assets/images/aboutIcon.png" alt="关于我们" />
                     <p>关于我们</p>
-                </router-link>
+                </router-link>-->
             </div>
         </div>
         <Footer></Footer>
@@ -114,7 +118,8 @@ export default {
             renderData: {
                 thaw: "",
                 listOneData: {},
-                info: {}
+                info: {},
+                navList: []
             },
             queryData: {
                 checkcerData: {
@@ -179,6 +184,14 @@ export default {
                         requestKeywords: "checkplatfee",
                         platformID: this.$store.state.user.pid
                     }
+                },
+                navList: {
+                    requestType: "usermodule",
+                    requestKeywords: "lists",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    classType: "WD"
                 }
             }
         };
@@ -231,57 +244,65 @@ export default {
             });
         },
         judgeRealNameAuth(url) {
-            Indicator.open();
-            getServer(this.queryData.checkcerData).then(res => {
-                Indicator.close();
-                if (res.data.responseStatus === 1) {
-                    getServer(this.queryData.checkbankcardData).then(res => {
-                        if (res.data.responseStatus === 1) {
-                            Indicator.close();
-                            if (
-                                this.isServerMoneyState &&
-                                this.rechargeType == 1
-                            ) {
-                                //跳转到公司续费页面
-                                // alert("公司")
-                                this.$router.push({
-                                    name: "serverMoneyRechargeCompany"
-                                });
-                            } else if (
-                                this.isServerMoneyState &&
-                                this.rechargeType == 2
-                            ) {
-                                //跳转到自己续费页面
-                                // alert("自己")
-                                this.$router.push({
-                                    name: "serverMoneyRechargeOwn"
-                                });
-                            } else {
-                                this.$router.push({
-                                    name: url
-                                });
-                                // this.$router.push({
-                                //     name: "agreement",
-                                //     params: { state: "add" }
-                                // });
+            if (url === "/certificationComplete" || url === "/withdrawal") {
+                Indicator.open();
+                getServer(this.queryData.checkcerData).then(res => {
+                    Indicator.close();
+                    if (res.data.responseStatus === 1) {
+                        getServer(this.queryData.checkbankcardData).then(
+                            res => {
+                                if (res.data.responseStatus === 1) {
+                                    Indicator.close();
+                                    if (
+                                        this.isServerMoneyState &&
+                                        this.rechargeType == 1
+                                    ) {
+                                        //跳转到公司续费页面
+                                        // alert("公司")
+                                        this.$router.push({
+                                            name: "serverMoneyRechargeCompany"
+                                        });
+                                    } else if (
+                                        this.isServerMoneyState &&
+                                        this.rechargeType == 2
+                                    ) {
+                                        //跳转到自己续费页面
+                                        // alert("自己")
+                                        this.$router.push({
+                                            name: "serverMoneyRechargeOwn"
+                                        });
+                                    } else {
+                                        this.$router.push({
+                                            path: url
+                                        });
+                                        // this.$router.push({
+                                        //     name: "agreement",
+                                        //     params: { state: "add" }
+                                        // });
+                                    }
+                                } else {
+                                    Indicator.close();
+                                    this.$router.push({
+                                        name: "certificationNext"
+                                    });
+                                }
                             }
-                        } else {
-                            Indicator.close();
-                            this.$router.push({
-                                name: "certificationNext"
-                            });
-                        }
-                    });
-                } else {
-                    // this.$router.push({
-                    //     name: "certification"
-                    // });
-                    this.$router.push({
-                        name: "agreement",
-                        params: { state: "add" }
-                    });
-                }
-            });
+                        );
+                    } else {
+                        // this.$router.push({
+                        //     name: "certification"
+                        // });
+                        this.$router.push({
+                            name: "agreement",
+                            params: { state: "add" }
+                        });
+                    }
+                });
+            } else {
+                this.$router.push({
+                    path: url
+                });
+            }
         },
         listOne() {
             getServer(this.queryData.listOne).then(res => {
@@ -305,6 +326,14 @@ export default {
                     // }
                 }
             });
+        },
+        navList() {
+            getServer(this.queryData.navList).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.navList = res.data.data;
+                } else {
+                }
+            });
         }
     },
     created() {
@@ -312,6 +341,7 @@ export default {
         this.thaw();
         this.info();
         this.isShowAdvertisement();
+        this.navList();
     }
 };
 </script>

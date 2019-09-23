@@ -442,21 +442,26 @@ export default new Router({
         path: "/setPwd",  //设置提现密码
         name: 'setPwd',
         component: resolve => require(['@/views/set-pwd'], resolve),
-    }, 
+    },
     {
         path: "/agreement/:state",  // 协议
         name: 'agreement',
         component: resolve => require(['@/views/agreement'], resolve),
-    }, 
+    },
     {
         path: "/etc",  // 协议
         name: 'etc',
         component: resolve => require(['@/views/etc'], resolve),
-    }, 
+    },
     {
         path: "/advertisement",  // 广告
         name: 'advertisement',
         component: resolve => require(['@/views/advertisement'], resolve),
-    }, 
+    },
+    {
+        path: "/test",  // 广告
+        name: 'test',
+        component: resolve => require(['@/views/test'], resolve),
+    },
     ]
 })

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mine">
         <!-- 头部 -->
         <div class="mineHeaderMain">
             <h3>个人中心</h3>
@@ -10,7 +10,7 @@
                 <!-- <i></i> -->
                 <div class="mineHeaderHeader">
                     <span>
-                        <img src="@/assets/images/logoSmallImg.jpg" alt="头像" />
+                        <img src="@/assets/images/mineHeaderImg1.jpg" alt="头像" />
                     </span>
                     <p>
                         {{ renderData.info.busname }}
@@ -19,6 +19,10 @@
                         >{{renderData.info.nickname}}</em>
                     </p>
                     <p>{{ renderData.info.phone }}</p>
+                </div>
+                <div class="company-info">
+                    <span>公司名称：</span>
+                    <span>上级业务员：</span>
                 </div>
                 <div class="mineHeaderBody flex">
                     <div @click="judgeRealNameAuth('withdrawal')">
@@ -346,6 +350,15 @@ export default {
 };
 </script>
 <style lang="scss">
+.mine .company-info {
+    font-size: .28rem;
+    line-height: .8rem;
+    overflow: hidden;
+}
+.mine .company-info span {
+    float: left;
+    width: 50%;
+}
 .mine-banner {
     padding: 0 15px 20px;
     // padding: 0 .2rem;
@@ -558,7 +571,7 @@ export default {
 }
 .mineHeaderHeader {
     overflow: hidden;
-    padding: 0 0 10px;
+    // padding: 0 0 10px;
     span {
         float: left;
         display: block;

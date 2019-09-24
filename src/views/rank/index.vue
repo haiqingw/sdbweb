@@ -135,327 +135,339 @@
     </div>
 </template>
 <script>
-import { getServer } from "@/api/index";
-import response from "@/assets/js/response.js";
-import { Indicator } from "mint-ui";
+import { getServer } from '@/api/index'
+import response from '@/assets/js/response.js'
+import { Indicator } from 'mint-ui'
 export default {
     data() {
         return {
             byProduct: {
                 options: [],
-                value: ""
+                value: ''
             },
             options: {
                 pullDownRefresh: {
                     threshold: 90,
                     stop: 40,
-                    txt: "刷新成功"
+                    txt: '刷新成功'
                 }, // 配置下拉刷新
                 pullUpLoad: {
                     threshold: 0,
                     txt: {
-                        more: "上拉加载更多",
-                        noMore: "没有更多数据"
+                        more: '上拉加载更多',
+                        noMore: '没有更多数据'
                     }
                 } // 配置上拉加载，若要关闭可直接 pullUpLoad：false
             },
             changeState: true,
             isData: true,
             isTheFirstThreeData: true,
-            selectItem: "",
-            monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
+            selectItem: '',
+            monthData: ['12月', '1月', '2月', '3月', '4月', '5月'],
             moneyData: [0, 0, 0, 0, 0, 0],
             selectList: [
                 {
                     id: 1,
-                    title: "当月激活"
+                    title: '当月激活'
                 },
                 {
                     id: 2,
-                    title: "当月收益"
+                    title: '当月收益'
                 }
             ],
             queryData: {
                 list: {
-                    requestType: "datamanage",
-                    requestKeywords: "actranking",
+                    requestType: 'datamanage',
+                    requestKeywords: 'actranking',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 1,
                     limit: 10,
-                    productID: ""
+                    productID: ''
                     // types: "" //选填 全部 传All 当月 不传
                 },
                 chart: {
-                    requestType: "datamanage",
-                    requestKeywords: "incomeline",
+                    requestType: 'datamanage',
+                    requestKeywords: 'incomeline',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    productID: ""
+                    productID: ''
                 },
                 own: {
-                    requestType: "datamanage",
-                    requestKeywords: "perranking",
+                    requestType: 'datamanage',
+                    requestKeywords: 'perranking',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
                 productList: {
-                    requestType: "Datamanage",
-                    requestKeywords: "productlist",
+                    requestType: 'Datamanage',
+                    requestKeywords: 'productlist',
                     // platformID: this.$store.state.user.pid
-                    platformID: this.$store.state.user.pid,
+                    platformID: this.$store.state.user.pid
                 }
             },
             renderData: {
                 list: [],
                 own: {
-                    rank: "0",
-                    busName: "**",
-                    phone: "*********",
-                    money: "0"
+                    rank: '0',
+                    busName: '**',
+                    phone: '*********',
+                    money: '0'
                 },
                 theFirstThree: [
                     {
-                        busName: "**"
+                        busName: '**'
                     },
                     {
-                        busName: "**"
+                        busName: '**'
                     },
                     {
-                        busName: "**"
+                        busName: '**'
                     }
                 ]
             }
-        };
+        }
     },
     methods: {
         scrollTo() {
-            this.$refs.scroll.scrollTo(0, 0);
+            this.$refs.scroll.scrollTo(0, 0)
         },
         onPullingDown() {
             // console.log("下拉刷新");
-            this.renderData.list = [];
-            this.queryData.list.page = 1;
-            this.list();
-            this.chart();
+            this.renderData.list = []
+            this.queryData.list.page = 1
+            this.list()
+            this.chart()
         },
         // 触发上拉加载
         onPullingUp() {
-            this.queryData.list.page++;
-            this.list();
+            this.queryData.list.page++
+            this.list()
         },
         list() {
-            Indicator.open();
+            Indicator.open()
             getServer(this.queryData.list).then(res => {
-                Indicator.close();
-                this.isServer = false;
-                Indicator.close();
+                Indicator.close()
+                this.isServer = false
+                Indicator.close()
                 if (res.data.responseStatus === 1) {
-                    this.isData = true;
-                    this.isTheFirstThreeData = true;
+                    this.isData = true
+                    this.isTheFirstThreeData = true
                     res.data.data.forEach(item => {
-                        this.renderData.list.push(item);
-                    });
+                        this.renderData.list.push(item)
+                    })
                     // JSON.stringify(this.renderData.list)
-                    if( this.renderData.list.length === 1 ) {
-                        this.renderData.theFirstThree = this.renderData.list.slice(0, 3);
-                    } else if( this.renderData.list.length === 2 ) {
-                        this.renderData.theFirstThree = this.renderData.list.slice(0, 2);
+                    if (this.renderData.list.length === 1) {
+                        this.renderData.theFirstThree = this.renderData.list.slice(
+                            0,
+                            3
+                        )
+                    } else if (this.renderData.list.length === 2) {
+                        this.renderData.theFirstThree = this.renderData.list.slice(
+                            0,
+                            2
+                        )
                     } else {
-                        this.renderData.theFirstThree = this.renderData.list.slice(0, 3);
+                        this.renderData.theFirstThree = this.renderData.list.slice(
+                            0,
+                            3
+                        )
                     }
                 } else if (
                     res.data.responseStatus === 300 &&
                     this.queryData.list.page !== 1
                 ) {
-                    this.$refs.scroll.forceUpdate();
+                    this.$refs.scroll.forceUpdate()
                 } else if (
                     res.data.responseStatus === 300 &&
                     this.queryData.list.page === 1
                 ) {
-                    this.isData = false;
-                    this.isTheFirstThreeData = false;
-                    this.ATurnover = "0.00";
+                    this.isData = false
+                    this.isTheFirstThreeData = false
+                    this.ATurnover = '0.00'
                 }
-            });
+            })
             if (this.changeState) {
                 // alert("个人激活")
-                this.queryData.own.requestKeywords = "peractranking";
+                this.queryData.own.requestKeywords = 'peractranking'
             } else {
                 // alert("个人收益")
-                this.queryData.own.requestKeywords = "perranking";
+                this.queryData.own.requestKeywords = 'perranking'
             }
             getServer(this.queryData.own).then(res => {
                 if (res.data.responseStatus === 1) {
                     // alert(JSON.stringify(res.data.data))
-                    this.renderData.own = res.data.data[0];
+                    this.renderData.own = res.data.data[0]
                 }
-            });
+            })
         },
         chart() {
             if (this.changeState) {
-                this.queryData.chart.requestKeywords = "activeline";
+                this.queryData.chart.requestKeywords = 'activeline'
             } else {
-                this.queryData.chart.requestKeywords = "incomeline";
+                this.queryData.chart.requestKeywords = 'incomeline'
             }
             getServer(this.queryData.chart).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.monthData = res.data.dates;
-                    this.moneyData = res.data.sums;
-                    this.drawLine(this.monthData, this.moneyData);
+                    this.monthData = res.data.dates
+                    this.moneyData = res.data.sums
+                    this.drawLine(this.monthData, this.moneyData)
                 } else {
-                    this.drawLine(this.monthData, this.moneyData);
+                    this.drawLine(this.monthData, this.moneyData)
                 }
-            });
+            })
         },
         changeSelect(e) {
-            this.renderData.list = [];
-            this.queryData.list.page = 1;
+            this.renderData.list = []
+            this.queryData.list.page = 1
             // this.drawLine(this.monthData, this.moneyData);
-            if (e.target.value === "当月激活") {
-                this.changeState = true;
+            if (e.target.value === '当月激活') {
+                this.changeState = true
                 // alert("激活")
-                this.queryData.list.requestKeywords = "actranking";
-                this.list();
-                this.chart();
-                this.scrollTo();
-            } else if (e.target.value === "当月收益") {
-                this.changeState = false;
+                this.queryData.list.requestKeywords = 'actranking'
+                this.list()
+                this.chart()
+                this.scrollTo()
+            } else if (e.target.value === '当月收益') {
+                this.changeState = false
                 // alert("收益")
-                this.queryData.list.requestKeywords = "montranking";
-                this.list();
-                this.chart();
-                this.scrollTo();
+                this.queryData.list.requestKeywords = 'montranking'
+                this.list()
+                this.chart()
+                this.scrollTo()
             }
         },
         changeSelectProduct() {
             if (this.isData) {
-                this.scrollTo();
+                this.scrollTo()
             }
-            this.queryData.list.productID = this.byProduct.value;
-            this.queryData.chart.productID = this.byProduct.value;
-            this.queryData.own.productID = this.byProduct.value;
-            this.renderData.list = [];
-            this.queryData.list.page = 1;
-            this.list();
-            this.chart();
+            this.queryData.list.productID = this.byProduct.value
+            this.queryData.chart.productID = this.byProduct.value
+            this.queryData.own.productID = this.byProduct.value
+            this.renderData.list = []
+            this.queryData.list.page = 1
+            this.list()
+            this.chart()
         },
         drawLine(monthData, moneyData) {
-            let $selecter = document.getElementById("myChart0");
+            let $selecter = document.getElementById('myChart0')
             // 基于准备好的dom，初始化echarts实例
-            let myChart = this.$echarts.init($selecter);
+            let myChart = this.$echarts.init($selecter)
             // 绘制图表
             myChart.setOption({
                 tooltip: {},
                 xAxis: {
-                    type: "category",
+                    type: 'category',
                     data: monthData,
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            color: "#fff"
+                            color: '#fff'
                         }
                     },
                     axisLine: {
                         lineStyle: {
-                            color: "#fff",
+                            color: '#fff',
                             width: 2
                         }
                     }
                 },
                 yAxis: {
                     show: false,
-                    type: "value"
+                    type: 'value'
                 },
                 series: [
                     {
                         data: moneyData,
-                        type: "line",
+                        type: 'line',
                         itemStyle: {
                             normal: {
                                 label: { show: true },
-                                color: "#fff",
+                                color: '#fff',
                                 lineStyle: {
-                                    color: "#fff"
+                                    color: '#fff'
                                 }
                             }
                         }
                     }
                 ]
-            });
+            })
         },
         productlist() {
             getServer(this.queryData.productList).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.byProduct.options = res.data.data;
-                    this.byProduct.value = res.data.data[0].proname;
-                    this.queryData.chart.productID = res.data.data[0].proid;
-                    this.queryData.list.productID = res.data.data[0].proid;
-                    this.queryData.own.productID = res.data.data[0].proid;
-                    this.chart();
-                    this.drawLine(this.monthData, this.moneyData);
-                    this.list();
+                    this.byProduct.options = res.data.data
+                    this.byProduct.value = res.data.data[0].proname
+                    this.queryData.chart.productID = res.data.data[0].proid
+                    this.queryData.list.productID = res.data.data[0].proid
+                    this.queryData.own.productID = res.data.data[0].proid
+                    this.chart()
+                    this.drawLine(this.monthData, this.moneyData)
+                    this.list()
                 }
-            });
+            })
         }
     },
     created() {
         // this.drawLine(this.monthData, this.moneyData);
     },
     mounted() {
-        this.selectItem = this.selectList[0].title;
-        this.productlist();
+        this.selectItem = this.selectList[0].title
+        this.productlist()
     }
-};
+}
 </script>
 <style lang="scss">
-.chartsMain-choice {
-    overflow: hidden;
-}
-.chartsMain {
-    background: #089cfe;
-    h2 {
-        margin-left: 0.2rem;
-        padding-top: 0.23rem;
-        text-align: center;
-        font-size: 16px;
-        color: #fff;
-        float: left;
-        em {
-            font-size: 12px;
-            padding-left: 10px;
+.rank {
+    .chartsMain-choice {
+        overflow: hidden;
+    }
+    .chartsMain {
+        background: #089cfe;
+        h2 {
+            margin-left: 0.2rem;
+            padding-top: 0.23rem;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            float: left;
+            em {
+                font-size: 12px;
+                padding-left: 10px;
+            }
         }
     }
+    .rank-choice {
+        background: none;
+        color: #fff;
+        width: 3.5rem;
+        float: right;
+    }
+    .rank-choice .el-input input {
+        color: #fff;
+    }
+    .rank-choice .el-input--suffix .el-input__inner {
+        background: none;
+        border: none;
+        color: #fff;
+    }
+    .rank-choice .el-select .el-input .el-select__caret {
+        color: #fff;
+    }
+    .rank .no-data {
+        margin-top: 1.5rem;
+    }
+    .mint-indicator-mask {
+        z-index: 99999;
+    }
+    .mint-indicator-wrapper {
+        z-index: 999999;
+    }
 }
-.rank-choice {
-    background: none;
-    color: #fff;
-    width: 3.5rem;
-    float: right;
-}
-.rank-choice .el-input input {
-    color: #fff;
-}
-.rank-choice .el-input--suffix .el-input__inner {
-    background: none;
-    border: none;
-    color: #fff;
-}
-.rank-choice .el-select .el-input .el-select__caret {
-    color: #fff;
-}
-.rank .no-data {
-    margin-top: 1.5rem;
-}
-.mint-indicator-mask {
-    z-index: 99999;
-}
-.mint-indicator-wrapper {
-    z-index: 999999;
-}
+
 .rank {
     font-size: 0.3rem;
 }
@@ -649,7 +661,7 @@ b.rightArrBg {
         text-indent: 15px;
         color: #fff;
         &::before {
-            content: "";
+            content: '';
             display: block;
             width: 10px;
             height: 10px;
@@ -673,7 +685,7 @@ b.rightArrBg {
         color: #fff;
         padding-right: 32px;
         &::before {
-            content: "";
+            content: '';
             display: block;
             width: 8px;
             height: 8px;

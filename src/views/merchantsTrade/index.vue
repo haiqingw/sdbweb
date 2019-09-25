@@ -24,7 +24,7 @@
                             show-toolbar
                             :columns="renderData.productName"
                             title
-                            :default-index="2"
+                            :default-index="0"
                             @cancel="showPicker = false"
                             @confirm="onConfirm"
                         />
@@ -200,7 +200,6 @@ export default {
         list() {
             getServer(this.queryData.list).then(res => {
                 if (res.data.responseStatus === 1) {
-                    alert(JSON.stringify(res.data))
                     this.renderData.list = res.data.data
                     if( res.data.data[0].tradeData.length === 0 ) {
                         this.isTerminalData = false

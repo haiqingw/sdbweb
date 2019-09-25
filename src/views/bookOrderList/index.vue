@@ -313,6 +313,7 @@ export default {
     position: fixed;
     top: .8rem;
     height: 100%;
+    width: 100%;
 }
 .myOrderListUl li {
     background: #fff;

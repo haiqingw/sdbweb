@@ -2,13 +2,32 @@
     <div>
         <!-- header -->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>待解冻</span>
+            <div class="freezeProgressMainProductScreeningMain">
+                <van-field
+                    readonly
+                    clickable
+                    :value="proValue"
+                    @click="showPicker = true"
+                    right-icon="arrow-down"
+                />
+                <van-popup v-model="showPicker" position="bottom">
+                    <van-picker
+                        show-toolbar
+                        :columns="renderData.productName"
+                        title
+                        :default-index="0"
+                        @cancel="showPicker = false"
+                        @confirm="onConfirm"
+                    />
+                </van-popup>
+            </div>
         </div>
         <!-- freezeProgress -->
         <div class="freezeProgressMain">
             <div class="freezeProgressHeader">
-                <img src="../../assets/images/freezeProgressHeaderImg.jpg">
+                <img src="../../assets/images/freezeProgressHeaderImg.jpg" />
                 <div class="freezeProgressHeaderBox">
                     {{ renderData.thaw }}
                     <span>待解冻金额(元)</span>
@@ -44,11 +63,11 @@
                             <img
                                 v-if="item.isThaw == '已解冻'"
                                 src="../../assets/images/completedIcon.png"
-                            >
+                            />
                             <img
                                 v-if="item.isThaw == '已过期'"
                                 src="../../assets/images/expiredIcon.png"
-                            >
+                            />
                             <!--  解冻金额与剩余时间  -->
                             <div class="moneyAndTime">
                                 <div class="line_right">
@@ -87,73 +106,128 @@
                         <img src="../../assets/images/noPosDataIcon.png">
                         <span>您还没有领取机器，立即去领取</span>
                         <router-link to="/mall">机具商城</router-link>
-                    </div> -->
+                    </div>-->
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { getServer } from "@/api/index";
-import { Indicator } from "mint-ui";
-import response from "@/assets/js/response.js";
+import { getServer } from '@/api/index'
+import { Indicator } from 'mint-ui'
+import response from '@/assets/js/response.js'
 export default {
     data() {
         return {
+            isTerminalData: true,
+            proValue: '',
+            searchValue: '',
+            showPicker: false,
+            showTimePicker: false,
             noPosDataStatus: false,
             freezeData: {},
             queryData: {
                 freezeData: {
-                    requestType: "thaw",
-                    requestKeywords: "thawlist",
+                    requestType: 'thaw',
+                    requestKeywords: 'thawlist',
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    productID: ''
+                },
+                thaw: {
+                    requestType: 'thaw',
+                    requestKeywords: 'thawmoney',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
-                thaw: {
-                    requestType: "thaw",
-                    requestKeywords: "thawmoney",
-                    platformID: this.$store.state.user.pid,
-                    userID: this.$store.state.user.uid,
-                    userPhone: this.$store.state.user.uphone
+                product: {
+                    requestType: 'agent',
+                    requestKeywords: 'product',
+                    platformID: this.$store.state.user.pid
                 }
             },
 
             renderData: {
-                thaw: ""
+                thaw: '',
+                list: [],
+                productName: []
             }
-        };
+        }
     },
     methods: {
+        onConfirm(value, index) {
+            this.proValue = value
+            this.renderData.product.forEach(item => {
+                if (this.proValue === item.name) {
+                    this.queryData.freezeData.productID = item.id
+                }
+            })
+            this.getfreezeListFn()
+            this.showPicker = false
+        },
+        product() {
+            getServer(this.queryData.product)
+                .then(res => {
+                    if (res.data.responseStatus === 1) {
+                        this.renderData.product = res.data.data
+                        this.renderData.product.forEach(item => {
+                            this.renderData.productName.push(item.name)
+                        })
+                        this.proValue = res.data.data[0].name
+                        this.queryData.freezeData.productID =
+                            res.data.data[0].id
+                    }
+                })
+                .then(() => {
+                    this.getfreezeListFn()
+                })
+        },
         getfreezeListFn() {
-            Indicator.open();
+            Indicator.open()
             getServer(this.queryData.freezeData).then(res => {
-                Indicator.close();
+                Indicator.close()
                 //   console.log(res)
                 if (res.data.responseStatus === 1) {
-                    this.noPosDataStatus = false;
-                    this.freezeData = res.data.data;
+                    this.noPosDataStatus = false
+                    this.freezeData = res.data.data
                 } else {
-                    this.noPosDataStatus = true;
+                    this.noPosDataStatus = true
                 }
-            });
+            })
         },
         thaw() {
             getServer(this.queryData.thaw).then(res => {
-                this.renderData.thaw = res.data.thawMoney;
-            });
+                this.renderData.thaw = res.data.thawMoney
+            })
         }
     },
     created() {
-        this.getfreezeListFn();
-        this.thaw();
+        this.product()
+        this.thaw()
     }
-};
+}
 </script>
 <style lang="scss">
 .freezeProgressMain {
     //   padding-top: 40px;
     margin-top: 0.8rem;
+}
+.freezeProgressMainProductScreeningMain {
+    position: fixed;
+    top: 0;
+    right: 0.2rem;
+    width: 2rem;
+    background: none;
+}
+.freezeProgressMainProductScreeningMain .van-cell {
+    background: none;
+    border: none;
+}
+.freezeProgressMainProductScreeningMain .van-field__control,
+.van-field__right-icon {
+    color: #fff;
 }
 .freezeProgressHeader {
     position: relative;
@@ -174,7 +248,7 @@ export default {
     color: #fff;
     padding-top: 16%;
     box-sizing: border-box;
-    font-family: "myWebFont";
+    font-family: 'myWebFont';
     font-weight: bold;
 }
 .freezeProgressHeaderBox > span {
@@ -217,7 +291,7 @@ export default {
 }
 .freezeProgressListItem::before {
     background: #ccc;
-    content: "";
+    content: '';
     display: block;
     width: 12px;
     height: 12px;
@@ -334,7 +408,7 @@ export default {
 }
 .freezeProgressListItem.completed::after {
     background: rgba(87, 126, 255, 0.4);
-    content: "";
+    content: '';
     display: block;
     width: 18px;
     height: 18px;

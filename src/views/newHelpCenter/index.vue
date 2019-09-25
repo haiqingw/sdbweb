@@ -6,15 +6,15 @@
         </div>
         <div class="helpCenterMain">
             <!-- 公告 -->
-            <van-notice-bar text="如果您是初次使用刷多宝，请先认真阅读新手指引" left-icon="volume-o" />
+            <!-- <van-notice-bar text="如果您是初次使用刷多宝，请先认真阅读新手指引" left-icon="volume-o" /> -->
             <!-- 新手引导 -->
-            <div class="noviceGuideBannerMain">
+            <!-- <div class="noviceGuideBannerMain">
                 <img
                     @click="guideTap()"
                     src="@/assets/images/noviceGuideBannerBannerImg.jpg"
                     alt="新手引导banner"
                 />
-            </div>
+            </div> -->
             <!-- 常见问题 -->
             <div class="commonProblemsMain">
                 <h3>问题类型</h3>
@@ -22,10 +22,7 @@
                     <div v-if="isData">
                         <van-cell-group>
                             <!-- <van-cell v-for="item in renderData.helpCenterList" :key="item.nPNo" :title="item.nPTitle" :to="{name: 'helpCenterDetail', params: {nPNo: item.nPNo}}" is-link icon="question-o" /> -->
-                            <van-cell title="问题分类一" is-link icon="question-o" />
-                            <van-cell title="问题分类一" is-link icon="question-o" />
-                            <van-cell title="问题分类一" is-link icon="question-o" />
-                            <van-cell title="问题分类一" is-link icon="question-o" />
+                            <van-cell v-for="item in renderData.helpCenterList" :key="item.id" :title="item.title" is-link :icon="item.picUrl" :to="{name: 'newHelpList', params: {id: item.id}}" />
                         </van-cell-group>
                     </div>
                     <div class="noDataMain" v-else>
@@ -39,17 +36,20 @@
 </template>
 <script>
 import { Notify } from 'vant'
+import {getServer} from '@/api/index'
 export default {
     data() {
         return {
             isData: true,
             queryData: {
                 helpCenterList: {
-
+                    requestType: 'list',
+                    requestKeywords: 'apphelp',
+                    platformID: this.$store.state.user.pid
                 }
             },
             renderData: {
-
+                helpCenterList: []
             }
         }
     },
@@ -58,27 +58,26 @@ export default {
             this.$router.push('/newHelpCenter/guideView')
         },
         getHelpCenterList() {
-            // helpCenterList(this.queryData.helpCenterList).then(res => {
-            //     if (res.data.code === 200) {
-            //         this.renderData.helpCenterList = res.data.data
-            //         if (res.data.data.length === 0) {
-            //             this.isData = false
-            //         }
-            //     }
-            // })
+            getServer(this.queryData.helpCenterList).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.helpCenterList = res.data.data
+                } else if( res.data.responseStatus === 300 ) {
+                    this.isData = false
+                }
+            })
         }
     },
     created() {
-        // this.getHelpCenterList()
+        this.getHelpCenterList()
     }
 }
 </script>
 <style lang="less">
 .helpCenterMain {
     padding-top: 0.8rem;
-    .van-hairline--top-bottom::after{
-        content:'';
-        border-top:none;
+    .van-hairline--top-bottom::after {
+        content: '';
+        border-top: none;
     }
 }
 .commonProblemsMain {

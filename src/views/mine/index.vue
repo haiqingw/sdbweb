@@ -22,37 +22,7 @@
                     </p>
                     <p>{{ renderData.info.phone }}</p>
                 </div> -->
-                <div class="mineHeaderHeader">
-                    <span>
-                        <img src="@/assets/images/mineHeaderImg1.jpg" alt="头像" />
-                    </span>
-                    <p>
-                      青城五点半
-                        <em>业务员</em>
-                    </p>
-                    <p>13296905340</p>
-                    <router-link to="/share" tag="a" class="mineCodeBox">
-                      <img src="@/assets/images/m-code.png" alt="推广码">
-                    </router-link>
-                </div>
                 <div class="mineHeaderBody flex">
-                    <div @click="judgeRealNameAuth('withdrawal')">
-                        <b>1000.00</b>
-                        <p>钱包余额</p>
-                    </div>
-                    <router-link
-                        :to="{
-                name: 'freezeprogress',
-                params: { money: renderData.thaw }
-              }"
-                        class="left_line"
-                        tag="div"
-                    >
-                        <b>555.00</b>
-                        <p>待解冻</p>
-                    </router-link>
-                </div>
-                <!-- <div class="mineHeaderBody flex">
                     <div @click="judgeRealNameAuth('withdrawal')">
                         <b>{{ renderData.listOneData.balance }}</b>
                         <p>钱包余额</p>
@@ -68,7 +38,7 @@
                         <b>{{ renderData.thaw }}</b>
                         <p>待解冻</p>
                     </router-link>
-                </div> -->
+                </div>
             </div>
         </div>
         <!-- 公司与上级业务员 -->

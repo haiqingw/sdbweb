@@ -2,13 +2,15 @@
     <div class="mine">
         <!-- 头部 -->
         <div class="mineHeaderMain">
-            <h3>个人中心</h3>
+            <h3>我的
+              <router-link to="/settings" class="mineNoticeButton">
+                  <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
+              </router-link>
+            </h3>
             <div class="mineHeaderBox">
-                <router-link to="/settings" class="mineNoticeButton">
-                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
-                </router-link>
+
                 <!-- <i></i> -->
-                <div class="mineHeaderHeader">
+                <!-- <div class="mineHeaderHeader">
                     <span>
                         <img src="@/assets/images/mineHeaderImg1.jpg" alt="头像" />
                     </span>
@@ -19,12 +21,38 @@
                         >{{renderData.info.nickname}}</em>
                     </p>
                     <p>{{ renderData.info.phone }}</p>
-                </div>
-                <div class="company-info">
-                    <span>公司名称：</span>
-                    <span>上级业务员：</span>
+                </div> -->
+                <div class="mineHeaderHeader">
+                    <span>
+                        <img src="@/assets/images/mineHeaderImg1.jpg" alt="头像" />
+                    </span>
+                    <p>
+                      青城五点半
+                        <em>业务员</em>
+                    </p>
+                    <p>13296905340</p>
+                    <router-link to="/share" tag="a" class="mineCodeBox">
+                      <img src="@/assets/images/m-code.png" alt="推广码">
+                    </router-link>
                 </div>
                 <div class="mineHeaderBody flex">
+                    <div @click="judgeRealNameAuth('withdrawal')">
+                        <b>1000.00</b>
+                        <p>钱包余额</p>
+                    </div>
+                    <router-link
+                        :to="{
+                name: 'freezeprogress',
+                params: { money: renderData.thaw }
+              }"
+                        class="left_line"
+                        tag="div"
+                    >
+                        <b>555.00</b>
+                        <p>待解冻</p>
+                    </router-link>
+                </div>
+                <!-- <div class="mineHeaderBody flex">
                     <div @click="judgeRealNameAuth('withdrawal')">
                         <b>{{ renderData.listOneData.balance }}</b>
                         <p>钱包余额</p>
@@ -40,8 +68,16 @@
                         <b>{{ renderData.thaw }}</b>
                         <p>待解冻</p>
                     </router-link>
-                </div>
+                </div> -->
             </div>
+        </div>
+        <!-- 公司与上级业务员 -->
+        <div class="company-info line_bottom">
+            <h3>内蒙古懒人网络科技有限公司</h3>
+            <p>上级业务员：吴海青(13296905340)</p>
+            <a href="tel:13296905340">
+              <img src="@/assets/images/SphoneIcon.png" alt="一键拨号">
+            </a>
         </div>
         <!-- <div class="mineBodyMain">
             <div class="mineItemBox line_bottom">
@@ -355,10 +391,10 @@ export default {
     line-height: .8rem;
     overflow: hidden;
 }
-.mine .company-info span {
-    float: left;
-    width: 50%;
-}
+// .mine .company-info span {
+//     float: left;
+//     width: 50%;
+// }
 .mine-banner {
     padding: 0 15px 20px;
     // padding: 0 .2rem;
@@ -374,30 +410,49 @@ export default {
     }
 }
 .mineHeaderMain {
-    padding-bottom: 1.4rem;
     background: #fff;
     width: 100%;
-    background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center
-        center;
-    background-size: 100% 100%;
-    padding: 0 15px 20px;
+    // background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center
+    //     center;
+    //
+    background-color:#089cfe;
+    background-color:#089cfe;
+    background-image:url('../../assets/images/mineBgBlueImg.png');
+    background-size:100% 100%;
     box-sizing: border-box;
     > h3 {
-        line-height: 50px;
+        line-height: 40px;
         font-size: 16px;
-        color: #333;
+        color: #fff;
         text-align: center;
+        position:relative;
+        .mineNoticeButton{
+          display: block;
+          width: 40px;
+          height: 40px;
+          position: absolute;
+          right:5px;
+          top:0px;
+          z-index: 9999999;
+          text-align:center;
+          padding-top:5px;
+          box-sizing:border-box;
+          img{
+            width:30px;
+            height:30px;
+          }
+        }
     }
 }
 .mineHeaderBox {
     width: 100%;
     margin: 0 auto;
-    background: #fff;
-    padding: 15px;
+    padding:10px 15px 20px;
     box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 0 0 20px #ccc;
+    // border-radius: 10px;
+    // box-shadow: 0 0 20px #ccc;
     position: relative;
+
     .mineNoticeBtn {
         display: block;
         width: 30px;
@@ -465,12 +520,12 @@ export default {
         font-weight: bold;
         line-height: 20px;
     }
-    &:first-of-type {
-        padding-top: 10px;
-    }
-    &:last-of-type {
-        padding-bottom: 15px;
-    }
+    // &:first-of-type {
+    //     padding-top: 10px;
+    // }
+    // &:last-of-type {
+    //     padding-bottom: 15px;
+    // }
     // > span {
     //   display: block;
     //   width: 70px;
@@ -511,10 +566,12 @@ export default {
 }
 .mineHeaderBody {
     justify-content: space-around;
+    padding-top:20px;
     > div {
         width: 100%;
         text-align: center;
         font-size: 14px;
+        color:#fff;
         &:first-of-type {
             border-right: 1px solid #f1f1f1;
         }
@@ -545,7 +602,7 @@ export default {
     }
 }
 .mineCommonMenuBox {
-    // padding-top: 10px;
+    padding-top: 10px;
 }
 .mineCommonMenuList {
     padding: 0 15px;
@@ -572,6 +629,7 @@ export default {
 .mineHeaderHeader {
     overflow: hidden;
     // padding: 0 0 10px;
+    position:relative;
     span {
         float: left;
         display: block;
@@ -589,7 +647,7 @@ export default {
     }
     > p {
         font-size: 16px;
-        color: #333;
+        color: #fff;
         text-align: left;
         font-weight: bold;
         line-height: 22px;
@@ -598,7 +656,7 @@ export default {
             padding-top: 8px;
         }
         em {
-            background: #0096fe;
+            background: #ff5454;
             color: #fff;
             font-size: 12px;
             padding: 0 5px;
@@ -608,5 +666,36 @@ export default {
             margin-left: 5px;
         }
     }
+    .mineCodeBox{
+      width:40px;
+      height:40px;
+      position:absolute;
+      right:10px;
+      top:50%;
+      margin-top:-20px;
+
+    }
+}
+.company-info{
+  padding:10px 60px 13px 15px;
+  position:relative;
+  h3{
+    font-size:0.36rem;
+    color:#999;
+    line-height:0.6rem;
+    color:#089cfe;
+  }
+  p{
+    line-height:0.32rem;
+  }
+  a{
+    position:absolute;
+    right:15px;
+    top:50%;
+    width:30px;
+    height:30px;
+    margin-top:-17px;
+    display:block;
+  }
 }
 </style>

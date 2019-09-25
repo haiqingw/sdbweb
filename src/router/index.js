@@ -329,13 +329,13 @@ export default new Router({
         component: resolve => require(['@/views/application-agent-To-examine'], resolve),
     },
     {
-        // path: '/dial-code-list/:id', 
+        // path: '/dial-code-list/:id',
         path: '/dial-code-list',
         name: 'dial-code-list',
         component: resolve => require(['@/views/dial-code/list'], resolve),
     },
     {
-        // path: '/dial-code-list/:id', 
+        // path: '/dial-code-list/:id',
         path: '/callback-list',
         name: 'callback-list',
         component: resolve => require(['@/views/dial-code/callback-list'], resolve),
@@ -463,5 +463,26 @@ export default new Router({
         name: 'test',
         component: resolve => require(['@/views/test'], resolve),
     },
+    {
+      path: "/merchantsTrade", // 商户交易记录
+      name: 'merchantsTrade',
+      component: resolve => require(['@/views/merchantsTrade'], resolve),
+    },
+    {
+        path: "/newHelpCenter", // 新版帮助中心分类列表
+        name: 'newHelpCenter',
+          component: resolve => require(['@/views/newHelpCenter'], resolve),
+    },
+    {
+      path: "/newHelpList", // 新版帮助中心列表
+        name: 'newHelpList',
+        component: resolve => require(['@/views/newHelpCenter/newHelpList'], resolve),
+    },
+    {
+        path: "/newHelpDetail", // 新版帮助中心详情
+        name: 'newHelpDetail',
+        component: resolve => require(['@/views/newHelpCenter/newHelpDetail'], resolve),
+    }
+
     ]
 })

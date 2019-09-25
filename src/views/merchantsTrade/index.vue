@@ -25,7 +25,41 @@
         </div>
         <!-- 列表 -->
         <div class="merchantsListMain">
+          <h3>终端号：12312314456</h3>
+          <div class="merchantsListBox line_bottom">
+            <div>
+              <p class="ren-flex-sb">
+                <span>交易金额：<b>1000.00元</b></span>
+                <em>交易分润：<b>0.1元</b></em>
+              </p>
+              <p class="gray">
+                交易时间：2019-09-25 15:00:00
+              </p>
+            </div>
+          </div>
+          <div class="merchantsListBox line_bottom">
+            <div>
+              <p class="ren-flex-sb">
+                <span>交易金额：<b>1000.00元</b></span>
+                <em>交易分润：<b>0.1元</b></em>
+              </p>
+              <p class="gray">
+                交易时间：2019-09-25 15:00:00
+              </p>
+            </div>
+          </div>
             <h3>终端号：12312314456</h3>
+            <div class="merchantsListBox line_bottom">
+              <div>
+                <p class="ren-flex-sb">
+                  <span>交易金额：<b>1000.00元</b></span>
+                  <em>交易分润：<b>0.1元</b></em>
+                </p>
+                <p class="gray">
+                  交易时间：2019-09-25 15:00:00
+                </p>
+              </div>
+            </div>
             <div class="merchantsListBox line_bottom">
               <div>
                 <p class="ren-flex-sb">

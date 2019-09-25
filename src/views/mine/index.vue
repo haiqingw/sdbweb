@@ -2,26 +2,29 @@
     <div class="mine">
         <!-- 头部 -->
         <div class="mineHeaderMain">
-            <h3>我的
-              <router-link to="/settings" class="mineNoticeButton">
-                  <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
-              </router-link>
+            <h3>
+                我的
+                <router-link to="/settings" class="mineNoticeButton">
+                    <img src="@/assets/images/settingCenterIcon.png" alt="设置中心" />
+                </router-link>
             </h3>
             <div class="mineHeaderBox">
-
-                <!-- <i></i> -->
-                <!-- <div class="mineHeaderHeader">
+                <div class="mineHeaderHeader">
                     <span>
                         <img src="@/assets/images/mineHeaderImg1.jpg" alt="头像" />
                     </span>
                     <p>
-                        {{ renderData.info.busname }}
+                        {{renderData.info.busname}}
                         <em
                             v-if="renderData.info.level == 2 "
                         >{{renderData.info.nickname}}</em>
                     </p>
-                    <p>{{ renderData.info.phone }}</p>
-                </div> -->
+                    <p>{{renderData.info.phone}}</p>
+                    <router-link to="/share" tag="a" class="mineCodeBox">
+                        <img src="@/assets/images/m-code.png" alt="推广码" />
+                    </router-link>
+                </div>
+
                 <div class="mineHeaderBody flex">
                     <div @click="judgeRealNameAuth('withdrawal')">
                         <b>{{ renderData.listOneData.balance }}</b>
@@ -43,10 +46,12 @@
         </div>
         <!-- 公司与上级业务员 -->
         <div class="company-info line_bottom">
-            <h3>内蒙古懒人网络科技有限公司</h3>
-            <p>上级业务员：吴海青(13296905340)</p>
-            <a href="tel:13296905340">
-              <img src="@/assets/images/SphoneIcon.png" alt="一键拨号">
+            <h3>{{ renderData.info.company }}</h3>
+            <p
+                v-if="renderData.info.parentName"
+            >上级业务员：{{ renderData.info.parentName }}({{ renderData.info.parentPhone }})</p>
+            <a :href="'tel:'+ renderData.info.parentPhone" v-if="renderData.info.parentPhone">
+                <img src="@/assets/images/SphoneIcon.png" alt="一键拨号" />
             </a>
         </div>
         <!-- <div class="mineBodyMain">
@@ -115,10 +120,10 @@
     </div>
 </template>
 <script>
-import Footer from "@/components/footerNav/footer";
-import { MessageBox, Indicator, Toast } from "mint-ui";
-import response from "@/assets/js/response.js";
-import { getServer } from "@/api/index";
+import Footer from '@/components/footerNav/footer'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
+import response from '@/assets/js/response.js'
+import { getServer } from '@/api/index'
 export default {
     data() {
         return {
@@ -126,55 +131,55 @@ export default {
             isShowAdvertisementStatus: null,
             rechargeType: null,
             renderData: {
-                thaw: "",
+                thaw: '',
                 listOneData: {},
                 info: {},
                 navList: []
             },
             queryData: {
                 checkcerData: {
-                    requestType: "personal",
-                    requestKeywords: "checkcer",
+                    requestType: 'personal',
+                    requestKeywords: 'checkcer',
                     userID: this.$store.state.user.uid,
                     platformID: this.$store.state.user.pid,
                     userPhone: this.$store.state.user.uphone
                 },
                 info: {
-                    requestType: "personal",
-                    requestKeywords: "getbusinfo",
+                    requestType: 'personal',
+                    requestKeywords: 'getbusinfo',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
                 checkbankcardData: {
-                    requestType: "operating",
-                    requestKeywords: "checkbankcard",
+                    requestType: 'operating',
+                    requestKeywords: 'checkbankcard',
                     userID: this.$store.state.user.uid,
                     platformID: this.$store.state.user.pid,
                     userPhone: this.$store.state.user.uphone
                 },
                 thaw: {
-                    requestType: "thaw",
-                    requestKeywords: "thawmoney",
+                    requestType: 'thaw',
+                    requestKeywords: 'thawmoney',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
                 listOne: {
-                    requestType: "personal",
-                    requestKeywords: "busincome",
+                    requestType: 'personal',
+                    requestKeywords: 'busincome',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
                 isShowAdvertisement: {
-                    requestType: "checke",
-                    requestKeywords: "advercheck",
+                    requestType: 'checke',
+                    requestKeywords: 'advercheck',
                     platformID: this.$store.state.user.pid
                 },
                 isServerMoneyState: {
-                    requestType: "servicefee",
-                    requestKeywords: "checkrertype",
+                    requestType: 'servicefee',
+                    requestKeywords: 'checkrertype',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -182,29 +187,29 @@ export default {
                 serverMoneyRecharge: {
                     own: {
                         // 自己
-                        requestType: "servicefee",
-                        requestKeywords: "rechargenotic",
+                        requestType: 'servicefee',
+                        requestKeywords: 'rechargenotic',
                         platformID: this.$store.state.user.pid,
                         userID: this.$store.state.user.uid,
                         userPhone: this.$store.state.user.uphone
                     },
                     company: {
                         // 公司
-                        requestType: "servicefee",
-                        requestKeywords: "checkplatfee",
+                        requestType: 'servicefee',
+                        requestKeywords: 'checkplatfee',
                         platformID: this.$store.state.user.pid
                     }
                 },
                 navList: {
-                    requestType: "usermodule",
-                    requestKeywords: "lists",
+                    requestType: 'usermodule',
+                    requestKeywords: 'lists',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    classType: "WD"
+                    classType: 'WD'
                 }
             }
-        };
+        }
     },
     components: {
         Footer
@@ -213,56 +218,56 @@ export default {
         isServerMoneyStateFunc() {
             getServer(this.queryData.isServerMoneyState).then(res => {
                 if (res.data.responseStatus == 1) {
-                    this.rechargeType = res.data.rerType;
+                    this.rechargeType = res.data.rerType
                     if (res.data.rerType == 1) {
                         // 公司充值
                         getServer(
                             this.queryData.serverMoneyRecharge.company
                         ).then(res => {
                             if (res.data.responseStatus === 1) {
-                                this.isServerMoneyState = false;
+                                this.isServerMoneyState = false
                             } else {
-                                this.isServerMoneyState = true;
+                                this.isServerMoneyState = true
                             }
-                        });
+                        })
                     } else if (res.data.rerType == 2) {
                         // 自己充值
                         getServer(this.queryData.serverMoneyRecharge.own).then(
                             res => {
                                 if (res.data.status == 1) {
-                                    this.isServerMoneyState = false;
+                                    this.isServerMoneyState = false
                                 } else {
-                                    this.isServerMoneyState = true;
+                                    this.isServerMoneyState = true
                                 }
                             }
-                        );
+                        )
                     }
                 } else {
                     // util.show(util.response[res.data.responseStatus]);
                 }
-            });
+            })
         },
         isShowAdvertisement() {
             getServer(this.queryData.isShowAdvertisement).then(res => {
                 if (res.data.responseStatus === 1) {
                     if (res.data.status == 1) {
-                        this.isShowAdvertisementStatus = true;
+                        this.isShowAdvertisementStatus = true
                     } else {
-                        this.isShowAdvertisementStatus = false;
+                        this.isShowAdvertisementStatus = false
                     }
                 }
-            });
+            })
         },
         judgeRealNameAuth(url) {
-            if (url === "/certificationComplete" || url === "/withdrawal") {
-                Indicator.open();
+            if (url === '/certificationComplete' || url === '/withdrawal') {
+                Indicator.open()
                 getServer(this.queryData.checkcerData).then(res => {
-                    Indicator.close();
+                    Indicator.close()
                     if (res.data.responseStatus === 1) {
                         getServer(this.queryData.checkbankcardData).then(
                             res => {
                                 if (res.data.responseStatus === 1) {
-                                    Indicator.close();
+                                    Indicator.close()
                                     if (
                                         this.isServerMoneyState &&
                                         this.rechargeType == 1
@@ -270,8 +275,8 @@ export default {
                                         //跳转到公司续费页面
                                         // alert("公司")
                                         this.$router.push({
-                                            name: "serverMoneyRechargeCompany"
-                                        });
+                                            name: 'serverMoneyRechargeCompany'
+                                        })
                                     } else if (
                                         this.isServerMoneyState &&
                                         this.rechargeType == 2
@@ -279,55 +284,55 @@ export default {
                                         //跳转到自己续费页面
                                         // alert("自己")
                                         this.$router.push({
-                                            name: "serverMoneyRechargeOwn"
-                                        });
+                                            name: 'serverMoneyRechargeOwn'
+                                        })
                                     } else {
                                         this.$router.push({
                                             path: url
-                                        });
+                                        })
                                         // this.$router.push({
                                         //     name: "agreement",
                                         //     params: { state: "add" }
                                         // });
                                     }
                                 } else {
-                                    Indicator.close();
+                                    Indicator.close()
                                     this.$router.push({
-                                        name: "certificationNext"
-                                    });
+                                        name: 'certificationNext'
+                                    })
                                 }
                             }
-                        );
+                        )
                     } else {
                         // this.$router.push({
                         //     name: "certification"
                         // });
                         this.$router.push({
-                            name: "agreement",
-                            params: { state: "add" }
-                        });
+                            name: 'agreement',
+                            params: { state: 'add' }
+                        })
                     }
-                });
+                })
             } else {
                 this.$router.push({
                     path: url
-                });
+                })
             }
         },
         listOne() {
             getServer(this.queryData.listOne).then(res => {
-                this.renderData.listOneData = res.data;
-            });
+                this.renderData.listOneData = res.data
+            })
         },
         thaw() {
             getServer(this.queryData.thaw).then(res => {
-                this.renderData.thaw = res.data.thawMoney;
-            });
+                this.renderData.thaw = res.data.thawMoney
+            })
         },
         info() {
             getServer(this.queryData.info).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.info = res.data.data;
+                    this.renderData.info = res.data.data
                     // if (res.data.data.level == "2") {
                     //     this.isServerMoneyStateFunc();
                     // } else {
@@ -335,30 +340,33 @@ export default {
                     //     this.rechargeType = 0;
                     // }
                 }
-            });
+            })
         },
         navList() {
             getServer(this.queryData.navList).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.navList = res.data.data;
+                    this.renderData.navList = res.data.data
                 } else {
                 }
-            });
+            })
         }
     },
     created() {
-        this.listOne();
-        this.thaw();
-        this.info();
-        this.isShowAdvertisement();
-        this.navList();
+        this.listOne()
+        this.thaw()
+        this.info()
+        this.isShowAdvertisement()
+        this.navList()
     }
-};
+}
 </script>
 <style lang="scss">
+.mine {
+    padding-bottom: 2rem;
+}
 .mine .company-info {
-    font-size: .28rem;
-    line-height: .8rem;
+    font-size: 0.28rem;
+    line-height: 0.8rem;
     overflow: hidden;
 }
 // .mine .company-info span {
@@ -385,39 +393,39 @@ export default {
     // background: url("../../assets/images/mineHeaderImg.jpg") no-repeat center
     //     center;
     //
-    background-color:#089cfe;
-    background-color:#089cfe;
-    background-image:url('../../assets/images/mineBgBlueImg.png');
-    background-size:100% 100%;
+    background-color: #089cfe;
+    background-color: #089cfe;
+    background-image: url('../../assets/images/mineBgBlueImg.png');
+    background-size: 100% 100%;
     box-sizing: border-box;
     > h3 {
         line-height: 40px;
         font-size: 16px;
         color: #fff;
         text-align: center;
-        position:relative;
-        .mineNoticeButton{
-          display: block;
-          width: 40px;
-          height: 40px;
-          position: absolute;
-          right:5px;
-          top:0px;
-          z-index: 9999999;
-          text-align:center;
-          padding-top:5px;
-          box-sizing:border-box;
-          img{
-            width:30px;
-            height:30px;
-          }
+        position: relative;
+        .mineNoticeButton {
+            display: block;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            right: 5px;
+            top: 0px;
+            z-index: 9999999;
+            text-align: center;
+            padding-top: 5px;
+            box-sizing: border-box;
+            img {
+                width: 30px;
+                height: 30px;
+            }
         }
     }
 }
 .mineHeaderBox {
     width: 100%;
     margin: 0 auto;
-    padding:10px 15px 20px;
+    padding: 10px 15px 20px;
     box-sizing: border-box;
     // border-radius: 10px;
     // box-shadow: 0 0 20px #ccc;
@@ -536,12 +544,12 @@ export default {
 }
 .mineHeaderBody {
     justify-content: space-around;
-    padding-top:20px;
+    padding-top: 20px;
     > div {
         width: 100%;
         text-align: center;
         font-size: 14px;
-        color:#fff;
+        color: #fff;
         &:first-of-type {
             border-right: 1px solid #f1f1f1;
         }
@@ -599,7 +607,7 @@ export default {
 .mineHeaderHeader {
     overflow: hidden;
     // padding: 0 0 10px;
-    position:relative;
+    position: relative;
     span {
         float: left;
         display: block;
@@ -636,36 +644,35 @@ export default {
             margin-left: 5px;
         }
     }
-    .mineCodeBox{
-      width:40px;
-      height:40px;
-      position:absolute;
-      right:10px;
-      top:50%;
-      margin-top:-20px;
-
+    .mineCodeBox {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        margin-top: -20px;
     }
 }
-.company-info{
-  padding:10px 60px 13px 15px;
-  position:relative;
-  h3{
-    font-size:0.36rem;
-    color:#999;
-    line-height:0.6rem;
-    color:#089cfe;
-  }
-  p{
-    line-height:0.32rem;
-  }
-  a{
-    position:absolute;
-    right:15px;
-    top:50%;
-    width:30px;
-    height:30px;
-    margin-top:-17px;
-    display:block;
-  }
+.company-info {
+    padding: 10px 60px 13px 15px;
+    position: relative;
+    h3 {
+        font-size: 0.36rem;
+        color: #999;
+        line-height: 0.6rem;
+        color: #089cfe;
+    }
+    p {
+        line-height: 0.32rem;
+    }
+    a {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        width: 30px;
+        height: 30px;
+        margin-top: -17px;
+        display: block;
+    }
 }
 </style>

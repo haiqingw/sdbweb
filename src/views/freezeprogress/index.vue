@@ -174,6 +174,7 @@ export default {
                     this.noPosDataStatus = false;
                     this.freezeData = res.data.data;
                 } else {
+                    this.freezeData = res.data.data;
                     this.noPosDataStatus = true;
                 }
             });

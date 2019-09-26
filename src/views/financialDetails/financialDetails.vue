@@ -134,7 +134,7 @@ export default {
             isUpLoading: false, //上拉加载
             upFinished: false, //上拉加载完毕
             offset: 10, //滚动条与底部距离小于 offset 时触发load事件
-            isData: true,
+            isData: false,
             isDisabled: true,
             pickerValue: "按时间筛选",
             year: "",
@@ -185,7 +185,6 @@ export default {
             return this.$refs.mySwiper.swiper;
         }
     },
-
     methods: {
         scrollTo() {
             this.$refs.scroll.scrollTo(
@@ -301,6 +300,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.financial-details .no-data {
+    margin-top: 0;
+}
 .financial-top {
     margin-top: .8rem;
 }

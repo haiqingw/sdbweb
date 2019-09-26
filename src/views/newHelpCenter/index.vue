@@ -40,8 +40,18 @@
             </div>
         </div>
         <div class="contactUs" v-if="renderData.phone.landline">
-            <van-icon name="phone-circle-o" />
-            <a :href="'tel:' + renderData.phone.landline">联系客服</a>
+            <div>
+                <van-icon name="phone-circle-o" />
+                <a :href="'tel:' + renderData.phone.landline">联系客服</a>
+            </div>
+            <!-- <div>
+                <van-icon name="phone-circle-o" />
+                <a :href="'tel:' + renderData.phone.landline">意见反馈</a>
+            </div>-->
+            <router-link to="/feedback" tag="div">
+                <van-icon name="records" />
+                <a :href="'tel:' + renderData.phone.landline">意见反馈</a>
+            </router-link>
         </div>
     </div>
 </template>
@@ -112,7 +122,8 @@ export default {
     line-height: 0.8rem;
     z-index: 999;
     background: #fff;
-    .van-icon-phone-circle-o {
+    overflow: hidden;
+    i {
         font-size: 0.32rem;
         position: relative;
         top: 0.06rem;
@@ -121,6 +132,12 @@ export default {
     a {
         color: #698bf6;
     }
+    
+}
+.contactUs > div {
+    float: left;
+    width: 50%;
+    text-align: center;
 }
 .helpCenterMain {
     padding-top: 0.8rem;

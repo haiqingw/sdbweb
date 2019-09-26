@@ -14,9 +14,9 @@
                     <span>更换手机号</span>
                     <i></i>
                 </router-link>-->
-                <li @click="modifyAuthentication">
+                <li @click="modifyAuthentication" class="line_bottom">
                     <img src="@/assets/images/certificationIcon.png" alt="修改个人信息">
-                    <span>修改个人信息</span>
+                    <span>修改实名认证</span>
                     <i></i>
                 </li>
                 <li class="line_bottom" @click="judgeRealNameAuth('changeCard')">
@@ -39,11 +39,11 @@
                     <span>修改密码</span>
                     <i></i>
                 </router-link>
-                <router-link to="/feedback" tag="li" class="line_bottom">
+                <!-- <router-link to="/feedback" tag="li" class="line_bottom">
                     <img src="@/assets/images/settingFeedbackIcon.png" alt="意见反馈">
                     <span>意见反馈</span>
                     <i></i>
-                </router-link>
+                </router-link> -->
                 <!-- <li @click="cancellation" class="line_bottom">
                     <img src="@/assets/images/cancellation.png" alt="退出登录">
                     <span>账号注销</span>

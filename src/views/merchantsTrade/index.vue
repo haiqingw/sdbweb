@@ -66,9 +66,9 @@
                         </p>
                         <p class="gray">交易时间：{{i.tradeTime}}</p>
                     </div>
-                    <div v-else>
+                    <!-- <div v-else>
                         暂无
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

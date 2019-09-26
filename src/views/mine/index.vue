@@ -670,7 +670,7 @@ export default {
         top: 50%;
         width: 30px;
         height: 30px;
-        margin-top: -17px;
+        margin-top: -15px;
         display: block;
     }
 }

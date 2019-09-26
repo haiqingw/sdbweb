@@ -14,10 +14,10 @@
         </div>
         <!-- body -->
         <div class="feedbackMain">
-            <div class="feedbackTopMain">
+            <!-- <div class="feedbackTopMain">
                 <h3>客服热线：{{customerservicetelephone.mobile}}-{{customerservicetelephone.landline}}</h3>
                 <p>（周一到周五{{customerservicetelephone.dates}}）</p>
-            </div>
+            </div> -->
             <div class="interval"></div>
             <div class="feedbackSubMain">
                 <h3>留言反馈</h3>
@@ -93,6 +93,9 @@ export default {
 };
 </script>
 <style lang="scss">
+textarea {
+    border: none;
+}
 .feedbackMain {
     padding-top: 40px;
 }

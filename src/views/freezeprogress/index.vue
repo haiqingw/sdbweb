@@ -148,7 +148,6 @@ export default {
                     platformID: this.$store.state.user.pid
                 }
             },
-
             renderData: {
                 thaw: '',
                 list: [],
@@ -162,9 +161,11 @@ export default {
             this.renderData.product.forEach(item => {
                 if (this.proValue === item.name) {
                     this.queryData.freezeData.productID = item.id
+                    this.queryData.thaw.productID = item.id
                 }
             })
             this.getfreezeListFn()
+            this.thaw()
             this.showPicker = false
         },
         product() {
@@ -178,10 +179,12 @@ export default {
                         this.proValue = res.data.data[0].name
                         this.queryData.freezeData.productID =
                             res.data.data[0].id
+                        this.queryData.thaw.productID = res.data.data[0].id
                     }
                 })
                 .then(() => {
                     this.getfreezeListFn()
+                    this.thaw()
                 })
         },
         getfreezeListFn() {
@@ -205,7 +208,6 @@ export default {
     },
     created() {
         this.product()
-        this.thaw()
     }
 }
 </script>
@@ -218,12 +220,14 @@ export default {
     position: fixed;
     top: 0;
     right: 0.2rem;
-    width: 2rem;
+    width: 2.3rem;
     background: none;
 }
 .freezeProgressMainProductScreeningMain .van-cell {
     background: none;
     border: none;
+    padding: 0;
+    line-height: 0.8rem;
 }
 .freezeProgressMainProductScreeningMain .van-field__control,
 .van-field__right-icon {

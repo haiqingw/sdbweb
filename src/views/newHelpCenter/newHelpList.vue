@@ -29,6 +29,10 @@
                 </div>
             </div>
         </div>
+        <div class="contactUs" v-if="renderData.phone.landline">
+            <van-icon name="phone-circle-o" />
+            <a :href="'tel:' + renderData.phone.landline">联系客服</a>
+        </div>
     </div>
 </template>
 <script>
@@ -43,10 +47,17 @@ export default {
                     requestType: 'list',
                     requestKeywords: 'helplists',
                     id: this.$route.params.id
+                },
+                phone: {
+                    requestType: 'system',
+                    requestKeywords: 'getsystem',
+                    platformID: this.$store.state.user.pid,
+                    type: 'customerservicetelephone'
                 }
             },
             renderData: {
-                helpCenterList: []
+                helpCenterList: [],
+                phone: {}
             }
         }
     },
@@ -59,14 +70,45 @@ export default {
                     this.isData = false
                 }
             })
+        },
+        getPhone() {
+            getServer(this.queryData.phone).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.phone = res.data.content
+                }
+            })
         }
     },
     created() {
         this.getHelpCenterList()
+        this.getPhone()
     }
 }
 </script>
 <style lang="less">
+.helpCenterMain {
+    padding-bottom: 0.8rem;
+}
+.contactUs {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    font-size: 0.28rem;
+    line-height: 0.8rem;
+    z-index: 999;
+    background: #fff;
+    .van-icon-phone-circle-o {
+        font-size: 0.32rem;
+        position: relative;
+        top: 0.06rem;
+        color: #698bf6;
+    }
+    a {
+        color: #698bf6;
+    }
+}
 .helpCenterMain {
     padding-top: 0.8rem;
     .van-hairline--top-bottom::after {

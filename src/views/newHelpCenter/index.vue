@@ -14,7 +14,7 @@
                     src="@/assets/images/noviceGuideBannerBannerImg.jpg"
                     alt="新手引导banner"
                 />
-            </div> -->
+            </div>-->
             <!-- 常见问题 -->
             <div class="commonProblemsMain">
                 <h3>问题类型</h3>
@@ -22,7 +22,14 @@
                     <div v-if="isData">
                         <van-cell-group>
                             <!-- <van-cell v-for="item in renderData.helpCenterList" :key="item.nPNo" :title="item.nPTitle" :to="{name: 'helpCenterDetail', params: {nPNo: item.nPNo}}" is-link icon="question-o" /> -->
-                            <van-cell v-for="item in renderData.helpCenterList" :key="item.id" :title="item.title" is-link :icon="item.picUrl" :to="{name: 'newHelpList', params: {id: item.id}}" />
+                            <van-cell
+                                v-for="item in renderData.helpCenterList"
+                                :key="item.id"
+                                :title="item.title"
+                                is-link
+                                :icon="item.picUrl"
+                                :to="{name: 'newHelpList', params: {id: item.id}}"
+                            />
                         </van-cell-group>
                     </div>
                     <div class="noDataMain" v-else>
@@ -32,11 +39,15 @@
                 </div>
             </div>
         </div>
+        <div class="contactUs" v-if="renderData.phone.landline">
+            <van-icon name="phone-circle-o" />
+            <a :href="'tel:' + renderData.phone.landline">联系客服</a>
+        </div>
     </div>
 </template>
 <script>
 import { Notify } from 'vant'
-import {getServer} from '@/api/index'
+import { getServer } from '@/api/index'
 export default {
     data() {
         return {
@@ -46,10 +57,17 @@ export default {
                     requestType: 'list',
                     requestKeywords: 'apphelp',
                     platformID: this.$store.state.user.pid
+                },
+                phone: {
+                    requestType: 'system',
+                    requestKeywords: 'getsystem',
+                    platformID: this.$store.state.user.pid,
+                    type: 'customerservicetelephone'
                 }
             },
             renderData: {
-                helpCenterList: []
+                helpCenterList: [],
+                phone: {}
             }
         }
     },
@@ -58,21 +76,52 @@ export default {
             this.$router.push('/newHelpCenter/guideView')
         },
         getHelpCenterList() {
-            getServer(this.queryData.helpCenterList).then( res => {
-                if( res.data.responseStatus === 1 ) {
+            getServer(this.queryData.helpCenterList).then(res => {
+                if (res.data.responseStatus === 1) {
                     this.renderData.helpCenterList = res.data.data
-                } else if( res.data.responseStatus === 300 ) {
+                } else if (res.data.responseStatus === 300) {
                     this.isData = false
+                }
+            })
+        },
+        getPhone() {
+            getServer(this.queryData.phone).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.phone = res.data.content
                 }
             })
         }
     },
     created() {
         this.getHelpCenterList()
+        this.getPhone()
     }
 }
 </script>
 <style lang="less">
+.helpCenterMain {
+    padding-bottom: 0.8rem;
+}
+.contactUs {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    font-size: 0.28rem;
+    line-height: 0.8rem;
+    z-index: 999;
+    background: #fff;
+    .van-icon-phone-circle-o {
+        font-size: 0.32rem;
+        position: relative;
+        top: 0.06rem;
+        color: #698bf6;
+    }
+    a {
+        color: #698bf6;
+    }
+}
 .helpCenterMain {
     padding-top: 0.8rem;
     .van-hairline--top-bottom::after {

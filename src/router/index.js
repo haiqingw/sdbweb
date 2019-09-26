@@ -474,12 +474,12 @@ export default new Router({
           component: resolve => require(['@/views/newHelpCenter'], resolve),
     },
     {
-      path: "/newHelpList", // 新版帮助中心列表
+      path: "/newHelpList/:id", // 新版帮助中心列表
         name: 'newHelpList',
         component: resolve => require(['@/views/newHelpCenter/newHelpList'], resolve),
     },
     {
-        path: "/newHelpDetail", // 新版帮助中心详情
+        path: "/newHelpDetail/id", // 新版帮助中心详情
         name: 'newHelpDetail',
         component: resolve => require(['@/views/newHelpCenter/newHelpDetail'], resolve),
     }

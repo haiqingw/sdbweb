@@ -47,7 +47,7 @@
         <!-- 列表 -->
         <div class="merchantsListMain" v-if="isData">
             <div v-for="item in renderData.list" :key="item.terminalNo">
-                <h3>终端号：{{item.terminalNo}}</h3>
+                <h3>终端号：{{item.terminalNo}}<span style="float: right">{{item.tradeData.length}}条</span></h3>
                 <div
                     class="merchantsListBox line_bottom"
                     v-for="i in item.tradeData"
@@ -273,13 +273,14 @@ export default {
     right: 0;
     overflow: auto;
     h3 {
-        height: 0.6rem;
-        line-height: 0.6rem;
+        height: 0.8rem;
+        line-height: 0.8rem;
         font-size: 0.28rem;
         background: #089cfe75;
         padding: 0 15px;
         color: #fff;
         letter-spacing: 2px;
+        font-weight:bold;
     }
     div.merchantsListBox {
         line-height: 30px;

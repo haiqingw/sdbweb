@@ -5,22 +5,10 @@
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>待解冻</span>
             <div class="freezeProgressMainProductScreeningMain">
-                <van-field
-                    readonly
-                    clickable
-                    :value="proValue"
-                    @click="showPicker = true"
-                    right-icon="arrow-down"
-                />
+                <span @click="showPicker= true">{{proValue}}</span>
+                <!-- <van-field readonly clickable :value="proValue"   right-icon="arrow-down" /> -->
                 <van-popup v-model="showPicker" position="bottom">
-                    <van-picker
-                        show-toolbar
-                        :columns="renderData.productName"
-                        title
-                        :default-index="0"
-                        @cancel="showPicker = false"
-                        @confirm="onConfirm"
-                    />
+                    <van-picker show-toolbar :columns="renderData.productName" title :default-index="0" @cancel="showPicker = false" @confirm="onConfirm" />
                 </van-popup>
             </div>
         </div>
@@ -30,7 +18,7 @@
                 <img src="../../assets/images/freezeProgressHeaderImg.jpg" />
                 <div class="freezeProgressHeaderBox">
                     {{ renderData.thaw }}
-                    <span>待解冻金额(元)</span>
+                    <span>自己待解冻金额(元)</span>
                 </div>
             </div>
             <div class="freezeProgressBody">
@@ -48,11 +36,7 @@
                 </div>
                 <!-- 列表  -->
                 <div class="freezeProgressListView">
-                    <div
-                        v-for="item in freezeData"
-                        v-bind:key="item.surplus"
-                        :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']"
-                    >
+                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']">
                         <!-- completed -->
                         <!-- 盒子  -->
                         <div :class="[item.isThaw=='已过期' ? 'expired' : '' , 'freezeProgressBox']">
@@ -60,14 +44,8 @@
                             <!-- 三角 -->
                             <div class="leftArrIcon"></div>
                             <!--  解冻状态  -->
-                            <img
-                                v-if="item.isThaw == '已解冻'"
-                                src="../../assets/images/completedIcon.png"
-                            />
-                            <img
-                                v-if="item.isThaw == '已过期'"
-                                src="../../assets/images/expiredIcon.png"
-                            />
+                            <img v-if="item.isThaw == '已解冻'" src="../../assets/images/completedIcon.png" />
+                            <img v-if="item.isThaw == '已过期'" src="../../assets/images/expiredIcon.png" />
                             <!--  解冻金额与剩余时间  -->
                             <div class="moneyAndTime">
                                 <div class="line_right">
@@ -86,18 +64,18 @@
                                 </div>
                                 <div v-if="item.isThaw != '待解冻'">
                                     <span style="padding-top:14px; font-weight:bold;">
-                                        {{
-                                        item.isThaw
-                                        }}
+                                        {{ item.isThaw }}
                                     </span>
                                 </div>
                             </div>
                             <!-- 条件与当前刷卡金额  -->
                             <div class="conditionsAndSum">
-                                <span class="line_top">满足条件：{{ item.conditions }}</span>
+                                <span class="line_top">姓名：{{ item.busname }}</span>
+                                <span>终端号：{{ item.terminal }}</span>
+                                <span>满足条件：{{ item.conditions }}</span>
                                 <span>当前刷卡：{{ item.nowTotalMoney }}</span>
-                                <span class="completedItemTipInfo">{{ item.thawMoney }}元已转入余额!</span>
-                                <span class="expiredItemTipInfo">{{ item.thawMoney }}元已从待解冻金额中扣除！</span>
+                                <!-- <span class="completedItemTipInfo">{{ item.thawMoney }}元已转入余额!</span>
+                                <span class="expiredItemTipInfo">{{ item.thawMoney }}元已从待解冻金额中扣除！</span> -->
                             </div>
                         </div>
                     </div>
@@ -113,103 +91,103 @@
     </div>
 </template>
 <script>
-import { getServer } from '@/api/index'
-import { Indicator } from 'mint-ui'
-import response from '@/assets/js/response.js'
+import { getServer } from "@/api/index";
+import { Indicator } from "mint-ui";
+import response from "@/assets/js/response.js";
 export default {
     data() {
         return {
             isTerminalData: true,
-            proValue: '',
-            searchValue: '',
+            proValue: "",
+            searchValue: "",
             showPicker: false,
             showTimePicker: false,
             noPosDataStatus: false,
             freezeData: {},
             queryData: {
                 freezeData: {
-                    requestType: 'thaw',
-                    requestKeywords: 'thawlist',
+                    requestType: "thaw",
+                    requestKeywords: "thawlist",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    productID: ''
+                    productID: ""
                 },
                 thaw: {
-                    requestType: 'thaw',
-                    requestKeywords: 'thawmoney',
+                    requestType: "thaw",
+                    requestKeywords: "thawmoney",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
                 product: {
-                    requestType: 'agent',
-                    requestKeywords: 'product',
+                    requestType: "agent",
+                    requestKeywords: "product",
                     platformID: this.$store.state.user.pid
                 }
             },
             renderData: {
-                thaw: '',
+                thaw: "",
                 list: [],
                 productName: []
             }
-        }
+        };
     },
     methods: {
         onConfirm(value, index) {
-            this.proValue = value
+            this.proValue = value;
             this.renderData.product.forEach(item => {
                 if (this.proValue === item.name) {
-                    this.queryData.freezeData.productID = item.id
-                    this.queryData.thaw.productID = item.id
+                    this.queryData.freezeData.productID = item.id;
+                    this.queryData.thaw.productID = item.id;
                 }
-            })
-            this.getfreezeListFn()
-            this.thaw()
-            this.showPicker = false
+            });
+            this.getfreezeListFn();
+            this.thaw();
+            this.showPicker = false;
         },
         product() {
             getServer(this.queryData.product)
                 .then(res => {
                     if (res.data.responseStatus === 1) {
-                        this.renderData.product = res.data.data
+                        this.renderData.product = res.data.data;
                         this.renderData.product.forEach(item => {
-                            this.renderData.productName.push(item.name)
-                        })
-                        this.proValue = res.data.data[0].name
+                            this.renderData.productName.push(item.name);
+                        });
+                        this.proValue = res.data.data[0].name;
                         this.queryData.freezeData.productID =
-                            res.data.data[0].id
-                        this.queryData.thaw.productID = res.data.data[0].id
+                            res.data.data[0].id;
+                        this.queryData.thaw.productID = res.data.data[0].id;
                     }
                 })
                 .then(() => {
-                    this.getfreezeListFn()
-                    this.thaw()
-                })
+                    this.getfreezeListFn();
+                    this.thaw();
+                });
         },
         getfreezeListFn() {
-            Indicator.open()
+            Indicator.open();
             getServer(this.queryData.freezeData).then(res => {
-                Indicator.close()
+                Indicator.close();
                 //   console.log(res)
                 if (res.data.responseStatus === 1) {
-                    this.noPosDataStatus = false
-                    this.freezeData = res.data.data
+                    this.noPosDataStatus = false;
+                    this.freezeData = res.data.data;
                 } else {
-                    this.noPosDataStatus = true
+                    this.noPosDataStatus = true;
                 }
-            })
+            });
         },
         thaw() {
             getServer(this.queryData.thaw).then(res => {
-                this.renderData.thaw = res.data.thawMoney
-            })
+                this.renderData.thaw = res.data.thawMoney;
+            });
         }
     },
     created() {
-        this.product()
+        this.product();
     }
-}
+};
 </script>
 <style lang="scss">
 .freezeProgressMain {
@@ -222,12 +200,54 @@ export default {
     right: 0.2rem;
     width: 2.3rem;
     background: none;
+    // overflow: hidden;
+    span{
+        width:2rem;
+        overflow: hidden;
+        display: block;
+        height:0.8rem;
+        position: absolute;
+        right:5px;
+        top:0;
+        font-size:0.28rem;
+        padding-right:10px;
+        text-align:center;
+        &::after{
+            content:"";
+            display: block;
+            width:8px;
+            height:8px;
+            border-right:2px solid #fff;
+            border-bottom:2px solid #fff;
+            position: absolute;
+            right:3px;
+            top:50%;
+            margin-top:-5px;
+            transform:rotate(-45deg);
+        }
+    }
 }
 .freezeProgressMainProductScreeningMain .van-cell {
     background: none;
     border: none;
     padding: 0;
     line-height: 0.8rem;
+    overflow: hidden;
+    height: .8rem;
+}
+.freezeProgressMainProductScreeningMain .van-field__body{
+    border:none;
+    background:none;
+    opacity:0;
+    position: relative;
+    z-index:9999;
+    
+}
+.freezeProgressMainProductScreeningMain .van-cell__value {
+    height: .8rem;
+    overflow: hidden;
+    border: none;
+    background: none;
 }
 .freezeProgressMainProductScreeningMain .van-field__control,
 .van-field__right-icon {
@@ -252,7 +272,7 @@ export default {
     color: #fff;
     padding-top: 16%;
     box-sizing: border-box;
-    font-family: 'myWebFont';
+    font-family: "myWebFont";
     font-weight: bold;
 }
 .freezeProgressHeaderBox > span {
@@ -295,7 +315,7 @@ export default {
 }
 .freezeProgressListItem::before {
     background: #ccc;
-    content: '';
+    content: "";
     display: block;
     width: 12px;
     height: 12px;
@@ -359,6 +379,7 @@ export default {
 }
 .conditionsAndSum {
     padding: 10px 15px;
+    line-height: 0.4rem;
 }
 .conditionsAndSum > span {
     font-size: 14px;
@@ -412,7 +433,7 @@ export default {
 }
 .freezeProgressListItem.completed::after {
     background: rgba(87, 126, 255, 0.4);
-    content: '';
+    content: "";
     display: block;
     width: 18px;
     height: 18px;

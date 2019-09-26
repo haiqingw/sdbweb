@@ -47,7 +47,7 @@
         <!-- 公司与上级业务员 -->
         <div class="company-info line_bottom">
             <h3>{{ renderData.info.company }}</h3>
-            <p v-if="renderData.info.parentName">上级业务员：{{ renderData.info.parentName }}</p>
+            <p>上级业务员：{{ renderData.info.parentName ? renderData.info.parentName : "暂无上级" }}</p>
             <a :href="'tel:'+ renderData.info.parentPhone" v-if="renderData.info.parentPhone">
                 <img src="@/assets/images/SphoneIcon.png" alt="一键拨号" />
             </a>

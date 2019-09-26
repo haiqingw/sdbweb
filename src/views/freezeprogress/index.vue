@@ -18,7 +18,7 @@
                 <img src="../../assets/images/freezeProgressHeaderImg.jpg" />
                 <div class="freezeProgressHeaderBox">
                     {{ renderData.thaw }}
-                    <span>自己待解冻金额(元)</span>
+                    <span>我的待解冻金额(元)</span>
                 </div>
             </div>
             <div class="freezeProgressBody">

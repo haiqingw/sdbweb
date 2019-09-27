@@ -56,62 +56,73 @@
     </div>
 </template>
 <script>
-import { Notify } from 'vant'
-import { getServer } from '@/api/index'
+import { Notify } from "vant";
+import { getServer } from "@/api/index";
 export default {
     data() {
         return {
             isData: true,
             queryData: {
                 helpCenterList: {
-                    requestType: 'list',
-                    requestKeywords: 'apphelp',
+                    requestType: "list",
+                    requestKeywords: "apphelp",
                     platformID: this.$store.state.user.pid
                 },
                 phone: {
-                    requestType: 'system',
-                    requestKeywords: 'getsystem',
+                    requestType: "system",
+                    requestKeywords: "getsystem",
                     platformID: this.$store.state.user.pid,
-                    type: 'customerservicetelephone'
+                    type: "customerservicetelephone"
                 }
             },
             renderData: {
                 helpCenterList: [],
                 phone: {}
             }
-        }
+        };
     },
     methods: {
         guideTap() {
-            this.$router.push('/newHelpCenter/guideView')
+            this.$router.push("/newHelpCenter/guideView");
         },
         getHelpCenterList() {
             getServer(this.queryData.helpCenterList).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.helpCenterList = res.data.data
+                    this.renderData.helpCenterList = res.data.data;
                 } else if (res.data.responseStatus === 300) {
-                    this.isData = false
+                    this.isData = false;
                 }
-            })
+            });
         },
         getPhone() {
             getServer(this.queryData.phone).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.phone = res.data.content
+                    this.renderData.phone = res.data.content;
                 }
-            })
+            });
         }
     },
     created() {
-        this.getHelpCenterList()
-        this.getPhone()
+        this.getHelpCenterList();
+        this.getPhone();
     }
-}
+};
 </script>
 <style lang="less">
+.helpCenter {
+    background: #f1f1f1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+.helpCenter .van-cell {
+    background: #f1f1f1;
+}
 .helpCenterMain {
     padding-bottom: 0.8rem;
 }
+
 .contactUs {
     position: fixed;
     width: 100%;
@@ -132,17 +143,18 @@ export default {
     a {
         color: #698bf6;
     }
-    
 }
 .contactUs > div {
     float: left;
     width: 50%;
     text-align: center;
+    border: 0.01rem solid #ccc;
+    box-sizing: border-box;
 }
 .helpCenterMain {
     padding-top: 0.8rem;
     .van-hairline--top-bottom::after {
-        content: '';
+        content: "";
         border-top: none;
     }
 }
@@ -154,7 +166,7 @@ export default {
         position: relative;
         z-index: 999;
         &::before {
-            content: '';
+            content: "";
             display: block;
             width: 1.3rem;
             height: 0.2rem;

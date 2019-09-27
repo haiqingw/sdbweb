@@ -39,7 +39,7 @@
                 <a :href="'tel:' + renderData.phone.landline">意见反馈</a>
             </div>-->
             <router-link to="/feedback" tag="div">
-                <van-icon name="phone-circle-o" />
+                <van-icon name="records" />
                 <a :href="'tel:' + renderData.phone.landline">意见反馈</a>
             </router-link>
         </div>
@@ -96,6 +96,16 @@ export default {
 }
 </script>
 <style lang="less">
+.helpCenter {
+    background: #f1f1f1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+.helpCenter .van-cell {
+    background: #f1f1f1;
+}
 .helpCenterMain {
     padding-bottom: 0.8rem;
 }
@@ -110,7 +120,7 @@ export default {
     z-index: 999;
     background: #fff;
     overflow: hidden;
-    .van-icon-phone-circle-o {
+    i {
         font-size: 0.32rem;
         position: relative;
         top: 0.06rem;
@@ -124,6 +134,8 @@ export default {
     float: left;
     width: 50%;
     text-align: center;
+    border: 0.01rem solid #ccc;
+    box-sizing: border-box;
 }
 .helpCenterMain {
     padding-top: 0.8rem;

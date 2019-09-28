@@ -69,7 +69,7 @@ export default {
                     duration: 1000
                 });
             } else if (
-                !/^1(3|4|5|7|8)\d{9}$/.test(this.queryData.forgetParam.phone)
+                !/^1(3|4|5|6|7|8)\d{9}$/.test(this.queryData.forgetParam.phone)
             ) {
                 Toast({
                     message: "手机号格式不正确",
@@ -118,8 +118,9 @@ export default {
                     duration: 1000
                 });
             } else if (
-                !/^1(3|4|5|7|8)\d{9}$/.test(this.queryData.forgetParam.phone)
+                !/^1(3|4|5|6|7|8)\d{9}$/.test(this.queryData.forgetParam.phone)
             ) {
+                alert(1)
                 Toast({
                     message: "手机号格式不正确",
                     duration: 1000

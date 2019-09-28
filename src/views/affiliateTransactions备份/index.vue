@@ -2,7 +2,7 @@
     <div>
         <!-- header -->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>下属交易</span>
         </div>
         <!-- body -->
@@ -25,8 +25,7 @@
                     :endDate="new Date()"
                     @confirm="handleConfirm"
                     @cancel="handleCancel"
-                >
-                </mt-datetime-picker>
+                ></mt-datetime-picker>
                 <!-- 快捷筛选 -->
                 <div class="quickScreeningNav">
                     <!-- <a class="active" href="javascript:;">昨日</a>
@@ -76,130 +75,130 @@
                     </van-list>
                 </van-pull-refresh>
                 <div class="no-data" v-else>
-                    <img src="@/assets/images/no-data.png" alt>
+                    <img src="@/assets/images/no-data.png" alt />
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { getServer } from "@/api/index";
+import { getServer } from '@/api/index'
 export default {
     data() {
         return {
-            type: "days",
+            type: 'days',
             isDownLoading: false, //下拉刷新
             isUpLoading: false, //上拉加载
             upFinished: false, //上拉加载完毕
             offset: 10, //滚动条与底部距离小于 offset 时触发load事件
             isData: true,
-            pickerValue: "按时间筛选",
-            year: "",
-            month: "",
-            date: "",
-            dateValue: "",
+            pickerValue: '按时间筛选',
+            year: '',
+            month: '',
+            date: '',
+            dateValue: '',
             isClicked: false,
-            ATurnover: "0.00",
+            ATurnover: '0.00',
             queryData: {
                 list: {
-                    requestType: "funds",
-                    requestKeywords: "merchandise",
+                    requestType: 'funds',
+                    requestKeywords: 'merchandise',
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
                     page: 0,
-                    types: "days"
+                    types: 'days'
                     // dates: ''
                     // limit: 10
                 }
             },
             renderData: {
                 list: [],
-                oldList: [],
+                oldList: []
             }
-        };
+        }
     },
     methods: {
         screeningTime() {
-            this.clickChange();
+            this.clickChange()
         },
         clickChange() {
-            if (this.type === "selectionDate") {
-                this.selectYear();
+            if (this.type === 'selectionDate') {
+                this.selectYear()
             } else {
-                delete this.queryData.list.dates;
-                this.isClicked = false;
-                this.queryData.list.types = this.type;
-                this.upFinished = false;
-                this.isData = true;
-                this.queryData.list.page = 0;
-                this.renderData.oldList = [];
-                this.onLoadList();
+                delete this.queryData.list.dates
+                this.isClicked = false
+                this.queryData.list.types = this.type
+                this.upFinished = false
+                this.isData = true
+                this.queryData.list.page = 0
+                this.renderData.oldList = []
+                this.onLoadList()
             }
         },
         onLoadList() {
-            this.queryData.list.page++;
-            this.isUpLoading = true;
+            this.queryData.list.page++
+            this.isUpLoading = true
             // console.log(this.queryData.list.page)
-            this.list();
+            this.list()
         },
         onDownRefresh() {
-            this.queryData.list.page = 1;
-            this.renderData.oldList = [];
-            this.isDownLoading = true;
-            this.list();
+            this.queryData.list.page = 1
+            this.renderData.oldList = []
+            this.isDownLoading = true
+            this.list()
         },
         selectYear() {
-            this.$refs.datePicker.open();
+            this.$refs.datePicker.open()
         },
         handleCancel() {
-            this.queryData.list.types = "selectionDate";
+            this.queryData.list.types = 'selectionDate'
             // this.type = this.queryData.list.types
         },
         handleConfirm(value) {
-            this.year = value.getFullYear();
-            this.month = value.getMonth() + 1;
-            this.date = value.getDate();
-            this.isClicked = true;
+            this.year = value.getFullYear()
+            this.month = value.getMonth() + 1
+            this.date = value.getDate()
+            this.isClicked = true
             this.queryData.list.dates =
-                this.year + "-" + this.month + "-" + this.date;
-            this.queryData.list.types = "days";
-            this.upFinished = false;
-            this.isData = true;
-            this.queryData.list.page = 0;
-            this.renderData.oldList = [];
-            this.onLoadList();
+                this.year + '-' + this.month + '-' + this.date
+            this.queryData.list.types = 'days'
+            this.upFinished = false
+            this.isData = true
+            this.queryData.list.page = 0
+            this.renderData.oldList = []
+            this.onLoadList()
         },
         list() {
             getServer(this.queryData.list).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.ATurnover = res.data.sum;
-                    this.isData = true;
-                    this.renderData.list = res.data.data;
+                    this.ATurnover = res.data.sum
+                    this.isData = true
+                    this.renderData.list = res.data.data
                     this.renderData.list.forEach(item => {
-                        this.renderData.oldList.push(item);
-                    });
-                    this.isDownLoading = false;
-                    this.isUpLoading = false;
+                        this.renderData.oldList.push(item)
+                    })
+                    this.isDownLoading = false
+                    this.isUpLoading = false
                 } else if (
                     res.data.responseStatus === 300 &&
                     this.queryData.list.page !== 1
                 ) {
-                    this.upFinished = true;
-                    this.isUpLoading = false;
+                    this.upFinished = true
+                    this.isUpLoading = false
                 } else if (
                     res.data.responseStatus === 300 &&
                     this.queryData.list.page === 1
                 ) {
-                    this.upFinished = false;
-                    this.isUpLoading = false;
-                    this.isData = false;
-                    this.ATurnover = "0";
+                    this.upFinished = false
+                    this.isUpLoading = false
+                    this.isData = false
+                    this.ATurnover = '0'
                 }
-            });
+            })
         }
     }
-};
+}
 </script>
 <style lang="scss">
 .affiliateTransactionsHeaderMain {

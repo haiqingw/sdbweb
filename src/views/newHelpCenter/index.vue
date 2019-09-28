@@ -6,15 +6,15 @@
         </div>
         <div class="helpCenterMain">
             <!-- 公告 -->
-            <!-- <van-notice-bar text="如果您是初次使用刷多宝，请先认真阅读新手指引" left-icon="volume-o" /> -->
+            <van-notice-bar text="如果您是初次使用刷多宝，请先认真阅读新手指引" left-icon="volume-o" />
             <!-- 新手引导 -->
-            <!-- <div class="noviceGuideBannerMain">
+            <div class="noviceGuideBannerMain">
                 <img
                     @click="guideTap()"
                     src="@/assets/images/noviceGuideBannerBannerImg.jpg"
                     alt="新手引导banner"
                 />
-            </div>-->
+            </div>
             <!-- 常见问题 -->
             <div class="commonProblemsMain">
                 <h3>问题类型</h3>

@@ -2,12 +2,15 @@
     <div>
         <!-- header -->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
+            <img src="@/assets/images/return.png" alt @click="$router.push('/mine')" />
             <span>安全验证</span>
         </div>
         <!-- body -->
         <div class="verificationContainer">
-            <h3 class="titleMain" v-if="$route.params.state === 'modify' || $route.params.state === 'add'">实名认证</h3>
+            <h3
+                class="titleMain"
+                v-if="$route.params.state === 'modify' || $route.params.state === 'add'"
+            >实名认证</h3>
             <h3 class="titleMain" v-else-if="$route.params.state === 'forgetPwd'">设置提现密码</h3>
             <p class="subTitleMain">
                 为了您的账户安全，
@@ -33,6 +36,7 @@
                 <!-- @click="getVerify" -->
                 <em>{{time}}{{time==="重新获取"?'':'s'}}</em>
             </div>
+            <el-button :disabled="isCode" type="primary" @click="confirmCode" style="width: 100%; margin-top: 1rem;">确定</el-button>
         </div>
     </div>
 </template>
@@ -48,6 +52,7 @@ export default {
             time: 60,
             flag: false,
             clearIntervalStatus: null,
+            isCode: true,
             queryData: {
                 realNameCer: {
                     requestType: "operating",
@@ -187,31 +192,33 @@ export default {
         },
         remanufacturePwdFunc() {
             this.$router.push({ name: "setPwd" });
+        },
+        confirmCode() {
+            if (parseInt(this.code) === parseInt(this.renderData.code)) {
+                if (this.$route.params.state === "add") {
+                    // this.submitModification();
+                    this.$router.push({
+                        name: "certification"
+                    });
+                } else if (this.$route.params.state === "bindCer") {
+                    this.submitModificationCer();
+                } else if (this.$route.params.state === "modify") {
+                    // this.modify();
+                    this.$router.push({
+                        name: "modifyInfo"
+                    });
+                } else if (this.$route.params.state === "forgetPwd") {
+                    this.remanufacturePwdFunc();
+                }
+            } else {
+                Toast("验证码有误！");
+            }
         }
     },
     watch: {
         code: function() {
             if (this.code.length == 6) {
-                if (parseInt(this.code) === parseInt(this.renderData.code)) {
-                    if (this.$route.params.state === "add") {
-                        // this.submitModification();
-                        this.$router.push({
-                            name: "certification"
-                        });
-                    } else if (this.$route.params.state === "bindCer") {
-                        this.submitModificationCer();
-                    } else if (this.$route.params.state === "modify") {
-                        // this.modify();
-                        this.$router.push({
-                            name: "modifyInfo"
-                        });
-                    } else if (this.$route.params.state === "forgetPwd") {
-                        this.remanufacturePwdFunc();
-                    }
-                } else {
-                    Toast("验证码有误！");
-                }
-                // alert("验证码为：" + this.code);
+                this.isCode = false;
             }
         }
     },

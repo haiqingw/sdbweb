@@ -47,28 +47,33 @@
         <!-- 列表 -->
         <div class="merchantsListMain" v-if="isData">
             <div v-for="item in renderData.list" :key="item.terminalNo">
-                <h3>终端号：{{item.terminalNo}}<span style="float: right">{{item.tradeData.length}}条</span></h3>
-                <div
-                    class="merchantsListBox line_bottom"
-                    v-for="i in item.tradeData"
-                    :key="i.tradeTime"
-                >
-                    <div  v-if="isTerminalData">
-                        <p class="ren-flex-sb">
-                            <span>
-                                交易金额：
-                                <b>{{i.tradeAmt}}元</b>
-                            </span>
-                            <em>
-                                交易费率：
-                                <b>{{i.rate}}</b>
-                            </em>
-                        </p>
-                        <p class="gray">交易时间：{{i.tradeTime}}</p>
-                    </div>
-                    <!-- <div v-else>
+                <h3>
+                    <em>终端号：{{item.terminalNo}}</em>
+                    <span>{{item.tradeData.length}}条</span>
+                </h3>
+                <div class="merchantsListMainList">
+                    <div
+                        class="merchantsListBox line_bottom"
+                        v-for="i in item.tradeData"
+                        :key="i.tradeTime"
+                    >
+                        <div v-if="isTerminalData">
+                            <p class="ren-flex-sb">
+                                <span>
+                                    交易金额：
+                                    <b>{{i.tradeAmt}}元</b>
+                                </span>
+                                <em>
+                                    交易费率：
+                                    <b>{{i.rate}}</b>
+                                </em>
+                            </p>
+                            <p class="gray">交易时间：{{i.tradeTime}}</p>
+                        </div>
+                        <!-- <div v-else>
                         暂无
-                    </div> -->
+                        </div>-->
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,35 +94,35 @@
     </div>
 </template>
 <script>
-import { Searcha, Picker, DatetimePicker } from 'vant'
-import { getServer } from '@/api/index'
-import { parseTime } from '@/utils/index'
+import { Searcha, Picker, DatetimePicker } from "vant";
+import { getServer } from "@/api/index";
+import { parseTime } from "@/utils/index";
 export default {
     data() {
         return {
             isData: true,
             isTerminalData: true,
-            proValue: '',
-            searchValue: '',
+            proValue: "",
+            searchValue: "",
             showPicker: false,
             // columns: ['鼎刷', '闪POS', '红POS', '银POS'],
             showTimePicker: false,
             currentDate: new Date(),
-            selectedTime: '2019-09',
+            selectedTime: "2019-09",
             queryData: {
                 list: {
-                    requestType: 'funds',
-                    requestKeywords: 'tradelists',
+                    requestType: "funds",
+                    requestKeywords: "tradelists",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    dates: '', //'2019-09' 年月（按月查询） ,
-                    productID: ''
+                    dates: "", //'2019-09' 年月（按月查询） ,
+                    productID: ""
                     // terminalNo: ''
                 },
                 product: {
-                    requestType: 'agent',
-                    requestKeywords: 'product',
+                    requestType: "agent",
+                    requestKeywords: "product",
                     platformID: this.$store.state.user.pid
                 }
             },
@@ -125,100 +130,103 @@ export default {
                 product: [
                     {
                         id: 1,
-                        name: '123'
+                        name: "123"
                     },
                     {
                         id: 2,
-                        name: 'xiaoyu'
+                        name: "xiaoyu"
                     }
                 ],
                 productName: [],
                 list: []
             }
-        }
+        };
     },
     components: {},
     methods: {
         onSearch() {},
         onConfirm(value, index) {
-            this.proValue = value
+            this.proValue = value;
             this.renderData.product.forEach(item => {
                 if (this.proValue === item.name) {
-                    this.queryData.list.productID = item.id
+                    this.queryData.list.productID = item.id;
                 }
-            })
-            this.list()
-            this.showPicker = false
+            });
+            this.list();
+            this.showPicker = false;
         },
         onCancel() {
-            this.showPicker = false
+            this.showPicker = false;
         },
         formatter(type, value) {
-            if (type === 'year') {
-                return `${value}年`
-            } else if (type === 'month') {
-                return `${value}月`
+            if (type === "year") {
+                return `${value}年`;
+            } else if (type === "month") {
+                return `${value}月`;
             }
-            return value
+            return value;
         },
         showTimePickerTap() {
-            this.showTimePicker = true
+            this.showTimePicker = true;
         },
         onTimeConfirm(value) {
-            this.queryData.list.dates = parseTime(value).substring(0, 7)
-            this.selectedTime = parseTime(value).substring(0, 7)
-            this.list()
-            this.showTimePicker = false
+            this.queryData.list.dates = parseTime(value).substring(0, 7);
+            this.selectedTime = parseTime(value).substring(0, 7);
+            this.list();
+            this.showTimePicker = false;
         },
         onTimeCancel() {
-            this.showTimePicker = false
+            this.showTimePicker = false;
         },
         product() {
             getServer(this.queryData.product)
                 .then(res => {
                     if (res.data.responseStatus === 1) {
-                        this.renderData.product = res.data.data
+                        this.renderData.product = res.data.data;
                         this.renderData.product.forEach(item => {
-                            this.renderData.productName.push(item.name)
-                        })
-                        this.proValue = res.data.data[0].name
-                        this.queryData.list.productID = res.data.data[0].id
+                            this.renderData.productName.push(item.name);
+                        });
+                        this.proValue = res.data.data[0].name;
+                        this.queryData.list.productID = res.data.data[0].id;
                     }
                 })
                 .then(() => {
-                    this.list()
-                })
+                    this.list();
+                });
         },
         timeView() {
-            this.selectedTime = parseTime(this.currentDate).substring(0, 7)
+            this.selectedTime = parseTime(this.currentDate).substring(0, 7);
             this.queryData.list.dates = parseTime(this.currentDate).substring(
                 0,
                 7
-            )
-            this.product()
+            );
+            this.product();
         },
         list() {
             getServer(this.queryData.list).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.list = res.data.data
-                    if( res.data.data[0].tradeData.length === 0 ) {
-                        this.isTerminalData = false
-                    }else {
-                        this.isTerminalData = true
+                    this.renderData.list = res.data.data;
+                    if (res.data.data[0].tradeData.length === 0) {
+                        this.isTerminalData = false;
+                    } else {
+                        this.isTerminalData = true;
                     }
-                    this.isData = true
+                    this.isData = true;
                 } else if (res.data.responseStatus === 300) {
-                    this.isData = false
+                    this.isData = false;
                 }
-            })
+            });
         }
     },
     created() {
-        this.timeView()
+        this.timeView();
     }
-}
+};
 </script>
 <style lang="less">
+.merchantsListMainList {
+    padding-top: .8rem;
+}
 .merchantsTradeContainer {
     .return {
         .timeRightBtn {
@@ -240,6 +248,7 @@ export default {
     position: fixed;
     top: 0.8rem;
     z-index: 9999;
+    overflow: auto;
 }
 .searchMain {
     overflow: hidden;
@@ -266,21 +275,31 @@ export default {
     }
 }
 .merchantsListMain {
-    position: fixed;
-    width: 100%;
-    top: 99px;
-    left: 0;
-    right: 0;
+    // position: fixed;
+    // top: 99px;
+    // margin-top: 99px;
+    margin-top: 1.7rem;
+    // left: 0;
+    // right: 0;
     overflow: auto;
     h3 {
         height: 0.8rem;
         line-height: 0.8rem;
         font-size: 0.28rem;
-        background: #089cfe75;
+        background: #00CCFF;
         padding: 0 15px;
         color: #fff;
-        letter-spacing: 2px;
-        font-weight:bold;
+        font-weight: bold;
+        position: fixed;
+        width: 100%;
+        z-index: 999999;
+        box-sizing: border-box;
+        span {
+            float: right;
+        }
+        em {
+            float: left;
+        }
     }
     div.merchantsListBox {
         line-height: 30px;

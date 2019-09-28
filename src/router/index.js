@@ -482,6 +482,11 @@ export default new Router({
         path: "/newHelpDetail/id", // 新版帮助中心详情
         name: 'newHelpDetail',
         component: resolve => require(['@/views/newHelpCenter/newHelpDetail'], resolve),
+    },
+    {
+        path: "/newHelpCenter/guideView", // 新版帮助中心详情
+        name: 'newHelpCenterGuideView',
+        component: resolve => require(['@/views/newHelpCenter/guideView'], resolve),
     }
 
     ]

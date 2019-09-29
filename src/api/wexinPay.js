@@ -46,7 +46,7 @@ export function getWexinPay(data, cb, errorCb) {
     });
 }
 
-export function getBackEndWexinPay () {
+export function getBackEndWexinPay() {
     return request({
         url: process.env.BASE_API,
         method: 'post',

@@ -109,6 +109,7 @@ export default {
             }
         },
         getVerificationCode() {
+            if( this.isSend ) return
             if (
                 this.queryData.forgetParam.phone == "" ||
                 this.queryData.forgetParam.phone == undefined
@@ -120,7 +121,6 @@ export default {
             } else if (
                 !/^1(3|4|5|6|7|8)\d{9}$/.test(this.queryData.forgetParam.phone)
             ) {
-                alert(1)
                 Toast({
                     message: "手机号格式不正确",
                     duration: 1000
@@ -130,7 +130,6 @@ export default {
                 this.isSend = true;
                 this.verificationCodeText = "验证码发送中";
                 getServer(this.queryData.forgetParam).then(res => {
-                    console.log(res);
                     if (res.data.responseStatus === 1) {
                         this.Verify = res.data.code;
                         var inter = setInterval(() => {

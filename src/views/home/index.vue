@@ -100,6 +100,12 @@
                         <router-link :to="item.jumpPageLink">{{item.moduleName}}</router-link>
                     </div>
                 </li>
+                <li>
+                    <div class="img" @click="goShoppingMall">
+                        <img src="@/assets/images/index-list2-img2.png" alt />
+                    </div>
+                    <div class="text">刷多宝商城</div>
+                </li>
             </ul>
         </div>
         <Footer></Footer>
@@ -224,6 +230,9 @@ export default {
         ...mapGetters(["islogin"])
     },
     methods: {
+        goShoppingMall() {
+            window.location.href = `http://shop.ospay.net.cn/?uid=${this.$store.state.user.uid}&pid=${this.$store.state.user.pid}&uphone=${this.$store.state.user.uphone}`;
+        },
         clickBanner(url) {
             if (url) {
                 window.location.href = url;
@@ -327,12 +336,12 @@ export default {
             });
         },
         navList() {
-            getServer(this.queryData.navList).then( res => {
-                if( res.data.responseStatus === 1 ) { 
-                    this.renderData.navList = res.data.data
-                }else {
+            getServer(this.queryData.navList).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.navList = res.data.data;
+                } else {
                 }
-            })
+            });
         }
     },
     mounted() {
@@ -359,7 +368,7 @@ export default {
     created() {
         this.listOne();
         this.thaw();
-        this.navList()
+        this.navList();
         // this.test1()
         this.bannerList();
         this.info();

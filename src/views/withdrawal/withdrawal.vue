@@ -178,7 +178,8 @@ export default {
                 info: {
                     phone: ""
                 },
-                pwd: ""
+                pwd: "",
+                cashratio: {}
             },
             queryData: {
                 balanceList: {
@@ -268,6 +269,14 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                },
+                cashratio: {
+                    requestType: "personal",
+                    requestKeywords: "cashratio",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    payType: ""
                 }
             }
         };
@@ -324,6 +333,7 @@ export default {
                 if (index == i) {
                     this.queryData.cashWithdrawal.payType = item.t;
                     this.queryData.drawInfo.payType = item.t;
+                    this.queryData.cashratio.payType = item.t;
                     this.renderData.mattersNeedingAttention.ktx = item.ktx;
                 }
             });
@@ -340,6 +350,7 @@ export default {
                         this.queryData.cashWithdrawal.payType =
                             res.data.data[0].t;
                         this.queryData.drawInfo.payType = res.data.data[0].t;
+                        this.queryData.cashratio.payType = res.data.data[0].t;
                         // this.$set(this.queryData.drawInfo, 'payType', res.data.data[0].t)
                         // this.queryData.drawInfo.payType = Object.assign({}, res.data.data[0].t)
                         this.renderData.mattersNeedingAttention.ktx =
@@ -348,6 +359,7 @@ export default {
                 })
                 .then(res => {
                     this.drawInfo();
+                    this.cashratio()
                 });
         },
         drawInfo() {
@@ -600,7 +612,7 @@ export default {
                                         name: "smsVerification",
                                         params: { state: "forgetPwd" }
                                     });
-                                } 
+                                }
                             })
                             .catch(err => {
                                 this.$router.go(-1);
@@ -620,6 +632,13 @@ export default {
                     this.msgPwd = res.data.msg;
                 }
             });
+        },
+        cashratio() {
+            getServer(this.queryData.cashratio).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.cashratio = res.data.data
+                }
+            })
         }
     },
     watch: {

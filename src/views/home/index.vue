@@ -100,12 +100,12 @@
                         <router-link :to="item.jumpPageLink">{{item.moduleName}}</router-link>
                     </div>
                 </li>
-                <li>
+                <!-- <li>
                     <div class="img" @click="goShoppingMall">
                         <img src="@/assets/images/index-list2-img2.png" alt />
                     </div>
                     <div class="text">刷多宝商城</div>
-                </li>
+                </li> -->
             </ul>
         </div>
         <Footer></Footer>
@@ -231,7 +231,7 @@ export default {
     },
     methods: {
         goShoppingMall() {
-            window.location.href = `http://shop.ospay.net.cn/?uid=${this.$store.state.user.uid}&pid=${this.$store.state.user.pid}&uphone=${this.$store.state.user.uphone}`;
+            window.location.href = `http://shopapi.ospay.net.cn/web/#/?uid=${this.$store.state.user.uid}&pid=${this.$store.state.user.pid}&uphone=${this.$store.state.user.uphone}`;
         },
         clickBanner(url) {
             if (url) {

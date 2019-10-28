@@ -74,6 +74,7 @@
                         <p>3.提现银行卡可以在'我的'中更换;</p>
                         <!-- <p>4.结算方式为{{renderData.mattersNeedingAttention.methed}}。</p> -->
                         <p>4.提现税收为{{renderData.drawInfo.tax}}。</p>
+                        <p>5.提现金额不能超过总金额的{{renderData.drawInfo.cashRatio}}。</p>
                         <!-- <p>5.提现税收为{{renderData.drawInfo.tax}}。</p> -->
                     </div>
                 </div>
@@ -170,6 +171,7 @@ export default {
             serverVerifyCode: "4567",
             btnClassStatus: false,
             clearIntervalStatus: null,
+            money: 0,
             renderData: {
                 balanceList: [],
                 drawInfo: {},
@@ -359,7 +361,7 @@ export default {
                 })
                 .then(res => {
                     this.drawInfo();
-                    this.cashratio()
+                    this.cashratio();
                 });
         },
         drawInfo() {
@@ -419,6 +421,7 @@ export default {
                         if (res.data.responseStatus === 1) {
                             this.renderData.mattersNeedingAttention.ktx =
                                 res.data.data[0].ktx;
+                            this.money = res.data.data[0].money;
                         }
                     })
                     .then(res => {
@@ -461,6 +464,24 @@ export default {
                             );
                             return;
                         }
+                        if (parseFloat(this.renderData.cashratio) / 100 !== 1) {
+                            if (
+                                parseFloat(
+                                    this.queryData.cashWithdrawal.money
+                                ) >
+                                (parseFloat(this.money) *
+                                    parseFloat(this.renderData.cashratio)) /
+                                    100
+                            ) {
+                                Toast(
+                                    "单笔最高提现不能大于" +
+                                        parseInt(this.renderData.cashratio) +
+                                        "%"
+                                );
+                                return;
+                            }
+                        }
+
                         this.cleanTime();
                         this.msgPwdFunc();
                         this.ispwd = true;
@@ -634,11 +655,11 @@ export default {
             });
         },
         cashratio() {
-            getServer(this.queryData.cashratio).then( res => {
-                if( res.data.responseStatus === 1 ) {
-                    this.renderData.cashratio = res.data.data
+            getServer(this.queryData.cashratio).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.cashratio = res.data.ratio;
                 }
-            })
+            });
         }
     },
     watch: {

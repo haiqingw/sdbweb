@@ -7,7 +7,7 @@
             </router-link>
         </mt-header>-->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>资金明细</span>
         </div>
         <div class="financial-top">
@@ -19,7 +19,7 @@
                         </van-swipe-item>
                     </van-swipe>
                 </div>
-            </div> -->
+            </div>-->
             <!-- switchSacreeningMain -->
             <div class="time-choice">
                 <div class="block">
@@ -43,7 +43,7 @@
                         >
                             <el-button type="text">{{item.name}}</el-button>
                         </div>
-                   </div>
+                    </div>
                     <!-- <div class="nav-right-arrow rotateUp" @click="openTagModal(list)">
                     </div>-->
                 </div>
@@ -65,7 +65,29 @@
                             @pulling-up="onPullingUp"
                             :options="options"
                         >
-                            <ul class="financialDetailsListUl">
+                            <ul v-if="isThaw" class="financialDetailsListUl">
+                                <li
+                                    class="line_bottom"
+                                    v-for="(item, index) in renderData.odlListData"
+                                    :key="index"
+                                >
+                                    <div class="top">
+                                        <div class="title">
+                                            <span class="s" v-if="item.product">{{item.product}}</span>
+                                            <h3>{{item.storageName}}</h3>
+                                        </div>
+                                        <h3 class="money">+{{item.changeAmount}}</h3>
+                                    </div>
+                                    <div class="info">{{item.busname}}</div>
+                                    <!-- <div class="info">{{item.product}}</div> -->
+                                    <div class="info">终端号：{{item.terminal}}</div>
+                                    <div class="bottom">
+                                        <p class="p1">{{item.remark}}</p>
+                                        <p class="p2">{{item.createTime}}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="financialDetailsListUl" v-else>
                                 <li
                                     class="line_bottom"
                                     v-for="(item, index) in renderData.odlListData"
@@ -87,7 +109,7 @@
                         </cube-scroll>
                     </div>
                     <div class="no-data" v-else>
-                        <img src="@/assets/images/no-data.png">
+                        <img src="@/assets/images/no-data.png" />
                     </div>
                 </div>
             </div>
@@ -112,6 +134,7 @@ export default {
     data() {
         return {
             islogin: this.$store.state.user.islogin,
+            isThaw: false,
             options: {
                 pullDownRefresh: {
                     threshold: 90,
@@ -229,6 +252,11 @@ export default {
             this.profitList();
         },
         queryTopic(data, index, type) {
+            if (data.types === "YJ") {
+                this.isThaw = true;
+            } else {
+                this.isThaw = false;
+            }
             if (this.isData) {
                 this.scrollTo();
             }
@@ -256,6 +284,7 @@ export default {
             this.isServer = false;
             Indicator.open();
             getServer(this.queryData.list).then(res => {
+                // alert(JSON.stringify(res.data.data))
                 this.isServer = true;
                 Indicator.close();
                 if (res.data.responseStatus === 1) {
@@ -304,7 +333,7 @@ export default {
     margin-top: 0;
 }
 .financial-top {
-    margin-top: .8rem;
+    margin-top: 0.8rem;
 }
 .financial-details {
     font-size: 0.3rem;
@@ -324,7 +353,7 @@ export default {
     // margin-top: .2rem;
     overflow-y: scroll;
     width: 100%;
-    padding-top: .2rem;
+    padding-top: 0.2rem;
     box-sizing: border-box;
     .item {
         padding: 10px 10px;
@@ -345,57 +374,64 @@ export default {
     color: #000;
 }
 .financialDetailsListUl {
-    li {
-        padding: 0.15rem 0;
-    }
     div {
         overflow: hidden;
         font-size: 0.3rem;
         padding: 0 0.2rem;
         box-sizing: border-box;
     }
-    .top {
-        width: 100%;
-        margin-bottom: 0.14rem;
-        .title {
-            float: left;
-            padding: 0;
-            span {
+    li {
+        padding: 0.15rem 0;
+        .top {
+            width: 100%;
+            margin-bottom: 0.14rem;
+            .title {
                 float: left;
-                background-color: rgba(64, 158, 255, 0.1);
-                display: inline-block;
-                font-size: 0.2rem;
-                color: #409eff;
-                border-radius: 4px;
-                box-sizing: border-box;
-                border: 1px solid rgba(64, 158, 255, 0.2);
-                white-space: nowrap;
-                margin-right: 0.2rem;
-                width: 0.8rem;
-                text-align: center;
-                line-height: 0.38rem;
+                padding: 0;
+                span {
+                    float: left;
+                    background-color: rgba(64, 158, 255, 0.1);
+                    display: inline-block;
+                    font-size: 0.2rem;
+                    color: #409eff;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                    border: 1px solid rgba(64, 158, 255, 0.2);
+                    white-space: nowrap;
+                    margin-right: 0.2rem;
+                    padding: 0 0.1rem;
+                    text-align: center;
+                    line-height: 0.38rem;
+                }
+                h3 {
+                    float: left;
+                    font-size: 0.28rem;
+                    color: #333;
+                    margin-top: 0.05rem;
+                }
             }
-            h3 {
-                float: left;
-                font-size: 0.28rem;
-                color: #333;
-                margin-top: 0.05rem;
+            .money {
+                float: right;
+                color: #f33;
             }
         }
-        .money {
-            float: right;
-            color: #f33;
+        .bottom {
+            width: 100%;
+            font-size: 0.26rem;
+            overflow: hidden;
+            .p1 {
+                float: left;
+            }
+            .p2 {
+                float: right;
+            }
         }
     }
-    .bottom {
-        width: 100%;
+    .info {
+        margin-bottom: .1rem;
+        display: block;
         font-size: 0.26rem;
-        .p1 {
-            float: left;
-        }
-        .p2 {
-            float: right;
-        }
+        color: #000;
     }
 }
 .financial-details .v-modal {
@@ -455,11 +491,9 @@ export default {
     height: 0.9rem;
     /*background: #fff;*/
     background-image: linear-gradient(to right, rgba(#fff, 0), #fff 30%, #fff);
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     .drop-down {
         width: 0.22rem;
         /*padding-top: 0.35rem;*/
@@ -470,55 +504,6 @@ export default {
             transform: rotate(-180deg);
         }
     }
-}
-.financial-details {
-    // .choice {
-    //     width: 100%;
-    //     // top: 2rem;
-    //     background: #fff;
-    //     z-index: 999;
-    //     // overflow-x: auto;
-    //     overflow: auto;
-    //     line-height: 0.8rem;
-    //     height: 0.8rem;
-    //     .el-radio-group {
-    //         width: 100%;
-    //     }
-    //     label {
-    //         // width: 50%;
-    //         display: block;
-    //         float: left;
-    //         text-align: center;
-    //         border-left: none;
-    //         border: none;
-    //     }
-    //     label:hover {
-    //         border: none;
-    //     }
-    //     .el-radio-button__inner {
-    //         border: none;
-    //         border-bottom: 1px solid transparent;
-    //         width: 100%;
-    //         color: #606266;
-    //     }
-    //     .el-radio-button__inner:hover {
-    //         border-bottom: 1px solid transparent;
-    //     }
-    //     .el-radio-button__orig-radio:checked + .el-radio-button__inner {
-    //         border: none;
-    //         background: none;
-    //         color: #606266;
-    //         border-bottom: 1px solid #0096fe;
-    //         border-radius: 0;
-    //         box-shadow: 0 0 0 0 #fff;
-    //     }
-    //     .el-radio-button__inner:hover {
-    //         box-shadow: 0 0 0 0 #fff;
-    //     }
-    //     .el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
-    //         box-shadow: 0 0 0 0 #fff;
-    //     }
-    // }
 }
 .financialDetailsList {
     width: 100%;
@@ -546,80 +531,7 @@ export default {
     background: #fff;
     z-index: 999;
 }
-.switchScreeningMain {
-    // position: fixed;
-    // width: 100%;
-    // left: 0;
-    // top: 120px;
-    // z-index: 99999;
-    display: block;
-}
-.timeScreeningItem {
-    overflow: hidden;
-    line-height: 40px;
-    em {
-        display: block;
-        width: 100px;
-        font-size: 14px;
-        color: #333;
-        float: left;
-        text-indent: 20px;
-    }
-    div {
-        padding-left: 100px;
-        position: relative;
-        span {
-            line-height: 40px;
-            font-size: 14px;
-            position: absolute;
-            width: 100%;
-            display: block;
-            left: 100px;
-            top: 0;
-        }
-        input {
-            height: 40px;
-            border: none;
-            background: none;
-            font-size: 14px;
-            position: absolute;
-            width: 100%;
-            left: 100px;
-            top: 0;
-            z-index: 9999;
-        }
-    }
-}
-.switchScreeningMain {
-    justify-content: space-around;
-    a {
-        display: block;
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        font-size: 14px;
-        color: #333;
-        text-align: center;
-        position: relative;
-        &.active {
-            color: #0096fe;
-        }
-        &.active::before {
-            content: "";
-            display: block;
-            width: 30%;
-            height: 2px;
-            background: #0096fe;
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            margin-left: -15%;
-        }
-    }
-}
-.mint-loadmore-top {
-    font-size: 14px;
-}
+
 .financial-details .choice .el-radio-group {
     border-bottom: 1px solid #f1f1f1;
 }

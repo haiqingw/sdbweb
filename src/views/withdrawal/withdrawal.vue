@@ -69,12 +69,12 @@
                     <h3 class="withdrawalTitle">注意事项</h3>
                     <div>
                         <!-- <p>1.单笔提现最高{{renderData.drawInfo.maxm}}，最低{{renderData.drawInfo.mixm}}元，每笔手续费{{renderData.drawInfo.pou}}元；</p> -->
-                        <p>1.达标金额{{renderData.drawInfo.drawMoney}}元</p>
+                        <p>1.满{{renderData.drawInfo.drawMoney}}元可提现</p>
                         <p>2.到账时间：{{renderData.drawInfo.start}}-{{renderData.drawInfo.endt}}(工作日)；</p>
                         <p>3.提现银行卡可以在'我的'中更换;</p>
                         <!-- <p>4.结算方式为{{renderData.mattersNeedingAttention.methed}}。</p> -->
                         <p>4.提现税收为{{renderData.drawInfo.tax}}。</p>
-                        <p>5.提现金额不能超过总金额的{{renderData.drawInfo.cashRatio}}。</p>
+                        <p>5.最多可提现金额总金额的{{renderData.drawInfo.cashRatio}}。</p>
                         <!-- <p>5.提现税收为{{renderData.drawInfo.tax}}。</p> -->
                     </div>
                 </div>
@@ -464,23 +464,23 @@ export default {
                             );
                             return;
                         }
-                        if (parseFloat(this.renderData.cashratio) / 100 !== 1) {
-                            if (
-                                parseFloat(
-                                    this.queryData.cashWithdrawal.money
-                                ) >
-                                (parseFloat(this.money) *
-                                    parseFloat(this.renderData.cashratio)) /
-                                    100
-                            ) {
-                                Toast(
-                                    "单笔最高提现不能大于" +
-                                        parseInt(this.renderData.cashratio) +
-                                        "%"
-                                );
-                                return;
-                            }
-                        }
+                        // if (parseFloat(this.renderData.cashratio) / 100 !== 1) {
+                        //     if (
+                        //         parseFloat(
+                        //             this.queryData.cashWithdrawal.money
+                        //         ) >
+                        //         (parseFloat(this.money) *
+                        //             parseFloat(this.renderData.cashratio)) /
+                        //             100
+                        //     ) {
+                        //         Toast(
+                        //             "单笔最高提现不能大于" +
+                        //                 parseInt(this.renderData.cashratio) +
+                        //                 "%"
+                        //         );
+                        //         return;
+                        //     }
+                        // }
 
                         this.cleanTime();
                         this.msgPwdFunc();

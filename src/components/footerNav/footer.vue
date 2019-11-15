@@ -29,7 +29,7 @@
                 {{footer.share.title}}
             </div>
 
-            <div
+            <!-- <div
                 class="footerNavItem"
                 :class="{'active': selected === '/message'}"
                 @click="switchTo('/message')"
@@ -43,6 +43,14 @@
                     <img :src="selected == '/message' ? footer.news.imgActive : footer.news.img" />
                     {{footer.news.title}}
                 </el-badge>
+            </div>-->
+            <div
+                class="footerNavItem"
+                :class="{'active': selected === '/rank'}"
+                @click="switchTo('/rank')"
+            >
+                <img :src="selected == '/rank' ? footer.rank.imgActive : footer.rank.img" />
+                {{footer.rank.title}}
             </div>
 
             <div
@@ -80,10 +88,15 @@ export default {
                     img: require("@/assets/images/footer-share.png"),
                     imgActive: require("@/assets/images/footer-share-active.png")
                 },
-                news: {
-                    title: "消息",
-                    img: require("@/assets/images/footer03.png"),
-                    imgActive: require("@/assets/images/footer03_active.png")
+                // news: {
+                //     title: "消息",
+                //     img: require("@/assets/images/footer03.png"),
+                //     imgActive: require("@/assets/images/footer03_active.png")
+                // },
+                rank: {
+                    title: "排行榜",
+                    img: require("@/assets/images/footer05.png"),
+                    imgActive: require("@/assets/images/footer05_active.png")
                 },
                 my: {
                     title: "我的",
@@ -108,12 +121,10 @@ export default {
     components: {},
     methods: {
         msg() {
-            this.$store
-            .dispatch("getMsgNum", this.queryData.msg)
-            .then(() => {
+            this.$store.dispatch("getMsgNum", this.queryData.msg).then(() => {
                 // location.reload();
-                this.renderData.rnum = this.$store.state.msg.msgNum
-                this.msgStatus = false
+                this.renderData.rnum = this.$store.state.msg.msgNum;
+                this.msgStatus = false;
             });
         },
         switchTo(path) {
@@ -131,8 +142,8 @@ export default {
         // }
     },
     created() {
-        if(this.msgStatus) {
-           this.msg();
+        if (this.msgStatus) {
+            this.msg();
         }
     }
 };

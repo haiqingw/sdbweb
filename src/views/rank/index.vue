@@ -132,9 +132,11 @@
             <em>{{renderData.own.busName}}({{renderData.own.phone}})</em>
             <span>{{renderData.own.money}}</span>
         </div>
+        <Footer></Footer>
     </div>
 </template>
 <script>
+import Footer from '@/components/footerNav/footer'
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import { Indicator } from "mint-ui";
@@ -234,6 +236,9 @@ export default {
                 ]
             }
         };
+    },
+     components: {
+        Footer,
     },
     methods: {
         scrollTo() {
@@ -622,7 +627,7 @@ b.rightArrBg {
     height: 50px;
     line-height: 50px;
     left: 0;
-    bottom: 0rem;
+    bottom: 1rem;
     box-shadow: 0 0 3px #ccc;
     background: #fff;
     font-size: 16px;

@@ -36,7 +36,7 @@
                 </div>
                 <!-- 列表  -->
                 <div class="freezeProgressListView">
-                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']">
+                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']" v-show="item.isThaw !== '待解冻'">
                         <!-- completed -->
                         <!-- 盒子  -->
                         <div :class="[item.isThaw=='待解冻' ? 'expired' : '' , 'freezeProgressBox']">

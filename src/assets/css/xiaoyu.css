@@ -47,7 +47,7 @@ body {
 }
 .index-notice {
     background: #fff;
-    padding: .17rem .56rem .13rem .33rem;
+    /* padding: .17rem .56rem .13rem .33rem; */
     border-bottom:5px solid #f9f9f9;
 }
 .index-notice-top {

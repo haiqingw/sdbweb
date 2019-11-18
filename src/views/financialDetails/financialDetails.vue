@@ -133,6 +133,7 @@ export default {
     // },
     data() {
         return {
+            screenState: "",
             islogin: this.$store.state.user.islogin,
             isThaw: false,
             options: {
@@ -311,6 +312,15 @@ export default {
                 // console.log(res)
                 if (res.data.responseStatus === 1) {
                     this.renderData.screen = res.data.data;
+                    if(this.screenState === "db") {
+                        this.renderData.screen.forEach( (item, index) => {
+                            if(item.name ==="达标奖励") {
+                                this.navActiveIndex = index 
+                                this.queryData.list.stypes = item.types;
+                            }
+                        })
+                    }
+                    this.profitList();
                     autoScrollInstance = new AutoScroll(this.$refs.nav, {
                         spaceBetween: 0
                     }); //节点 nav
@@ -319,7 +329,9 @@ export default {
         }
     },
     created() {
-        this.profitList();
+        if(this.$route.query.state) {
+            this.screenState = this.$route.query.state;
+        }
         this.screen();
         this.scrollTo();
     },

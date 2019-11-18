@@ -3,7 +3,7 @@
         <!-- header -->
         <div class="return">
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
-            <span>待解冻</span>
+            <span>达标奖励</span>
             <div class="freezeProgressMainProductScreeningMain">
                 <span @click="showPicker= true">{{proValue}}</span>
                 <!-- <van-field readonly clickable :value="proValue"   right-icon="arrow-down" /> -->
@@ -18,25 +18,25 @@
                 <img src="../../assets/images/freezeProgressHeaderImg.jpg" />
                 <div class="freezeProgressHeaderBox">
                     {{ renderData.thaw }}
-                    <span>待解冻金额(元)</span>
+                    <span>达标奖励(元)</span>
                 </div>
             </div>
             <div class="freezeProgressBody">
                 <!-- 说明  -->
                 <div class="freezeProgressTip">
                     <div class="freezeProgressTipTitle">
-                        解冻条件及说明
+                        达标奖励条件及说明
                         <span></span>
                     </div>
                     <div class="freezeProgressTipText">
-                        <span>1.解冻后，自动转入到余额，即可提现；</span>
-                        <span>2.满足以下条件即可解冻相应金额；</span>
-                        <span>3.未完成，解冻金额将从待解冻金额中扣除。</span>
+                        <span>1.达标后，自动转入到余额，即可提现；</span>
+                        <span>2.满足以下条件即可获得达标奖励；</span>
+                        <span>3.未完成，达标金额将从达标奖励中扣除。</span>
                     </div>
                 </div>
                 <!-- 列表  -->
                 <div class="freezeProgressListView">
-                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']">
+                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已达标' ? 'completed' : '' , 'freezeProgressListItem']">
                         <!-- completed -->
                         <!-- 盒子  -->
                         <div :class="[item.isThaw=='已过期' ? 'expired' : '' , 'freezeProgressBox']">
@@ -44,7 +44,7 @@
                             <!-- 三角 -->
                             <div class="leftArrIcon"></div>
                             <!--  解冻状态  -->
-                            <img v-if="item.isThaw == '已解冻'" src="../../assets/images/completedIcon.png" />
+                            <img v-if="item.isThaw == '已达标'" src="../../assets/images/completedIcon.png" />
                             <img v-if="item.isThaw == '已过期'" src="../../assets/images/expiredIcon.png" />
                             <!--  解冻金额与剩余时间  -->
                             <div class="moneyAndTime">
@@ -53,16 +53,16 @@
                                         {{ item.thawMoney }}
                                         <span>元</span>
                                     </div>
-                                    <span>解冻金额</span>
+                                    <span>达标奖励</span>
                                 </div>
-                                <div v-if="item.isThaw == '待解冻'">
+                                <div v-if="item.isThaw == '未达标'">
                                     <div>
                                         {{ item.surplus }}
                                         <span>天</span>
                                     </div>
                                     <span>剩余天数</span>
                                 </div>
-                                <div v-if="item.isThaw != '待解冻'">
+                                <div v-if="item.isThaw != '未达标'">
                                     <span style="padding-top:14px; font-weight:bold;">
                                         {{ item.isThaw }}
                                     </span>

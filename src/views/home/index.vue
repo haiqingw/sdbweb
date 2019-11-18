@@ -47,7 +47,7 @@
                         <img src="@/assets/images/index-list1-3.png" alt />
                     </div>
                     <div class="index-list1-text">{{ renderData.listOneData.total }}</div>
-                    <div class="index-list1-explain">总赚钱</div>
+                    <div class="index-list1-explain">累计收益</div>
                 </li>
                 <li>
                     <router-link :to="{ name: 'freezeprogress' }">
@@ -55,7 +55,7 @@
                             <img src="@/assets/images/index-list1-4.png" alt />
                         </div>
                         <div class="index-list1-text">{{ renderData.thaw }}</div>
-                        <div class="index-list1-explain">待解冻</div>
+                        <div class="index-list1-explain">达标奖励</div>
                     </router-link>
                 </li>
             </ul>
@@ -70,17 +70,32 @@
           <a href="">2月13-15日POS数据分润截止发放</a>
         </div>
             </div>-->
-            <div class="index-notice-profit">
-                <router-link to="/financialDetails" style="display:block;">
-                    <h3>
-                        <img src="@/assets/images/index-notice-profit-img.png" alt />
-                    </h3>
-                    <p>
-                        今日收益
-                        <em>+ {{renderData.todayProfit}}</em>
-                    </p>
-                    <span></span>
-                </router-link>
+            <div class="money">
+                <div>
+                    <router-link to="/financialDetails" style="display:block;">
+                        <h3>
+                            <!-- <img src="@/assets/images/index-notice-profit-img.png" alt /> -->
+                        </h3>
+                        <p>
+                            今日收益(元)
+                            <em><b>¥</b>{{renderData.todayProfit || 0}}</em>
+                        </p>
+                         <img src="@/assets/images/jrsyImg.png" alt="">
+                    </router-link>
+                </div>
+                <div class>
+                    <router-link :to="{name: 'financialDetails', query: {state: 'db'}}" style="display:block;">
+                        <h3>
+                            <!-- <img src="@/assets/images/index-notice-profit-img.png" alt /> -->
+                        </h3>
+                        <p>
+                            达标奖励(元)
+                            <em><b>¥</b>{{ renderData.monthstandard || 0}}</em>
+                        </p>
+                        <img src="@/assets/images/dbjlImg.png" alt="">
+                        <span></span>
+                    </router-link>
+                </div>
             </div>
         </div>
         <div class="etc-img" v-if="likeStatus">
@@ -105,7 +120,7 @@
                         <img src="@/assets/images/index-list2-img2.png" alt />
                     </div>
                     <div class="text">刷多宝商城</div>
-                </li> -->
+                </li>-->
             </ul>
         </div>
         <Footer></Footer>
@@ -137,7 +152,8 @@ export default {
                 todayProfit: "",
                 isChecke: 0,
                 onlineCheckStatus: false,
-                navList: []
+                navList: [],
+                monthstandard: ""
             },
             queryData: {
                 dialCodeStatus: {
@@ -194,6 +210,13 @@ export default {
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
+                monthstandard: {
+                    requestType: 'spendinginto',
+                    requestKeywords: 'monthstandard', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 loginSuccess: {
                     requestType: "buslogin",
                     requestKeywords: "cordeopenid",
@@ -230,6 +253,13 @@ export default {
         ...mapGetters(["islogin"])
     },
     methods: {
+        monthstandard() {
+            getServer(this.queryData.monthstandard).then( res => {
+                if(res.data.responseStatus === 1 ) {
+                    this.renderData.monthstandard = res.data.total
+                }
+            })
+        },
         goShoppingMall() {
             window.location.href = `http://shopapi.ospay.net.cn/web/#/?uid=${this.$store.state.user.uid}&pid=${this.$store.state.user.pid}&uphone=${this.$store.state.user.uphone}`;
         },
@@ -381,12 +411,13 @@ export default {
         this.onlineCheck();
         this.likeStatusFunc();
         this.dialCodeStatusFunc();
+        this.monthstandard()
     }
 };
 </script>
 
 
-<style>
+<style lang = "scss">
 html {
     background: #fff;
 }
@@ -407,5 +438,50 @@ html {
     color: #fff;
     background: rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+}
+.index-notice .money {
+    overflow: hidden;
+    font-size: 0.24rem;
+    padding: .2rem;
+}
+.index-notice .money > div {
+    width: 49%;
+    float: right;
+    text-align:left;
+    color: #fff;
+    padding:0.32rem 0.3rem 0.28rem;
+    border-radius: .1rem;
+    box-sizing: border-box; 
+    
+}
+.index-notice .money div {
+    background: #f8e6d0;
+    overflow: hidden;
+}
+.index-notice .money div p {
+    color: #e2963d;
+    float: left;
+    padding-top: .1rem;
+}
+.index-notice .money div:last-child {
+    background: #e1e3f7;
+    float: left;
+}
+.index-notice .money div:last-child p {
+    color: #5972ce;
+}
+.index-notice .money div p em {
+    display: block;
+    font-size: 0.46rem;
+    padding-top:0.1rem;
+    font-weight:bold;
+}
+.index-notice .money div p em b{
+    font-size:0.24rem;
+    padding-right:0.05rem;
+}
+.index-notice .money div img {
+    width: 1rem;
+    float: right;
 }
 </style>

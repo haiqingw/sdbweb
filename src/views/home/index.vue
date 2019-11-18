@@ -55,7 +55,7 @@
                             <img src="@/assets/images/index-list1-4.png" alt />
                         </div>
                         <div class="index-list1-text">{{ renderData.thaw }}</div>
-                        <div class="index-list1-explain">达标奖励</div>
+                        <div class="index-list1-explain">预期达标奖励</div>
                     </router-link>
                 </li>
             </ul>

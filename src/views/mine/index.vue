@@ -39,7 +39,7 @@
                         tag="div"
                     >
                         <b>{{ renderData.thaw }}</b>
-                        <p>达标奖励</p>
+                        <p>预期达标奖励</p>
                     </router-link>
                 </div>
             </div>

@@ -3,7 +3,7 @@
         <!-- header -->
         <div class="return">
             <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
-            <span>达标奖励</span>
+            <span>预期达标奖励</span>
             <div class="freezeProgressMainProductScreeningMain">
                 <span @click="showPicker= true">{{proValue}}</span>
                 <!-- <van-field readonly clickable :value="proValue"   right-icon="arrow-down" /> -->
@@ -36,16 +36,16 @@
                 </div>
                 <!-- 列表  -->
                 <div class="freezeProgressListView">
-                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已达标' ? 'completed' : '' , 'freezeProgressListItem']">
+                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']">
                         <!-- completed -->
                         <!-- 盒子  -->
-                        <div :class="[item.isThaw=='已过期' ? 'expired' : '' , 'freezeProgressBox']">
+                        <div :class="[item.isThaw=='待解冻' ? 'expired' : '' , 'freezeProgressBox']">
                             <!-- expired -->
                             <!-- 三角 -->
                             <div class="leftArrIcon"></div>
                             <!--  解冻状态  -->
-                            <img v-if="item.isThaw == '已达标'" src="../../assets/images/completedIcon.png" />
-                            <img v-if="item.isThaw == '已过期'" src="../../assets/images/expiredIcon.png" />
+                            <img v-if="item.isThaw == '已解冻'" src="../../assets/images/completedIcon.png" />
+                            <img v-if="item.isThaw == '待解冻'" src="../../assets/images/expiredIcon.png" />
                             <!--  解冻金额与剩余时间  -->
                             <div class="moneyAndTime">
                                 <div class="line_right">
@@ -55,14 +55,14 @@
                                     </div>
                                     <span>达标奖励</span>
                                 </div>
-                                <div v-if="item.isThaw == '未达标'">
+                                <div v-if="item.isThaw == '待解冻'">
                                     <div>
                                         {{ item.surplus }}
                                         <span>天</span>
                                     </div>
                                     <span>剩余天数</span>
                                 </div>
-                                <div v-if="item.isThaw != '未达标'">
+                                <div v-if="item.isThaw != '待解冻'">
                                     <span style="padding-top:14px; font-weight:bold;">
                                         {{ item.isThaw }}
                                     </span>

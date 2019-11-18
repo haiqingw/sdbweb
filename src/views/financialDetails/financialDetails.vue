@@ -81,6 +81,7 @@
                                     <div class="info">{{item.busname}}</div>
                                     <!-- <div class="info">{{item.product}}</div> -->
                                     <div class="info">终端号：{{item.terminal}}</div>
+                                    <div class="info">终端号：{{item.product}}</div>
                                     <div class="bottom">
                                         <p class="p1">{{item.remark}}</p>
                                         <p class="p2">{{item.createTime}}</p>
@@ -285,7 +286,6 @@ export default {
             this.isServer = false;
             Indicator.open();
             getServer(this.queryData.list).then(res => {
-                // alert(JSON.stringify(res.data.data))
                 this.isServer = true;
                 Indicator.close();
                 if (res.data.responseStatus === 1) {
@@ -317,6 +317,9 @@ export default {
                             if(item.name ==="达标奖励") {
                                 this.navActiveIndex = index 
                                 this.queryData.list.stypes = item.types;
+                                this.isThaw = false;
+                            }else {
+                                 this.isThaw = true;
                             }
                         })
                     }

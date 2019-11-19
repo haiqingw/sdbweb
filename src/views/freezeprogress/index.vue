@@ -36,7 +36,7 @@
                 </div>
                 <!-- 列表  -->
                 <div class="freezeProgressListView">
-                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']" v-show="item.isThaw !== '待解冻'">
+                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']">
                         <!-- completed -->
                         <!-- 盒子  -->
                         <div :class="[item.isThaw=='待解冻' ? 'expired' : '' , 'freezeProgressBox']">
@@ -45,7 +45,7 @@
                             <div class="leftArrIcon"></div>
                             <!--  解冻状态  -->
                             <img v-if="item.isThaw == '已解冻'" src="../../assets/images/completedIcon.png" />
-                            <img v-if="item.isThaw == '待解冻'" src="../../assets/images/expiredIcon.png" />
+                            <!-- <img v-if="item.isThaw == '待解冻'" src="../../assets/images/expiredIcon.png" /> -->
                             <!--  解冻金额与剩余时间  -->
                             <div class="moneyAndTime">
                                 <div class="line_right">

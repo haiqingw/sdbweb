@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="interval"></div>
-        <div class="index-list1">
+        <!-- <div class="index-list1">
             <ul>
                 <li>
                     <div class="index-list1-img">
@@ -59,7 +59,7 @@
                     </router-link>
                 </li>
             </ul>
-        </div>
+        </div>-->
         <div class="index-notice">
             <!-- <div class="index-notice-top">
         <h3>
@@ -71,22 +71,32 @@
         </div>
             </div>-->
             <div class="money">
-                <div>
-                    <router-link to="/financialDetails" style="display:block;">
-                        <h3>
-                            <!-- <img src="@/assets/images/index-notice-profit-img.png" alt /> -->
-                        </h3>
-                        <p>
-                            今日收益(元)
-                            <em><b>¥</b>{{renderData.todayProfit || 0}}</em>
-                        </p>
-                         <img src="@/assets/images/jrsyImg.png" alt="">
-                    </router-link>
-                </div>
-                <div class>
+                <swiper :options="swiperOption">
+                    <swiper-slide v-for="item in renderData.homeArings" :key="item.id">
+                        <div class="content">
+                            <router-link
+                                :to="{name: 'financialDetails', query: {
+                                state: item.types
+                            }}"
+                                style="display:block;"
+                            >
+                                <h3></h3>
+                                <p>
+                                    {{item.name}}
+                                    <em>
+                                        <b>¥</b>
+                                        {{item.money}}
+                                    </em>
+                                </p>
+                                <img :src="item.imgUrl" alt />
+                            </router-link>
+                        </div>
+                    </swiper-slide>
+                </swiper>
+                <!-- <div class>
                     <router-link :to="{name: 'financialDetails', query: {state: 'db'}}" style="display:block;">
                         <h3>
-                            <!-- <img src="@/assets/images/index-notice-profit-img.png" alt /> -->
+                            <img src="@/assets/images/index-notice-profit-img.png" alt />
                         </h3>
                         <p>
                             达标奖励(元)
@@ -95,14 +105,14 @@
                         <img src="@/assets/images/dbjlImg.png" alt="">
                         <span></span>
                     </router-link>
-                </div>
+                </div>-->
             </div>
         </div>
-        <div class="etc-img" v-if="likeStatus">
+        <!-- <div class="etc-img" v-if="likeStatus">
             <router-link to="/etc">
                 <img src="@/assets/images/home-etc.jpg" alt />
             </router-link>
-        </div>
+        </div>-->
         <div class="index-list2">
             <ul>
                 <li v-for="item in renderData.navList" :key="item.jumpPageLink">
@@ -136,9 +146,22 @@ import { Toast } from "mint-ui";
 import wx from "weixin-js-sdk";
 
 import VueElementLoading from "vue-element-loading";
+import Swiper from "swiper";
+import "swiper/dist/css/swiper.min.css";
 export default {
     data() {
         return {
+            swiperOption: {
+                // autoplay: 3000,
+                // slidesPerView: 1.2,
+                // loop: true,
+                // spaceBetween: 10,
+                // centeredSlides: true
+                //====
+                slidesPerView: 1.5,
+                spaceBetween: 10,
+                freeMode: true
+            },
             showCustomizeLoader: true,
             likeStatus: false,
             current: 0,
@@ -153,7 +176,8 @@ export default {
                 isChecke: 0,
                 onlineCheckStatus: false,
                 navList: [],
-                monthstandard: ""
+                monthstandard: "",
+                homeArings: []
             },
             queryData: {
                 dialCodeStatus: {
@@ -166,6 +190,13 @@ export default {
                 likeStatus: {
                     requestType: "checke",
                     requestKeywords: "linkdisplaycheck",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                homeArings: {
+                    requestType: "dynamicmenu",
+                    requestKeywords: "homearings",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -211,8 +242,8 @@ export default {
                     userPhone: this.$store.state.user.uphone
                 },
                 monthstandard: {
-                    requestType: 'spendinginto',
-                    requestKeywords: 'monthstandard', 
+                    requestType: "spendinginto",
+                    requestKeywords: "monthstandard",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -253,12 +284,20 @@ export default {
         ...mapGetters(["islogin"])
     },
     methods: {
-        monthstandard() {
-            getServer(this.queryData.monthstandard).then( res => {
-                if(res.data.responseStatus === 1 ) {
-                    this.renderData.monthstandard = res.data.total
+        homeArings() {
+            getServer(this.queryData.homeArings).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.homeArings = res.data.data;
+                    // alert(JSON.stringify(this.renderData.homeArings));
                 }
-            })
+            });
+        },
+        monthstandard() {
+            getServer(this.queryData.monthstandard).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.monthstandard = res.data.total;
+                }
+            });
         },
         goShoppingMall() {
             window.location.href = `http://shopapi.ospay.net.cn/web/#/?uid=${this.$store.state.user.uid}&pid=${this.$store.state.user.pid}&uphone=${this.$store.state.user.uphone}`;
@@ -396,6 +435,7 @@ export default {
         }
     },
     created() {
+        this.homeArings();
         this.listOne();
         this.thaw();
         this.navList();
@@ -411,7 +451,7 @@ export default {
         this.onlineCheck();
         this.likeStatusFunc();
         this.dialCodeStatusFunc();
-        this.monthstandard()
+        this.monthstandard();
     }
 };
 </script>
@@ -439,46 +479,55 @@ html {
     background: rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
+.index-notice {
+    padding: 0.1rem 0.2rem;
+}
 .index-notice .money {
     overflow: hidden;
     font-size: 0.24rem;
-    padding: .2rem;
+    /* padding: 0.2rem; */
 }
-.index-notice .money > div {
-    width: 49%;
-    float: right;
-    text-align:left;
+.index-notice .money .content {
+    /* width: 49%; */
+    /* float: right; */
+    text-align: left;
     color: #fff;
-    padding:0.32rem 0.3rem 0.28rem;
-    border-radius: .1rem;
-    box-sizing: border-box; 
-    
+    padding: 0.32rem 0.3rem 0.28rem;
+    border-radius: 0.1rem;
+    box-sizing: border-box;
 }
-.index-notice .money div {
+.index-notice .money .content {
     background: #f8e6d0;
     overflow: hidden;
+    /* margin-right: 0.2rem; */
+}
+.index-notice .money .content:nth-of-type(even) {
+    background: #e1e3f7;
+}
+.index-notice .money .content:nth-of-type(even) p {
+    color: #5972ce;
 }
 .index-notice .money div p {
     color: #e2963d;
     float: left;
-    padding-top: .1rem;
+    padding-top: 0.1rem;
 }
 .index-notice .money div:last-child {
-    background: #e1e3f7;
-    float: left;
+    /* background: #e1e3f7; */
+    /* float: left; */
 }
 .index-notice .money div:last-child p {
-    color: #5972ce;
+    /* color: #5972ce; */
 }
 .index-notice .money div p em {
     display: block;
     font-size: 0.46rem;
-    padding-top:0.1rem;
-    font-weight:bold;
+    padding-top: 0.1rem;
+    font-weight: bold;
 }
-.index-notice .money div p em b{
-    font-size:0.24rem;
-    padding-right:0.05rem;
+.index-notice .money div p em b {
+    font-size: 0.24rem;
+    padding-right: 0.05rem;
 }
 .index-notice .money div img {
     width: 1rem;

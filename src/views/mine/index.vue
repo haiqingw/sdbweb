@@ -44,6 +44,9 @@
                 </div>
             </div>
         </div>
+        <van-dialog v-model="showDialog" title="明细" show-cancel-button @confirm="confirmWithdrawal">
+            <van-cell v-for="item in renderData.totalProfit" :key="item.id" :title="item.name" :value="item.money" />
+        </van-dialog>
         <!-- 公司与上级业务员 -->
         <div class="company-info line_bottom">
             <h3>{{ renderData.info.company }}</h3>
@@ -61,16 +64,16 @@
                 </div>
             </div>
         </div>-->
-        <div class="mine-banner" v-if="isShowAdvertisementStatus">
+        <!-- <div class="mine-banner" v-if="isShowAdvertisementStatus">
             <van-swipe :autoplay="3000">
                 <van-swipe-item>
-                    <!-- <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner"> -->
+                    <img :src="item.picUrl" @click="bannerDetailTap(item.id)" alt="banner">
                     <router-link to="/advertisement">
                         <img src="@/assets/images/mine-banner2.jpg" alt />
                     </router-link>
                 </van-swipe-item>
             </van-swipe>
-        </div>
+        </div>-->
         <!-- 常用菜单 -->
         <div class="mineCommonMenuBox">
             <h3 class="mineTitle">常用菜单</h3>
@@ -118,66 +121,68 @@
     </div>
 </template>
 <script>
-import Footer from '@/components/footerNav/footer'
-import { MessageBox, Indicator, Toast } from 'mint-ui'
-import response from '@/assets/js/response.js'
-import { getServer } from '@/api/index'
+import Footer from "@/components/footerNav/footer";
+import { MessageBox, Indicator, Toast } from "mint-ui";
+import response from "@/assets/js/response.js";
+import { getServer } from "@/api/index";
 export default {
     data() {
         return {
+            showDialog: false,
             isServerMoneyState: false,
             isShowAdvertisementStatus: null,
             rechargeType: null,
             renderData: {
-                thaw: '',
+                thaw: "",
                 listOneData: {},
                 info: {},
-                navList: []
+                navList: [],
+                totalProfit: []
             },
             queryData: {
                 checkcerData: {
-                    requestType: 'personal',
-                    requestKeywords: 'checkcer',
+                    requestType: "personal",
+                    requestKeywords: "checkcer",
                     userID: this.$store.state.user.uid,
                     platformID: this.$store.state.user.pid,
                     userPhone: this.$store.state.user.uphone
                 },
                 info: {
-                    requestType: 'personal',
-                    requestKeywords: 'getbusinfo',
+                    requestType: "personal",
+                    requestKeywords: "getbusinfo",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
                 checkbankcardData: {
-                    requestType: 'operating',
-                    requestKeywords: 'checkbankcard',
+                    requestType: "operating",
+                    requestKeywords: "checkbankcard",
                     userID: this.$store.state.user.uid,
                     platformID: this.$store.state.user.pid,
                     userPhone: this.$store.state.user.uphone
                 },
                 thaw: {
-                    requestType: 'thaw',
-                    requestKeywords: 'thawmoney',
+                    requestType: "thaw",
+                    requestKeywords: "thawmoney",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
                 listOne: {
-                    requestType: 'personal',
-                    requestKeywords: 'busincome',
+                    requestType: "personal",
+                    requestKeywords: "busincome",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
                 isShowAdvertisement: {
-                    requestType: 'checke',
-                    requestKeywords: 'advercheck',
+                    requestType: "checke",
+                    requestKeywords: "advercheck",
                     platformID: this.$store.state.user.pid
                 },
                 isServerMoneyState: {
-                    requestType: 'servicefee',
-                    requestKeywords: 'checkrertype',
+                    requestType: "servicefee",
+                    requestKeywords: "checkrertype",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -185,87 +190,102 @@ export default {
                 serverMoneyRecharge: {
                     own: {
                         // 自己
-                        requestType: 'servicefee',
-                        requestKeywords: 'rechargenotic',
+                        requestType: "servicefee",
+                        requestKeywords: "rechargenotic",
                         platformID: this.$store.state.user.pid,
                         userID: this.$store.state.user.uid,
                         userPhone: this.$store.state.user.uphone
                     },
                     company: {
                         // 公司
-                        requestType: 'servicefee',
-                        requestKeywords: 'checkplatfee',
+                        requestType: "servicefee",
+                        requestKeywords: "checkplatfee",
                         platformID: this.$store.state.user.pid
                     }
                 },
                 navList: {
-                    requestType: 'usermodule',
-                    requestKeywords: 'lists',
+                    requestType: "usermodule",
+                    requestKeywords: "lists",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    classType: 'WD'
+                    classType: "WD"
+                },
+                totalProfit: {
+                    requestType: 'dynamicmenu',
+                    requestKeywords:'balencedetails', 
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             }
-        }
+        };
     },
     components: {
         Footer
     },
     methods: {
+        totalProfit() {
+            getServer(this.queryData.totalProfit).then( res => {
+                if( res.data.responseStatus === 1 ) {
+                    this.renderData.totalProfit = res.data.data
+                    // alert(JSON.stringify(this.renderData.totalProfit))
+                }
+            })
+        },
         isServerMoneyStateFunc() {
             getServer(this.queryData.isServerMoneyState).then(res => {
                 if (res.data.responseStatus == 1) {
-                    this.rechargeType = res.data.rerType
+                    this.rechargeType = res.data.rerType;
                     if (res.data.rerType == 1) {
                         // 公司充值
                         getServer(
                             this.queryData.serverMoneyRecharge.company
                         ).then(res => {
                             if (res.data.responseStatus === 1) {
-                                this.isServerMoneyState = false
+                                this.isServerMoneyState = false;
                             } else {
-                                this.isServerMoneyState = true
+                                this.isServerMoneyState = true;
                             }
-                        })
+                        });
                     } else if (res.data.rerType == 2) {
                         // 自己充值
                         getServer(this.queryData.serverMoneyRecharge.own).then(
                             res => {
                                 if (res.data.status == 1) {
-                                    this.isServerMoneyState = false
+                                    this.isServerMoneyState = false;
                                 } else {
-                                    this.isServerMoneyState = true
+                                    this.isServerMoneyState = true;
                                 }
                             }
-                        )
+                        );
                     }
                 } else {
                     // util.show(util.response[res.data.responseStatus]);
                 }
-            })
+            });
         },
         isShowAdvertisement() {
             getServer(this.queryData.isShowAdvertisement).then(res => {
                 if (res.data.responseStatus === 1) {
                     if (res.data.status == 1) {
-                        this.isShowAdvertisementStatus = true
+                        this.isShowAdvertisementStatus = true;
                     } else {
-                        this.isShowAdvertisementStatus = false
+                        this.isShowAdvertisementStatus = false;
                     }
                 }
-            })
+            });
         },
         judgeRealNameAuth(url) {
-            if (url === '/certificationComplete' || url === '/withdrawal') {
-                Indicator.open()
+            if (url === "/certificationComplete" || url === "/withdrawal") {
+                Indicator.open();
                 getServer(this.queryData.checkcerData).then(res => {
-                    Indicator.close()
+                    Indicator.close();
                     if (res.data.responseStatus === 1) {
                         getServer(this.queryData.checkbankcardData).then(
                             res => {
                                 if (res.data.responseStatus === 1) {
-                                    Indicator.close()
+                                    Indicator.close();
                                     if (
                                         this.isServerMoneyState &&
                                         this.rechargeType == 1
@@ -273,8 +293,8 @@ export default {
                                         //跳转到公司续费页面
                                         // alert("公司")
                                         this.$router.push({
-                                            name: 'serverMoneyRechargeCompany'
-                                        })
+                                            name: "serverMoneyRechargeCompany"
+                                        });
                                     } else if (
                                         this.isServerMoneyState &&
                                         this.rechargeType == 2
@@ -282,55 +302,63 @@ export default {
                                         //跳转到自己续费页面
                                         // alert("自己")
                                         this.$router.push({
-                                            name: 'serverMoneyRechargeOwn'
-                                        })
+                                            name: "serverMoneyRechargeOwn"
+                                        });
                                     } else {
                                         this.$router.push({
                                             path: url
-                                        })
+                                        });
                                         // this.$router.push({
                                         //     name: "agreement",
                                         //     params: { state: "add" }
                                         // });
                                     }
                                 } else {
-                                    Indicator.close()
+                                    Indicator.close();
                                     this.$router.push({
-                                        name: 'certificationNext'
-                                    })
+                                        name: "certificationNext"
+                                    });
                                 }
                             }
-                        )
+                        );
                     } else {
                         // this.$router.push({
                         //     name: "certification"
                         // });
                         this.$router.push({
-                            name: 'agreement',
-                            params: { state: 'add' }
-                        })
+                            name: "agreement",
+                            params: { state: "add" }
+                        });
                     }
-                })
+                });
             } else {
-                this.$router.push({
-                    path: url
-                })
+                this.showDialog = true;
+                // alert(13);
+                // return;
+                // this.$router.push({
+                //     path: url
+                // });
             }
+        },
+        confirmWithdrawal() {
+            this.$router.push({
+                path: "/withdrawal"
+            });
         },
         listOne() {
             getServer(this.queryData.listOne).then(res => {
-                this.renderData.listOneData = res.data
-            })
+                this.renderData.listOneData = res.data;
+            });
         },
         thaw() {
             getServer(this.queryData.thaw).then(res => {
-                this.renderData.thaw = res.data.thawMoney
-            })
+                this.renderData.thaw = res.data.thawMoney;
+            });
         },
         info() {
             getServer(this.queryData.info).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.info = res.data.data
+                    this.renderData.info = res.data.data;
                     // if (res.data.data.level == "2") {
                     //     this.isServerMoneyStateFunc();
                     // } else {
@@ -338,27 +366,34 @@ export default {
                     //     this.rechargeType = 0;
                     // }
                 }
-            })
+            });
         },
         navList() {
             getServer(this.queryData.navList).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.navList = res.data.data
+                    this.renderData.navList = res.data.data;
                 } else {
                 }
-            })
+            });
         }
     },
     created() {
-        this.listOne()
-        this.thaw()
-        this.info()
-        this.isShowAdvertisement()
-        this.navList()
+        this.listOne();
+        this.thaw();
+        this.info();
+        this.isShowAdvertisement();
+        this.navList();
+        this.totalProfit()
     }
-}
+};
 </script>
 <style lang="scss">
+.van-overlay {
+    z-index: 9999999 !important;
+}
+.van-dialog {
+    z-index: 99999999 !important;
+}
 .mine {
     padding-bottom: 2rem;
 }
@@ -394,7 +429,7 @@ export default {
     //
     background-color: #089cfe;
     background-color: #089cfe;
-    background-image: url('../../assets/images/mineBgBlueImg.png');
+    background-image: url("../../assets/images/mineBgBlueImg.png");
     background-size: 100% 100%;
     box-sizing: border-box;
     > h3 {

@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="mineHeaderBody flex">
-                    <div @click="judgeRealNameAuth('withdrawal')">
+                    <div @click="judgeRealNameAuth('/withdrawal')">
                         <b>{{ renderData.listOneData.balance }}</b>
                         <p>钱包余额</p>
                     </div>
@@ -45,7 +45,12 @@
             </div>
         </div>
         <van-dialog v-model="showDialog" title="明细" show-cancel-button @confirm="confirmWithdrawal">
-            <van-cell v-for="item in renderData.totalProfit" :key="item.id" :title="item.name" :value="item.money" />
+            <van-cell
+                v-for="item in renderData.totalProfit"
+                :key="item.id"
+                :title="item.name"
+                :value="item.money"
+            />
         </van-dialog>
         <!-- 公司与上级业务员 -->
         <div class="company-info line_bottom">
@@ -212,8 +217,8 @@ export default {
                     classType: "WD"
                 },
                 totalProfit: {
-                    requestType: 'dynamicmenu',
-                    requestKeywords:'balencedetails', 
+                    requestType: "dynamicmenu",
+                    requestKeywords: "balencedetails",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -226,12 +231,12 @@ export default {
     },
     methods: {
         totalProfit() {
-            getServer(this.queryData.totalProfit).then( res => {
-                if( res.data.responseStatus === 1 ) {
-                    this.renderData.totalProfit = res.data.data
+            getServer(this.queryData.totalProfit).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.renderData.totalProfit = res.data.data;
                     // alert(JSON.stringify(this.renderData.totalProfit))
                 }
-            })
+            });
         },
         isServerMoneyStateFunc() {
             getServer(this.queryData.isServerMoneyState).then(res => {
@@ -305,9 +310,13 @@ export default {
                                             name: "serverMoneyRechargeOwn"
                                         });
                                     } else {
-                                        this.$router.push({
-                                            path: url
-                                        });
+                                        if (url === "/withdrawal") {
+                                            this.showDialog = true;
+                                        } else {
+                                            this.$router.push({
+                                                path: url
+                                            });
+                                        }
                                         // this.$router.push({
                                         //     name: "agreement",
                                         //     params: { state: "add" }
@@ -332,12 +341,13 @@ export default {
                     }
                 });
             } else {
-                this.showDialog = true;
-                // alert(13);
-                // return;
-                // this.$router.push({
-                //     path: url
-                // });
+                if (url === "/withdrawal") {
+                    this.showDialog = true;
+                } else {
+                    this.$router.push({
+                        path: url
+                    });
+                }
             }
         },
         confirmWithdrawal() {
@@ -383,11 +393,11 @@ export default {
         this.info();
         this.isShowAdvertisement();
         this.navList();
-        this.totalProfit()
+        this.totalProfit();
     }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .van-overlay {
     z-index: 9999999 !important;
 }

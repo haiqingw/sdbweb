@@ -36,7 +36,7 @@
                 </div>
                 <!-- 列表  -->
                 <div class="freezeProgressListView">
-                    <div v-for="item in freezeData" v-bind:key="item.surplus" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']">
+                    <div v-for="item in freezeData" :key="item.terminal" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']">
                         <!-- completed -->
                         <!-- 盒子  -->
                         <div :class="[item.isThaw=='待解冻' ? 'expired' : '' , 'freezeProgressBox']">
@@ -111,6 +111,9 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
+                    // platformID: '199',
+                    // userID: 'd77e68596c15c53c2a33ad143739902d',
+                    // userPhone: 'MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om',
                     productID: ""
                 },
                 thaw: {
@@ -119,11 +122,15 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
+                    // platformID: '199',
+                    // userID: 'd77e68596c15c53c2a33ad143739902d',
+                    // userPhone: 'MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om',
                 },
                 product: {
                     requestType: "agent",
                     requestKeywords: "product",
                     platformID: this.$store.state.user.pid
+                    // platformID: '199',
                 }
             },
             renderData: {
@@ -168,6 +175,7 @@ export default {
         getfreezeListFn() {
             Indicator.open();
             getServer(this.queryData.freezeData).then(res => {
+                // console.log(res)
                 Indicator.close();
                 //   console.log(res)
                 if (res.data.responseStatus === 1) {
@@ -190,7 +198,7 @@ export default {
     }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .freezeProgressMain {
     //   padding-top: 40px;
     margin-top: 0.8rem;

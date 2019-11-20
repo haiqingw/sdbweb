@@ -19,7 +19,7 @@ export default {
         // window.location.href = 'http://ttsplus.xylrcs.cn/index.php/App/Wchacf/getOpenid?plat=' + plat
     },
     mounted() {
-        let plat = this.$route.query.plat || this.$store.state.user.plat
+        let plat = this.$route.query.plat || this.$store.state.user.plat;
         window.location.href =
             "http://ttsplus.xylrcs.cn/index.php/App/Wchacf/getOpenid?plat=" +
             plat;

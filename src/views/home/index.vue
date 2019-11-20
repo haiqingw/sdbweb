@@ -71,27 +71,30 @@
         </div>
             </div>-->
             <div class="money">
-                <swiper :options="swiperOption">
+                <swiper :options="swiperOption" v-if="renderData.homeArings.length">
                     <swiper-slide v-for="item in renderData.homeArings" :key="item.id">
-                        <div class="content">
-                            <router-link
-                                :to="{name: 'financialDetails', query: {
+                        <router-link
+                            :to="{name: 'financialDetails', query: {
                                 state: item.types
                             }}"
-                                style="display:block;"
+                            tag="div"
+                        >
+                            <div
+                                class="content"
+                                :style="{backgroundImage: 'url(' + (item.backs) + ')', backgroundSize:'contain'}"
                             >
-                                <h3></h3>
-                                <p>
+                                <p :style="{color: `#${item.fonts}` }">
                                     {{item.name}}
                                     <em>
                                         <b>¥</b>
                                         {{item.money}}
                                     </em>
                                 </p>
-                                <img :src="item.imgUrl" alt />
-                            </router-link>
-                        </div>
+                                <img v-if="item.imgUrl" :src="item.imgUrl" alt />
+                            </div>
+                        </router-link>
                     </swiper-slide>
+                    <div class="swiper-pagination" slot="pagination"></div>
                 </swiper>
                 <!-- <div class>
                     <router-link :to="{name: 'financialDetails', query: {state: 'db'}}" style="display:block;">
@@ -152,15 +155,29 @@ export default {
     data() {
         return {
             swiperOption: {
-                // autoplay: 3000,
-                // slidesPerView: 1.2,
-                // loop: true,
+                // autoplay: true,
+                // slidesPerView: 1,
                 // spaceBetween: 10,
-                // centeredSlides: true
-                //====
-                slidesPerView: 1.5,
-                spaceBetween: 10,
-                freeMode: true
+                // observer: true,
+                // direction: "horizontal",
+                // loop: true,
+                // initialSlide: 0,
+                // speed: 1000,
+                // pagination: {
+                //     el: ".swiper-pagination",
+                //     clickable: true
+                // }
+                autoplay: {
+                    disableOnInteraction: false, // 用户操作swiper之后，是否禁止autoplay
+                    delay: 2000 // 自动切换的时间间隔（单位ms）
+                },
+                loop: true,
+                initialSlide: 0,
+                pagination: { el: ".swiper-pagination" }, // 分页按钮
+                paginationClickable: true,
+                onSlideChangeEnd: swiper => {
+                    //console.log('onSlideChangeEnd', swiper.realIndex)
+                }
             },
             showCustomizeLoader: true,
             likeStatus: false,
@@ -457,7 +474,17 @@ export default {
 </script>
 
 
-<style lang = "scss">
+<style lang = "scss" scoped>
+.swiper-container-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+    bottom: 2px;
+}
+.swiper-pagination-bullet {
+    width: 20px;
+    height: 2px;
+    border-radius: 10px;
+}
 html {
     background: #fff;
 }
@@ -495,20 +522,21 @@ html {
     padding: 0.32rem 0.3rem 0.28rem;
     border-radius: 0.1rem;
     box-sizing: border-box;
+    border-radius: 0.3rem;
 }
 .index-notice .money .content {
-    background: #f8e6d0;
+    /* background: #f8e6d0; */
     overflow: hidden;
     /* margin-right: 0.2rem; */
 }
-.index-notice .money .content:nth-of-type(even) {
+/* .index-notice .money .content:nth-of-type(even) {
     background: #e1e3f7;
 }
 .index-notice .money .content:nth-of-type(even) p {
     color: #5972ce;
-}
+} */
 .index-notice .money div p {
-    color: #e2963d;
+    /* color: #e2963d; */
     float: left;
     padding-top: 0.1rem;
 }

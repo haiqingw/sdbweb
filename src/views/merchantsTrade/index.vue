@@ -223,7 +223,7 @@ export default {
     }
 };
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .merchantsListMainList {
     padding-top: .8rem;
 }

@@ -76,7 +76,11 @@
                                             <span class="s" v-if="item.product">{{item.product}}</span>
                                             <h3>{{item.storageName}}</h3>
                                         </div>
-                                        <h3 class="money">+{{item.changeAmount}}</h3>
+                                        <h3 class="money">
+                                            <i v-if="item.changeType === 'Z'">+</i>
+                                            <i v-else-if="item.changeType === 'T'">-</i>
+                                            {{item.changeAmount}}
+                                        </h3>
                                     </div>
                                     <div class="info">{{item.busname}}</div>
                                     <!-- <div class="info">{{item.product}}</div> -->
@@ -99,7 +103,11 @@
                                             <span class="s" v-if="item.product">{{item.product}}</span>
                                             <h3>{{item.storageName}}</h3>
                                         </div>
-                                        <h3 class="money">+{{item.changeAmount}}</h3>
+                                        <h3 class="money">
+                                            <i v-if="item.changeType === 'Z'">+</i>
+                                            <i v-else-if="item.changeType === 'T'">-</i>
+                                            {{item.changeAmount}}
+                                        </h3>
                                     </div>
                                     <div class="bottom">
                                         <p class="p1">{{item.remark}}</p>
@@ -286,6 +294,7 @@ export default {
             this.isServer = false;
             Indicator.open();
             getServer(this.queryData.list).then(res => {
+                // alert(JSON.stringify(res.data.data));
                 this.isServer = true;
                 Indicator.close();
                 if (res.data.responseStatus === 1) {
@@ -312,17 +321,15 @@ export default {
                 // console.log(res)
                 if (res.data.responseStatus === 1) {
                     this.renderData.screen = res.data.data;
-                    if(this.screenState === "YJ") {
-                        this.renderData.screen.forEach( (item, index) => {
-                            if(item.name ==="达标奖励") {
-                                this.navActiveIndex = index 
-                                this.queryData.list.stypes = item.types;
-                                this.isThaw = false;
-                            }else {
-                                 this.isThaw = true;
-                            }
-                        })
-                    }
+                    this.renderData.screen.forEach((item, index) => {
+                        if (item.types === this.screenState) {
+                            this.navActiveIndex = index;
+                            this.queryData.list.stypes = item.types;
+                            this.isThaw = false;
+                        } else {
+                            this.isThaw = true;
+                        }
+                    });
                     this.profitList();
                     autoScrollInstance = new AutoScroll(this.$refs.nav, {
                         spaceBetween: 0
@@ -332,8 +339,8 @@ export default {
         }
     },
     created() {
-        // alert(this.$route.query.state)
-        if(this.$route.query.state) {
+        // alert(this.$route.query.state);
+        if (this.$route.query.state) {
             this.screenState = this.$route.query.state;
         }
         this.screen();
@@ -444,7 +451,7 @@ export default {
         }
     }
     .info {
-        margin-bottom: .1rem;
+        margin-bottom: 0.1rem;
         display: block;
         font-size: 0.26rem;
         color: #000;

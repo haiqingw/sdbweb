@@ -26,8 +26,8 @@ export default {
         // let plat = this.$route.query.plat || 199;
         // let plat = this.$route.query.plat || 1;
         // window.location.href =
-            // "http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid?plat=" +
-            // plat;
+        //     "http://ttsplus.xylrcs.cn/index.php/App/Wchattest/getOpenid?plat=" +
+        //     plat;
     }
 };
 </script>

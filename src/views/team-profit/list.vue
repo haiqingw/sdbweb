@@ -42,7 +42,7 @@
                             </div>
                             <div>
                                 <h3>返现商户:</h3>
-                                <p>{{item.productname}}</p>
+                                <p>{{item.usename}}</p>
                             </div>
                             <div>
                                 <h3>返现时间:</h3>
@@ -112,7 +112,8 @@ export default {
             this.queryData.list.types = this.$route.query.types;
             getServer(this.queryData.list).then(res => {
                 // console.log(res.data.responseStatus)
-                console.log(res);
+                // console.log(res.data.data)
+                // console.log(res);
                 if (res.data.responseStatus === 1) {
                     this.isData = true;
                     this.renderData.list = res.data.data;

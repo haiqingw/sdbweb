@@ -19,50 +19,35 @@
                         v-for="item in renderData.oldList"
                         :key="item.id"
                     >
-                        <div class="withdrawalRecordHeader flex line_bottom">
+                        <div class="withdrawalRecordHeader">
                             <div>
-                                <h3>100.00</h3>
-                                <p>返现金额</p>
+                                <h3>下级:</h3>
+                                <p>{{item.agentName}}</p>
                             </div>
-                        </div>
-                        <div class="withdrawalRecordBody">
-                            <div class="withdrawRecordTop flex line_bottom">
-                                <p>
-                                    <b>{{item.cashNick}}</b>
-                                    <span>返现类型</span>
-                                </p>
-                                <p>
-                                    <b>{{item.productname}}</b>
-                                    <span>产品名称</span>
-                                </p>
-                                <p>
-                                    <b>{{item.terminalNo}}</b>
-                                    <span>终端号</span>
-                                </p>
+                            <div>
+                                <h3>终端号:</h3>
+                                <p>{{item.terminalNo}}</p>
                             </div>
-                            <div class="withdrawRecordTop flex line_bottom">
-                                <p>
-                                    <b>{{item.productname}}</b>
-                                    <span>返现商户</span>
-                                </p>
-                                <p>
-                                    <b>{{}}</b>
-                                    <span>下级</span>
-                                </p>
-                                <p>
-                                    <b>{{item.cashTime}}</b>
-                                    <span>返现时间</span>
-                                </p>
+                            <div>
+                                <h3>返现类型:</h3>
+                                <p>{{item.caseNick}}</p>
                             </div>
-                            <!-- <p>审核状态:
-                                <b>{{item.reviewStatus}}</b>
-                            </p>-->
-                            <!-- <p>订单状态:
-                                <b v-if="item.status == 1" style="color: #67c23a;">{{item.drawStatus}}</b>
-                                <b v-if="item.status == 2">{{item.drawStatus}}</b>
-                            </p>
-                            <p>提现时间:{{item.drawTime}}</p>
-                            <p>备注:<span style="color:#f33">{{item.remark}}</span></p>-->
+                            <div>
+                                <h3>产品名称:</h3>
+                                <p>{{item.productname}}</p>
+                            </div>
+                            <div>
+                                <h3>返现金额:</h3>
+                                <p>{{item.cashMoney}}</p>
+                            </div>
+                            <div>
+                                <h3>返现商户:</h3>
+                                <p>{{item.productname}}</p>
+                            </div>
+                            <div>
+                                <h3>返现时间:</h3>
+                                <p>{{item.cashTime}}</p>
+                            </div>
                         </div>
                     </div>
                 </van-list>
@@ -87,13 +72,13 @@ export default {
             queryData: {
                 list: {
                     requestType: "dynamicmenu",
-                    requestKeywords: "teamincome",
-                    // platformID: this.$store.state.user.pid,
-                    // userID: this.$store.state.user.uid,
-                    // userPhone: this.$store.state.user.uphone,
-                    platformID: "199",
-                    userID: "d77e68596c15c53c2a33ad143739902d",
-                    userPhone: "MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om",
+                    requestKeywords: "teamlists",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    // platformID: "199",
+                    // userID: "d9ff90f4000eacd3a6c9cb27f78994cf",
+                    // userPhone: "MsTjgf3wNpDogr0wOeTjIc2lNaDmAlO0O0Om",
                     page: 0,
                     limit: 10,
                     dates: "",
@@ -122,11 +107,12 @@ export default {
             this.withdrawalList();
         },
         withdrawalList() {
-            this.queryData.list.dates = this.$route.query.dates
-            this.queryData.list.productID = this.$route.query.productID
-            this.queryData.list.types = this.$route.query.types
+            this.queryData.list.dates = this.$route.query.dates;
+            this.queryData.list.productID = this.$route.query.productID;
+            this.queryData.list.types = this.$route.query.types;
             getServer(this.queryData.list).then(res => {
                 // console.log(res.data.responseStatus)
+                console.log(res);
                 if (res.data.responseStatus === 1) {
                     this.isData = true;
                     this.renderData.list = res.data.data;
@@ -193,30 +179,36 @@ export default {
     padding-bottom: 15px;
     padding-top: 12px;
     div {
-        text-align: center;
+        // text-align: center;
+        overflow: hidden;
+        line-height: 0.5rem;
         h3 {
-            font-size: 40px;
+            font-size: 0.24rem;
             color: #ef4f4f;
+            // color: #333;
+            float: left;
         }
         p {
-            font-size: 12px;
+            margin-left: 0.2rem;
+            font-size: 0.24rem;
             color: #333;
-            padding-top: 10px;
+            // padding-top: 10px;
+            float: left;
         }
-        &:nth-of-type(2) {
-            width: 100px;
-            padding-top: 5px;
-            span {
-                font-size: 14px;
-                color: #ef4f4f;
-                display: block;
-            }
-            img {
-                width: 80px;
-                height: 21px;
-                display: block;
-            }
-        }
+        // &:nth-of-type(2) {
+        //     width: 100px;
+        //     padding-top: 5px;
+        //     span {
+        //         font-size: 14px;
+        //         color: #ef4f4f;
+        //         display: block;
+        //     }
+        //     img {
+        //         width: 80px;
+        //         height: 21px;
+        //         display: block;
+        //     }
+        // }
     }
 }
 .withdrawalRecordBody {

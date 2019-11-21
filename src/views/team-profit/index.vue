@@ -47,26 +47,31 @@
             </van-popup>
         </div>
         <div class="team-profit-list">
-            <ul>
-                <li @click="likeList(item.types)" v-for="item in renderData.incomeDetails" :key="item.id">
+            <div class="wButtonMain">
+                <div
+                    @click="likeList(item.types)"
+                    v-for="item in renderData.incomeDetails"
+                    :key="item.id"
+                >
+                    <img :src="item.imgUrl" alt="直属" />
                     <div>
-                        <h3>{{item.name}}</h3>
-                        <em>
-                            <b>¥</b>
+                        {{item.name}}
+                        <span>
+                            <b>￥</b>
                             {{item.money}}
-                        </em>
+                        </span>
                     </div>
-                </li>
-                <!-- <li>
+                </div>
+                <!-- <div>
+                    <img src="static/images/indirectIcon.png" alt="间属" />
                     <div>
-                        <h3>鉴属收益</h3>
-                        <em>
-                            <b>¥</b>
-                            100.00
-                        </em>
+                        间属收益金额(元)
+                        <span>
+                            <b>￥</b>1000.00
+                        </span>
                     </div>
-                </li> -->
-            </ul>
+                </div>-->
+            </div>
         </div>
     </div>
 </template>
@@ -93,22 +98,22 @@ export default {
                 listProduct: {
                     requestType: "personal",
                     requestKeywords: "agentproduct",
-                    // platformID: this.$store.state.user.pid,
-                    // userID: this.$store.state.user.uid,
-                    // userPhone: this.$store.state.user.uphone
-                    platformID: "199",
-                    userID: "d77e68596c15c53c2a33ad143739902d",
-                    userPhone: "MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om"
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                    // platformID: "199",
+                    // userID: "d77e68596c15c53c2a33ad143739902d",
+                    // userPhone: "MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om"
                 },
                 incomeDetails: {
                     requestType: "dynamicmenu",
                     requestKeywords: "teamincome",
-                    // platformID: this.$store.state.user.pid,
-                    // userID: this.$store.state.user.uid,
-                    // userPhone: this.$store.state.user.uphone,
-                    platformID: "199",
-                    userID: "d77e68596c15c53c2a33ad143739902d",
-                    userPhone: "MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    // platformID: "199",
+                    // userID: "d77e68596c15c53c2a33ad143739902d",
+                    // userPhone: "MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om",
                     dates: "",
                     productID: ""
                 }
@@ -122,9 +127,10 @@ export default {
         incomeDetails() {
             // console.log(this.queryData.incomeDetails)
             getServer(this.queryData.incomeDetails).then(res => {
+                // console.log(res)
                 // console.log( response[res.data.responseStatus])
-                if( res.data.responseStatus === 1 ) {
-                    this.renderData.incomeDetails = res.data.data
+                if (res.data.responseStatus === 1) {
+                    this.renderData.incomeDetails = res.data.data;
                 }
             });
         },
@@ -137,7 +143,7 @@ export default {
                     dates: this.queryData.incomeDetails.dates,
                     productID: this.queryData.incomeDetails.productID
                 }
-            })
+            });
         },
         listProduct() {
             getServer(this.queryData.listProduct)
@@ -164,7 +170,7 @@ export default {
             this.timeShow = false;
             this.valueTime = timeFormate(this.currentDate).slice(0, 7);
             this.queryData.incomeDetails.dates = this.valueTime;
-            this.incomeDetails()
+            this.incomeDetails();
             // this.valueTime = this.currentDate;
             // console.log(this.formatter())
         },
@@ -180,7 +186,7 @@ export default {
             this.valueProduct = obj.productName;
             this.productShow = false;
             this.queryData.incomeDetails.productID = obj.id;
-            this.incomeDetails()
+            this.incomeDetails();
             // this.queryData.confirmInstallEquipment.productID = obj.id;
             // this.queryData.subordinateMerchants.productID = obj.id;
             // this.money = obj.money
@@ -224,37 +230,42 @@ export default {
     }
     .team-profit-list {
         // margin-top: 0.8rem;
-        ul {
+        .wButtonMain {
+            width: 100%;
             padding: 0 0.2rem;
-            li {
-                width: 90%;
-                height: 2rem;
-                margin: 0 auto;
-                background: url(../../assets/images/directly-under-bg.jpg)
-                    no-repeat;
-                background-size: "contain";
-                border-radius: 0.2rem;
-                margin-bottom: 0.3rem;
-                color: #fff;
-                > div {
-                    padding: 0.5rem 0 0 0.4rem;
-                    line-height: 0.4rem;
-                    h3 {
-                        margin-bottom: 0.1rem;
-                    }
-                    em {
-                        font-size: 0.4rem;
-                        b {
-                            font-size: 0.3rem;
-                        }
-                    }
-                }
-            }
-            li:nth-child(2) {
-                background: url(../../assets/images/identification-bg.jpg)
-                    no-repeat;
-                background-size: "contain";
-            }
+            box-sizing: border-box;
+        }
+        .wButtonMain > div {
+            width: 100%;
+            background: #e1e3f7;
+            padding: 15px;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            color: #5972ce;
+        }
+        .wButtonMain > div:nth-of-type(2) {
+            background: #f8e6d0;
+            color: #e2963d;
+        }
+        .wButtonMain > div img {
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin: 15px;
+        }
+        .wButtonMain > div div {
+            padding-left: 65px;
+            padding-top: 8px;
+        }
+        .wButtonMain > div div span {
+            display: block;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .wButtonMain > div div span b {
+            font-size: 16px;
         }
     }
 }

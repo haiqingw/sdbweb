@@ -453,7 +453,7 @@ export default {
     },
     created() {
         this.homeArings();
-        this.listOne();
+        // this.listOne();
         this.thaw();
         this.navList();
         // this.test1()

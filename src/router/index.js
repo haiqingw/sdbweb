@@ -492,6 +492,11 @@ export default new Router({
         path: "/team-profit", // 团队收益
         name: 'teamProfit',
         component: resolve => require(['@/views/team-profit'], resolve),
+    },
+    {
+        path: "/team-profit-list", // 团队收益列表
+        name: 'teamProfitList',
+        component: resolve => require(['@/views/team-profit/list'], resolve),
     }
     ]
 })

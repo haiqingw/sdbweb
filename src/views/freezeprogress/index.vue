@@ -8,7 +8,14 @@
                 <span @click="showPicker= true">{{proValue}}</span>
                 <!-- <van-field readonly clickable :value="proValue"   right-icon="arrow-down" /> -->
                 <van-popup v-model="showPicker" position="bottom">
-                    <van-picker show-toolbar :columns="renderData.productName" title :default-index="0" @cancel="showPicker = false" @confirm="onConfirm" />
+                    <van-picker
+                        show-toolbar
+                        :columns="renderData.productName"
+                        title
+                        :default-index="0"
+                        @cancel="showPicker = false"
+                        @confirm="onConfirm"
+                    />
                 </van-popup>
             </div>
         </div>
@@ -36,15 +43,28 @@
                 </div>
                 <!-- 列表  -->
                 <div class="freezeProgressListView">
-                    <div v-for="item in freezeData" :key="item.terminal" :class="[item.isThaw == '已解冻' ? 'completed' : '' , 'freezeProgressListItem']">
+                    <div
+                        v-for="item in freezeData"
+                        :key="item.terminal"
+                        :class="[item.isThaw != '已过期' ? 'completed' : '' , 'freezeProgressListItem']"
+                    >
                         <!-- completed -->
                         <!-- 盒子  -->
-                        <div :class="[item.isThaw=='待解冻' ? 'expired' : '' , 'freezeProgressBox']">
+                        <div :class="[item.isThaw !='已过期' ? '' : 'expired' , 'freezeProgressBox']">
                             <!-- expired -->
                             <!-- 三角 -->
                             <div class="leftArrIcon"></div>
                             <!--  解冻状态  -->
-                            <img v-if="item.isThaw == '已解冻'" src="../../assets/images/completedIcon.png" />
+                            <img
+                                class="img1"
+                                v-if="item.isThaw == '已解冻'"
+                                src="../../assets/images/completedIcon.png"
+                            />
+                            <img
+                                class="img2"
+                                v-if="item.isThaw == '已过期'"
+                                src="../../assets/images/completedIcon2.png"
+                            />
                             <!-- <img v-if="item.isThaw == '待解冻'" src="../../assets/images/expiredIcon.png" /> -->
                             <!--  解冻金额与剩余时间  -->
                             <div class="moneyAndTime">
@@ -62,10 +82,10 @@
                                     </div>
                                     <span>剩余天数</span>
                                 </div>
-                                <div v-if="item.isThaw != '待解冻'">
-                                    <span style="padding-top:14px; font-weight:bold;">
-                                        {{ item.isThaw }}
-                                    </span>
+                                <div v-if="item.isThaw == '已过期'">
+                                    <span
+                                        style="padding-top:14px; font-weight:bold;"
+                                    >{{ item.isThaw }}</span>
                                 </div>
                             </div>
                             <!-- 条件与当前刷卡金额  -->
@@ -75,7 +95,7 @@
                                 <span>满足条件：{{ item.conditions }}</span>
                                 <span>当前刷卡：{{ item.nowTotalMoney }}</span>
                                 <!-- <span class="completedItemTipInfo">{{ item.thawMoney }}元已转入余额!</span>
-                                <span class="expiredItemTipInfo">{{ item.thawMoney }}元已从待解冻金额中扣除！</span> -->
+                                <span class="expiredItemTipInfo">{{ item.thawMoney }}元已从待解冻金额中扣除！</span>-->
                             </div>
                         </div>
                     </div>
@@ -111,9 +131,9 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    // platformID: '199',
-                    // userID: 'd77e68596c15c53c2a33ad143739902d',
-                    // userPhone: 'MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om',
+                    // platformID: "199",
+                    // userID: "d77e68596c15c53c2a33ad143739902d",
+                    // userPhone: "MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om",
                     productID: ""
                 },
                 thaw: {
@@ -122,15 +142,15 @@ export default {
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
-                    // platformID: '199',
-                    // userID: 'd77e68596c15c53c2a33ad143739902d',
-                    // userPhone: 'MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om',
+                    // platformID: "199",
+                    // userID: "d77e68596c15c53c2a33ad143739902d",
+                    // userPhone: "MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om"
                 },
                 product: {
                     requestType: "agent",
                     requestKeywords: "product",
                     platformID: this.$store.state.user.pid
-                    // platformID: '199',
+                    // platformID: "199"
                 }
             },
             renderData: {
@@ -175,7 +195,7 @@ export default {
         getfreezeListFn() {
             Indicator.open();
             getServer(this.queryData.freezeData).then(res => {
-                // console.log(res)
+                console.log(res);
                 Indicator.close();
                 //   console.log(res)
                 if (res.data.responseStatus === 1) {
@@ -210,29 +230,29 @@ export default {
     width: 2.3rem;
     background: none;
     // overflow: hidden;
-    span{
-        width:2rem;
+    span {
+        width: 2rem;
         overflow: hidden;
         display: block;
-        height:0.8rem;
+        height: 0.8rem;
         position: absolute;
-        right:5px;
-        top:0;
-        font-size:0.28rem;
-        padding-right:10px;
-        text-align:center;
-        &::after{
-            content:"";
+        right: 5px;
+        top: 0;
+        font-size: 0.28rem;
+        padding-right: 10px;
+        text-align: center;
+        &::after {
+            content: "";
             display: block;
-            width:8px;
-            height:8px;
-            border-right:2px solid #fff;
-            border-bottom:2px solid #fff;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
             position: absolute;
-            right:3px;
-            top:50%;
-            margin-top:-5px;
-            transform:rotate(-45deg);
+            right: 3px;
+            top: 50%;
+            margin-top: -5px;
+            transform: rotate(-45deg);
         }
     }
 }
@@ -242,18 +262,17 @@ export default {
     padding: 0;
     line-height: 0.8rem;
     overflow: hidden;
-    height: .8rem;
+    height: 0.8rem;
 }
-.freezeProgressMainProductScreeningMain .van-field__body{
-    border:none;
-    background:none;
-    opacity:0;
+.freezeProgressMainProductScreeningMain .van-field__body {
+    border: none;
+    background: none;
+    opacity: 0;
     position: relative;
-    z-index:9999;
-    
+    z-index: 9999;
 }
 .freezeProgressMainProductScreeningMain .van-cell__value {
-    height: .8rem;
+    height: 0.8rem;
     overflow: hidden;
     border: none;
     background: none;
@@ -339,7 +358,7 @@ export default {
     position: relative;
     padding: 15px 0 0;
 }
-.freezeProgressBox > img {
+.freezeProgressBox > .img1 {
     width: 120px;
     height: 120px;
     position: absolute;
@@ -348,6 +367,15 @@ export default {
     z-index: 999;
     opacity: 0.6;
     margin: -60px 0 0 -60px;
+}
+.freezeProgressBox > .img2 {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0.2rem;
+    bottom: 0.2rem;
+    z-index: 999;
+    opacity: 0.6;
 }
 .leftArrIcon {
     width: 10px;

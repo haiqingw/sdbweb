@@ -310,13 +310,16 @@ export default {
                                             name: "serverMoneyRechargeOwn"
                                         });
                                     } else {
-                                        if (url === "/withdrawal") {
-                                            this.showDialog = true;
-                                        } else {
-                                            this.$router.push({
-                                                path: url
-                                            });
-                                        }
+                                        this.$router.push({
+                                            path: url
+                                        });
+                                        // if (url === "/withdrawal") {
+                                        //     this.showDialog = true;
+                                        // } else {
+                                        //     this.$router.push({
+                                        //         path: url
+                                        //     });
+                                        // }
                                         // this.$router.push({
                                         //     name: "agreement",
                                         //     params: { state: "add" }
@@ -341,13 +344,16 @@ export default {
                     }
                 });
             } else {
-                if (url === "/withdrawal") {
-                    this.showDialog = true;
-                } else {
-                    this.$router.push({
-                        path: url
-                    });
-                }
+                this.$router.push({
+                    path: url
+                });
+                // if (url === "/withdrawal") {
+                //     this.showDialog = true;
+                // } else {
+                //     this.$router.push({
+                //         path: url
+                //     });
+                // }
             }
         },
         confirmWithdrawal() {

@@ -325,11 +325,13 @@ export default {
                         if (item.types === this.screenState) {
                             this.navActiveIndex = index;
                             this.queryData.list.stypes = item.types;
-                            this.isThaw = false;
-                        } else {
-                            this.isThaw = true;
                         }
                     });
+                    if (this.screenState === "YJ") {
+                        this.isThaw = true;
+                    } else {
+                        this.isThaw = false;
+                    }
                     this.profitList();
                     autoScrollInstance = new AutoScroll(this.$refs.nav, {
                         spaceBetween: 0

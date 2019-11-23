@@ -58,6 +58,7 @@
 <script>
     import {getServer} from '@/api/index'
     import response from '@/assets/js/response.js'
+    import { Toast } from "mint-ui";
     export default {
         data () {
             return {

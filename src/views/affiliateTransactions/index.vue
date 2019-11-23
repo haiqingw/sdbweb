@@ -2,7 +2,7 @@
     <div class="affiliateTransactions">
         <!-- header -->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>下属交易</span>
         </div>
         <!-- body -->
@@ -122,7 +122,7 @@
                     </div>
                 </cube-scroll>
                 <div class="no-data" v-else>
-                    <img src="@/assets/images/no-data.png" alt>
+                    <img src="@/assets/images/no-data.png" alt />
                 </div>
             </div>
             <!-- </div> -->
@@ -133,7 +133,8 @@
 import { getServer } from "@/api/index";
 // import { Style, Button } from 'cube-ui'
 // import { loadMore } from "./mixin";
-import { Indicator } from "mint-ui";
+import { Indicator, Toast } from "mint-ui";
+
 export default {
     data() {
         return {
@@ -194,6 +195,21 @@ export default {
                     requestType: "agent",
                     requestKeywords: "product",
                     platformID: this.$store.state.user.pid
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             },
             renderData: {
@@ -205,6 +221,35 @@ export default {
     },
     // mixins: [loadMore],
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.productList();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         scrollTo() {
             this.$refs.scroll.scrollTo(
                 0,
@@ -342,7 +387,7 @@ export default {
         }
     },
     created() {
-        this.productList();
+        this.relogin();
         // this.list();
     }
 };

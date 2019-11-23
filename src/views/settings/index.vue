@@ -4,7 +4,7 @@
 <template>
     <div class="settings">
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>设置中心</span>
         </div>
         <div class="settings-list">
@@ -15,12 +15,12 @@
                     <i></i>
                 </router-link>-->
                 <li @click="modifyAuthentication" class="line_bottom">
-                    <img src="@/assets/images/certificationIcon.png" alt="修改个人信息">
+                    <img src="@/assets/images/certificationIcon.png" alt="修改个人信息" />
                     <span>修改实名认证</span>
                     <i></i>
                 </li>
                 <li class="line_bottom" @click="judgeRealNameAuth('changeCard')">
-                    <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡">
+                    <img src="@/assets/images/settingBankCardIcon.png" alt="更换结算卡" />
                     <span>更换结算卡</span>
                     <i></i>
                 </li>
@@ -28,14 +28,14 @@
                     <img src="@/assets/images/certificationIcon.png" alt="实名认证">
                     <span>修改实名认证</span>
                     <i></i>
-                </li> -->
+                </li>-->
                 <router-link tag="li" to="/mall/mall_address" class="line_bottom">
-                    <img src="@/assets/images/mineAddressIcon.png" alt="收货地址管理">
+                    <img src="@/assets/images/mineAddressIcon.png" alt="收货地址管理" />
                     <span>收货地址管理</span>
                     <i></i>
                 </router-link>
                 <router-link to="/changePassword" tag="li" class="line_bottom">
-                    <img src="@/assets/images/settingPasswordIcon.png" alt="修改密码">
+                    <img src="@/assets/images/settingPasswordIcon.png" alt="修改密码" />
                     <span>修改密码</span>
                     <i></i>
                 </router-link>
@@ -43,14 +43,14 @@
                     <img src="@/assets/images/settingFeedbackIcon.png" alt="意见反馈">
                     <span>意见反馈</span>
                     <i></i>
-                </router-link> -->
+                </router-link>-->
                 <!-- <li @click="cancellation" class="line_bottom">
                     <img src="@/assets/images/cancellation.png" alt="退出登录">
                     <span>账号注销</span>
                     <i></i>
-                </li> -->
+                </li>-->
                 <li @click="logout" class="line_bottom">
-                    <img src="@/assets/images/exitIcon.png" alt="退出登录">
+                    <img src="@/assets/images/exitIcon.png" alt="退出登录" />
                     <span>退出登录</span>
                     <i></i>
                 </li>
@@ -95,11 +95,55 @@ export default {
                     userID: this.$store.state.user.uid,
                     platformID: this.$store.state.user.pid,
                     userPhone: this.$store.state.user.uphone
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             }
         };
     },
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.isCerFn();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         logout() {
             MessageBox.confirm("您确定要退出吗?", "退出")
                 .then(action => {
@@ -123,7 +167,7 @@ export default {
         cancellation() {
             this.$router.push({
                 path: "/accountNumber-cancellation"
-            })
+            });
         },
         judgeRealNameAuth(url) {
             Indicator.open();
@@ -161,7 +205,7 @@ export default {
         }
     },
     created() {
-        this.isCerFn();
+        this.relogin();
     }
 };
 </script>

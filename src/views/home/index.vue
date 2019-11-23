@@ -136,7 +136,11 @@
                 </li>-->
             </ul>
         </div>
-        <Footer></Footer>
+        <van-dialog v-model="footShow" title="温馨提示" @confirm="confirms">
+            <!-- <van-cell title="单元格" value="内容" /> -->
+            <p style="padding: .5rem; line-height: .4rem;">{{renderData.reminmsg}}</p>
+        </van-dialog>
+        <Footer v-if="!footShow"></Footer>
     </div>
 </template>
 
@@ -151,9 +155,11 @@ import wx from "weixin-js-sdk";
 import VueElementLoading from "vue-element-loading";
 import Swiper from "swiper";
 import "swiper/dist/css/swiper.min.css";
+import { Dialog } from "vant";
 export default {
     data() {
         return {
+            footShow: false,
             swiperOption: {
                 // autoplay: true,
                 // slidesPerView: 1,
@@ -194,9 +200,48 @@ export default {
                 onlineCheckStatus: false,
                 navList: [],
                 monthstandard: "",
-                homeArings: []
+                homeArings: [],
+                reminmsg: ""
             },
             queryData: {
+                reminmsg: {
+                    requestType: "messagemanage",
+                    requestKeywords: "reminmsg",
+                    userID: this.$store.state.user.uid,
+                    platformID: this.$store.state.user.pid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                checkmsgremin: {
+                    requestType: "checke",
+                    requestKeywords: "checkmsgremin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                confirms: {
+                    requestType: "messagemanage",
+                    requestKeywords: "confirms",
+                    userID: this.$store.state.user.uid,
+                    platformID: this.$store.state.user.pid,
+                    userPhone: this.$store.state.user.uphone,
+                    mid: ""
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid:
+                        this.$route.query.opid || this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 dialCodeStatus: {
                     requestType: "checke",
                     requestKeywords: "dialcodecheck",
@@ -301,6 +346,117 @@ export default {
         ...mapGetters(["islogin"])
     },
     methods: {
+        confirms() {
+            // this.queryData.confirms.mid = this.renderData.reminmsg.mid;
+            getServer(this.queryData.confirms).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.footShow = false;
+                    this.homeArings();
+                    // this.listOne();
+                    this.thaw();
+                    this.navList();
+                    // this.test1()
+                    this.bannerList();
+                    this.info();
+                    this.isChecke();
+                    this.todayProfit();
+                    // this.loginSuccess.openid = this.$route.query.opid
+                    // alert(this.queryData.loginSuccess.openid)
+                    // this.verify();;
+                    this.onlineCheck();
+                    this.likeStatusFunc();
+                    this.dialCodeStatusFunc();
+                    this.monthstandard();
+                }
+            });
+        },
+        reminmsg() {
+            getServer(this.queryData.reminmsg).then(res => {
+                if (res.data.responseStatus === 1) {
+                    this.checkmsgremin();
+                    this.renderData.reminmsg = res.data.data.content;
+                    this.queryData.confirms.mid = res.data.data.mid;
+                } else if (res.data.responseStatus === 300) {
+                    this.footShow = false;
+                    this.homeArings();
+                    // this.listOne();
+                    this.thaw();
+                    this.navList();
+                    // this.test1()
+                    this.bannerList();
+                    this.info();
+                    this.isChecke();
+                    this.todayProfit();
+                    // this.loginSuccess.openid = this.$route.query.opid
+                    // alert(this.queryData.loginSuccess.openid)
+                    // this.verify();;
+                    this.onlineCheck();
+                    this.likeStatusFunc();
+                    this.dialCodeStatusFunc();
+                    this.monthstandard();
+                }
+            });
+        },
+        checkmsgremin() {
+            getServer(this.queryData.checkmsgremin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    // alert(JSON.stringify(res.data));
+                    if (res.data.status === 1) {
+                        this.footShow = true;
+                    } else {
+                        this.footShow = false;
+                    }
+                }
+            });
+        },
+        relogin() {
+            if (this.$store.state.user.opid) {
+                this.reminmsg();
+            } else {
+                alert(1);
+                getServer(this.queryData.relogin).then(res => {
+                    if (res.data.responseStatus === 1) {
+                        if (res.data.status === 1) {
+                            this.homeArings();
+                            // this.listOne();
+                            this.thaw();
+                            this.navList();
+                            // this.test1()
+                            this.bannerList();
+                            this.info();
+                            this.isChecke();
+                            this.todayProfit();
+                            // this.loginSuccess.openid = this.$route.query.opid
+                            // alert(this.queryData.loginSuccess.openid)
+                            // this.verify();;
+                            this.onlineCheck();
+                            this.likeStatusFunc();
+                            this.dialCodeStatusFunc();
+                            this.monthstandard();
+                        } else if (res.data.status === 2) {
+                            Toast("您的账号已被他人登陆");
+                            setTimeout(() => {
+                                this.$store
+                                    .dispatch("LogOut", this.queryData.logout)
+                                    .then(() => {
+                                        // location.reload();
+                                        setTimeout(() => {
+                                            this.$router.push({
+                                                // path: "/loginoid",
+                                                path: "/loginoid",
+                                                query: {
+                                                    plat: this.$store.state.user
+                                                        .plat
+                                                }
+                                            });
+                                        }, 500);
+                                    });
+                            }, 1000);
+                        }
+                    }
+                });
+            }
+        },
         homeArings() {
             getServer(this.queryData.homeArings).then(res => {
                 if (res.data.responseStatus === 1) {
@@ -428,6 +584,11 @@ export default {
                 } else {
                 }
             });
+        },
+        setOpid() {
+            this.$store
+                .dispatch("SetOpid", this.$route.query.opid)
+                .then(res => {});
         }
     },
     mounted() {
@@ -452,29 +613,18 @@ export default {
         }
     },
     created() {
-        this.homeArings();
-        // this.listOne();
-        this.thaw();
-        this.navList();
-        // this.test1()
-        this.bannerList();
-        this.info();
-        this.isChecke();
-        this.todayProfit();
-        // this.loginSuccess.openid = this.$route.query.opid
-        // alert(this.queryData.loginSuccess.openid)
-        getServer(this.queryData.loginSuccess).then(res => {});
-        // this.verify();;
-        this.onlineCheck();
-        this.likeStatusFunc();
-        this.dialCodeStatusFunc();
-        this.monthstandard();
+        getServer(this.queryData.loginSuccess).then(res => {
+            this.relogin();
+        });
+        if (this.$route.query.opid) {
+            this.setOpid();
+        }
     }
 };
 </script>
 
 
-<style lang = "scss" scoped>
+<style lang="scss" scoped>
 .swiper-container-horizontal > .swiper-pagination-bullets,
 .swiper-pagination-custom,
 .swiper-pagination-fraction {

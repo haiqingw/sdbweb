@@ -4,7 +4,7 @@
     <div class="bingding-mplements">
         <!-- header -->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>绑定机具</span>
         </div>
         <!-- body -->
@@ -81,6 +81,21 @@ export default {
                 }
             ],
             queryData: {
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 brand: {
                     requestType: "agent",
                     requestKeywords: "product",
@@ -116,12 +131,41 @@ export default {
         };
     },
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.brand();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         choiceBrand() {
             this.popupVisible = true;
         },
         onValuesChange(picker, values) {
             this.deposit = values[0].frozen;
-            this.queryData.confirmBinding.productID = String(values[0].id)
+            this.queryData.confirmBinding.productID = String(values[0].id);
             this.choiceBrandVal = String(values[0].name);
         },
         sys_click() {
@@ -183,7 +227,7 @@ export default {
         brand() {
             getServer(this.queryData.brand).then(res => {
                 this.slots[0].values = res.data.data;
-                this.queryData.confirmBinding.productID = res.data.data[0].id
+                this.queryData.confirmBinding.productID = res.data.data[0].id;
             });
         },
         confirmBinding() {
@@ -222,7 +266,7 @@ export default {
         }
     },
     created() {
-        this.brand();
+        this.relogin();
     }
 };
 </script>

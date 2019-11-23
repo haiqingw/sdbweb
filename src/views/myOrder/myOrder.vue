@@ -1,10 +1,8 @@
 <template>
     <div class="myOrder">
         <!-- header -->
-         <div class="return">
-            <img
-                src="@/assets/images/return.png" alt="" 
-                @click="$router.go(-1)"/>
+        <div class="return">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>我的订单</span>
         </div>
         <!-- nav -->
@@ -20,16 +18,13 @@
 
         <!-- 列表 -->
         <div class="myOrderListMain" v-if="isData">
-            <van-pull-refresh
-                v-model="isDownLoading"
-                @refresh="onDownRefresh"
-            >
+            <van-pull-refresh v-model="isDownLoading" @refresh="onDownRefresh">
                 <van-list
-                    v-model="isUpLoading"                 
+                    v-model="isUpLoading"
                     :finished="upFinished"
                     finished-text="没有更多了"
                     @load="onLoadList"
-                    :offset= "offset"
+                    :offset="offset"
                 >
                     <div class="myOrderItem" v-for="item in renderData.oldList" :key="item.id">
                         <router-link :to=" {name: 'myOrderDetail', params: { id: item.id, } } ">
@@ -58,30 +53,42 @@
                             </div>
                         </router-link>
                         <div class="myOrderOperation">
-                            <a href="javascript:;" v-if=" item.isReceipt == '4' " @click="comment(item.id)">去评价</a>
-                            <a href="javascript:;" v-if=" item.isReceipt == '2' " @click="confirmReceipt(item.id)">确认收货</a>
-                            <a href="javascript:;" v-if=" item.isReceipt == null " @click="deleteOrder(item.id)">删除订单</a>
+                            <a
+                                href="javascript:;"
+                                v-if=" item.isReceipt == '4' "
+                                @click="comment(item.id)"
+                            >去评价</a>
+                            <a
+                                href="javascript:;"
+                                v-if=" item.isReceipt == '2' "
+                                @click="confirmReceipt(item.id)"
+                            >确认收货</a>
+                            <a
+                                href="javascript:;"
+                                v-if=" item.isReceipt == null "
+                                @click="deleteOrder(item.id)"
+                            >删除订单</a>
                         </div>
                     </div>
                 </van-list>
             </van-pull-refresh>
         </div>
         <div class="no-data" v-else>
-            <img src="@/assets/images/no-data.png" alt="">
+            <img src="@/assets/images/no-data.png" alt />
         </div>
     </div>
 </template>
 <script>
-import {getServer} from "@/api/index"
-import response from '@/assets/js/response.js'
+import { getServer } from "@/api/index";
+import response from "@/assets/js/response.js";
 import { MessageBox, Toast } from "mint-ui";
 export default {
     data() {
         return {
-            loading:false,
-            isDownLoading: false,//下拉刷新
-            isUpLoading: false,//上拉加载
-            upFinished: false,//上拉加载完毕
+            loading: false,
+            isDownLoading: false, //下拉刷新
+            isUpLoading: false, //上拉加载
+            upFinished: false, //上拉加载完毕
             offset: 10, //滚动条与底部距离小于 offset 时触发load事件
             isData: true,
             values: {
@@ -89,24 +96,39 @@ export default {
             },
             queryData: {
                 list: {
-                    requestType: 'Order', 
-                    requestKeywords: 'olist', 
-                    platformID: this.$store.state.user.pid, 
-                    userID: this.$store.state.user.uid, 
-                    userPhone: this.$store.state.user.uphone, 
-                    page: 0, 
-                    // limit: 10, 
-                    isReceipt: "All",
+                    requestType: "Order",
+                    requestKeywords: "olist",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    page: 0,
+                    // limit: 10,
+                    isReceipt: "All"
                 },
                 confirmReceipt: {
-                    requestType: 'Order', 
-                    requestKeywords: 'confirmstatus', 
+                    requestType: "Order",
+                    requestKeywords: "confirmstatus",
                     id: ""
                 },
                 deleteOrder: {
-                    requestType: 'Order', 
-                    requestKeywords: 'deleteorder', 
+                    requestType: "Order",
+                    requestKeywords: "deleteorder",
                     id: ""
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             },
             renderData: {
@@ -116,25 +138,53 @@ export default {
         };
     },
     methods: {
-        onLoadList () {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
+        onLoadList() {
             // console.log("进来", this.queryData.list.page)
-            this.queryData.list.page++
+            this.queryData.list.page++;
             // this.isUpLoading = true
             // console.log(this.queryData.list.page)
-            this.myOrderList()
+            this.myOrderList();
         },
-        onDownRefresh(){
-            this.queryData.list.page = 1
-            this.renderData.oldList = []
-            this.upFinished = false
-            this.isData = true
+        onDownRefresh() {
+            this.queryData.list.page = 1;
+            this.renderData.oldList = [];
+            this.upFinished = false;
+            this.isData = true;
             this.myOrderList();
         },
         clickChange() {
-            this.queryData.list.isReceipt = this.values.type
-            this.queryData.list.page = 1
-            this.renderData.oldList = []
-            this.myOrderList()
+            this.queryData.list.isReceipt = this.values.type;
+            this.queryData.list.page = 1;
+            this.renderData.oldList = [];
+            this.myOrderList();
         },
         loadMore() {
             this.loading = true;
@@ -151,79 +201,88 @@ export default {
                 this.$refs.loadmore.onTopLoaded();
             }, 2000);
         },
-        myOrderList () {
+        myOrderList() {
             // console.log(this.queryData.list)
-            getServer(this.queryData.list).then( res => {
+            getServer(this.queryData.list).then(res => {
                 // console.log(response[res.data.responseStatus])
-                if( res.data.responseStatus === 1 ) {
-                    this.isData = true
-                    this.renderData.list = res.data.data
-                    this.renderData.list.forEach( item => {
-                        this.renderData.oldList.push(item)
-                    })
-                    this.isDownLoading = false
-                    this.isUpLoading = false
-                } else if(res.data.responseStatus === 300 && this.queryData.list.page !== 1 ) {
-                    this.upFinished = true
-                    this.isUpLoading = false
-                } else if( res.data.responseStatus === 300 && this.queryData.list.page === 1 ) {
-                    this.upFinished = false
-                    this.isUpLoading = false
-                    this.isData = false
+                if (res.data.responseStatus === 1) {
+                    this.isData = true;
+                    this.renderData.list = res.data.data;
+                    this.renderData.list.forEach(item => {
+                        this.renderData.oldList.push(item);
+                    });
+                    this.isDownLoading = false;
+                    this.isUpLoading = false;
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page !== 1
+                ) {
+                    this.upFinished = true;
+                    this.isUpLoading = false;
+                } else if (
+                    res.data.responseStatus === 300 &&
+                    this.queryData.list.page === 1
+                ) {
+                    this.upFinished = false;
+                    this.isUpLoading = false;
+                    this.isData = false;
                 }
-            })
+            });
         },
-        comment (id) {
-            this.$router.push({ 
+        comment(id) {
+            this.$router.push({
                 name: "evaluation",
-                params: {id: id}
-            })
+                params: { id: id }
+            });
         },
-        deleteOrder (id) {
-            this.queryData.deleteOrder.id = id
+        deleteOrder(id) {
+            this.queryData.deleteOrder.id = id;
             MessageBox.confirm("您确定要删除该订单吗?", "删除订单")
-                .then( action => {
-                    getServer(this.queryData.deleteOrder).then( res => {
-                        if( res.data.responseStatus === 1 ) {
-                            Toast("删除订单成功")
-                            this.queryData.list.page = 0
-                            this.renderData.oldList = []
-                            this.upFinished = false
-                            this.isData = true
-                            this.onLoadList()
+                .then(action => {
+                    getServer(this.queryData.deleteOrder).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            Toast("删除订单成功");
+                            this.queryData.list.page = 0;
+                            this.renderData.oldList = [];
+                            this.upFinished = false;
+                            this.isData = true;
+                            this.onLoadList();
                         } else {
-                            Toast("删除订单失败")
+                            Toast("删除订单失败");
                         }
-                    })
+                    });
                 })
                 .catch(() => {});
         },
-        confirmReceipt (id) {
-            this.queryData.confirmReceipt.id = id
+        confirmReceipt(id) {
+            this.queryData.confirmReceipt.id = id;
             MessageBox.confirm("是否确认订单?", "确认订单")
-                .then( action => {
-                    getServer(this.queryData.confirmReceipt).then( res => {
-                        if( res.data.responseStatus === 1 ) {
-                            Toast("确认收货成功")
-                            setTimeout( () => {
-                                this.$router.push({ 
+                .then(action => {
+                    getServer(this.queryData.confirmReceipt).then(res => {
+                        if (res.data.responseStatus === 1) {
+                            Toast("确认收货成功");
+                            setTimeout(() => {
+                                this.$router.push({
                                     name: "evaluation",
-                                    params: {id: id}
-                                })
-                            }, 500)
+                                    params: { id: id }
+                                });
+                            }, 500);
                         } else {
-                            Toast("确认收货失败")
+                            Toast("确认收货失败");
                         }
-                    })
+                    });
                 })
                 .catch(() => {});
         }
+    },
+    created() {
+        this.relogin();
     }
 };
 </script>
 <style lang="scss">
-.myOrder .myOrderNavMain .el-radio-button--medium .el-radio-button__inner{
-    border:none;
+.myOrder .myOrderNavMain .el-radio-button--medium .el-radio-button__inner {
+    border: none;
 }
 .loadingMore {
     line-height: 40px;
@@ -243,14 +302,14 @@ export default {
     position: fixed;
     width: 100%;
     left: 0;
-    top: .8rem;
+    top: 0.8rem;
     z-index: 9999;
 }
 .myOrder .myOrderNavMain .el-radio-group {
     display: block;
 }
 .myOrder .myOrderNavMain .el-radio-button--medium .el-radio-button__inner {
-    padding: .2rem;
+    padding: 0.2rem;
     width: 100%;
     box-sizing: border-box;
 }
@@ -287,9 +346,9 @@ export default {
     position: relative;
     overflow: hidden;
     margin-bottom: 15px;
-    background:#fff;
-    a{
-        color:#333;
+    background: #fff;
+    a {
+        color: #333;
     }
 }
 .myOrderItem b {

@@ -28,16 +28,31 @@
     </div>
 </template>
 <script>
-import { getServer } from '@/api/index'
-import { Toast, Dialog } from 'vant'
-import wx from 'weixin-js-sdk'
+import { getServer } from "@/api/index";
+import { Toast, Dialog } from "vant";
+import wx from "weixin-js-sdk";
 export default {
     data() {
         return {
             queryData: {
                 info: {
-                    requestType: 'operating',
-                    requestKeywords: 'displayrealname',
+                    requestType: "operating",
+                    requestKeywords: "displayrealname",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -46,7 +61,7 @@ export default {
             renderData: {
                 info: {}
             }
-        }
+        };
     },
     methods: {
         /* 
@@ -56,44 +71,73 @@ export default {
         info() {
             getServer(this.queryData.info).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.renderData.info = res.data.data
+                    this.renderData.info = res.data.data;
                 } else {
-                    Toast(response[res.data.responseStatus])
+                    Toast(response[res.data.responseStatus]);
                 }
-            })
+            });
         },
         again() {
             Dialog.confirm({
-                title: '实名认证',
-                message: '您确定要从新实名认证吗？'
+                title: "实名认证",
+                message: "您确定要从新实名认证吗？"
             })
                 .then(() => {
                     // on confirm
                 })
                 .catch(() => {
                     // on cancel
-                })
+                });
         },
         onBrowserBack() {
             // 这里写点击返回键时候的事件
             // 比如判断需求执行back()或者go(-2)或者PopupShow=false隐藏弹框
-            wx.closeWindow()
+            wx.closeWindow();
+        },
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.info();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
         }
     },
     mounted() {
         // 按需使用：A→B→C就需要页面一进来的时候，就添加一个历史记录
-        window.history.pushState(null, null, document.URL)
+        window.history.pushState(null, null, document.URL);
         // 给window添加一个popstate事件，拦截返回键，执行this.onBrowserBack事件，addEventListener需要指向一个方法
-        window.addEventListener('popstate', this.onBrowserBack, false)
+        window.addEventListener("popstate", this.onBrowserBack, false);
     },
     destroyed() {
         // 当页面销毁必须要移除这个事件，vue不刷新页面，不移除会重复执行这个事件
-        window.removeEventListener('popstate', this.onBrowserBack, false)
+        window.removeEventListener("popstate", this.onBrowserBack, false);
     },
     created() {
-        this.info()
+        this.relogin();
     }
-}
+};
 </script>
 <style lang="less">
 .stepFour .content {

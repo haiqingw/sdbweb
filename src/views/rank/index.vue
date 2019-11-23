@@ -139,7 +139,7 @@
 import Footer from '@/components/footerNav/footer'
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
-import { Indicator } from "mint-ui";
+import { Indicator, Toast } from "mint-ui";
 export default {
     data() {
         return {
@@ -182,6 +182,21 @@ export default {
                 // }
             ],
             queryData: {
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid 
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 list: {
                     requestType: "datamanage",
                     requestKeywords: "actranking",
@@ -241,6 +256,36 @@ export default {
         Footer,
     },
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    // alert(res.data.status)
+                    if (res.data.status === 1) {
+                         this.productlist();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆")
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         scrollTo() {
             this.$refs.scroll.scrollTo(0, 0);
         },
@@ -427,10 +472,10 @@ export default {
     },
     created() {
         // this.drawLine(this.monthData, this.moneyData);
+        this.relogin()
     },
     mounted() {
         this.selectItem = this.selectList[0].title;
-        this.productlist();
     }
 };
 </script>

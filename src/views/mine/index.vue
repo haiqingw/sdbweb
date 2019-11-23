@@ -192,6 +192,21 @@ export default {
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
                 },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid 
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 serverMoneyRecharge: {
                     own: {
                         // 自己
@@ -230,6 +245,40 @@ export default {
         Footer
     },
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.listOne();
+                        this.thaw();
+                        this.info();
+                        this.isShowAdvertisement();
+                        this.navList();
+                        this.totalProfit();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆")
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         totalProfit() {
             getServer(this.queryData.totalProfit).then(res => {
                 if (res.data.responseStatus === 1) {
@@ -394,12 +443,8 @@ export default {
         }
     },
     created() {
-        this.listOne();
-        this.thaw();
-        this.info();
-        this.isShowAdvertisement();
-        this.navList();
-        this.totalProfit();
+        // alert(window.sessionStorage.getItem('opid'))
+        this.relogin();
     }
 };
 </script>

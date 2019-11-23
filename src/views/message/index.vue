@@ -6,11 +6,16 @@
         <div class="msg-view-list">
             <ul>
                 <!-- v-bind="{to: '/notice' + item.id}" -->
-                <router-link tag="li" :to="{name: 'notice', params: {id: item.id}}" v-for="item in renderData.msgClassification" :key="item.id">
+                <router-link
+                    tag="li"
+                    :to="{name: 'notice', params: {id: item.id}}"
+                    v-for="item in renderData.msgClassification"
+                    :key="item.id"
+                >
                     <!-- <el-badge is-dot class="item"></el-badge> -->
                     <el-badge :value="item.rnum" :hidden="item.rnum <= 0" :max="99" class="item">
                         <div class="notice-ico ico">
-                            <img :src="item.picUrl" alt="">
+                            <img :src="item.picUrl" alt />
                         </div>
                     </el-badge>
                     <div class="text">
@@ -24,13 +29,13 @@
                     <div class="text">
                         <span>及时消息</span>
                     </div>
-                </router-link> -->
+                </router-link>-->
                 <!-- <router-link to="/complaint" tag="li">
                     <div class="complaint-ico ico"></div>
                     <div class="text">
                         <span>投诉建议</span>
                     </div>
-                </router-link> -->
+                </router-link>-->
             </ul>
         </div>
         <Footer></Footer>
@@ -50,6 +55,21 @@ export default {
                 msgClassification: {
                     requestType: "messagemanage",
                     requestKeywords: "infoc",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone
@@ -73,9 +93,38 @@ export default {
                 }
             });
         },
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.msgClassificationFun();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        }
     },
     created() {
-        this.msgClassificationFun()
+        this.relogin();
     }
 };
 </script>
@@ -85,10 +134,10 @@ export default {
 /* body {
         padding-bottom: 1.6rem;
     } */
-    .msg-view {
-        padding-bottom: 1.4rem;
-        background: #fff;
-    }
+.msg-view {
+    padding-bottom: 1.4rem;
+    background: #fff;
+}
 .msg-view .msg-view-top {
     font-size: 0.3rem;
     text-align: center;
@@ -105,10 +154,10 @@ export default {
     /* margin-top: .2rem; */
     line-height: 0.8rem;
     padding: 0.2rem 0;
-    border-bottom:1px solid #f1f1f1;
+    border-bottom: 1px solid #f1f1f1;
 }
-.msg-view .msg-view-list ul li:last-of-type{
-    border:none;
+.msg-view .msg-view-list ul li:last-of-type {
+    border: none;
 }
 .msg-view .msg-view-list ul li > div {
     float: left;

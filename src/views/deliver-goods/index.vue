@@ -105,6 +105,7 @@
 
 <script>
 import { getServer } from "@/api/index";
+import { Toast } from "mint-ui";
 export default {
     data() {
         return {

@@ -2,7 +2,7 @@
 <template>
     <div class="dial-code">
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>拨码</span>
             <router-link class="withdrawalRecord" to="/dial-code-list" style="color:#fff;">拨码记录</router-link>
         </div>
@@ -16,7 +16,7 @@
                 ></el-option>
             </el-select>
             <div class="search">
-                <van-search @search="onSearch" v-model="queryData.searchVal"/>
+                <van-search @search="onSearch" v-model="queryData.searchVal" />
                 <!-- <el-input v-model="search"></el-input> -->
                 <el-button type="text" @click="sys_click">扫码</el-button>
             </div>
@@ -53,7 +53,7 @@
                 </cube-scroll>
             </div>
             <div class="no-data" v-else>
-                <img src="@/assets/images/no-data.png" alt>
+                <img src="@/assets/images/no-data.png" alt />
             </div>
         </div>
         <div class="height: 1rem;"></div>
@@ -69,7 +69,7 @@
 import { getServer } from "@/api/index";
 import response from "@/assets/js/response.js";
 import { Toast, Indicator } from "mint-ui";
-import wx from 'weixin-js-sdk'
+import wx from "weixin-js-sdk";
 export default {
     data() {
         return {
@@ -108,6 +108,21 @@ export default {
                 value: ""
             },
             queryData: {
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 product: {
                     // requestType: "agent",
                     // requestKeywords: "product",
@@ -151,6 +166,36 @@ export default {
         };
     },
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.choiceProduct();
+                        this.choiceBatch();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         onSearch() {
             this.queryData.list.page = 1;
             this.terminalList();
@@ -303,8 +348,7 @@ export default {
         }
     },
     created() {
-        this.choiceProduct();
-        this.choiceBatch();
+        this.relogin();
         // this.terminalList()
     }
 };
@@ -364,7 +408,7 @@ export default {
     overflow: auto;
     .item {
         padding: 10px 10px;
-        &:nth-child(2n + 1) {    
+        &:nth-child(2n + 1) {
             background: #ccc;
         }
     }

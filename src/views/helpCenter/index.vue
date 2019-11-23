@@ -7,12 +7,12 @@
       </router-link>
         </mt-header>-->
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>帮助中心</span>
         </div>
         <!-- body -->
         <div class="helpCenterHeaderMain">
-            <img src="@/assets/images/helpCenterHeaderImg.jpg" alt="在线客服">
+            <img src="@/assets/images/helpCenterHeaderImg.jpg" alt="在线客服" />
             <div>
                 <h3>在线客服</h3>
                 <!-- {{renderData.top}} -->
@@ -42,19 +42,20 @@
                         :key="i.id"
                         :to="{name: 'helpDetail', params: { id: i.id } }"
                     >
-                        <img :src="i.helpUrl">
+                        <img :src="i.helpUrl" />
                         <span>{{i.title}}</span>
                     </router-link>
                 </div>
             </div>
         </div>
         <div class="no-data" v-else>
-            <img src="@/assets/images/no-data.png" alt>
+            <img src="@/assets/images/no-data.png" alt />
         </div>
     </div>
 </template>
 <script>
 import { getServer } from "@/api/index";
+import { Toast } from "mint-ui";
 export default {
     data() {
         return {
@@ -74,6 +75,21 @@ export default {
                     requestType: "list",
                     requestKeywords: "apphelp",
                     platformID: this.$store.state.user.pid
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             },
             renderData: {
@@ -101,11 +117,40 @@ export default {
                     this.isData = false;
                 }
             });
+        },
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.top();
+                        this.list();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
         }
     },
     created() {
-        this.top();
-        this.list();
+        this.relogin();
     }
 };
 </script>

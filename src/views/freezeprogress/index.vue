@@ -112,8 +112,9 @@
 </template>
 <script>
 import { getServer } from "@/api/index";
-import { Indicator } from "mint-ui";
+import { Indicator, Toast } from "mint-ui";
 import response from "@/assets/js/response.js";
+
 export default {
     data() {
         return {
@@ -125,6 +126,21 @@ export default {
             noPosDataStatus: false,
             freezeData: {},
             queryData: {
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 freezeData: {
                     requestType: "thaw",
                     requestKeywords: "thawlist",
@@ -161,6 +177,35 @@ export default {
         };
     },
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.product();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         onConfirm(value, index) {
             this.proValue = value;
             this.renderData.product.forEach(item => {
@@ -214,7 +259,7 @@ export default {
         }
     },
     created() {
-        this.product();
+        this.relogin();
     }
 };
 </script>

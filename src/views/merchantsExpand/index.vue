@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="return">
-            <img src="@/assets/images/return.png" alt @click="$router.go(-1)">
+            <img src="@/assets/images/return.png" alt @click="$router.go(-1)" />
             <span>商户拓展</span>
         </div>
         <div class="merchantsExpandMain">
             <div class="tipTextMain">
-                <img src="@/assets/images/exclamationIcon.png" alt="感叹号">仅限于业务员给用户装机
+                <img src="@/assets/images/exclamationIcon.png" alt="感叹号" />仅限于业务员给用户装机
             </div>
             <div class="merchantsFromMain">
                 <!-- 选择产品 -->
@@ -42,7 +42,7 @@
                 <van-cell-group>
                     <van-row>
                         <van-col span="16">
-                            <van-cell title="商户类型" :label="subLabel"/>
+                            <van-cell title="商户类型" :label="subLabel" />
                         </van-col>
                         <van-col span="8">
                             <van-tabs
@@ -58,7 +58,11 @@
                 </van-cell-group>
                 <!-- 新增 -->
                 <van-cell-group v-show="formWay">
-                    <van-field v-model="queryData.confirmInstallEquipment.busname" label="商户姓名" placeholder="请输入用户名"/>
+                    <van-field
+                        v-model="queryData.confirmInstallEquipment.busname"
+                        label="商户姓名"
+                        placeholder="请输入用户名"
+                    />
                     <van-field
                         v-model="queryData.verificationCode.phone"
                         label="商户电话"
@@ -126,13 +130,13 @@
                             :title="item.busname + (item.phone)"
                             clickable
                         >
-                            <van-radio :name="item.id"/>
+                            <van-radio :name="item.id" />
                         </van-cell>
                     </van-cell-group>
                 </van-radio-group>
             </div>
             <div class="no-data" v-else>
-                <img src="@/assets/images/no-data.png" alt>
+                <img src="@/assets/images/no-data.png" alt />
             </div>
             <div class="selectMerchantsFooter flex">
                 <van-button type="info" @click="popupShow = false">取消选择</van-button>
@@ -146,7 +150,7 @@ import { getServer } from "@/api/index";
 import { checkPhone } from "@/utils/verification.js";
 import { Toast } from "mint-ui";
 import response from "@/assets/js/response.js";
-import wx from "weixin-js-sdk"
+import wx from "weixin-js-sdk";
 export default {
     data() {
         return {
@@ -166,6 +170,21 @@ export default {
             Verify: "",
             money: "",
             queryData: {
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
+                },
                 sweepCode: {
                     requestType: "sharecode",
                     requestKeywords: "jssdks",
@@ -217,6 +236,35 @@ export default {
         };
     },
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.listProduct();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         verificationCode() {
             if (
                 this.queryData.verificationCode.phone == "" ||
@@ -272,7 +320,7 @@ export default {
             this.show = false;
             this.queryData.confirmInstallEquipment.productID = obj.id;
             this.queryData.subordinateMerchants.productID = obj.id;
-            this.money = obj.money
+            this.money = obj.money;
         },
         onCancel() {
             this.show = false;
@@ -350,7 +398,7 @@ export default {
             this.subordinateMerchants();
         },
         onSearch() {
-            this.subordinateMerchants()
+            this.subordinateMerchants();
         },
         confirmSelect() {
             if (this.radio === "") {
@@ -480,7 +528,7 @@ export default {
         }
     },
     created() {
-        this.listProduct();
+        this.relogin();
     }
 };
 </script>

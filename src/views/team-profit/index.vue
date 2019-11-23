@@ -80,6 +80,7 @@ import { getServer } from "@/api/index";
 import { timeFormate } from "@/utils/index";
 import { DatetimePicker } from "vant";
 import response from "@/assets/js/response.js";
+import { Toast } from "mint-ui";
 export default {
     // components: {
     //     'modal-tag': modalTag,  //组件
@@ -116,6 +117,21 @@ export default {
                     // userPhone: "MsTjUf2wNpjoErywNezjgcylOaDmElO0O0Om",
                     dates: "",
                     productID: ""
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             },
             renderData: {
@@ -124,6 +140,35 @@ export default {
         };
     },
     methods: {
+        relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                        this.listProduct();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆");
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         incomeDetails() {
             // console.log(this.queryData.incomeDetails)
             getServer(this.queryData.incomeDetails).then(res => {
@@ -195,7 +240,7 @@ export default {
     created() {
         this.valueTime = timeFormate(this.currentDate).slice(0, 7);
         this.queryData.incomeDetails.dates = this.valueTime;
-        this.listProduct();
+        this.relogin();
     },
     mounted() {}
 };

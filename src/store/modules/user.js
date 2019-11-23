@@ -1,7 +1,7 @@
 
 
 
-import {getServer} from '@/api/index'
+import { getServer } from '@/api/index'
 import { resolve } from 'url';
 import response from '@/assets/js/response.js'
 import { Indicator, Toast, MessageBox } from 'mint-ui';
@@ -13,7 +13,8 @@ const user = {
         uname: window.sessionStorage.getItem('uname'),
         uphone: window.sessionStorage.getItem('uphone'),
         islogin: window.sessionStorage.getItem('islogin'),
-        plat: window.sessionStorage.getItem('plat')
+        plat: window.sessionStorage.getItem('plat'),
+        opid: window.sessionStorage.getItem('opid')
     },
     mutations: {
         SET_UID: (state, uid) => {
@@ -39,10 +40,14 @@ const user = {
         SET_PLAT: (state, plat) => {
             state.plat = plat
             window.sessionStorage.setItem('plat', plat)
+        },
+        SET_OPID: (state, opid) => {
+            state.opid = opid
+            window.sessionStorage.setItem('opid', opid)
         }
     },
     actions: {
-        Login({commit}, userInfo) {
+        Login({ commit }, userInfo) {
             Indicator.open()
             window.sessionStorage.clear()
             const queryData = {
@@ -52,18 +57,18 @@ const user = {
                 // password: userInfo.password
                 requestType: 'buslogin',
                 requestKeywords: 'buslogins',
-                account: userInfo.phone, 
+                account: userInfo.phone,
                 password: userInfo.password,
-                plat : userInfo.plat
+                plat: userInfo.plat
             }
             commit('SET_PLAT', userInfo.plat)
             // commit('SET_PLAT', 187)
-            return new Promise( (resolve, reject) => {
-                getServer(queryData).then( res => {
+            return new Promise((resolve, reject) => {
+                getServer(queryData).then(res => {
                     // console.log(res)
                     // console.log(response[res.data.responseStatus])
                     const data = res.data
-                    if(data.responseStatus === 1) {
+                    if (data.responseStatus === 1) {
                         Indicator.close();
                         // Toast('登录成功')
                         commit('SET_UID', data.userID)
@@ -72,7 +77,7 @@ const user = {
                         commit('SET_UPHONE', data.userPhone)
                         commit('SET_ISLOGIN', true)
                         resolve()
-                    } else if(data.responseStatus === 200) {
+                    } else if (data.responseStatus === 200) {
                         Indicator.close()
                         reject(res)
                         Toast(response[res.data.responseStatus])
@@ -81,25 +86,25 @@ const user = {
                         reject(res)
                         Toast(response[res.data.responseStatus])
                     }
-                }).catch( err => {
+                }).catch(err => {
                     reject(err)
                     Toast(response[res.data.responseStatus])
                 })
             })
         },
-        autoLogin({commit}, autoLoginData) {
+        autoLogin({ commit }, autoLoginData) {
             Indicator.open()
             window.sessionStorage.clear()
             const crodeUser = {
                 requestType: 'buslogin',
-                requestKeywords:'crodeuser', 
+                requestKeywords: 'crodeuser',
                 openid: autoLoginData.code
             }
             commit('SET_PLAT', autoLoginData.plat)
-            return new Promise( (resolve, reject) => {
-                getServer(crodeUser).then( res => {
+            return new Promise((resolve, reject) => {
+                getServer(crodeUser).then(res => {
                     Indicator.close();
-                    if( res.data.responseStatus === 1 ) {
+                    if (res.data.responseStatus === 1) {
                         Indicator.close();
                         Toast('登录成功')
                         commit('SET_UID', res.data.userID)
@@ -108,48 +113,54 @@ const user = {
                         commit('SET_UPHONE', res.data.userPhone)
                         commit('SET_ISLOGIN', true)
                         resolve()
-                    } else if( res.data.responseStatus === 201 ) {
+                    } else if (res.data.responseStatus === 201) {
                         Indicator.close()
                         reject(res)
                     }
                 })
-                .catch( err => {
-                    reject(err)
-                    Toast(response[res.data.responseStatus])
-                })
+                    .catch(err => {
+                        reject(err)
+                        Toast(response[res.data.responseStatus])
+                    })
             })
         },
-        LogOut({commit}, data) {
-            return new Promise( (resolve, reject) => {
-                getServer(data).then( res => {
-                    if( res.data.responseStatus === 1 ) {
+        LogOut({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getServer(data).then(res => {
+                    if (res.data.responseStatus === 1) {
                         // window.sessionStorage.clear()
                         // alert(123)
                         window.localStorage.removeItem('uid');
                         window.localStorage.removeItem('pid');
                         window.localStorage.removeItem('uname');
                         window.localStorage.removeItem('uphone');
-                        commit('SET_ISLOGIN', false) 
+                        commit('SET_ISLOGIN', false)
                         resolve()
                     }
-                }); 
+                });
             })
         },
-        Cancellation({commit}, data) {
-            return new Promise( (resolve, reject) => {
-                getServer(data).then( res => {
+        SetOpid({ commit }, opid) {
+            commit('SET_OPID', opid)
+            return new Promise((resolve, reject) => {
+                resolve()
+            })
+        },
+        Cancellation({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                getServer(data).then(res => {
                     if (res.data.responseStatus === 1) {
                         Toast('账号注销成功')
                         window.localStorage.removeItem('pid');
                         window.localStorage.removeItem('uname');
                         window.localStorage.removeItem('uphone');
-                        commit('SET_ISLOGIN', false) 
+                        commit('SET_ISLOGIN', false)
                         resolve()
                     } else {
                         Toast(response[res.data.responseStatus])
                     }
                 })
-               
+
             })
         }
     }

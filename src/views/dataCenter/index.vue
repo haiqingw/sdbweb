@@ -215,205 +215,249 @@
 
 
 <script>
-import Footer from '@/components/footerNav/footer'
-import { getServer } from '@/api/index'
-import { Indicator, Toast } from 'mint-ui'
-import response from '@/assets/js/response.js'
+import Footer from "@/components/footerNav/footer";
+import { getServer } from "@/api/index";
+import { Indicator, Toast } from "mint-ui";
+import response from "@/assets/js/response.js";
 // import func from '../../../vue-temp/vue-editor-bridge';
 export default {
     data() {
-        let vm = this
+        let vm = this;
         return {
-            newAdd: '', // 新增总数
-            teamNewAdd: '', // 团队新增
-            directNewAdd: '', // 直营新增
+            newAdd: "", // 新增总数
+            teamNewAdd: "", // 团队新增
+            directNewAdd: "", // 直营新增
             sunAndMoonSwitch: [
                 {
-                    name: '日',
+                    name: "日",
                     isActive: false,
-                    dateType: 'days'
+                    dateType: "days"
                 },
                 {
-                    name: '月',
+                    name: "月",
                     isActive: true,
-                    dateType: 'mons'
+                    dateType: "mons"
                 }
             ],
             towSunAndMoonSwitch: [
                 {
-                    name: '日',
+                    name: "日",
                     isActive: false,
-                    dateType: 'days'
+                    dateType: "days"
                 },
                 {
-                    name: '月',
+                    name: "月",
                     isActive: true,
-                    dateType: 'mons'
+                    dateType: "mons"
                 }
             ],
-            slideIndex: '',
+            slideIndex: "",
             slideData: [],
-            colorDataStr: '#ffd274',
+            colorDataStr: "#ffd274",
             dataCenterStatus: true,
-            colorData: ['#6eb6ff', '#ff6638', '#f3b32d'],
+            colorData: ["#6eb6ff", "#ff6638", "#f3b32d"],
             realIndex1: 0,
-            monthData: ['12月', '1月', '2月', '3月', '4月', '5月'],
+            monthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
             moneyData: [0, 0, 0, 0, 0, 0],
             moneyData2: [0, 0, 0, 0, 0, 0],
-            profitMonthData: ['12月', '1月', '2月', '3月', '4月', '5月'],
+            profitMonthData: ["12月", "1月", "2月", "3月", "4月", "5月"],
             profitMoneyData: [0, 0, 0, 0, 0, 0],
             profitMoneyData2: [0, 0, 0, 0, 0, 0],
             drawColumnMonthData: [],
             drawColumnmoneyData: [],
             reallyIndex: 1,
-            tAnt: '',
-            tCnt: '',
-            percent: '',
-            team: '',
-            direct: '',
-            income: '',
-            defPercent: '',
-            rrgPercent: '',
+            tAnt: "",
+            tCnt: "",
+            percent: "",
+            team: "",
+            direct: "",
+            income: "",
+            defPercent: "",
+            rrgPercent: "",
             wayList: [
                 {
-                    type: 'active',
-                    name: '激活'
+                    type: "active",
+                    name: "激活"
                 },
                 {
-                    type: 'trade',
-                    name: '交易'
+                    type: "trade",
+                    name: "交易"
                 }
             ],
-            proVal: '',
-            wayVal: '',
+            proVal: "",
+            wayVal: "",
             queryData: {
                 pieChart: {
                     // 切换
-                    requestType: 'datacenter',
-                    requestKeywords: 'statistical',
+                    requestType: "datacenter",
+                    requestKeywords: "statistical",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    productID: ''
+                    productID: ""
                 },
                 brokenLineDiagram: {
                     // 折线图
-                    requestType: 'datacenter',
-                    requestKeywords: 'curve',
+                    requestType: "datacenter",
+                    requestKeywords: "curve",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    dateType: '', //（days 日  mons 月）,
-                    productID: '',
-                    types: '' //（team 商户  agen 代理   term 终端）
+                    dateType: "", //（days 日  mons 月）,
+                    productID: "",
+                    types: "" //（team 商户  agen 代理   term 终端）
                 },
                 listProduct: {
                     // 终端列表
-                    requestType: 'Datamanage',
-                    requestKeywords: 'productlist',
+                    requestType: "Datamanage",
+                    requestKeywords: "productlist",
                     // platformID: this.$store.state.user.pid
                     platformID: this.$store.state.user.pid
                 },
                 profitBrokenLineDiagram: {
                     // 收益折线图
-                    requestType: 'datacenter',
-                    requestKeywords: 'tpline',
+                    requestType: "datacenter",
+                    requestKeywords: "tpline",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    dateType: '', //（days 日  mons 月）,
-                    productID: '',
-                    types: '' //（trade 交易  income 收益）
+                    dateType: "", //（days 日  mons 月）,
+                    productID: "",
+                    types: "" //（trade 交易  income 收益）
                 },
                 tptrade: {
                     // 交易数据
-                    requestType: 'datacenter',
-                    requestKeywords: 'tptrade',
+                    requestType: "datacenter",
+                    requestKeywords: "tptrade",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    dateType: '', //（days 日  mons 月）,
-                    productID: '',
-                    types: '' // （trade 交易  income 收益）
+                    dateType: "", //（days 日  mons 月）,
+                    productID: "",
+                    types: "" // （trade 交易  income 收益）
                 },
                 tpincome: {
                     // 收益数据
-                    requestType: 'datacenter',
-                    requestKeywords: 'tpincome',
+                    requestType: "datacenter",
+                    requestKeywords: "tpincome",
                     platformID: this.$store.state.user.pid,
                     userID: this.$store.state.user.uid,
                     userPhone: this.$store.state.user.uphone,
-                    dateType: '', //（days 日  mons 月）,
-                    productID: '',
-                    types: '' // （trade 交易  income 收益）
+                    dateType: "", //（days 日  mons 月）,
+                    productID: "",
+                    types: "" // （trade 交易  income 收益）
+                },
+                relogin: {
+                    requestType: "buslogin",
+                    requestKeywords: "relogin",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone,
+                    openid: this.$store.state.user.opid
+                },
+                logout: {
+                    requestType: "personal",
+                    requestKeywords: "launchland",
+                    platformID: this.$store.state.user.pid,
+                    userID: this.$store.state.user.uid,
+                    userPhone: this.$store.state.user.uphone
                 }
             },
             renderData: {
                 listProduct: [],
                 brokenLineDiagram: []
             }
-        }
+        };
     },
     components: {
         Footer
     },
     mounted() {
         this.drawLine(
-            'myChart0',
+            "myChart0",
             this.monthData,
             this.moneyData,
             this.moneyData2
-        )
+        );
         this.drawColumn(
-            'myChart1',
+            "myChart1",
             this.profitMonthData,
             this.profitMoneyData,
             this.profitMoneyData2
-        )
+        );
     },
     computed: {},
     methods: {
+         relogin() {
+            // alert(this.queryData.relogin.openid)
+            getServer(this.queryData.relogin).then(res => {
+                if (res.data.responseStatus === 1) {
+                    if (res.data.status === 1) {
+                       this.listProduct();
+                    } else if (res.data.status === 2) {
+                        Toast("您的账号已被他人登陆")
+                        setTimeout(() => {
+                            this.$store
+                                .dispatch("LogOut", this.queryData.logout)
+                                .then(() => {
+                                    // location.reload();
+                                    setTimeout(() => {
+                                        this.$router.push({
+                                            // path: "/loginoid",
+                                            path: "/loginoid",
+                                            query: {
+                                                plat: this.$store.state.user
+                                                    .plat
+                                            }
+                                        });
+                                    }, 500);
+                                });
+                        }, 1000);
+                    }
+                }
+            });
+        },
         switchDayMonClass(obj) {
             // 日月切换
             this.sunAndMoonSwitch.forEach(item => {
-                item.isActive = false
-            })
-            obj.isActive = true
-            this.queryData.brokenLineDiagram.dateType = obj.dateType
-            this.brokenLineDiagram()
+                item.isActive = false;
+            });
+            obj.isActive = true;
+            this.queryData.brokenLineDiagram.dateType = obj.dateType;
+            this.brokenLineDiagram();
         },
         switchTowSunAndMoonSwitch(obj) {
             this.towSunAndMoonSwitch.forEach(item => {
-                item.isActive = false
-            })
-            obj.isActive = true
-            this.queryData.profitBrokenLineDiagram.dateType = obj.type
-            this.queryData.tptrade.dateType = obj.type
-            this.queryData.tpincome.dateType = obj.type
-            this.profitBrokenLineDiagram()
-            this.tptrade()
-            this.tpincome()
+                item.isActive = false;
+            });
+            obj.isActive = true;
+            this.queryData.profitBrokenLineDiagram.dateType = obj.type;
+            this.queryData.tptrade.dateType = obj.type;
+            this.queryData.tpincome.dateType = obj.type;
+            this.profitBrokenLineDiagram();
+            this.tptrade();
+            this.tpincome();
         },
         changeSlide(obj, index) {
             this.slideData.forEach(item => {
-                item.state = false
-            })
-            this.reallyIndex = index
-            obj.state = true
-            this.queryData.brokenLineDiagram.types = obj.types
-            this.brokenLineDiagram()
-            this.profitBrokenLineDiagram()
+                item.state = false;
+            });
+            this.reallyIndex = index;
+            obj.state = true;
+            this.queryData.brokenLineDiagram.types = obj.types;
+            this.brokenLineDiagram();
+            this.profitBrokenLineDiagram();
         },
         // 折线图
         drawLine(selecter, monthData, moneyData, moneyData2) {
-            let $selecter = document.getElementById(selecter)
+            let $selecter = document.getElementById(selecter);
             // 基于准备好的dom，初始化echarts实例
-            let myChart = this.$echarts.init($selecter)
+            let myChart = this.$echarts.init($selecter);
             // 绘制图表
             myChart.setOption({
                 tooltip: {},
                 legend: {
-                    data: ['直营', '团队']
+                    data: ["直营", "团队"]
                 },
                 grid: {
                     top: 70,
@@ -421,7 +465,7 @@ export default {
                 },
                 xAxis: [
                     {
-                        type: 'category',
+                        type: "category",
                         data: monthData,
                         axisLabel: {
                             show: true,
@@ -439,13 +483,13 @@ export default {
                 ],
                 yAxis: {
                     show: false,
-                    type: 'value'
+                    type: "value"
                 },
                 series: [
                     {
-                        name: '直营',
+                        name: "直营",
                         data: moneyData,
-                        type: 'line',
+                        type: "line",
                         itemStyle: {
                             normal: {
                                 label: { show: true },
@@ -457,35 +501,35 @@ export default {
                         }
                     },
                     {
-                        name: '团队',
+                        name: "团队",
                         data: moneyData2,
-                        type: 'line',
+                        type: "line",
                         itemStyle: {
                             normal: {
                                 label: { show: true },
-                                color: '#99CCCC',
+                                color: "#99CCCC",
                                 lineStyle: {
-                                    color: '#99CCCC'
+                                    color: "#99CCCC"
                                 }
                             }
                         }
                     }
                 ]
-            })
+            });
         },
         // 柱状图
         drawColumn(selecter, monthData, moneyData, moneyData2) {
-            let $selecter = document.getElementById(selecter)
+            let $selecter = document.getElementById(selecter);
             // 基于准备好的dom，初始化echarts实例
-            let myChart = this.$echarts.init($selecter)
+            let myChart = this.$echarts.init($selecter);
             // 绘制图表
             myChart.setOption({
                 tooltip: {},
                 legend: {
-                    data: ['直营', '团队']
+                    data: ["直营", "团队"]
                 },
                 xAxis: {
-                    type: 'category',
+                    type: "category",
                     data: monthData,
                     axisLabel: {
                         show: true,
@@ -502,13 +546,13 @@ export default {
                 },
                 yAxis: {
                     show: false,
-                    type: 'value'
+                    type: "value"
                 },
                 series: [
                     {
-                        name: '直营',
+                        name: "直营",
                         data: moneyData,
-                        type: 'bar',
+                        type: "bar",
                         itemStyle: {
                             normal: {
                                 label: { show: true },
@@ -517,73 +561,73 @@ export default {
                         }
                     },
                     {
-                        name: '团队',
+                        name: "团队",
                         data: moneyData2,
-                        type: 'bar',
+                        type: "bar",
                         itemStyle: {
                             normal: {
                                 label: { show: true },
-                                color: '#99CCCC',
+                                color: "#99CCCC",
                                 lineStyle: {
-                                    color: '#99CCCC'
+                                    color: "#99CCCC"
                                 }
                             }
                         }
                     }
                 ]
-            })
+            });
         },
         popupVisibleStatus() {
-            this.popupVisible = !this.popupVisible
+            this.popupVisible = !this.popupVisible;
         },
         listProduct() {
             getServer(this.queryData.listProduct)
                 .then(res => {
                     if (res.data.responseStatus === 1) {
-                        this.renderData.listProduct = res.data.data
-                        this.proVal = res.data.data[0].proname
+                        this.renderData.listProduct = res.data.data;
+                        this.proVal = res.data.data[0].proname;
                         this.queryData.pieChart.productID =
-                            res.data.data[0].proid
+                            res.data.data[0].proid;
                         this.queryData.brokenLineDiagram.productID =
-                            res.data.data[0].proid
+                            res.data.data[0].proid;
                         this.queryData.profitBrokenLineDiagram.productID =
-                            res.data.data[0].proid
+                            res.data.data[0].proid;
                         this.queryData.tptrade.productID =
-                            res.data.data[0].proid
+                            res.data.data[0].proid;
                         this.queryData.tpincome.productID =
-                            res.data.data[0].proid
+                            res.data.data[0].proid;
                     }
                 })
                 .then(() => {
-                    this.pieChart()
-                    this.profitBrokenLineDiagram()
-                    this.tptrade()
-                    this.tpincome()
-                })
+                    this.pieChart();
+                    this.profitBrokenLineDiagram();
+                    this.tptrade();
+                    this.tpincome();
+                });
         },
         changeProduct(name) {
-            this.proVal = name
+            this.proVal = name;
             let newArr = this.renderData.listProduct.filter(
                 item => item.proname == name
-            )
-            this.queryData.pieChart.productID = newArr[0].proid
-            this.queryData.brokenLineDiagram.productID = newArr[0].proid
-            this.queryData.profitBrokenLineDiagram.productID = newArr[0].proid
-            this.queryData.tpincome.productID = newArr[0].proid
-            this.queryData.tptrade.productID = newArr[0].proid
-            this.pieChart()
-            this.profitBrokenLineDiagram()
-            this.tptrade()
-            this.tpincome()
+            );
+            this.queryData.pieChart.productID = newArr[0].proid;
+            this.queryData.brokenLineDiagram.productID = newArr[0].proid;
+            this.queryData.profitBrokenLineDiagram.productID = newArr[0].proid;
+            this.queryData.tpincome.productID = newArr[0].proid;
+            this.queryData.tptrade.productID = newArr[0].proid;
+            this.pieChart();
+            this.profitBrokenLineDiagram();
+            this.tptrade();
+            this.tpincome();
         },
         changeProductTwo(name) {
-            let newArr = this.wayList.filter(item => item.name == name)
-            this.queryData.profitBrokenLineDiagram.types = newArr[0].type
-            this.queryData.tptrade.types = newArr[0].type
-            this.queryData.tpincome.types = newArr[0].type
-            this.profitBrokenLineDiagram()
-            this.tptrade()
-            this.tpincome()
+            let newArr = this.wayList.filter(item => item.name == name);
+            this.queryData.profitBrokenLineDiagram.types = newArr[0].type;
+            this.queryData.tptrade.types = newArr[0].type;
+            this.queryData.tpincome.types = newArr[0].type;
+            this.profitBrokenLineDiagram();
+            this.tptrade();
+            this.tpincome();
         },
         pieChart() {
             // 饼图
@@ -592,131 +636,131 @@ export default {
                     // alert(response[res.data.responseStatus])
                     if (res.data.responseStatus === 1) {
                         res.data.data.forEach(item => {
-                            item.state = false
-                        })
-                        res.data.data[1].state = true
-                        this.slideData = res.data.data
+                            item.state = false;
+                        });
+                        res.data.data[1].state = true;
+                        this.slideData = res.data.data;
                     }
                 })
                 .then(() => {
-                    this.brokenLineDiagram()
-                })
+                    this.brokenLineDiagram();
+                });
         },
         brokenLineDiagram() {
-            Indicator.open()
+            Indicator.open();
             this.sunAndMoonSwitch.forEach(item => {
                 if (item.isActive) {
-                    this.queryData.brokenLineDiagram.dateType = item.dateType
+                    this.queryData.brokenLineDiagram.dateType = item.dateType;
                 }
-            })
+            });
             this.slideData.forEach(item => {
                 if (item.state) {
-                    this.queryData.brokenLineDiagram.types = item.id
+                    this.queryData.brokenLineDiagram.types = item.id;
                 }
-            })
+            });
             // alert(JSON.stringify(this.queryData.brokenLineDiagram))
             getServer(this.queryData.brokenLineDiagram).then(res => {
-                Indicator.close()
+                Indicator.close();
                 // alert(JSON.stringify(res.data.data.newAdd))
                 if (res.data.responseStatus === 1) {
                     if (res.data.data === null) {
-                        this.moneyData = [0, 0, 0, 0, 0]
-                        this.monthData = [0, 0, 0, 0, 0]
-                        this.monthData2 = [0, 0, 0, 0, 0]
+                        this.moneyData = [0, 0, 0, 0, 0];
+                        this.monthData = [0, 0, 0, 0, 0];
+                        this.monthData2 = [0, 0, 0, 0, 0];
                     } else {
-                        this.moneyData = res.data.data.line.direct
-                        this.moneyData2 = res.data.data.line.team
-                        this.monthData = res.data.data.line.dates
-                        this.newAdd = res.data.data.newAdd.total
-                        this.teamNewAdd = res.data.data.newAdd.team
-                        this.directNewAdd = res.data.data.newAdd.direct
+                        this.moneyData = res.data.data.line.direct;
+                        this.moneyData2 = res.data.data.line.team;
+                        this.monthData = res.data.data.line.dates;
+                        this.newAdd = res.data.data.newAdd.total;
+                        this.teamNewAdd = res.data.data.newAdd.team;
+                        this.directNewAdd = res.data.data.newAdd.direct;
                         // alert(JSON.stringify(this.moneyData))
                         // alert(JSON.stringify(this.monthData))
                     }
                     this.drawLine(
-                        'myChart0',
+                        "myChart0",
                         this.monthData,
                         this.moneyData,
                         this.moneyData2
-                    )
+                    );
                 }
-            })
+            });
         },
         profitBrokenLineDiagram() {
-            Indicator.open()
+            Indicator.open();
             this.towSunAndMoonSwitch.map(item => {
                 if (item.isActive) {
                     this.queryData.profitBrokenLineDiagram.dateType =
-                        item.dateType
+                        item.dateType;
                 }
-            })
+            });
             this.wayList.map(item => {
                 if (item.name === this.wayVal) {
-                    this.queryData.profitBrokenLineDiagram.types = item.type
+                    this.queryData.profitBrokenLineDiagram.types = item.type;
                 }
-            })
+            });
             getServer(this.queryData.profitBrokenLineDiagram).then(res => {
-                Indicator.close()
+                Indicator.close();
                 if (res.data.responseStatus === 1) {
-                    this.profitMonthData = res.data.data.dates
-                    this.profitMoneyData = res.data.data.direct
-                    this.profitMoneyData2 = res.data.data.team
+                    this.profitMonthData = res.data.data.dates;
+                    this.profitMoneyData = res.data.data.direct;
+                    this.profitMoneyData2 = res.data.data.team;
                     this.drawColumn(
-                        'myChart1',
+                        "myChart1",
                         this.profitMonthData,
                         this.profitMoneyData,
                         this.profitMoneyData2
-                    )
+                    );
                 }
-            })
+            });
         },
         tptrade() {
             this.towSunAndMoonSwitch.map(item => {
                 if (item.isActive) {
-                    this.queryData.tptrade.dateType = item.dateType
+                    this.queryData.tptrade.dateType = item.dateType;
                 }
-            })
+            });
             this.wayList.map(item => {
                 if (item.name === this.wayVal) {
-                    this.queryData.tptrade.types = item.type
+                    this.queryData.tptrade.types = item.type;
                 }
-            })
+            });
             getServer(this.queryData.tptrade).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.tAnt = res.data.data.tAnt // 交易金额
-                    this.tCnt = res.data.data.tCnt // 数量
-                    this.percent = res.data.data.percent // %
-                    this.team = res.data.data.team // 团队
-                    this.direct = res.data.data.direct // 直营
+                    this.tAnt = res.data.data.tAnt; // 交易金额
+                    this.tCnt = res.data.data.tCnt; // 数量
+                    this.percent = res.data.data.percent; // %
+                    this.team = res.data.data.team; // 团队
+                    this.direct = res.data.data.direct; // 直营
                 }
-            })
+            });
         },
         tpincome() {
             this.towSunAndMoonSwitch.map(item => {
                 if (item.isActive) {
-                    this.queryData.tpincome.dateType = item.dateType
+                    this.queryData.tpincome.dateType = item.dateType;
                 }
-            })
+            });
             this.wayList.map(item => {
                 if (item.name === this.wayVal) {
-                    this.queryData.tpincome.types = item.type
+                    this.queryData.tpincome.types = item.type;
                 }
-            })
+            });
             getServer(this.queryData.tpincome).then(res => {
                 if (res.data.responseStatus === 1) {
-                    this.income = res.data.data.income
-                    this.defPercent = res.data.data.defPercent
-                    this.rrgPercent = res.data.data.rrgPercent
+                    this.income = res.data.data.income;
+                    this.defPercent = res.data.data.defPercent;
+                    this.rrgPercent = res.data.data.rrgPercent;
                 }
-            })
+            });
         }
     },
     created() {
-        this.listProduct()
-        this.wayVal = this.wayList[0].name
+        this.relogin()
+        this.wayVal = this.wayList[0].name;
         // this.moneyData = [0, 0, 0, 0, 0, 0];
     }
-}
+};
 </script>
 
 
@@ -766,7 +810,7 @@ export default {
             margin: 0 auto;
             color: #404040;
             &::before {
-                content: '';
+                content: "";
                 display: block;
                 width: 40px;
                 height: 2px;
@@ -777,7 +821,7 @@ export default {
                 margin-top: -1px;
             }
             &::after {
-                content: '';
+                content: "";
                 display: block;
                 width: 40px;
                 height: 2px;
@@ -894,7 +938,7 @@ export default {
 
         p {
             font-size: 30px;
-            font-family: 'numberFont';
+            font-family: "numberFont";
         }
     }
     .swiper-slide:not(.swiper-slide-active) {
@@ -931,7 +975,7 @@ export default {
                 padding: 5px 0;
                 p {
                     font-size: 26px;
-                    font-family: 'numberFont';
+                    font-family: "numberFont";
                 }
                 h3 {
                     font-size: 14px;
@@ -1016,7 +1060,7 @@ export default {
         h3 {
             font-size: 40px;
             padding-bottom: 10px;
-            font-family: 'numberFont';
+            font-family: "numberFont";
         }
         p {
             font-size: 14px;
@@ -1031,7 +1075,7 @@ export default {
             text-align: center;
             p {
                 font-size: 26px;
-                font-family: 'numberFont';
+                font-family: "numberFont";
             }
             h3 {
                 font-size: 14px;
@@ -1053,7 +1097,7 @@ export default {
                 padding: 0 20px;
             }
             &:before {
-                content: '';
+                content: "";
                 width: 100%;
                 position: absolute;
                 display: block;
@@ -1072,7 +1116,7 @@ export default {
             text-align: center;
             p {
                 font-size: 26px;
-                font-family: 'numberFont';
+                font-family: "numberFont";
             }
             h3 {
                 font-size: 14px;

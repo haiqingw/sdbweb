@@ -190,6 +190,11 @@ export default new Router({
         component: resolve => require(['@/views/settings/index'], resolve),
     },
     {
+        path: '/tradingReward', //交易奖励
+        name: 'tradingReward',
+        component: resolve => require(['@/views/tradingReward/index'], resolve),
+    },
+    {
         path: '/freezeprogress', //待解冻
         name: 'freezeprogress',
         component: resolve => require(['@/views/freezeprogress/index'], resolve),
@@ -497,6 +502,17 @@ export default new Router({
         path: "/team-profit-list", // 团队收益列表
         name: 'teamProfitList',
         component: resolve => require(['@/views/team-profit/list'], resolve),
+    },
+    //预约订货开始
+    {
+        path: "/book/list", // 预约订货产品列表
+        name: 'bookList',
+        component: resolve => require(['@/views/book/list'], resolve),
+    },
+    {
+        path: "/book/detail/:id", // 预约订货产品详情
+        name: 'bookdetail',
+        component: resolve => require(['@/views/book/detail'], resolve),
     }
     ]
 })

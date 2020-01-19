@@ -83,6 +83,7 @@
         <div class="mineCommonMenuBox">
             <h3 class="mineTitle">常用菜单</h3>
             <div class="mineCommonMenuList">
+                <a href="javascript:;" @click="bookTap" style="font-size:18px;font-weight:bold;display:block;text-align:center; line-height:40px;">预约订货</a>
                 <a
                     href="javascript:;"
                     @click="judgeRealNameAuth(item.jumpPageLink)"
@@ -440,7 +441,12 @@ export default {
                 } else {
                 }
             });
-        }
+        },
+         bookTap() {
+            this.$router.push({
+                path: "/book/list"
+            });
+        },
     },
     created() {
         // alert(window.sessionStorage.getItem('opid'))
